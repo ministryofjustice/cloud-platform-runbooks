@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Cloud Platform Runbooks</title>
+    <title>Add a new runbook | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-a-new-runbook.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Cloud Platform Runbooks" />
+      <meta property="og:title" content="Add a new runbook" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-a-new-runbook.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/" />
+      <meta property="twitter:title" content="Add a new runbook | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-a-new-runbook.html" />
 
     
   </head>
@@ -55,7 +55,7 @@
               <li>
                 <a href="mailto:platforms+user-guide@digital.justice.gov.uk?subject=User+guide+feedback">Feedback / Report a problem</a>
               </li>
-              <li class="active">
+              <li>
                 <a href="/">Documentation</a>
               </li>
               <li>
@@ -121,15 +121,32 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="cloud-platform-runbooks">Cloud Platform Runbooks</h1><p>Something something runbooks, something something.</p>
+              <h1 id="add-a-new-runbook">Add a new runbook</h1><h4 id="1-git-pull-to-get-the-latest-changes">1. <code>git pull</code> to get the latest changes</h4><h4 id="2-create-a-feature-branch-for-your-new-runbook">2. Create a feature branch for your new runbook</h4><h4 id="3-run-make-server-to-start-a-development-webserver-to-view-your-changes">3. Run <code>make server</code> to start a development webserver to view your changes</h4><h4 id="4-add-your-runbook-as-a-new-file-in-the-source-directory">4. Add your runbook as a new file in the <a href="https://github.com/digitalronin/cloud-platform/tree/master/runbooks/source">source</a> directory</h4>
+<ul>
+<li>Your filename must match <code>*.html.md.erb</code></li>
+<li>Your file must have a header section like this</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>---
+title: Add a new runbook
+weight: 9999
+---
+</code></pre></div>
+<ul>
+<li>The <code>weight</code> value controls ordering in the table of contents</li>
+<li>Use <code>position * 100</code> to leave enough room for new runbooks</li>
+<li>Do not put leading zeroes on the <code>weight</code> value, they won&rsquo;t work</li>
+<li>Your content <strong>must</strong> start with a markdown heading one line, e.g.</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code># Add a new runbook
+</code></pre></div><h4 id="5-push-your-feature-branch-and-raise-a-pr">5. Push your feature branch and raise a PR</h4><h4 id="6-merge-your-pr-and-delete-your-feature-branch">6. Merge your PR and delete your feature branch</h4><p>CircleCI will compile and deploy a new version of the runbooks guide, with your changes.</p>
 
 
             
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/index.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Cloud%20Platform%20Runbooks'&amp;body=Problem%20with%20'Cloud%20Platform%20Runbooks'%20(https://runbooks.cloud-platform.service.justice.gov.uk/)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/add-a-new-runbook.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20a%20new%20runbook'&amp;body=Problem%20with%20'Add%20a%20new%20runbook'%20(https://runbooks.cloud-platform.service.justice.gov.uk/add-a-new-runbook.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
