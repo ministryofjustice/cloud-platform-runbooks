@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Add a new runbook | Cloud Platform Runbooks</title>
+    <title>Remove 'orphaned' namespaces and AWS resources | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-a-new-runbook.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Add a new runbook" />
+      <meta property="og:title" content="Remove 'orphaned' namespaces and AWS resources" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-a-new-runbook.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Add a new runbook | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-a-new-runbook.html" />
+      <meta property="twitter:title" content="Remove 'orphaned' namespaces and AWS resources | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html" />
 
     
   </head>
@@ -231,33 +231,26 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="add-a-new-runbook">Add a new runbook</h1><p>To add a new runbook, you will create a file in the <code>runbooks/source</code> directory of the <a href="https://github.com/ministryofjustice/cloud-platform">cloud-platform</a> repository.</p>
-<h4 id="1-git-pull-to-get-the-latest-changes">1. <code>git pull</code> to get the latest changes</h4><h4 id="2-create-a-feature-branch-for-your-new-runbook">2. Create a feature branch for your new runbook</h4><h4 id="3-cd-runbooks">3. <code>cd runbooks</code></h4><h4 id="4-run-make-server-to-start-a-development-webserver-to-view-your-changes">4. Run <code>make server</code> to start a development webserver to view your changes</h4><h4 id="5-add-your-runbook-as-a-new-file-in-the-source-directory">5. Add your runbook as a new file in the <a href="https://github.com/digitalronin/cloud-platform/tree/master/runbooks/source">source</a> directory</h4>
-<ul>
-<li>Your filename must match <code>*.html.md.erb</code></li>
-<li>Your file must have a header section like this</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>---
-title: Add a new runbook
-weight: 9999
----
-</code></pre></div>
-<ul>
-<li>The <code>weight</code> value controls ordering in the table of contents</li>
-<li>Use <code>position * 100</code> to leave enough room for new runbooks to be inserted without reordering</li>
-<li><p>Do not put leading zeroes on the <code>weight</code> value, they won&rsquo;t work</p></li>
-<li><p>Your content <strong>must</strong> start with a markdown heading one line, e.g.</p></li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code># Add a new runbook
-</code></pre></div><h4 id="6-push-your-feature-branch-and-raise-a-pr">6. Push your feature branch and raise a PR</h4><h4 id="7-merge-your-pr-and-delete-your-feature-branch">7. Merge your PR and delete your feature branch</h4><p>CircleCI will compile and deploy a new version of the runbooks guide, with your changes.</p>
+              <h1 id="remove-39-orphaned-39-namespaces-and-aws-resources">Remove &lsquo;orphaned&rsquo; namespaces and AWS resources</h1><p>Cluster namespaces, and the AWS resources associated with them, should be removed automatically by the build pipeline.</p>
+<p>Sometimes this process doesn&rsquo;t work correctly, or users don&rsquo;t follow it, and we end up with &#39;orphaned&rsquo; namespaces in the cluster. i.e. namespaces which exist in the kubernetes cluster, but which have no associated source code in the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a>.</p>
+<p>You can remove these namespaces, and their AWS resources, using the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a>.</p>
+<h3 id="1-git-clone-the-environments-checker-repository">1. <code>git clone</code> the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a> repository</h3><h3 id="2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a <code>.env.live1</code> file, containing the environment variables the checker requires</h3><p>The repository contains an <code>example.env.live-1</code> file. Copy this to <code>.env.live1</code> and replace the placeholders with real AWS credentials.</p>
+<h3 id="3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name]
+</code></pre></div><p>This will run a <code>terraform plan</code> showing the resources that the script is going to delete.</p>
+<h3 id="4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name] <span class="nv">DESTROY</span><span class="o">=</span>destroy
+</code></pre></div><p>This will actually delete the AWS resources and the namespace itself.</p>
+<h2 id="possible-errors">Possible Errors</h2><p>AWS resources which were created using older versions of our terraform modules defined the provider inside the code which invoked the module. The process above will not work for those resources, because the module definition disappeared when the source code was removed, so terraform doesn&rsquo;t know how to delete the resource.</p>
+<p>Fixing these problems usually requires getting the original namespace source code by finding the commit in the git log of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a> where it was removed, and checking out a version before then.</p>
+<p>Once you have the source code, you can use <code>terraform init</code> and <code>terraform plan</code> to target and destroy the specific AWS resources which are causing problems.</p>
+<p>See the runbook for <a href="/rotate-user-aws-credentials.html">rotating AWS credentials</a> for an example of doing this.</p>
 
 
             
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/add-a-new-runbook.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20a%20new%20runbook'&amp;body=Problem%20with%20'Add%20a%20new%20runbook'%20(https://runbooks.cloud-platform.service.justice.gov.uk/add-a-new-runbook.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/remove-orphaned-namespace.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Remove%20'orphaned'%20namespaces%20and%20AWS%20resources'&amp;body=Problem%20with%20'Remove%20'orphaned'%20namespaces%20and%20AWS%20resources'%20(https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
