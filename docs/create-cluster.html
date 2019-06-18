@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Remove 'orphaned' namespaces and AWS resources | Cloud Platform Runbooks</title>
+    <title>Create a new cluster | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Remove 'orphaned' namespaces and AWS resources" />
+      <meta property="og:title" content="Create a new cluster" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Remove 'orphaned' namespaces and AWS resources | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html" />
+      <meta property="twitter:title" content="Create a new cluster | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html" />
 
     
   </head>
@@ -264,26 +264,66 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="remove-39-orphaned-39-namespaces-and-aws-resources">Remove &lsquo;orphaned&rsquo; namespaces and AWS resources</h1><p>Cluster namespaces, and the AWS resources associated with them, should be removed automatically by the build pipeline.</p>
-<p>Sometimes this process doesn&rsquo;t work correctly, or users don&rsquo;t follow it, and we end up with &#39;orphaned&rsquo; namespaces in the cluster. i.e. namespaces which exist in the kubernetes cluster, but which have no associated source code in the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a>.</p>
-<p>You can remove these namespaces, and their AWS resources, using the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a>.</p>
-<h3 id="1-git-clone-the-environments-checker-repository">1. <code>git clone</code> the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a> repository</h3><h3 id="2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a <code>.env.live1</code> file, containing the environment variables the checker requires</h3><p>The repository contains an <code>example.env.live-1</code> file. Copy this to <code>.env.live1</code> and replace the placeholders with real AWS credentials.</p>
-<h3 id="3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name]
-</code></pre></div><p>This will run a <code>terraform plan</code> showing the resources that the script is going to delete.</p>
-<h3 id="4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name] <span class="nv">DESTROY</span><span class="o">=</span>destroy
-</code></pre></div><p>This will actually delete the AWS resources and the namespace itself.</p>
-<h2 id="possible-errors">Possible Errors</h2><p>AWS resources which were created using older versions of our terraform modules defined the provider inside the code which invoked the module. The process above will not work for those resources, because the module definition disappeared when the source code was removed, so terraform doesn&rsquo;t know how to delete the resource.</p>
-<p>Fixing these problems usually requires getting the original namespace source code by finding the commit in the git log of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a> where it was removed, and checking out a version before then.</p>
-<p>Once you have the source code, you can use <code>terraform init</code> and <code>terraform plan</code> to target and destroy the specific AWS resources which are causing problems.</p>
-<p>See the runbook for <a href="/rotate-user-aws-credentials.html">rotating AWS credentials</a> for an example of doing this.</p>
+              <h1 id="create-a-new-cluster">Create a new cluster</h1><h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-reqs:</p>
+
+<ul>
+<li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a> so you are able to  <code>git-crypt unlock</code> before you make any changes</p></li>
+<li><p>You must ensure your local <code>helm</code> version is =&gt; <code>2.11</code>. Also, <code>helm repo update</code> or you might see some failures at step 6.</p></li>
+<li><p>The Auth0 Terraform provider isn&rsquo;t listed in the official Terraform repository. You must download the provider using <a href="https://github.com/yieldr/terraform-provider-auth0#using-the-provider">the instructions</a></p></li>
+</ul>
+<p>For the auth0 provider, setup the following environment variables locally:</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">AUTH0_DOMAIN</span><span class="o">=</span><span class="s2">"justice-cloud-platform.eu.auth0.com"</span>
+<span class="nv">AUTH0_CLIENT_ID</span><span class="o">=</span><span class="s2">"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span>
+<span class="nv">AUTH0_CLIENT_SECRET</span><span class="o">=</span><span class="s2">"yyyyyyyyyyyyyyyyyyyyyyyyyyyy"</span>
+</code></pre></div><p>The values are from the <code>terraform-provider-auth0</code> app on <a href="https://manage.auth0.com/#/applications">auth0</a></p>
+<h2 id="create-terraform-workspace">Create terraform workspace</h2><p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
+<p>To create a new cluster, you must create a new terraform workspace and apply the <code>cloud-platform</code> resources.</p>
+<p>Ensure at all times that you are in the correct workspace with <code>$ terraform workspace list</code>.</p>
+<p>NB: In the commands below, your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful.</p>
+<p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/master/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a>.</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">AWS_PROFILE</span><span class="o">=</span>moj-cp
+<span class="nv">$ </span><span class="nb">cd </span>terraform/cloud-platform
+<span class="nv">$ </span>terraform init
+<span class="nv">$ </span>terraform workspace new &lt;clusterName e.g. cloud-platform-test-3&gt;
+<span class="nv">$ </span>terraform plan
+<span class="nv">$ </span>terraform apply
+</code></pre></div><h2 id="set-environment-variables-from-terraform-output">Set environment variables from terraform output</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">KOPS_STATE_STORE</span><span class="o">=</span><span class="s2">"s3://</span><span class="k">$(</span>terraform output kops_state_store<span class="k">)</span><span class="s2">"</span>
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">CLUSTER_NAME</span><span class="o">=</span><span class="k">$(</span>terraform output cluster_name<span class="k">)</span>
+</code></pre></div><h2 id="use-kops-to-create-the-cluster">Use kops to create the cluster</h2><p>Terraform creates a <code>kops/${CLUSTER_NAME}.yaml</code> file in your local directory. K8s release should track the version supported by Kops, check <a href="https://github.com/kubernetes/kops/releases">kops releases</a>.</p>
+<p>Use <code>kops</code> to create your cluster.</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kops create <span class="nt">-f</span> ../../kops/<span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.yaml
+</code></pre></div><h2 id="create-ssh-public-key-in-kops-state-store">Create SSH public key in kops state store.</h2><p>To create a new SSH public key for this purpose, run:</p>
+<div class="highlight"><pre class="highlight shell"><code>ssh-keygen <span class="nt">-b</span> 4096 <span class="nt">-P</span> <span class="s1">''</span> <span class="nt">-f</span> ~/.ssh/mykey
+</code></pre></div><p>Copy the SSH public key as a kops secret:</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kops create secret <span class="nt">--name</span> <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk sshpublickey admin <span class="nt">-i</span> ~/.ssh/id_rsa.pub
+</code></pre></div><h2 id="create-cluster-resources-in-aws">Create cluster resources in AWS.</h2><p>aka update cluster in AWS according to the yaml specification:</p>
+<div class="highlight"><pre class="highlight shell"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk <span class="nt">--yes</span>
+</code></pre></div><p>When complete (takes a few minutes), you can check the progress with:</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kops validate cluster
+</code></pre></div><p>Once it reports</p>
+
+<blockquote>
+<p>Your cluster <code>${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready</code></p>
+</blockquote>
+<p>you can proceed to use kubectl to interact with the cluster.</p>
+<h2 id="install-the-cloud-platform-components">Install the <code>cloud-platform-components</code>.</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">cd</span> ../cloud-platform-components
+<span class="nv">$ </span>terraform init
+<span class="nv">$ </span>terraform workspace new &lt;clusterName e.g. cloud-platform-test-3&gt;
+<span class="nv">$ </span>terraform plan
+<span class="nv">$ </span>terraform apply
+</code></pre></div><p><em>Warning</em> a failure while installing <code>tiller</code> will make <code>helm</code> downgrade itself to v2.9, and nothing will work from there, doublecheck with</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ helm version
+Client: &amp;version.Version{SemVer:"v2.11.0", GitCommit:"2e55dbe1fdb5fdb96b75ff144a339489417b146b", GitTreeState:"clean"}
+Server: &amp;version.Version{SemVer:"v2.11.0", GitCommit:"2e55dbe1fdb5fdb96b75ff144a339489417b146b", GitTreeState:"clean"}
+</code></pre></div><p>fix / destroy / apply again if the values don&rsquo;t match.</p>
 
 
             
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/remove-orphaned-namespace.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Remove%20'orphaned'%20namespaces%20and%20AWS%20resources'&amp;body=Problem%20with%20'Remove%20'orphaned'%20namespaces%20and%20AWS%20resources'%20(https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/create-cluster.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Create%20a%20new%20cluster'&amp;body=Problem%20with%20'Create%20a%20new%20cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
