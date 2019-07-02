@@ -108,22 +108,10 @@
         <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
-        <a href="/create-cluster.html#create-terraform-workspace">Create terraform workspace</a>
+        <a href="/create-cluster.html#environment-variables">Environment Variables</a>
       </li>
       <li>
-        <a href="/create-cluster.html#set-environment-variables-from-terraform-output">Set environment variables from terraform output</a>
-      </li>
-      <li>
-        <a href="/create-cluster.html#use-kops-to-create-the-cluster">Use kops to create the cluster</a>
-      </li>
-      <li>
-        <a href="/create-cluster.html#create-ssh-public-key-in-kops-state-store">Create SSH public key in kops state store.</a>
-      </li>
-      <li>
-        <a href="/create-cluster.html#create-cluster-resources-in-aws">Create cluster resources in AWS.</a>
-      </li>
-      <li>
-        <a href="/create-cluster.html#install-the-cloud-platform-components">Install the cloud-platform-components.</a>
+        <a href="/create-cluster.html#run-the-build-script">Run the build script</a>
       </li>
     </ul>
   </li>
@@ -245,6 +233,11 @@
 </ul>
 <ul>
   <li>
+    <a href="/expand.html#expanding-persistent-volumes-created-using-statefulsets">Expanding Persistent Volumes created using StatefulSets</a>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/add-a-new-runbook.html#add-a-new-runbook">Add a new runbook</a>
     <ul>
       <li>
@@ -268,14 +261,18 @@
 <div class="highlight"><pre class="highlight plaintext"><code>$ export AWS_PROFILE=moj-cp
 $ export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 </code></pre></div><p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
-<p>From the components directory, run this command, which will destroy all cluster components.</p>
+<p>First, set the kubectl context for the cluster you are deleting. The easiest way to do this is with kops. e.g:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ kops export kubecfg david-test1.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>You should see this output:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kops has set your kubectl context to david-test1.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>Then, from the components directory, run this command, which will destroy all cluster components.</p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">cd </span>terraform/cloud-platform-components
 <span class="nv">$ </span>terraform init
 <span class="nv">$ </span>terraform workspace <span class="k">select</span> &lt;clusterName e.g. cloud-platform-test-3&gt;
 <span class="nv">$ </span>terraform destroy
 </code></pre></div><p>Then run the following <code>kops</code> command (this will not delete the cluster).</p>
 <p>Append it with <code>--yes</code> to confirm deletion.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ kops delete cluster --name &lt;clusterName&gt;
+<div class="highlight"><pre class="highlight plaintext"><code>$ kops delete cluster --name &lt;clusterName&gt;.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>Change directories and perform the following, destroying the cluster essentials.</p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">cd</span> ../cloud-platform
 <span class="nv">$ </span>terraform init

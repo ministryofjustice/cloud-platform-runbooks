@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Create a new cluster | Cloud Platform Runbooks</title>
+    <title>Expanding Persistent Volumes created using StatefulSets | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Create a new cluster" />
+      <meta property="og:title" content="Expanding Persistent Volumes created using StatefulSets" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Create a new cluster | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html" />
+      <meta property="twitter:title" content="Expanding Persistent Volumes created using StatefulSets | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html" />
 
     
   </head>
@@ -257,33 +257,54 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="create-a-new-cluster">Create a new cluster</h1><h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-requisites:</p>
+              <h1 id="expanding-persistent-volumes-created-using-statefulsets">Expanding Persistent Volumes created using StatefulSets</h1><p>It is currently not possible to expand PVs created using a StatefulSet directly from the StatefulSet template.</p>
+<p>This is the current work around -</p>
+<p>Edit the &lsquo;storage&rsquo; value under spec:resources for PVC required to be expanded:</p>
+<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl edit pvc www-web-0</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">resources</span><span class="pi">:</span>
+    <span class="na">requests</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span> <span class="c1"># edit with new value</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">gp2</span>
+  <span class="na">volumeName</span><span class="pi">:</span> <span class="s">pvc-489b1857-91dd-11e9-b4c5-0a5b8815a91e</span>
+</code></pre></div><p>Once the edit has been applied, you should see <code>type: Resizing</code> under status:conditions:</p>
+<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
+<span class="na">status</span><span class="pi">:</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">capacity</span><span class="pi">:</span>
+    <span class="na">storage</span><span class="pi">:</span> <span class="s">4Gi</span>
+  <span class="na">conditions</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">lastProbeTime</span><span class="pi">:</span> <span class="no">null</span>
+    <span class="na">lastTransitionTime</span><span class="pi">:</span> <span class="s">2019-06-18T15:29:45Z</span>
+    <span class="na">status</span><span class="pi">:</span> <span class="s2">"</span><span class="s">True"</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">Resizing</span> <span class="c1"># You should see value</span>
+  <span class="na">phase</span><span class="pi">:</span> <span class="s">Bound</span>
+</code></pre></div><p>Delete the corresponding pod associated to the pv:</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl delete pod web-0
+pod <span class="s2">"web-0"</span> deleted
+</code></pre></div><p>Once pod is recreated, you should see the new pv disc size in the pvc</p>
+<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
+<span class="na">status</span><span class="pi">:</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">capacity</span><span class="pi">:</span>
+    <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span>
+  <span class="na">phase</span><span class="pi">:</span> <span class="s">Bound</span>
+</code></pre></div><p>The following command will delete the StatefulSet without deleting the associated pods</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl delete statefulset <span class="nt">--cascade</span><span class="o">=</span><span class="nb">false </span>web <span class="c"># `web` is the name of the StatefulSet</span>
+</code></pre></div><p>Apply the StatefulSet template with new pvc size (with everything else exactly the same) to your namespace.</p>
+<p>There is a enhancement issue for expansion using StatefulSet templates in github waiting to be actioned, at which the above will not be required - https://github.com/kubernetes/enhancements/issues/661</p>
 
-<ul>
-<li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code> (the script will run this for you, but you must be <em>able</em> to do it)</p></li>
-<li><p>You must ensure your local <a href="https://helm.sh">helm</a> version is =&gt; <code>2.11</code> (check by running <code>helm version</code>)</p></li>
-<li><p>You must have the terraform auth0 provider installed. It isn&rsquo;t listed in the official Terraform repository so follow <a href="https://github.com/yieldr/terraform-provider-auth0#using-the-provider">the instructions</a> to install it.</p></li>
-<li><p>You have <a href="https://github.com/kubernetes/kops">kops</a> installed</p></li>
-<li><p>You have the <a href="https://aws.amazon.com/cli/">AWS CLI</a> tool installed, and profiles <code>moj-cp</code> and <code>moj-dsd</code> with suitable credentials</p></li>
-</ul>
-<h2 id="environment-variables">Environment Variables</h2><p>See the file <code>example.env.create-cluster</code> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.sh</code> script to create a new cluster.</p>
-<p>You can get the auth0 values from the <code>terraform-provider-auth0</code> application on <a href="https://manage.auth0.com/#/applications">auth0</a>.</p>
-<h2 id="run-the-build-script">Run the build script</h2><p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
-<p>Execute the script, supplying the desired name of your new cluster. e.g.:</p>
-<div class="highlight"><pre class="highlight shell"><code>./create-cluster.sh david-test1
-</code></pre></div><p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
-<p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/master/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
-<p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Kubernetes master is running at https://api.david-test1.cloud-platform.service.justice.gov.uk
-KubeDNS is running at https://api.david-test1.cloud-platform.service.justice.gov.uk/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-</code></pre></div>
 
             
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/create-cluster.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Create%20a%20new%20cluster'&amp;body=Problem%20with%20'Create%20a%20new%20cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/expand.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Expanding%20Persistent%20Volumes%20created%20using%20StatefulSets'&amp;body=Problem%20with%20'Expanding%20Persistent%20Volumes%20created%20using%20StatefulSets'%20(https://runbooks.cloud-platform.service.justice.gov.uk/expand.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
