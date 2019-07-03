@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Rotating the git-crypt key | Cloud Platform Runbooks</title>
+    <title>Running Kops Update and Rollingupdate | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Rotating the git-crypt key" />
+      <meta property="og:title" content="Running Kops Update and Rollingupdate" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Rotating the git-crypt key | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
+      <meta property="twitter:title" content="Running Kops Update and Rollingupdate | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html" />
 
     
   </head>
@@ -105,7 +105,7 @@
     <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
     <ul>
       <li>
-        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
+        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/create-cluster.html#environment-variables">Environment Variables</a>
@@ -177,7 +177,7 @@
         </ul>
       </li>
       <li>
-        <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
+        <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources-possible-errors">Possible Errors</a>
       </li>
     </ul>
   </li>
@@ -254,7 +254,7 @@
     <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">Running Kops Update and Rollingupdate</a>
     <ul>
       <li>
-        <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate-pre-requisites">Pre-requisites</a>
+        <a href="/running-kops-update-rollingupdate.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/running-kops-update-rollingupdate.html#running-kops-update">Running Kops update</a>
@@ -263,7 +263,7 @@
         <a href="/running-kops-update-rollingupdate.html#running-kops-rolling-update">Running Kops rolling-update</a>
       </li>
       <li>
-        <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate-possible-errors">Possible Errors</a>
+        <a href="/running-kops-update-rollingupdate.html#possible-errors">Possible Errors</a>
       </li>
     </ul>
   </li>
@@ -289,55 +289,79 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="rotating-the-git-crypt-key">Rotating the git-crypt key</h1><p>We use <code>git-crypt</code> for securing secrets committed to <code>git</code>. It uses a symmetric encryption key which is then encrypted for users using their GPG keys.</p>
-<p>When rotating the <code>git-crypt</code> symmetric key, you should follow the steps below:</p>
-<h4 id="1-ensure-you-have-unlocked-the-repository-git-crypt-unlock">1. Ensure you have unlocked the repository: <code>git-crypt unlock</code></h4><h4 id="2-make-a-list-of-the-current-users">2. Make a list of the current users:</h4>
-<ul>
-<li>for every file found, extract its filename minus the suffix, which corresponds to the user&rsquo;s key id</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  ls .git-crypt/keys/default/0/*.gpg | xargs -I{} -- basename {} .gpg &gt; git-crypt-users
-</code></pre></div><h4 id="3-make-a-list-of-the-encrypted-files">3.  Make a list of the encrypted files:</h4>
-<ul>
-<li>for every currently encrypted file, extract its path, relative to the root of the repository</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  git-crypt status -e | awk '{ print $2; }' &gt; git-crypt-files
-</code></pre></div><h4 id="4-remove-git-crypt-configuration">4.  Remove <code>git-crypt</code> configuration:</h4><div class="highlight"><pre class="highlight plaintext"><code>  rm -rf .git-crypt .git/git-crypt
-</code></pre></div><h4 id="5-re-initialise-git-crypt">5.  Re-initialise <code>git-crypt</code>,</h4><div class="highlight"><pre class="highlight plaintext"><code>  git-crypt init
-</code></pre></div>
-<ul>
-<li>make sure you have all the users&rsquo; keys,</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} gpg --recv-key {}
-</code></pre></div>
-<ul>
-<li>and add all the users back,</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} git-crypt add-gpg-user -n --trusted {}
-</code></pre></div>
-<ul>
-<li>At this point, your git index will have a number of pending changes, do not commit them yet.</li>
-</ul>
-<h4 id="6-re-encrypt-all-the-secrets-the-list-of-secrets-was-extracted-in-git-crypt-files-see-step-2-above-since-the-master-encryption-key-is-being-rotated-all-of-the-secrets-that-have-been-encrypted-with-it-must-be-rotated-once-finished-you-can-add-the-files-to-the-index">6.  Re-encrypt all the secrets: the list of secrets was extracted in <code>git-crypt-files</code> (see step 2. above). Since the master encryption key is being rotated, all of the secrets that have been encrypted with it <em>must</em> be rotated. Once finished, you can add the files to the index</h4><div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-files | xargs git add
-</code></pre></div><h4 id="7-commit-your-changes-one-way-to-check-that-the-files-in-the-git-index-are-properly-encrypted-before-you-commit-your-changes-is-like-so">7. Commit your changes. One way to check that the files in the git index are properly encrypted before you commit your changes is like so:</h4><div class="highlight"><pre class="highlight plaintext"><code>  git show :&lt;path-to-file&gt;
-</code></pre></div>
-<ul>
-<li>or after committing (and before you&rsquo;ve pushed):</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  git show HEAD:&lt;path-to-file&gt;
-</code></pre></div>
-<ul>
-<li><p>where <code>&lt;path-to-file&gt;</code> is either absolute from the base of the git repo or relative (eg.: <code>git show:./my-secret-file.yaml</code>)</p></li>
-<li><p>You should see binary output which begins with <code>^@GITCRYPT^@</code>.</p></li>
-</ul>
-<p>Note: If you need to <code>checkout</code> an older commit, branch, tag etc., make sure to <code>git-crypt lock</code> your repository before in order to avoid a broken local working directory. Once you&rsquo;ve locked and checked out the desired revision, you can <code>git-crypt unlock</code>.</p>
+              <h1 id="running-kops-update-and-rollingupdate">Running Kops Update and Rollingupdate</h1><p>We want to ensure Kops is updated regularly so there is a task in every sprint to run Kops update. It essentially updates various components / configuration coming from kops.</p>
+<p>Note: This is for a kops update not an upgrade.</p>
+<h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-reqs:</p>
 
+<ul>
+<li>You are on the right cluster to run the Kops update.</li>
+</ul>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kubectl config current-context
+</code></pre></div>
+<ul>
+<li>Your are on the right AWS_PROFILE where the k8s cluster is created.</li>
+</ul>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">AWS_PROFILE</span><span class="o">=</span>xxxx
+</code></pre></div>
+<ul>
+<li>Set the &ndash;state flag or export KOPS_STATE_STORE</li>
+</ul>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">KOPS_STATE_STORE</span><span class="o">=</span>s3://&lt;bucket&gt;
+</code></pre></div><p>for live-1 KOPS_STATE_STORE=s3://cloud-platform-kops-state</p>
+<h2 id="running-kops-update">Running Kops update</h2><p>Run kops update cluster Without <code>--yes</code> to check the configuration changes for the cluster, it will show you a preview of what it is going to do, this is handy to check what the changes are before applying the changes. Sometimes you will also have to kops rolling-update cluster to roll out the configuration immediately.</p>
+<div class="highlight"><pre class="highlight shell"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>Once you are happy, kops update cluster <code>--yes</code> to apply the changes.</p>
+<div class="highlight"><pre class="highlight shell"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk <span class="nt">--yes</span>
+</code></pre></div><p>It should report</p>
+
+<blockquote>
+<p>Cluster changes have been applied to the cloud.</p>
+</blockquote>
+<h2 id="running-kops-rolling-update">Running Kops rolling-update</h2><p>This command updates a kubernetes cluster to match the cloud and kops specifications.</p>
+<p>To perform a rolling update, you need to update the cloud resources first with the command kops update cluster.</p>
+<p>If rolling-update does not report that the cluster needs to be rolled, you can force the cluster to be rolled with the force flag.</p>
+<p>Rolling update drains and validates the cluster by default. A cluster is deemed validated when all required nodes are running and all pods in the kube-system namespace are operational. When a node is deleted, rolling-update sleeps the interval for the node type, and then tries for the same period of time for the cluster to be validated.</p>
+<p>For instance, setting &ndash;master-interval=4m causes rolling-update to wait for 4 minutes after a master is rolled, and another 4 minutes for the cluster to stabilize and pass validation.</p>
+<div class="highlight"><pre class="highlight shell"><code>kops rolling-update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk <span class="nt">--yes</span>
+</code></pre></div><p>It should report below steps for all the nodes in the cluster.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Draining the node: “${node}”.
+node/${node} cordoned
+WARNING: Deleting pods with local storage: ${pod names}
+pod/${pod1 name} evicted
+pod/${pod2 name} evicted
+…
+pod/${podn name} evicted
+Waiting for 1m30s for pods to stabilize after draining.
+deleting node “${node}” from kubernetes
+Stopping instance “${aws-instance}”, node  “${node}”, in group "nodes.${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk" (this may take a while).
+waiting for 4m0s after terminating instance
+Validating the cluster.
+Cluster did not pass validation, will try again in "30s" until duration "5m0s" expires: machine “${aws-instance}” has not yet joined cluster.
+Cluster validated.
+</code></pre></div><p>Open new tab and watch the status of the rolling-update</p>
+<div class="highlight"><pre class="highlight shell"><code>watch <span class="nt">-n10</span> kubectl get nodes <span class="nt">--sort-by</span> .metadata.creationTimestamp
+</code></pre></div><p>Once the rolling-update is completed it should report</p>
+
+<blockquote>
+<p>Rolling update completed for cluster ${CLUSTER_NAME}!</p>
+</blockquote>
+<p>Check the cluster status with:</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kops validate cluster
+</code></pre></div><p>It should report</p>
+
+<blockquote>
+<p>Your cluster <code>${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready</code></p>
+</blockquote>
+<h2 id="possible-errors">Possible Errors</h2><p>While draining a node there is a chance that rolling update might be stuck at evicting a pod, then get the node it is stuck on and identify the pods running on there and delete the pod manually.</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kubectl get pods <span class="nt">-owide</span> <span class="nt">--all-namespaces</span> | <span class="nb">grep</span> <span class="k">${</span><span class="nv">node_name</span><span class="k">}</span>
+</code></pre></div>
 
             
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/rotate-git-crypt-key.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Rotating%20the%20git-crypt%20key'&amp;body=Problem%20with%20'Rotating%20the%20git-crypt%20key'%20(https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/running-kops-update-rollingupdate.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Running%20Kops%20Update%20and%20Rollingupdate'&amp;body=Problem%20with%20'Running%20Kops%20Update%20and%20Rollingupdate'%20(https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
