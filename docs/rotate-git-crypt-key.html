@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Remove 'orphaned' namespaces and AWS resources | Cloud Platform Runbooks</title>
+    <title>Rotating the git-crypt key | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Remove 'orphaned' namespaces and AWS resources" />
+      <meta property="og:title" content="Rotating the git-crypt key" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Remove 'orphaned' namespaces and AWS resources | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html" />
+      <meta property="twitter:title" content="Rotating the git-crypt key | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
 
     
   </head>
@@ -270,26 +270,55 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="remove-39-orphaned-39-namespaces-and-aws-resources">Remove &lsquo;orphaned&rsquo; namespaces and AWS resources</h1><p>Cluster namespaces, and the AWS resources associated with them, should be removed automatically by the build pipeline.</p>
-<p>Sometimes this process doesn&rsquo;t work correctly, or users don&rsquo;t follow it, and we end up with &#39;orphaned&rsquo; namespaces in the cluster. i.e. namespaces which exist in the kubernetes cluster, but which have no associated source code in the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a>.</p>
-<p>You can remove these namespaces, and their AWS resources, using the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a>.</p>
-<h3 id="1-git-clone-the-environments-checker-repository">1. <code>git clone</code> the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a> repository</h3><h3 id="2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a <code>.env.live1</code> file, containing the environment variables the checker requires</h3><p>The repository contains an <code>example.env.live-1</code> file. Copy this to <code>.env.live1</code> and replace the placeholders with real AWS credentials.</p>
-<h3 id="3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name]
-</code></pre></div><p>This will run a <code>terraform plan</code> showing the resources that the script is going to delete.</p>
-<h3 id="4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name] <span class="nv">DESTROY</span><span class="o">=</span>destroy
-</code></pre></div><p>This will actually delete the AWS resources and the namespace itself.</p>
-<h2 id="possible-errors">Possible Errors</h2><p>AWS resources which were created using older versions of our terraform modules defined the provider inside the code which invoked the module. The process above will not work for those resources, because the module definition disappeared when the source code was removed, so terraform doesn&rsquo;t know how to delete the resource.</p>
-<p>Fixing these problems usually requires getting the original namespace source code by finding the commit in the git log of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a> where it was removed, and checking out a version before then.</p>
-<p>Once you have the source code, you can use <code>terraform init</code> and <code>terraform plan</code> to target and destroy the specific AWS resources which are causing problems.</p>
-<p>See the runbook for <a href="/rotate-user-aws-credentials.html">rotating AWS credentials</a> for an example of doing this.</p>
+              <h1 id="rotating-the-git-crypt-key">Rotating the git-crypt key</h1><p>We use <code>git-crypt</code> for securing secrets committed to <code>git</code>. It uses a symmetric encryption key which is then encrypted for users using their GPG keys.</p>
+<p>When rotating the <code>git-crypt</code> symmetric key, you should follow the steps below:</p>
+<h4 id="1-ensure-you-have-unlocked-the-repository-git-crypt-unlock">1. Ensure you have unlocked the repository: <code>git-crypt unlock</code></h4><h4 id="2-make-a-list-of-the-current-users">2. Make a list of the current users:</h4>
+<ul>
+<li>for every file found, extract its filename minus the suffix, which corresponds to the user&rsquo;s key id</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>  ls .git-crypt/keys/default/0/*.gpg | xargs -I{} -- basename {} .gpg &gt; git-crypt-users
+</code></pre></div><h4 id="3-make-a-list-of-the-encrypted-files">3.  Make a list of the encrypted files:</h4>
+<ul>
+<li>for every currently encrypted file, extract its path, relative to the root of the repository</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>  git-crypt status -e | awk '{ print $2; }' &gt; git-crypt-files
+</code></pre></div><h4 id="4-remove-git-crypt-configuration">4.  Remove <code>git-crypt</code> configuration:</h4><div class="highlight"><pre class="highlight plaintext"><code>  rm -rf .git-crypt .git/git-crypt
+</code></pre></div><h4 id="5-re-initialise-git-crypt">5.  Re-initialise <code>git-crypt</code>,</h4><div class="highlight"><pre class="highlight plaintext"><code>  git-crypt init
+</code></pre></div>
+<ul>
+<li>make sure you have all the users&rsquo; keys,</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} gpg --recv-key {}
+</code></pre></div>
+<ul>
+<li>and add all the users back,</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} git-crypt add-gpg-user -n --trusted {}
+</code></pre></div>
+<ul>
+<li>At this point, your git index will have a number of pending changes, do not commit them yet.</li>
+</ul>
+<h4 id="6-re-encrypt-all-the-secrets-the-list-of-secrets-was-extracted-in-git-crypt-files-see-step-2-above-since-the-master-encryption-key-is-being-rotated-all-of-the-secrets-that-have-been-encrypted-with-it-must-be-rotated-once-finished-you-can-add-the-files-to-the-index">6.  Re-encrypt all the secrets: the list of secrets was extracted in <code>git-crypt-files</code> (see step 2. above). Since the master encryption key is being rotated, all of the secrets that have been encrypted with it <em>must</em> be rotated. Once finished, you can add the files to the index</h4><div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-files | xargs git add
+</code></pre></div><h4 id="7-commit-your-changes-one-way-to-check-that-the-files-in-the-git-index-are-properly-encrypted-before-you-commit-your-changes-is-like-so">7. Commit your changes. One way to check that the files in the git index are properly encrypted before you commit your changes is like so:</h4><div class="highlight"><pre class="highlight plaintext"><code>  git show :&lt;path-to-file&gt;
+</code></pre></div>
+<ul>
+<li>or after committing (and before you&rsquo;ve pushed):</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>  git show HEAD:&lt;path-to-file&gt;
+</code></pre></div>
+<ul>
+<li><p>where <code>&lt;path-to-file&gt;</code> is either absolute from the base of the git repo or relative (eg.: <code>git show:./my-secret-file.yaml</code>)</p></li>
+<li><p>You should see binary output which begins with <code>^@GITCRYPT^@</code>.</p></li>
+</ul>
+<p>Note: If you need to <code>checkout</code> an older commit, branch, tag etc., make sure to <code>git-crypt lock</code> your repository before in order to avoid a broken local working directory. Once you&rsquo;ve locked and checked out the desired revision, you can <code>git-crypt unlock</code>.</p>
 
 
             
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/remove-orphaned-namespace.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Remove%20'orphaned'%20namespaces%20and%20AWS%20resources'&amp;body=Problem%20with%20'Remove%20'orphaned'%20namespaces%20and%20AWS%20resources'%20(https://runbooks.cloud-platform.service.justice.gov.uk/remove-orphaned-namespace.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/rotate-git-crypt-key.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Rotating%20the%20git-crypt%20key'&amp;body=Problem%20with%20'Rotating%20the%20git-crypt%20key'%20(https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
