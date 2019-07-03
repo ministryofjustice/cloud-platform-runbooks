@@ -281,7 +281,11 @@
 </ul>
 <h2 id="environment-variables">Environment Variables</h2><p>See the file <code>example.env.create-cluster</code> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.sh</code> script to create a new cluster.</p>
 <p>You can get the auth0 values from the <code>terraform-provider-auth0</code> application on <a href="https://manage.auth0.com/#/applications">auth0</a>.</p>
-<h2 id="run-the-build-script">Run the build script</h2><p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
+<h2 id="run-the-build-script">Run the build script</h2>
+<blockquote>
+<p>WARNING: Be aware that this script uses the kubernetes context defined on <strong>your machine</strong>, when applying the <code>cloud-platform-components</code> terraform files. So, if you have started this script and then used a different terminal to do some other work, it is very easy to forget about the build script and switch your kubernetes context to point to the live cluster. <strong>This can break parts of the production environment.</strong></p>
+</blockquote>
+<p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
 <p>Execute the script, supplying the desired name of your new cluster. e.g.:</p>
 <div class="highlight"><pre class="highlight shell"><code>./create-cluster.sh david-test1
 </code></pre></div><p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
