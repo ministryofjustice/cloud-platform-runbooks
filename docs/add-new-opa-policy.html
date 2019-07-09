@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Rotating the git-crypt key | Cloud Platform Runbooks</title>
+    <title>Add a new OPA policy | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-opa-policy.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Rotating the git-crypt key" />
+      <meta property="og:title" content="Add a new OPA policy" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-opa-policy.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Rotating the git-crypt key | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
+      <meta property="twitter:title" content="Add a new OPA policy | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-opa-policy.html" />
 
     
   </head>
@@ -305,55 +305,49 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="rotating-the-git-crypt-key">Rotating the git-crypt key</h1><p>We use <code>git-crypt</code> for securing secrets committed to <code>git</code>. It uses a symmetric encryption key which is then encrypted for users using their GPG keys.</p>
-<p>When rotating the <code>git-crypt</code> symmetric key, you should follow the steps below:</p>
-<h4 id="1-ensure-you-have-unlocked-the-repository-git-crypt-unlock">1. Ensure you have unlocked the repository: <code>git-crypt unlock</code></h4><h4 id="2-make-a-list-of-the-current-users">2. Make a list of the current users:</h4>
+              <h1 id="open-policy-agent-policies">Open Policy Agent policies</h1><p>Policies are version controlled in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-components/resources/opa/policies"><code>cloud-platform-infrastructure</code></a> repository.</p>
+<h2 id="adding-a-policy">Adding a policy</h2><p>Create a new <code>.rego</code> file in the location above. Our policies are currently all defined in the
+<code>cloud_platform.admission</code> package and uses the <code>deny</code> rule to evaluate any checks:</p>
+<p>For example, the following policy would deny all <code>Services</code> of type <code>Loadbalancer</code></p>
+<div class="highlight"><pre class="highlight mosel"><code><span class="k">package</span> <span class="n">cloud_platform</span><span class="p">.</span><span class="n">admission</span>
+
+<span class="n">import</span> <span class="n">data</span><span class="p">.</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">namespaces</span>
+
+<span class="n">deny</span><span class="p">[</span><span class="n">msg</span><span class="p">]</span> <span class="p">{</span>
+  <span class="n">input</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">kind</span><span class="p">.</span><span class="n">kind</span> <span class="p">==</span> <span class="s2">"Service"</span>
+  <span class="n">input</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">object</span><span class="p">.</span><span class="n">spec</span><span class="p">.</span><span class="n">type</span> <span class="p">==</span> <span class="s2">"LoadBalancer"</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="writing-tests">Writing tests</h2><p>Testing the policies against live data is not a straightforward process and debugging policies is quite minimal at the
+moment. The best way to develop policies is by practicing test-driven development.</p>
+<p>Assuming you have created <code>my_policy.rego</code> with your <code>deny</code> rule defined, you simply need to create
+<code>my_policy_test.rego</code> to define your tests. You can look at the existing policies for examples. There are a few generic
+mocking functions defined which you might find useful.</p>
+<p>Finally, testing the policies, you should see something like this:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ opa test -v .
+data.cloud_platform.admission.test_ingress_create_allowed: PASS (1.956µs)
+data.cloud_platform.admission.test_ingress_create_conflict: PASS (1.518µs)
+data.cloud_platform.admission.test_ingress_update_same_host: PASS (1.088µs)
+data.cloud_platform.admission.test_ingress_update_new_host: PASS (1.246µs)
+data.cloud_platform.admission.test_ingress_update_existing_host: PASS (1.417µs)
+data.cloud_platform.admission.test_ingress_update_existing_host_other_namespace: PASS (1.295µs)
+--------------------------------------------------------------------------------
+PASS: 6/6
+</code></pre></div><p>Additionally, tests will be run against pull requests to the repository in a CircleCI job.</p>
+<h2 id="references">References</h2>
 <ul>
-<li>for every file found, extract its filename minus the suffix, which corresponds to the user&rsquo;s key id</li>
+<li><a href="https://www.openpolicyagent.org/docs/latest/how-do-i-write-policies/">How to write policies</a></li>
+<li><a href="https://www.openpolicyagent.org/docs/latest/how-do-i-test-policies/">How to test policies</a></li>
+<li><a href="https://github.com/timothyhinrichs/opa/blob/4d5a1071e5099da42c2cde02faac2075f3ba2bf9/docs/content/docs/policy-primer-k8s.md">Kubernetes Policy Primer
+</a></li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  ls .git-crypt/keys/default/0/*.gpg | xargs -I{} -- basename {} .gpg &gt; git-crypt-users
-</code></pre></div><h4 id="3-make-a-list-of-the-encrypted-files">3.  Make a list of the encrypted files:</h4>
-<ul>
-<li>for every currently encrypted file, extract its path, relative to the root of the repository</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  git-crypt status -e | awk '{ print $2; }' &gt; git-crypt-files
-</code></pre></div><h4 id="4-remove-git-crypt-configuration">4.  Remove <code>git-crypt</code> configuration:</h4><div class="highlight"><pre class="highlight plaintext"><code>  rm -rf .git-crypt .git/git-crypt
-</code></pre></div><h4 id="5-re-initialise-git-crypt">5.  Re-initialise <code>git-crypt</code>,</h4><div class="highlight"><pre class="highlight plaintext"><code>  git-crypt init
-</code></pre></div>
-<ul>
-<li>make sure you have all the users&rsquo; keys,</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} gpg --recv-key {}
-</code></pre></div>
-<ul>
-<li>and add all the users back,</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} git-crypt add-gpg-user -n --trusted {}
-</code></pre></div>
-<ul>
-<li>At this point, your git index will have a number of pending changes, do not commit them yet.</li>
-</ul>
-<h4 id="6-re-encrypt-all-the-secrets-the-list-of-secrets-was-extracted-in-git-crypt-files-see-step-2-above-since-the-master-encryption-key-is-being-rotated-all-of-the-secrets-that-have-been-encrypted-with-it-must-be-rotated-once-finished-you-can-add-the-files-to-the-index">6.  Re-encrypt all the secrets: the list of secrets was extracted in <code>git-crypt-files</code> (see step 2. above). Since the master encryption key is being rotated, all of the secrets that have been encrypted with it <em>must</em> be rotated. Once finished, you can add the files to the index</h4><div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-files | xargs git add
-</code></pre></div><h4 id="7-commit-your-changes-one-way-to-check-that-the-files-in-the-git-index-are-properly-encrypted-before-you-commit-your-changes-is-like-so">7. Commit your changes. One way to check that the files in the git index are properly encrypted before you commit your changes is like so:</h4><div class="highlight"><pre class="highlight plaintext"><code>  git show :&lt;path-to-file&gt;
-</code></pre></div>
-<ul>
-<li>or after committing (and before you&rsquo;ve pushed):</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  git show HEAD:&lt;path-to-file&gt;
-</code></pre></div>
-<ul>
-<li><p>where <code>&lt;path-to-file&gt;</code> is either absolute from the base of the git repo or relative (eg.: <code>git show:./my-secret-file.yaml</code>)</p></li>
-<li><p>You should see binary output which begins with <code>^@GITCRYPT^@</code>.</p></li>
-</ul>
-<p>Note: If you need to <code>checkout</code> an older commit, branch, tag etc., make sure to <code>git-crypt lock</code> your repository before in order to avoid a broken local working directory. Once you&rsquo;ve locked and checked out the desired revision, you can <code>git-crypt unlock</code>.</p>
 
 
             
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/rotate-git-crypt-key.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Rotating%20the%20git-crypt%20key'&amp;body=Problem%20with%20'Rotating%20the%20git-crypt%20key'%20(https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/add-new-opa-policy.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20a%20new%20OPA%20policy'&amp;body=Problem%20with%20'Add%20a%20new%20OPA%20policy'%20(https://runbooks.cloud-platform.service.justice.gov.uk/add-new-opa-policy.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
