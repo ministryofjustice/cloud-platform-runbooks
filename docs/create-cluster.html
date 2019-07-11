@@ -112,6 +112,10 @@
       </li>
       <li>
         <a href="/create-cluster.html#run-the-build-script">Run the build script</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -313,8 +317,9 @@
 <li><p>You must have the terraform auth0 provider installed. It isn&rsquo;t listed in the official Terraform repository so follow <a href="https://github.com/yieldr/terraform-provider-auth0#using-the-provider">the instructions</a> to install it.</p></li>
 <li><p>You have <a href="https://github.com/kubernetes/kops">kops</a> installed</p></li>
 <li><p>You have the <a href="https://aws.amazon.com/cli/">AWS CLI</a> tool installed, and profiles <code>moj-cp</code> and <code>moj-dsd</code> with suitable credentials</p></li>
+<li><p>You have <a href="https://www.ruby-lang.org/">ruby</a> or <a href="https://www.docker.com/">docker</a> installed</p></li>
 </ul>
-<h2 id="environment-variables">Environment Variables</h2><p>See the file <code>example.env.create-cluster</code> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.sh</code> script to create a new cluster.</p>
+<h2 id="environment-variables">Environment Variables</h2><p>See the file <code>example.env.create-cluster</code> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.rb</code> script to create a new cluster.</p>
 <p>You can get the auth0 values from the <code>terraform-provider-auth0</code> application on <a href="https://manage.auth0.com/#/applications">auth0</a>.</p>
 <h2 id="run-the-build-script">Run the build script</h2>
 <blockquote>
@@ -322,7 +327,10 @@
 </blockquote>
 <p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
 <p>Execute the script, supplying the desired name of your new cluster. e.g.:</p>
-<div class="highlight"><pre class="highlight shell"><code>./create-cluster.sh david-test1
+<h4 id="if-you-have-ruby-installed">If you have ruby installed</h4><div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb david-test1
+</code></pre></div><h4 id="if-you-don-39-t-have-ruby-installed">If you don&rsquo;t have ruby installed</h4><div class="highlight"><pre class="highlight shell"><code>docker run <span class="nt">--rm</span> <span class="nt">-v</span> <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">"</span>:/usr/src/myapp <span class="se">\</span>
+  <span class="nt">-w</span> /usr/src/myapp ruby:2.6-alpine <span class="se">\</span>
+  ruby create-cluster.rb david-test1
 </code></pre></div><p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
 <p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/master/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
 <p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
