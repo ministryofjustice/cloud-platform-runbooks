@@ -121,6 +121,13 @@
         <a href="/create-cluster.html#disable-alerts">Disable Alerts</a>
         <ul>
           <li>
+            <a href="/create-cluster.html#high-priority-alerts">High Priority Alerts</a>
+          </li>
+          <li>
+            <a href="/create-cluster.html#lower-priority-alerts">Lower priority alerts</a>
+          </li>
+          <li>
+            <a href="/create-cluster.html#apply-the-changes">Apply the changes</a>
           </li>
         </ul>
       </li>
@@ -344,8 +351,12 @@
 <div class="highlight"><pre class="highlight plaintext"><code>Kubernetes master is running at https://api.david-test1.cloud-platform.service.justice.gov.uk
 KubeDNS is running at https://api.david-test1.cloud-platform.service.justice.gov.uk/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 </code></pre></div><h2 id="disable-alerts">Disable Alerts</h2><p>By default, your test cluster will send alerts to the team slack channels. This can cause confusion if the work that you&rsquo;re doing on the test cluster involves something which, in the live cluster, would be a critical component.</p>
-<p>The simplest way to disable alerts is to prevent them from reaching <a href="https://www.pagerduty.com/">PagerDuty</a>, by removing the token for our PagerDuty account.</p>
+<h3 id="high-priority-alerts">High Priority Alerts</h3><p>The simplest way to disable high-priority alerts is to prevent them from reaching <a href="https://www.pagerduty.com/">PagerDuty</a>, by removing the token for our PagerDuty account.</p>
 <h4 id="edit-the-file-terraform-cloud-platform-components-terraform-tfvars">Edit the file <code>terraform/cloud-platform-components/terraform.tfvars</code></h4><p>Find the line <code>pagerduty_config = &quot;--------- SOME VALUE ----------&quot;</code>, and replace the value with a dummy value (not empty string), then save the file.</p>
+<h3 id="lower-priority-alerts">Lower priority alerts</h3><p>Low-priority alerts are sent directly to the <code>#lower-priority-alarms</code> slack channel, so the procedure for disabling them is slightly different.</p>
+<h4 id="lower-priority-alerts-edit-the-file-terraform-cloud-platform-components-terraform-tfvars">Edit the file <code>terraform/cloud-platform-components/terraform.tfvars</code></h4><p>Look for the <code>alertmanager_slack_receivers</code> section, and find the entry whose <code>channel</code> value is <code>#lower-priority-alarms</code>.</p>
+<p>Change the value of <code>webhook</code> and replace the string after the last <code>/</code> in the URL with a dummy value, then save the file.</p>
+<h3 id="apply-the-changes">Apply the changes</h3><p>Finally, we will use terraform to apply the changes to the prometheus operator in your test cluster.</p>
 <h4 id="ensure-your-terraform-workspace-and-kubernetes-context-are-pointing-at-your-test-cluster">Ensure your terraform workspace and kubernetes context are pointing at your test cluster</h4><div class="highlight"><pre class="highlight shell"><code><span class="nb">cd </span>terraform/cloud-platform-components
 terraform workspace list
 </code></pre></div><p>If you are not targeting your test cluster workspace, run</p>
@@ -358,10 +369,10 @@ KubeDNS is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk/
 </code></pre></div><p>&hellip;where <code>XXXXXXX</code> is the name of your test cluster.</p>
 <p>If your context is pointing at live-1, switch to your test cluster by running</p>
 <div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
-</code></pre></div><h4 id="apply-the-change">Apply the change</h4><p>When you are confident that both your terraform workspace and kubernetes context are set to your test cluster, apply the change to set the pagerduty config value:</p>
+</code></pre></div><p>When you are confident that both your terraform workspace and kubernetes context are set to your test cluster, apply the change to set the pagerduty config value:</p>
 <div class="highlight"><pre class="highlight shell"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>helm_release.prometheus_operator
 </code></pre></div><p>Answer <code>yes</code> if the planned changes look correct.</p>
-<p>This should leave all the alerting infrastructure of your test cluster intact, but prevent any generated alerts from reaching PagerDuty (and being routed from there to Slack, or anywhere else).</p>
+<p>This should leave all the alerting infrastructure of your test cluster intact, but prevent any high-priority alerts from reaching PagerDuty (and being routed from there to Slack, or anywhere else).</p>
 
 
             
