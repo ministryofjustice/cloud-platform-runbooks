@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+      <meta name="robots" content="noindex">
+
+    <title>Leavers Guide | Cloud Platform Runbooks</title>
+
+    <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
+    <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
+
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html">
+
+
+    <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
+    <script src="/javascripts/application.js"></script>
+
+      <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta property="og:site_name" content="Cloud Platform Runbooks" />
+      <meta property="og:title" content="Leavers Guide" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html" />
+      <meta property="twitter:card" content="summary" />
+      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta property="twitter:title" content="Leavers Guide | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html" />
+
+    
+  </head>
+
+  <body>
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="skip-link">Skip to main content</a>
+
+        <header class="header header--full-width">
+  <div class="header__container">
+    <div class="header__brand">
+        <a href="/">
+        <span class="header__title">
+          Cloud Platform Runbooks
+            <span class="phase-banner">INTERNAL</span>
+        </span>
+        </a>
+    </div>
+
+      <div data-module="navigation">
+        <button type="button" class="header__navigation-toggle js-nav-toggle" aria-controls="navigation" aria-label="Show or hide top level navigation">Menu</button>
+
+        <nav id="navigation" class="header__navigation js-nav" aria-label="Top Level Navigation" aria-hidden="true">
+          <ul>
+              <li>
+                <a href="mailto:platforms+runbooks@digital.justice.gov.uk?subject=Runbooks+feedback">Feedback / Report a problem</a>
+              </li>
+              <li>
+                <a href="/">Documentation</a>
+              </li>
+              <li>
+                <a href="https://github.com/ministryofjustice/cloud-platform/tree/master/runbooks">GitHub</a>
+              </li>
+          </ul>
+        </nav>
+      </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </a>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents">
+              <div class="search" data-module="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search">
+    <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
+    <label for="search"  class="search__label">Search (via Google)</label>
+    <input type="text" id="search" name="q" placeholder="Search" aria-controls="search-results" class="form-control" />
+  </form>
+  <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
+    <div class="search-results__inner">
+      <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
+      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <div class="search-results__content"></div>
+    </div>
+  </div>
+</div>
+
+              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
+                      <ul>
+  <li>
+    <a href="/#cloud-platform-runbooks">Cloud Platform Runbooks</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
+    <ul>
+      <li>
+        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/create-cluster.html#environment-variables">Environment Variables</a>
+      </li>
+      <li>
+        <a href="/create-cluster.html#run-the-build-script">Run the build script</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/create-cluster.html#disable-alerts">Disable Alerts</a>
+        <ul>
+          <li>
+            <a href="/create-cluster.html#high-priority-alerts">High Priority Alerts</a>
+          </li>
+          <li>
+            <a href="/create-cluster.html#lower-priority-alerts">Lower priority alerts</a>
+          </li>
+          <li>
+            <a href="/create-cluster.html#apply-the-changes">Apply the changes</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/delete-cluster.html#delete-a-cluster">Delete a cluster</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-nodes-to-the-cluster.html#add-nodes-to-the-cluster">Add nodes to the cluster</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/add-nodes-to-the-cluster.html#requirements">Requirements</a>
+          </li>
+          <li>
+            <a href="/add-nodes-to-the-cluster.html#inline-edit">Inline edit</a>
+          </li>
+          <li>
+            <a href="/add-nodes-to-the-cluster.html#persisting-the-changes">Persisting the changes</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/rotate-git-crypt-key.html#rotating-the-git-crypt-key">Rotating the git-crypt key</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/rotate-user-aws-credentials.html#rotate-user-aws-credentials">Rotate User AWS Credentials</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+          <li>
+            <a href="/rotate-user-aws-credentials.html#2-identify-the-compromised-terraform-object">2. Identify the compromised terraform object</a>
+          </li>
+          <li>
+            <a href="/rotate-user-aws-credentials.html#3-destroy-the-compromised-key">3. Destroy the compromised key</a>
+          </li>
+          <li>
+            <a href="/rotate-user-aws-credentials.html#4-let-terraform-create-a-new-key">4. Let terraform create a new key</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/post-migration.html#post-migration-cleanup">Post migration cleanup</a>
+    <ul>
+      <li>
+        <a href="/post-migration.html#table-of-contents">Table of contents</a>
+      </li>
+      <li>
+        <a href="/post-migration.html#when-to-use-this-document">When to use this document?</a>
+      </li>
+      <li>
+        <a href="/post-migration.html#0-pre-requisites">0 Pre-requisites</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#1-turn-off-template-deploy-monitoring-and-alerting">1 Turn off Template Deploy monitoring and alerting</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#2-archive-the-deployment-repository">2 Archive the deployment repository</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#3-backup-old-template-deploy-data">3 Backup old Template Deploy data</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#4-delete-the-old-cloudformation-stack">4 Delete the old CloudFormation stack</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#5-ensure-removal-of-resources">5 Ensure removal of resources</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#6-ensure-live-service-is-still-functioning">6 Ensure live service is still functioning!</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/expand.html#expanding-persistent-volumes-created-using-statefulsets">Expanding Persistent Volumes created using StatefulSets</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">Running Kops Update and Rollingupdate</a>
+    <ul>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-update">Running Kops update</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-rolling-update">Running Kops rolling-update</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate-possible-errors">Possible Errors</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/leavers-guide.html#leavers-guide">Leavers Guide</a>
+    <ul>
+      <li>
+        <a href="/leavers-guide.html#revoking-access">Revoking Access</a>
+        <ul>
+          <li>
+            <a href="/leavers-guide.html#digital-services">Digital Services</a>
+          </li>
+          <li>
+            <a href="/leavers-guide.html#cloud-platforms">Cloud Platforms</a>
+          </li>
+          <li>
+            <a href="/leavers-guide.html#template-deploy-cloud-platforms">Template Deploy - Cloud Platforms</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-a-new-runbook.html#add-a-new-runbook">Add a new runbook</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+              <h1 id="leavers-guide">Leavers Guide</h1><h2 id="revoking-access">Revoking Access</h2><h3 id="digital-services">Digital Services</h3><p>The central Digital Services team will be able to remove and revoke access from a number of different accounts outside of the technical team.</p>
+<p>Contact the <a href="mailto:servicedesk%40digital.justice.gov.uk">Service Desk</a>  (or slack channel #digitalservicedesk). They will go through their own leaver&rsquo;s process, as documented <a href="https://dsdmoj.atlassian.net/wiki/spaces/DSD/pages/44957720/Leavers">here</a>:.</p>
+
+<ul>
+<li><p>Note - it is worth reminding the service desk to transfer the leaver&rsquo;s Google Drive to someone in their team</p></li>
+<li><p>Note - for leaver&rsquo;s from the cloud-platforms team - ask the service desk to transfer any slack webhook integrations to someone in the team</p></li>
+</ul>
+<h3 id="cloud-platforms">Cloud Platforms</h3><h4 id="1-purge-them-from-aws-accounts-as-at-07-05-2019-the-following">1/ Purge them from AWS accounts (as at 07/05/2019 the following):</h4>
+<ul>
+<li><a href="https://mojdsd.signin.aws.amazon.com">AWS account mojdsd</a>
+  </li>
+<li><p><a href="https://moj-cla-dev.signin.aws.amazon.com">AWS account moj-cla-dev</a></p></li>
+<li><p><a href="http://mojds-platforms-integration.signin.aws.amazon.com">AWS account mojds-platforms-integration</a></p></li>
+<li><p><a href="http://moj-crimebillingonline.signin.aws.amazon.com">AWS account moj-crimebillingonline</a></p></li>
+<li><p><a href="http://moj-cp.signin.aws.amazon.com">AWS account moj-cp</a></p></li>
+<li><p><a href="http://moj-cp.signin.aws.amazon.com">AWS account moj-fr</a></p></li>
+<li><p><a href="http://moj-intra.signin.aws.amazon.com">AWS account moj-intra</a></p></li>
+<li><p><a href="http://moj-manchester-traffic-dev.signin.aws.amazon.com">AWS account moj-manchester-traffic-dev</a></p></li>
+<li><p><a href="http://moj-laa.signin.aws.amazon.com">AWS account moj-laa</a></p></li>
+<li><p><a href="http://mojanalytics.signin.aws.amazon.com">AWS account mojanalytics</a></p></li>
+<li><p><a href="http://moj-pq.signin.aws.amazon.com">AWS account moj-pq</a></p></li>
+<li><p><a href="http://moj-tphmcts.signin.aws.amazon.com">AWS account moj-tphmcts</a></p></li>
+<li><p><a href="http://moj-pi.signin.aws.amazon.com">AWS account moj-pi</a></p></li>
+</ul>
+<h4 id="2-remove-their-access-to">2/ Remove their access to:</h4>
+<ul>
+<li><p><a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/users">Auth0 justice-cloud-platform</a></p></li>
+<li><p><a href="https://manage.auth0.com/dashboard/eu/moj-cloud-platforms-dev/users">Auth0 moj-cloud-platforms</a></p></li>
+<li><p><a href="https://my.pingdom.com/3/users">Pingdom</a></p></li>
+<li><p><a href="https://moj-digital-tools.pagerduty.com/users">Pagerduty</a></p></li>
+<li><p><a href="https://devcenter.heroku.com/articles/org-users-access">Heroku</a></p></li>
+<li><p><a href="https://sentry.service.dsd.io/organizations/mojds/members/">Sentry</a></p></li>
+<li><p><a href="https://ci.service.dsd.io/configureSecurity/">CI</a></p></li>
+<li><p>Email the administrator of our password management provider to remove the leaver&rsquo;s login access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
+<li><p>Email the VPN provider requesting removal of their VPN access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
+</ul>
+<h4 id="3-remove-them-from-the-support-rota-if-applicable-pagerduty">3/ Remove them from the support rota (if applicable). <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">Pagerduty</a></h4><h4 id="4-remove-them-from-platforms-digital-justice-gov-uk-google-group-if-applicable-link-here">4/ Remove them from platforms@digital.justice.gov.uk google group (if applicable). <a href="https://groups.google.com/a/digital.justice.gov.uk/forum/#!managemembers/platforms/members/active">Link here</a>  </h4><p>Reference <a href="mailto:platforms@digital.justice.gov.uk">platforms@digital.justice.gov.uk</a></p>
+<h3 id="template-deploy-cloud-platforms">Template Deploy - Cloud Platforms</h3><p>Remove this section once it is no longer needed</p>
+<h4 id="1-remove-them-from-moj-organisation-membership-on-github-whilst-it-is-digital-services-responsibility-i-prefer-to-do-this-to-enable-you-carry-out-the-fab-salt-ssh-key-actions-following-at-2-below">1/ Remove them from MoJ organisation membership on GitHub (Whilst it is Digital Services responsibility - I prefer to do this to enable you carry out the fab salt.ssh_key actions following at <a href="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html#2-update-all-deploy-repos-to-revoke-their-user-ssh-access-using-the-salt-state">2/ below</a>.</h4><h4 id="2-update-all-deploy-repos-to-revoke-their-user-ssh-access-using-the-salt-state">2/ Update all deploy repos to revoke their user ssh access using the salt state.</h4><h5 id="a-carry-out-fabric-command-on-each-of-following-deploy-repos-as-at-30-04-2019">a. Carry out fabric command on each of following deploy repos (as at 30/04/2019)</h5><p>**Note for all of the following fabric commands carry out &ldquo;salt.ssh_keys&rdquo; &ldquo;vendor_upload&rdquo; rather than an &ldquo;update&rdquo; command this enables you to ssh onto each instance and carry out an update to the ssh users without interruption to the applications by restarting the containers:</p>
+<p>**consider the use of the Dockerfile fabric image  instead of the following fabric commands. Personally I could not get them to function correctly for &ldquo;salt.ssh_keys&rdquo; &ldquo;vendor_upload&rdquo;.</p>
+<p>Reference <a href="https://mojdt.slack.com/archives/C514ETYJX/p1532609061000168">Dockerfile fabric image</a></p>
+
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/cla_backend-deploy">cla_backend-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019</p>
+
+<ul>
+<li>demo</li>
+<li>staging</li>
+<li>training</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command. The following should be carried out in a virtual environment (see instructions 2. and 3. here <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/82640903/Quickstart+-+Template+Deploy">Step-by-step guide Quickstart - Template Deploy</a>):</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:cla-backend aws:moj-cla-dev environment:prod config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> <span class="o">[</span>user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/cla_frontend-deploy">cla_frontend-deploy</a></p>
+
+<ul>
+<li><p>Envs as at  30/04/2019</p>
+
+<ul>
+<li>demo</li>
+<li>staging</li>
+<li>training</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:cla-frontend aws:moj-cla-dev environment:prod config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/ci-deploy">ci-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019</p>
+
+<ul>
+<li>dev</li>
+<li>hmcts</li>
+<li>staging</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:ci aws:mojdsd environment:prod config:./cloudformation/ci.yaml passwords:./cloudformation/ci-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/docker-registry-ng-deploy">docker-registry-ng-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019</p>
+
+<ul>
+<li>dev</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:docker-registry aws:mojdsd environment:prod config:./cloudformation/docker-registry.yaml passwords:./cloudformation/docker-registry-secrets.yaml <span class="nt">-i</span> ../config/default.pem salt.ssh_keys vendor_upload  -u [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/laalaa-deploy">laalaa-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019</p>
+
+<ul>
+<li>dev</li>
+<li>staging</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:laalaa aws:moj-laa environment:prod config:./cloudformation/laalaa.yaml passwords:./cloudformation/laalaa-secrets.yaml <span class="nt">-i</span> ../config/default.pem  salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/fala-deploy">fala-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019</p>
+
+<ul>
+<li>dev</li>
+<li>staging</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:fala aws:moj-laa environment:prod config:./cloudformation/fala.yaml passwords:./cloudformation/fala-secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/pf-deploy">pf-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019:</p>
+
+<ul>
+<li>dev</li>
+<li>demo</li>
+<li>staging</li>
+<li>production</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:peoplefinder aws:moj-intra environment:production config:./cloudformation/peoplefinder.yaml passwords:./cloudformation/peoplefinder-secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/pvb2-deploy">pvb2-deploy</a></p>
+
+<ul>
+<li><p>Envs as at  30/04/2019:</p>
+
+<ul>
+<li>dev</li>
+<li>staging</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:pvb aws:mojdsd environment:prod config:./cloudformation/pvb2.yaml passwords:./cloudformation/pvb2-secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/pvbpublic-deploy">pvbpublic-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019:</p>
+
+<ul>
+<li>dev</li>
+<li>staging</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:pvbpublic aws:mojdsd environment:prod config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/correspondence-staff-deploy/pull/71ence-staff-deploy">correspondence-staff-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019:</p>
+
+<ul>
+<li>dev</li>
+<li>demo</li>
+<li>staging</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:correspondence-staff aws:mojdsd environment:prod config:./cloudformation/correspondence-staff.yaml passwords:./cloudformation/correspondence-staff-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/correspondence-tool-deploy">correspondence-tool-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019:</p>
+
+<ul>
+<li>dev</li>
+<li>demo</li>
+<li>staging</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:correspondence-tool aws:mojdsd environment:prod config:./cloudformation/correspondence-tool.yaml passwords:./cloudformation/correspondence-tool-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/money-to-prisoners-deploy">money-to-prisoners-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019:</p>
+
+<ul>
+<li>api dev</li>
+<li>bank-admin dev</li>
+<li>cashbook dev</li>
+<li>noms-ops dev</li>
+<li>send-money dev</li>
+<li>transaction-uploader dev</li>
+<li>api test</li>
+<li>bank-admin test</li>
+<li>cashbook test</li>
+<li>noms-ops test</li>
+<li>send-money test</li>
+<li>transaction-uploader test</li>
+<li>api prod</li>
+<li>bank-admin prod</li>
+<li>cashbook prod</li>
+<li>noms-ops prod</li>
+<li>send-money prod</li>
+<li>transaction-uploader prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-api aws:mojdsd environment:prod config:./cloudformation/api.yaml passwords:./cloudformation/api-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-bank-admin aws:mojdsd environment:prod config:./cloudformation/bank-admin.yaml passwords:./cloudformation/bank-admin-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-cashbook aws:mojdsd environment:prod config:./cloudformation/cashbook.yaml passwords:./cloudformation/cashbook-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-noms-ops aws:mojdsd environment:prod config:./cloudformation/noms-ops.yaml passwords:./cloudformation/noms-ops-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-send-money aws:mojdsd environment:prod config:./cloudformation/send-money.yaml passwords:./cloudformation/send-money-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-transaction-uploader aws:mojdsd environment:prod config:./cloudformation/transaction-uploader.yaml passwords:./cloudformation/transaction-uploader-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/parliamentary-questions-deploy">parliamentary-questions-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019:</p>
+
+<ul>
+<li>dev</li>
+<li>staging</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:pq aws:moj-pq environment:prod config:./cloudformation/pq.yaml passwords:./cloudformation/pq-secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div>
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/moving-people-safely-deploy">moving-people-safely-deploy</a></p>
+
+<ul>
+<li><p>Envs as at 30/04/2019:</p>
+
+<ul>
+<li>dev</li>
+<li>test</li>
+<li>staging</li>
+<li>prod</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Example fabric command:</p>
+<div class="highlight"><pre class="highlight shell"><code>fab application:mps aws:mojdsd environment:prod config:./cloudformation/mps.yaml passwords:./cloudformation/mps-secrets.yaml <span class="nt">-i</span> ../config/default.pem  salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
+</code></pre></div><h5 id="b-ssh-onto-all-of-the-deploy-repos-instances-and-use-the-following-salt-code-commands-this-will-enable-updates-to-take-place-without-restarting-the-container-the-use-installation-of-awsjump-will-help-to-easily-switch-between-instances">b. ssh onto all of the deploy repos instances and use  the following salt-code commands. This will enable updates to take place without restarting the container. The use/installation  of <a href="https://github.com/ministryofjustice/template-deploy-jump">awsjump</a> will help to easily switch between instances:</h5><div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>su 
+salt_utils.py <span class="nt">-s</span> fooooo
+<span class="nb">cd</span> /srv/pillar/
+salt-call state.sls admins
+/usr/bin/salt-call pillar.get admins <span class="nt">--out</span><span class="o">=</span>json 2&gt; /dev/null
+<span class="nb">exit
+exit</span>
+</code></pre></div><p>**do not worry - you will receive some error messages as &ldquo;fooooo&rdquo; does not exist (this is just a placeholder). The update will take place to the ssh users</p>
+
+
+            
+          </main>
+
+            <ul class="contribution-banner">
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/leavers-guide.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Leavers%20Guide'&amp;body=Problem%20with%20'Leavers%20Guide'%20(https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
+            </ul>
+
+          <footer class="footer">
+  <div class="footer__licence">
+    <a class="footer__licence-logo" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence</a>
+    <p class="footer__licence-description">All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated</p>
+  </div>
+
+  <div class="footer__copyright">
+    <a class="footer__copyright-logo" href="http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/copyright-and-re-use/crown-copyright/">© Crown copyright</a>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </body>
+</html>
