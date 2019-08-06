@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Rotate User AWS Credentials | Cloud Platform Runbooks</title>
+    <title>Tips and Tricks | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-user-aws-credentials.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Rotate User AWS Credentials" />
+      <meta property="og:title" content="Tips and Tricks" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-user-aws-credentials.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Rotate User AWS Credentials | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-user-aws-credentials.html" />
+      <meta property="twitter:title" content="Tips and Tricks | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html" />
 
     
   </head>
@@ -374,96 +374,21 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="rotate-user-aws-credentials">Rotate User AWS Credentials</h1><p>Use this runbook if a user&rsquo;s AWS credentials have been exposed. In this case, &lsquo;AWS credentials&rsquo; refers to credentials created by terraform, for resources in the user&rsquo;s namespace.</p>
-<p>We will make terraform destroy the compromised credentials, and then recreate them. For this example, we will use the case where an AWS credential for an ECR in the my-namespace namespace was exposed.</p>
-<p><strong>Please amend the code snippets below to match your actual circumstance.</strong></p>
-<h4 id="1-prepare-terraform-to-manipulate-the-user-39-s-aws-resources">1. Prepare terraform to manipulate the user&rsquo;s AWS resources</h4><p>You need a working copy of the environments <a href="https://github.com/ministryofjustice/cloud-platform-environments">github repo</a>.</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">cd </span>cloud-platform-environments/namespaces/live-1.cloud-platform.service.justice.gov.uk
-<span class="nv">$ </span><span class="nb">cd </span>my-namespace/resources
-</code></pre></div><p>Terraform needs AWS credentials to access the state files on S3.</p>
-<p>If you have an AWS profile defined for the cloud platform AWS account, you can run:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">export </span><span class="nv">AWS_PROFILE</span><span class="o">=[</span>profile name <span class="k">in</span> ~/.aws/credentials]<span class="sb">`</span>
-</code></pre></div><p>If not, export the key and secret like this:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=[</span>your access key]
-<span class="nv">$ </span><span class="nb">export </span><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=[</span>your secret key]
-</code></pre></div><p>Then you should be able to run terraform init, targeting the relevant namespace:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>terraform init <span class="se">\</span>
-  <span class="nt">-backend-config</span><span class="o">=</span><span class="s2">"bucket=cloud-platform-terraform-state"</span> <span class="se">\</span>
-  <span class="nt">-backend-config</span><span class="o">=</span><span class="s2">"key=cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/my-namespace/terraform.tfstate"</span> <span class="se">\</span>
-  <span class="nt">-backend-config</span><span class="o">=</span><span class="s2">"region=eu-west-1"</span> <span class="se">\</span>
-  <span class="nt">-backend</span><span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-  <span class="nt">-get</span><span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-  <span class="nt">-input</span><span class="o">=</span><span class="nb">false</span>
-
-<span class="nv">$ </span>terraform plan
-</code></pre></div><p>The final <code>terraform plan</code> should output <code>No changes. Infrastructure is up-to-date.</code></p>
-<h3 id="2-identify-the-compromised-terraform-object">2. Identify the compromised terraform object</h3><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>terraform show | less
-</code></pre></div><p>Look for the compromised access key. In this case, the access key was AKIA27HJSWAHHIG5ACYA, and it occurs in two places in the output.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>...
-kubernetes_secret.ecr-repo-my-repo:
-  id = my-namespace/ecr-repo-my-repo
-  data.% = 3
-  data.access_key_id = AKIA27HJSWAHHIG5ACYA
-  data.repo_url = ...
-  data.secret_access_key = ...
-...
-module.ecr-repo-my-repo.aws_iam_access_key.key:
-  id = AKIA27HJSWAHHIG5ACYA
-  secret = ...
-  ses_smtp_password = ...
-...
-</code></pre></div><p>The first occurence is when terraform stores the credentials in a kubernetes secret.</p>
-<p>The second occurence is the one we want, where terraform creates the credentials (the <code>aws_iam_access_key.key</code> resource, for the ECR repo).</p>
-<h3 id="3-destroy-the-compromised-key">3. Destroy the compromised key</h3><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>terraform destroy <span class="nt">--target</span><span class="o">=</span>module.ecr-repo-my-repo.aws_iam_access_key.key
-</code></pre></div><p>If this looks like it&rsquo;s going to do the right thing, enter &#39;yes&rsquo; to confirm.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  - destroy
-
-Terraform will perform the following actions:
-
-  - module.ecr-repo-my-repo.aws_iam_access_key.key
-
-
-Plan: 0 to add, 0 to change, 1 to destroy.
-</code></pre></div><h3 id="4-let-terraform-create-a-new-key">4. Let terraform create a new key</h3><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>terraform plan
-</code></pre></div><p>This should report that it will <strong>create</strong> a new <code>aws_iam_access_key.key</code> resource and <strong>modify</strong> the corresponding <code>kubernetes_secret</code> resource.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  + create
-  ~ update in-place
-
-Terraform will perform the following actions:
-
-  ~ kubernetes_secret.ecr-repo-my-repo
-      data.%:                 "" =&gt; &lt;computed&gt;
-      data.access_key_id:     "AKIA27HJSWAHHIG5ACYA" =&gt; ""
-      data.repo_url:          "..." =&gt; ""
-      data.secret_access_key: "..." =&gt; ""
-
-  + module.ecr-repo-my-repo.aws_iam_access_key.key
-      id:                     &lt;computed&gt;
-      encrypted_secret:       &lt;computed&gt;
-      key_fingerprint:        &lt;computed&gt;
-      secret:                 &lt;computed&gt;
-      ses_smtp_password:      &lt;computed&gt;
-      status:                 &lt;computed&gt;
-      user:                   "ecr-user-0000000000000000"
-
-
-Plan: 1 to add, 1 to change, 0 to destroy.
-</code></pre></div><p>If all is well:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>terraform apply
-</code></pre></div><p>If this looks like it&rsquo;s going to do the right thing, enter &#39;yes&rsquo; to confirm.</p>
-<p>At this point, a new set of AWS credentials should have been created for the existing IAM user, and the kubernetes secret should contain the new access key and secret.</p>
-
+              <h1 id="tips-and-tricks">Tips and Tricks</h1><p>A collection of useful one-liners and code snippets.</p>
+<h2 id="check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">echo</span> | openssl s_client <span class="nt">-connect</span> google.com:443 | openssl x509 <span class="nt">-noout</span> <span class="nt">-enddate</span>
+<span class="nv">depth</span><span class="o">=</span>1 C <span class="o">=</span> US, O <span class="o">=</span> Google Trust Services, CN <span class="o">=</span> Google Internet Authority G3
+verify error:num<span class="o">=</span>20:unable to get <span class="nb">local </span>issuer certificate
+verify <span class="k">return</span>:0
+DONE
+<span class="nv">notAfter</span><span class="o">=</span>Oct 21 18:23:00 2019 GMT
+</code></pre></div>
 
             
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/rotate-user-aws-credentials.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Rotate%20User%20AWS%20Credentials'&amp;body=Problem%20with%20'Rotate%20User%20AWS%20Credentials'%20(https://runbooks.cloud-platform.service.justice.gov.uk/rotate-user-aws-credentials.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/tips-and-tricks.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Tips%20and%20Tricks'&amp;body=Problem%20with%20'Tips%20and%20Tricks'%20(https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
