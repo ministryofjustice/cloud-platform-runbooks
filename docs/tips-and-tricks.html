@@ -350,6 +350,9 @@
       <li>
         <a href="/tips-and-tricks.html#check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</a>
       </li>
+      <li>
+        <a href="/tips-and-tricks.html#run-etcdctl-on-a-master-node">Run etcdctl on a master node</a>
+      </li>
     </ul>
   </li>
 </ul>
@@ -381,6 +384,18 @@ verify error:num<span class="o">=</span>20:unable to get <span class="nb">local 
 verify <span class="k">return</span>:0
 DONE
 <span class="nv">notAfter</span><span class="o">=</span>Oct 21 18:23:00 2019 GMT
+</code></pre></div><h2 id="run-etcdctl-on-a-master-node">Run <code>etcdctl</code> on a master node</h2><p>While SSHed onto a master:</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker ps | <span class="nb">grep </span>etcd.manager
+</code></pre></div><p>Pick the kopeio/etcd-manager container you&rsquo;re interested in (&lsquo;main&rsquo; or &#39;events&rsquo;) and then docker exec onto it</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="o">[</span>container id] bash
+</code></pre></div><p>Now you can run etcdctl like this:</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nb">cd</span> /opt/etcd-v3.3.10-linux-amd64/
+
+<span class="nv">ETCDCTL_API</span><span class="o">=</span>3 <span class="se">\</span>
+  ./etcdctl <span class="nt">--key</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key <span class="se">\</span>
+  <span class="nt">--cert</span>  /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.crt <span class="se">\</span>
+  <span class="nt">--cacert</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt  <span class="se">\</span>
+  <span class="nt">--endpoints</span> <span class="s2">"https://etcd-a.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-b.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-c.internal.live-1.cloud-platform.service.justice.gov.uk:4001"</span> endpoint health
 </code></pre></div>
 
             
