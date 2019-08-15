@@ -385,22 +385,23 @@ $ export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 <div class="highlight"><pre class="highlight plaintext"><code>$ kops export kubecfg david-test1.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>You should see this output:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>kops has set your kubectl context to david-test1.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>Then, from the components directory, run this command, which will destroy all cluster components.</p>
+</code></pre></div><p>Then, from the components directory, run these commands to destroy all cluster components, and delete the terraform workspace.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ cd terraform/cloud-platform-components
 $ terraform init
 $ terraform workspace select &lt;clusterName e.g. cloud-platform-test-3&gt;
 $ terraform destroy
+$ terraform workspace select default
+$ terraform workspace delete &lt;clusterName&gt;
 </code></pre></div><p>Then run the following <code>kops</code> command (this will not delete the cluster).</p>
 <p>Append it with <code>--yes</code> to confirm deletion.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ kops delete cluster --name &lt;clusterName&gt;.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>Change directories and perform the following, destroying the cluster essentials.</p>
+</code></pre></div><p>Change directories and perform the following to destroy the cluster essentials, and delete the terraform workspace.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ cd ../cloud-platform
 $ terraform init
 $ terraform workspace select &lt;clusterName e.g. cloud-platform-test-3&gt;
 $ terraform destroy
-</code></pre></div><p>Delete the terraform workspace for the deleted cluster.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform workspace select default
-terraform workspace delete &lt;clusterName&gt;
+$ terraform workspace select default
+$ terraform workspace delete &lt;clusterName&gt;
 </code></pre></div>
 
             
