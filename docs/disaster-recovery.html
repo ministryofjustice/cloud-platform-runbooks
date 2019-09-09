@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+      <meta name="robots" content="noindex">
+
+    <title>Cloud Platform Disaster Recovery | Cloud Platform Runbooks</title>
+
+    <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
+    <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
+
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery.html">
+
+
+    <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
+    <script src="/javascripts/application.js"></script>
+
+      <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta property="og:site_name" content="Cloud Platform Runbooks" />
+      <meta property="og:title" content="Cloud Platform Disaster Recovery" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery.html" />
+      <meta property="twitter:card" content="summary" />
+      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta property="twitter:title" content="Cloud Platform Disaster Recovery | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery.html" />
+
+    
+  </head>
+
+  <body>
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="skip-link">Skip to main content</a>
+
+        <header class="header header--full-width">
+  <div class="header__container">
+    <div class="header__brand">
+        <a href="/">
+        <span class="header__title">
+          Cloud Platform Runbooks
+            <span class="phase-banner">INTERNAL</span>
+        </span>
+        </a>
+    </div>
+
+      <div data-module="navigation">
+        <button type="button" class="header__navigation-toggle js-nav-toggle" aria-controls="navigation" aria-label="Show or hide top level navigation">Menu</button>
+
+        <nav id="navigation" class="header__navigation js-nav" aria-label="Top Level Navigation" aria-hidden="true">
+          <ul>
+              <li>
+                <a href="mailto:platforms+runbooks@digital.justice.gov.uk?subject=Runbooks+feedback">Feedback / Report a problem</a>
+              </li>
+              <li>
+                <a href="/">Documentation</a>
+              </li>
+              <li>
+                <a href="https://github.com/ministryofjustice/cloud-platform/tree/master/runbooks">GitHub</a>
+              </li>
+          </ul>
+        </nav>
+      </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </a>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents">
+              <div class="search" data-module="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search">
+    <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
+    <label for="search"  class="search__label">Search (via Google)</label>
+    <input type="text" id="search" name="q" placeholder="Search" aria-controls="search-results" class="form-control" />
+  </form>
+  <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
+    <div class="search-results__inner">
+      <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
+      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <div class="search-results__content"></div>
+    </div>
+  </div>
+</div>
+
+              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
+                      <ul>
+  <li>
+    <a href="/#cloud-platform-runbooks">Cloud Platform Runbooks</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/create-cluster.html#create-a-new-cluster-2">Create a new cluster</a>
+    <ul>
+      <li>
+        <a href="/create-cluster.html#create-a-new-cluster-2-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/create-cluster.html#environment-variables">Environment Variables</a>
+      </li>
+      <li>
+        <a href="/create-cluster.html#run-the-build-script-via-the-tools-image">Run the build script, via the tools image</a>
+      </li>
+      <li>
+        <a href="/create-cluster.html#disable-alerts">Disable Alerts</a>
+        <ul>
+          <li>
+            <a href="/create-cluster.html#high-priority-alerts">High Priority Alerts</a>
+          </li>
+          <li>
+            <a href="/create-cluster.html#lower-priority-alerts">Lower priority alerts</a>
+          </li>
+          <li>
+            <a href="/create-cluster.html#apply-the-changes">Apply the changes</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/delete-cluster.html#delete-a-cluster">Delete a cluster</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-nodes-to-the-cluster.html#add-nodes-to-the-cluster">Add nodes to the cluster</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/add-nodes-to-the-cluster.html#requirements">Requirements</a>
+          </li>
+          <li>
+            <a href="/add-nodes-to-the-cluster.html#inline-edit">Inline edit</a>
+          </li>
+          <li>
+            <a href="/add-nodes-to-the-cluster.html#persisting-the-changes">Persisting the changes</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/rotate-git-crypt-key.html#rotating-the-git-crypt-key">Rotating the git-crypt key</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/disaster-recovery.html#cloud-platform-disaster-recovery">Cloud Platform Disaster Recovery</a>
+    <ul>
+      <li>
+        <a href="/disaster-recovery.html#restore-process">Restore process</a>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#apply-cloud-platform-resources">Apply cloud-platform resources</a>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#create-a-new-cluster">Create a new cluster</a>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#perform-the-restore">Perform the restore</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery.html#pre-requisites">Pre-requisites</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery.html#restore-the-cluster-using-etcd-manager-ctl-on-your-computer">Restore the cluster using etcd-manager-ctl on your computer.</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery.html#restore-process-inside-the-etcd-container-using-etcd-manager-ctl">Restore process inside the etcd container using etcd-manager-ctl.</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#cleanup">Cleanup</a>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#possible-issues">Possible Issues</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/rotate-user-aws-credentials.html#rotate-user-aws-credentials">Rotate User AWS Credentials</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+          <li>
+            <a href="/rotate-user-aws-credentials.html#2-identify-the-compromised-terraform-object">2. Identify the compromised terraform object</a>
+          </li>
+          <li>
+            <a href="/rotate-user-aws-credentials.html#3-destroy-the-compromised-key">3. Destroy the compromised key</a>
+          </li>
+          <li>
+            <a href="/rotate-user-aws-credentials.html#4-let-terraform-create-a-new-key">4. Let terraform create a new key</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/replacing-master-node.html#replacing-a-master-node">Replacing a master node</a>
+    <ul>
+      <li>
+        <a href="/replacing-master-node.html#replacing-a-master-node-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/replacing-master-node.html#identify-the-failed-master-node">Identify the failed master node</a>
+      </li>
+      <li>
+        <a href="/replacing-master-node.html#remove-the-unhealthy-master-node">Remove the unhealthy master node.</a>
+      </li>
+      <li>
+        <a href="/replacing-master-node.html#replacing-the-master-via-kops">Replacing the master via kops</a>
+      </li>
+      <li>
+        <a href="/replacing-master-node.html#etcd-volumes">etcd volumes</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/post-migration.html#post-migration-cleanup">Post migration cleanup</a>
+    <ul>
+      <li>
+        <a href="/post-migration.html#table-of-contents">Table of contents</a>
+      </li>
+      <li>
+        <a href="/post-migration.html#when-to-use-this-document">When to use this document?</a>
+      </li>
+      <li>
+        <a href="/post-migration.html#0-pre-requisites">0 Pre-requisites</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#1-turn-off-template-deploy-monitoring-and-alerting">1 Turn off Template Deploy monitoring and alerting</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#2-archive-the-deployment-repository">2 Archive the deployment repository</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#3-backup-old-template-deploy-data">3 Backup old Template Deploy data</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#4-delete-the-old-cloudformation-stack">4 Delete the old CloudFormation stack</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#5-ensure-removal-of-resources">5 Ensure removal of resources</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#6-ensure-live-service-is-still-functioning">6 Ensure live service is still functioning!</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/expand.html#expanding-persistent-volumes-created-using-statefulsets">Expanding Persistent Volumes created using StatefulSets</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">Running Kops Update and Rollingupdate</a>
+    <ul>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-update">Running Kops update</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-rolling-update">Running Kops rolling-update</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate-possible-errors">Possible Errors</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/leavers-guide.html#leavers-guide">Leavers Guide</a>
+    <ul>
+      <li>
+        <a href="/leavers-guide.html#revoking-access">Revoking Access</a>
+        <ul>
+          <li>
+            <a href="/leavers-guide.html#digital-services">Digital Services</a>
+          </li>
+          <li>
+            <a href="/leavers-guide.html#cloud-platforms">Cloud Platforms</a>
+          </li>
+          <li>
+            <a href="/leavers-guide.html#template-deploy-cloud-platforms">Template Deploy - Cloud Platforms</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/on-call.html#going-on-call">Going on call</a>
+    <ul>
+      <li>
+        <a href="/on-call.html#expected">Expected:</a>
+      </li>
+      <li>
+        <a href="/on-call.html#not-expected">Not Expected:</a>
+      </li>
+      <li>
+        <a href="/on-call.html#where-do-i-start">Where do I start?</a>
+        <ul>
+          <li>
+            <a href="/on-call.html#1-do-two-rotations-on-in-hours-second-line">1/ Do two rotations on in-hours second line.</a>
+          </li>
+          <li>
+            <a href="/on-call.html#2-get-production-access-to-supported-services">2/ Get production access to supported services.</a>
+          </li>
+          <li>
+            <a href="/on-call.html#3-get-access-to-our-on-call-tools">3/ Get access to our on-call tools:</a>
+          </li>
+          <li>
+            <a href="/on-call.html#4-do-a-dry-run-of-an-incident">4/ Do a dry-run of an incident.</a>
+          </li>
+          <li>
+            <a href="/on-call.html#5-get-on-the-on-call-rota">5/ Get on the on-call rota.</a>
+          </li>
+          <li>
+            <a href="/on-call.html#6-log-your-hours">6/ Log your hours.</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/on-call.html#what-do-i-get-for-being-on-call">What do I get for being on call?</a>
+      </li>
+      <li>
+        <a href="/on-call.html#civil-servants-sop-claim">Civil servants - SOP Claim</a>
+        <ul>
+          <li>
+            <a href="/on-call.html#1-get-a-dom1-account-you-should-be-given-one-as-soon-as-shared-services-have-registered-your-joining-or-ask-your-local-hr-people">1/ Get a DOM1 account  (you should be given one as soon as Shared Services have registered your joining, or ask your local HR people)</a>
+          </li>
+          <li>
+            <a href="/on-call.html#2-log-into-a-dom1-machine-and-access-sop-using-the-shortcut-on-your-desktop-and-log-in">2/ Log into a DOM1 machine and access SOP using the shortcut on your desktop, and log in.</a>
+          </li>
+          <li>
+            <a href="/on-call.html#3-navigate-to-employee-self-service-gt-individual-compensation-distribution-icd">3/ Navigate to Employee Self-Service > Individual Compensation Distribution (ICD)</a>
+          </li>
+          <li>
+            <a href="/on-call.html#4-select-drop-down-menu-for-on-call-without-pensionable-amount">4/ Select drop-down menu for On-call without pensionable amount</a>
+          </li>
+          <li>
+            <a href="/on-call.html#5-add-the-amount-claimed-for-in-the-box-provided">5/ Add the amount claimed for in the box provided</a>
+          </li>
+          <li>
+            <a href="/on-call.html#6-click-continue-check-the-details-add-notes-in-the-comment-section-about-the-weeks-being-claimed-and-then-click-submit">6/ Click “Continue”, check the details, add notes in the comment section about the weeks being claimed, and then click “Submit”</a>
+          </li>
+          <li>
+            <a href="/on-call.html#7-if-your-claim-is-submitted-before-the-8th-or-so-of-the-month-you-ll-get-it-paid-in-that-month-s-payroll-if-it-s-after-that-it-ll-be-in-the-next-month-s">7/ If your claim is submitted before the 8th (or so) of the month, you’ll get it paid in that month’s payroll. If it’s after that, it’ll be in the next month’s.</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/on-call.html#civil-servants-sop-problem-resolution">Civil servants - SOP Problem Resolution</a>
+        <ul>
+          <li>
+            <a href="/on-call.html#1-take-a-screenshot-of-the-claim-submission-problem">1/ Take a screenshot of the claim submission problem.</a>
+          </li>
+          <li>
+            <a href="/on-call.html#2-navigate-to-employee-self-service-gt-others-gt-form-submission">2/ Navigate to Employee Self-Service > Others > Form Submission</a>
+          </li>
+          <li>
+            <a href="/on-call.html#3-select-problem-area-by-pressing-the-magnifying-glass-icon-and-pressing-go">3/ Select problem area by pressing the magnifying glass icon and pressing “Go”.</a>
+          </li>
+          <li>
+            <a href="/on-call.html#4-add-comments-describing-the-problem">4/ Add comments describing the problem.</a>
+          </li>
+          <li>
+            <a href="/on-call.html#5-after-clicking-next-add-attachment-to-add-the-screenshot-and-click-submit">5/ After clicking “Next”, “Add Attachment” to add the screenshot and click “Submit”</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/on-call.html#contractors">Contractors</a>
+        <ul>
+          <li>
+            <a href="/on-call.html#1-ask-your-contact-at-the-supplier-to-set-you-up-on-fieldglass-for-overtime">1/ Ask your contact at the supplier to set you up on Fieldglass for overtime.</a>
+          </li>
+          <li>
+            <a href="/on-call.html#2-log-your-time">2 /Log your time</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
+    <ul>
+      <li>
+        <a href="/tips-and-tricks.html#check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</a>
+      </li>
+      <li>
+        <a href="/tips-and-tricks.html#run-etcdctl-on-a-master-node">Run etcdctl on a master node</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-a-new-runbook.html#add-a-new-runbook">Add a new runbook</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+              <h1 id="cloud-platform-disaster-recovery">Cloud Platform Disaster Recovery</h1><p>Cloud Platform Kubernetes cluster deployed with kops use <a href="https://github.com/kopeio/etcd-manager">etcd-manager</a> to do backups periodically and before cluster modifications. Backups for both the main and events etcd clusters are stored in &lsquo;s3://cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk&rsquo; together with the cluster configuration.</p>
+<p>In case of a disaster situation (total failure, Kops delete cluster, lost data, cluster issues etc.) it&rsquo;s possible to do a restore from the backup using <a href="https://github.com/kopeio/etcd-manager">etcd-manager</a>. More details about the usage can be found <a href="https://github.com/kopeio/etcd-manager/blob/master/docs/backup-restore.md">here</a> and <a href="https://github.com/kubernetes/kops/blob/master/docs/etcd/backup-restore.md">here</a>.</p>
+<h2 id="restore-process">Restore process</h2><p>Depending on the current state of the cluster, different recovery strategies are appropriate.</p>
+
+<ul>
+<li><p>In a disaster situation (total failure), where a cluster has been deleted by running <code>Kops delete cluster</code> and cloud-platform resources have been destroyed by running terraform destroy in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform">terraform/cloud-platform</a>, then start with <a href="/disaster-recovery.html#apply-cloud-platform-resources">apply-cloud-platform</a>.</p></li>
+<li><p>In a disaster situation (Kops delete cluster) but cloud-platform resources are not affected (i.e. when you run terraform plan in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform">terraform/cloud-platform</a>, result should be <code>Plan: 0 to add, 0 to change, 0 to destroy</code>), then start with <a href="/disaster-recovery.html#create-a-new-cluster">create-a-new-cluster</a>.</p></li>
+<li><p>In situations where cluster is available (running <code>Kops validate cluster</code>, should result in <code>Your cluster ${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready</code>), but affected with (lost data, cluster issues etc.), start with <a href="/disaster-recovery.html#perform-the-restore">perform-the-restore</a></p></li>
+</ul>
+<h2 id="apply-cloud-platform-resources">Apply cloud-platform resources</h2><p>This <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform">terraform/cloud-platform</a> directory contains resources for the Cloud Platform environments - e.g. bastion hosts and kops. This will apply the outline of a Kubernetes cluster, including a kops.tf to be used to create or modify a cluster.</p>
+<p>Before you begin, there are a few pre-reqs:</p>
+
+<ul>
+<li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure</a> repo so you are able to <code>git-crypt unlock</code> before you make any changes</p></li>
+<li><p>For the auth0 provider, setup the following environment variables locally:</p></li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>  AUTH0_DOMAIN="justice-cloud-platform.eu.auth0.com"
+  AUTH0_CLIENT_ID="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  AUTH0_CLIENT_SECRET="yyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+</code></pre></div><p>To create a new cluster, use affected ${CLUSTER_NAME} terraform workspace if available, else create a new one with affected ${CLUSTER_NAME} and apply the <code>cloud-platform</code> resources. Ensure at all times that you are in the correct workspace with <code>$ terraform workspace show</code>.</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">AWS_PROFILE</span><span class="o">=</span>moj-cp
+<span class="nv">$ </span><span class="nb">cd </span>terraform/cloud-platform
+<span class="nv">$ </span>terraform init
+<span class="nv">$ </span>terraform workspace <span class="k">select</span> <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>
+<span class="nv">$ </span>terraform plan
+<span class="nv">$ </span>terraform apply
+</code></pre></div><p>Applying cloud-platform resources, terraform creates a <code>kops/${CLUSTER_NAME}.yaml</code> file in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/kops">kops</a> directory.</p>
+<h2 id="create-a-new-cluster">Create a new cluster</h2><p>Use <code>kops</code> to create the cluster using <code>kops/${CLUSTER_NAME}.yaml</code>, which contains the cluster specification including an additional IAM policy to allow Route53 management, and config for OIDC authentication and RBAC.</p>
+<p>If the cloud-platform resources were not destroyed in the disaster, use the existing <code>kops/${CLUSTER_NAME}.yaml</code> in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/kops">here</a> to create the cluster, else use the <code>kops/${CLUSTER_NAME}.yaml</code> file created by applying cloud-platform resources above.</p>
+<p>Set environment variables.</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">KOPS_STATE_STORE</span><span class="o">=</span>s3://cloud-platform-kops-state
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">CLUSTER_NAME</span><span class="o">=</span><span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>Use kops command as below to create the cluster.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kops create -f ../../kops/${CLUSTER_NAME}.yaml
+</code></pre></div><p>Create SSH public key in kops state store.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kops create secret --name ${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk sshpublickey admin -i ~/.ssh/id_rsa.pub
+</code></pre></div><p>Create cluster resources in AWS.
+aka update cluster in AWS according to the yaml specification:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kops update cluster ${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk --yes
+</code></pre></div><p>When complete (takes around <code>30</code> minutes, as it will take time resolving the domain name of the new cluster for at least 15 minutes), you can check the progress with:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kops validate cluster
+</code></pre></div><p>Once it reports Your cluster <code>${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready</code> you can proceed to use kubectl to interact with the cluster.</p>
+<h2 id="perform-the-restore">Perform the restore</h2><p>When we have a working cluster (Kops validate cluster should show cluster in ready status), but the data is lost (example: namespaces got deleted, cloud-platform-components got destroyed) then restore cluster back to the point before disaster occurred using backup stored in &#39;s3://cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk/backups, by running etcd-manager-ctl.</p>
+<p>To perform the restore, etcd-manager-ctl commands can be run in your <a href="/disaster-recovery.html#restore-the-cluster-using-etcd-manager-ctl-on-your-computer">terminal</a> as long as you have access to cluster s3 storage or they can be run inside the etcd <a href="/disaster-recovery.html#restore-process-inside-the-etcd-container-using-etcd-manager-ctl">container</a> on the master that is the leader of the cluster.</p>
+<p>Please note that this process involves downtime for our masters (and so the api server). A restore cannot be undone (unless by restoring again), and we might lose pods, events and other resources that were created after the backup.</p>
+<h3 id="pre-requisites">Pre-requisites</h3><p>Before you begin, there are a few pre-reqs:</p>
+
+<ul>
+<li>s3 bucket has latest backup you can use to restore.</li>
+</ul>
+<p>Sign in to the AWS Management Console and open the Amazon S3 console and access &#39;cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk/backups/etcd&rsquo;. In the etcd you will see <code>events</code> and <code>main</code> folders, In the <code>events</code> and <code>main</code> folders identify the file containing the timestamp you want to restore from.</p>
+<p>Note: If the kops delete cluster was run, kops will delete the s3 bucket along with cluster, but as <code>s3://cloud-platform-kops-state</code> bucket is versioned you can access old versions of the backup.</p>
+<h4 id="restore-deleted-s3-backups">Restore deleted s3 backups.</h4><p>To restore the deleted backups, follow the below steps:</p>
+<p>Sign in to the AWS Management Console and open the Amazon S3 console and access &#39;cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk/backups/etcd.</p>
+<p>Select main and click on <code>show</code> option in <code>versions</code>, you can view deleted backups now.</p>
+<p>Click on the deleted backup you want to restore from, you will see <code>etcd_backup.meta</code> and <code>etcd.backup.gz</code> files set as (Delete marker).</p>
+<p>Delete those (Delete marker) files by using delete option in actions (you can see in the below image), removing the delete marker files will get the backup files into active stage. Do the same for events.</p>
+<p><a href="../images/s3-bucket-restore-from-deleted.png" target="_blank" rel="noopener noreferrer"><img src="/images/s3-bucket-restore-from-deleted.png" alt="s3 bucket restore from deleted" /></a></p>
+<h3 id="restore-the-cluster-using-etcd-manager-ctl-on-your-computer">Restore the cluster using etcd-manager-ctl on your computer.</h3><p>Pre-requisites</p>
+
+<ul>
+<li>Install  kops-manager-ctl in your workstation. Run the below command by updating the latest <a href="https://github.com/kopeio/etcd-manager/releases/">release</a> version available for etcd-manager-ctl.</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>  curl -Lo etcd-manager-ctl  https://github.com/kopeio/etcd-manager/releases/download/3.0.20190816/etcd-manager-ctl-darwin-amd64 &amp;&amp; chmod +x etcd-manager-ctl &amp;&amp; mv etcd-manager-ctl /usr/local/bin
+</code></pre></div><p>Run the below commands, to list the backups for main and events. We are listing backups for the cluster named <code>test-etcd-3.cloud-platform.service.justice.gov.uk</code> in a S3 bucket called <code>cloud-platform-kops-state</code>.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>etcd-manager-ctl --backup-store=s3://cloud-platform-kops-state/test-etcd-3.cloud-platform.service.justice.gov.uk/backups/etcd/main list-backups
+etcd-manager-ctl --backup-store=s3://cloud-platform-kops-state/test-etcd-3.cloud-platform.service.justice.gov.uk/backups/etcd/events list-backups
+
+</code></pre></div><p>you will see result as below for main and events.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Backup Store: s3://cloud-platform-kops-state/test-etcd-3.cloud-platform.service.justice.gov.uk/backups/etcd/main
+I0829 10:57:53.294703   34271 vfs.go:94] listed backups in s3://cloud-platform-kops-state/test-etcd-3.cloud-platform.service.justice.gov.uk/backups/etcd/main: [2019-08-27T16:44:23Z-001038 2019-08-29T09:23:52Z-000001 2019-08-29T09:24:36Z-000002 2019-08-29T09:38:59Z-000003 2019-08-29T09:54:03Z-000004]
+2019-08-27T16:44:23Z-001038
+2019-08-29T09:23:52Z-000001
+2019-08-29T09:24:36Z-000002
+2019-08-29T09:38:59Z-000003
+2019-08-29T09:54:03Z-000004
+</code></pre></div><p>Restore the latest backup in the list, or the one containing the timestamp you want to restore from (this will bring the entire cluster back to this point in time). Add a restore command for both main and events as below:</p>
+<p>Note: We can only use a backup file which is returned in the results of the list-backups command. If kops deleted the backups it will not show up in the list. Follow this <a href="/disaster-recovery.html#restore-deleted-s3-backups">guidance</a> to get the deleted backups into active stage, which will then show up in the list-backups.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>etcd-manager-ctl -backup-store=s3://cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk/backups/etcd/main restore-backup 2019-08-27T16:44:23Z-001038
+
+etcd-manager-ctl -backup-store=s3://cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk/backups/etcd/events restore-backup 2019-08-27T16:37:56Z-000351
+</code></pre></div><p>This will add a command to a file in S3, which will be picked up by the etcd-manager leader. You will see the result as below for main and events.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Backup Store: s3://cloud-platform-kops-state/test-etcd-3.cloud-platform.service.justice.gov.uk/backups/etcd/main
+I0829 10:58:54.596932   34402 vfs.go:60] Adding command at s3://cloud-platform-kops-state/test-etcd-3.cloud-platform.service.justice.gov.uk/backups/etcd/main/control/2019-08-29T09:58:54Z-000000/_command.json: timestamp:1567072734596231000 restore_backup:&lt;cluster_spec:&lt;member_count:3 etcd_version:"3.3.10" &gt; backup:"2019-08-27T16:44:23Z-001038" &gt;
+added restore-backup command: timestamp:1567072734596231000 restore_backup:&lt;cluster_spec:&lt;member_count:3 etcd_version:"3.3.10" &gt; backup:"2019-08-27T16:44:23Z-001038" &gt;
+</code></pre></div><p>Note that this does not start the restore immediately, to start the restore, you need to roll masters quickly by <a href="/disaster-recovery.html#roll-masters-by-rebooting">rebooting</a> all the masters from the aws console or <a href="/disaster-recovery.html#restart-etcd">restart</a> etcd on all masters.</p>
+<p>The etcd-manager containers should restart automatically, and pick up the restore command. A new etcd cluster will be created and the backup will be restored onto this new cluster.</p>
+<h4 id="roll-masters-by-rebooting">Roll masters by rebooting</h4><p>To reboot all masters, follow below process.</p>
+<p>In the Amazon EC2 console, on the Instances page, search using <code>${CLUSTER_NAME}</code> to locate cluster master and worker instances(<code>master-&lt;availability-zone&gt;.masters.&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk</code>).</p>
+<p>Select all master instances together, and run reboot from actions&gt;instancestate&gt;reboot.
+Run the below command to validate the cluster.</p>
+<div class="highlight"><pre class="highlight shell"><code>kops validate cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>All master and worker node should join the cluster, you can see the cluster is in ready status.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Your cluster ${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready
+</code></pre></div><p>Please note that this process might take a short while(around 1 hr), depending on the size of the cluster.</p>
+<p>If the cluster is still in &#39;not ready&rsquo; status or you see other issues, this may be answered in <a href="/disaster-recovery.html#possible-issues">possible-issues</a> below.</p>
+<h4 id="restart-etcd">Restart etcd</h4><p>To restart etcd on all masters, follow below process.</p>
+<p>Note: If you rebooted all the master nodes, you don’t need to perform this step. Use this guidance is if rebooting the masters didn’t trigger the restore process.</p>
+<p>login to master node via bastion instance:</p>
+<div class="highlight"><pre class="highlight shell"><code>ssh <span class="nt">-A</span> admin@ec2-35-176-xx-xx.eu-west-2.compute.amazonaws.com <span class="nt">-p</span> 50422
+</code></pre></div><p>From the bastion, login to any of the working master nodes:</p>
+<div class="highlight"><pre class="highlight shell"><code>ssh 172.20.xx.xx
+</code></pre></div><p>While SSHed onto a master:</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker ps | <span class="nb">grep </span>etcd.manager
+</code></pre></div><p>You will see output as below:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>e81b4622417b  kopeio/etcd-manager         k8s_etcd-manager_etcd-manager-main-...
+39c186fba5ea  kopeio/etcd-manager         k8s_etcd-manager_etcd-manager-events-...
+8c77d710ce46  k8s.gcr.io/pause-amd64:3.0  k8s_POD_etcd-manager-main-...
+806e5af8125d  k8s.gcr.io/pause-amd64:3.0  k8s_POD_etcd-manager-events-...
+</code></pre></div><p>Using the container id for <code>k8s_etcd-manager_etcd-manager-main</code> and <code>k8s_etcd-manager_etcd-manager-events</code>, run the below command. This will restart the main and events.</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker <span class="nb">kill </span>e81b4622417b 39c186fba5ea
+</code></pre></div><p>Immediately afterwards, exit out of the container. Repeat the steps above to login into other master nodes and restart <code>k8s_etcd-manager_etcd-manager-main</code> and <code>k8s_etcd-manager_etcd-manager-events</code> on all masters. Kubelet will restart them, and after a few seconds they should come up again and start syncing</p>
+<p>You can follow the progress by reading the etcd logs (/var/log/etcd(-events).log) on the master that is the leader of the cluster.</p>
+<div class="highlight"><pre class="highlight shell"><code>tail <span class="nt">-f</span> /var/log/etcd<span class="o">(</span><span class="nt">-events</span><span class="o">)</span>.log
+</code></pre></div><h3 id="restore-process-inside-the-etcd-container-using-etcd-manager-ctl">Restore process inside the etcd container using etcd-manager-ctl.</h3><p>If you don&rsquo;t have etcd-manager-ctl installed on your workstation, you can run the etcd-manager-ctl restore process from a etcd container, follow the process below.</p>
+<p>Note: If you already performed restore process via etcd-manager-ctl on your <a href="/disaster-recovery.html#restore-the-cluster-using-etcd-manager-ctl-on-your-computer">computer</a>, don&rsquo;t repeat this in etcd container.</p>
+<p>Run the below command on all the etcd-manager-main and etcd-manager-event containers, to find out the leader of the cluster for main and events.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n kube-system logs etcd-manager-main-ip-172-xx-xx-226.eu-west-2.compute.internal | grep leader
+</code></pre></div><p>you will see the logs as below, for events and main, which are the leaders of the cluster.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>etcd-manager-main-ip-172-xx-xx-226.eu-west-2.compute.internal etcd-manager I0830 ..... I am leader with token "xxxxxxxxxxx"
+</code></pre></div><p>you will see the logs as below, for events and main, which are not the leaders of the cluster.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>etcd-manager-main-ip-172-xx-xx-223.eu-west-2.compute.internal etcd-manager I0830 ..... we are not leader
+etcd-manager-main-ip-172-xx-xx-57.eu-west-2.compute.internal etcd-manager I0830  ..... we are not leader
+</code></pre></div><p>From the above output, ssh in to leader master node via bastion instance:</p>
+<p>In the Amazon EC2 console, on the Instances page, search using <code>${CLUSTER_NAME}</code>to locate bastion instance (<code>bastion.&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk</code>). Use Public DNS (IPv4) In the description of the Instance to login in to bastion as below:</p>
+<div class="highlight"><pre class="highlight shell"><code>ssh <span class="nt">-A</span> admin@ec2-35-176-xx-xx.eu-west-2.compute.amazonaws.com <span class="nt">-p</span> 50422
+</code></pre></div><p>From the bastion, login to the leader master node:</p>
+<p>In the Amazon EC2 console, on the Instances page, search using <code>${CLUSTER_NAME}</code> to locate master instance (<code>master-&lt;availability-zone&gt;.masters.&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk</code>). From the result above to identify the leader, use the ip address of the leader master node and ssh in to it.</p>
+<div class="highlight"><pre class="highlight shell"><code>ssh 172.20.xx.xx
+</code></pre></div><p>While SSHed onto a master:</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker ps | <span class="nb">grep </span>etcd.manager
+</code></pre></div><p>You will see output as below:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>e81b4622417b  kopeio/etcd-manager         k8s_etcd-manager_etcd-manager-main-...
+39c186fba5ea  kopeio/etcd-manager         k8s_etcd-manager_etcd-manager-events-...
+8c77d710ce46  k8s.gcr.io/pause-amd64:3.0  k8s_POD_etcd-manager-main-...
+806e5af8125d  k8s.gcr.io/pause-amd64:3.0  k8s_POD_etcd-manager-events-...
+</code></pre></div><p>Pick the main kopeio/etcd-manager container and then docker exec onto it</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="o">[</span>container id] bash
+</code></pre></div><p>Run the following to install the etcd-manager-ctl binary, make sure you are using the latest <a href="https://github.com/kopeio/etcd-manager/releases/">release</a> version available for etcd-manager-ctl.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>apt-get update &amp;&amp; apt-get install -y wget
+wget https://github.com/kopeio/etcd-manager/releases/download/3.0.20190816/etcd-manager-ctl-linux-amd64
+mv etcd-manager-ctl-linux-amd64 etcd-manager-ctl
+chmod +x etcd-manager-ctl
+mv etcd-manager-ctl /usr/local/bin/
+</code></pre></div><p>Still in the container, run etcd-manager-ctl commands to list the backups and restore the backups, following the guidance <a href="/disaster-recovery.html#restore-the-cluster-using-etcd-manager-ctl-on-your-computer">here</a>.</p>
+<p>Do the exact same sequence of steps for the “etcd-events” container. Backups will be stored in an s3 path ending with “backups/etcd/events” instead of “backups/etcd/main”, otherwise the steps are exactly the same.</p>
+<h2 id="cleanup">Cleanup</h2><p>After the backup restore is completed, there are probably old master IPs being set as endpoints in the kubernetes service. You can fix this by manually removing the old master IPs from etcd.</p>
+<p>Run the below command to identify the current masters:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n kube-system get pods | grep etcd-manager-main.
+</code></pre></div><p>Result shown as below</p>
+<div class="highlight"><pre class="highlight plaintext"><code>etcd-manager-events-ip-172-xx-xx-223.eu-west-2.compute.internal       1/1     Running   2          45m
+etcd-manager-events-ip-172-xx-xx-226.eu-west-2.compute.internal       1/1     Running   2          47m
+etcd-manager-events-ip-172-xx-xx-57.eu-west-2.compute.internal        1/1     Running   2          47m
+</code></pre></div><p>Check the status of the kubernetes endpoint, running the below command:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n default get endpoints kubernetes -o=yaml
+</code></pre></div><p>You can see the old master IPs being set as endpoints, from the below result:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: v1
+kind: Endpoints
+metadata:
+  creationTimestamp: "2019-08-09T10:17:02Z"
+  name: kubernetes
+  namespace: default
+  resourceVersion: "3492"
+  selfLink: /api/v1/namespaces/default/endpoints/kubernetes
+  uid: d4905523-ba8e-11e9-ba7f-06274dffb608
+subsets:
+- addresses:
+  - ip: 172.xx.xx.223
+  - ip: 172.xx.xx.245
+  - ip: 172.xx.xx.226
+  - ip: 172.xx.xx.255
+  - ip: 172.xx.xx.57
+  - ip: 172.xx.xx.20
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+
+</code></pre></div><p>or</p>
+<p>You can get the old master IPs by describing the kubernetes service (under Endpoints):</p>
+<div class="highlight"><pre class="highlight plaintext"><code> kubectl describe svc kubernetes
+</code></pre></div><p>Result will be as below:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Name:              kubernetes
+Namespace:         default
+Labels:            component=apiserver
+                   provider=kubernetes
+Annotations:       &lt;none&gt;
+Selector:          &lt;none&gt;
+Type:              ClusterIP
+IP:                100.64.0.1
+Port:              https  443/TCP
+TargetPort:        443/TCP
+Endpoints:         172.xx.xx.223:443,172.xx.xx.245:443,172.xx.xx.226:443,172.xx.xx.255:443,172.xx.xx.57:443,172.xx.xx.20:443
+Session Affinity:  None
+Events:            &lt;none&gt;
+</code></pre></div><p>If the result shows ip addresses which do not belong to current masters, do the cleanup following the guidance below.</p>
+<p>Exec into a pod running the etcd-main cluster and run the below command.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>ETCDCTL_API=3 /opt/etcd-v3.3.10-linux-amd64/etcdctl \
+--key /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key \
+--cert /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.crt \
+--cacert /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt \
+--endpoints=https://127.0.0.1:4001 get --prefix /registry/masterleases/
+</code></pre></div><p>The output will be as below:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>/registry/masterleases/172.xx.xx.245
+k8s
+
+v1  Endpoints+
+
+"*28MBz
+
+172.xx.xx.245"
+/registry/masterleases/172.xx.xx.223
+k8s
+
+v1  Endpoints)
+
+"*28MBz
+
+172.xx.xx.223"
+/registry/masterleases/172.xx.xx.255
+k8s
+
+v1  Endpoints)
+
+"*28MBz
+
+
+172.xx.xx.255"
+/registry/masterleases/172.xx.xx.244
+k8s
+
+v1  Endpoints)
+
+"*28MBz
+
+172.xx.xx.244"
+/registry/masterleases/172.xx.xx.20
+k8s
+
+v1  Endpoints)
+
+"*28MBz
+
+
+172.xx.xx.20"
+/registry/masterleases/172.xx.xx.57
+k8s
+
+v1  Endpoints)
+
+"*28MBz
+
+172.xx.xx.57"
+</code></pre></div><p>The output should match your master list. If it doesn’t, remove the redundant entries, for example like this:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>ETCDCTL_API=3 /opt/etcd-v3.3.10-linux-amd64/etcdctl \
+--key /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key \
+--cert /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.crt \
+--cacert /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt \
+--endpoints=https://127.0.0.1:4001 del /registry/masterleases/172.xx.xx.245
+</code></pre></div><p>After that’s done, rerun the below command.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n default get endpoints kubernetes -o=yaml
+</code></pre></div><p>It should now list only ip addresses for your current master nodes.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: v1
+kind: Endpoints
+metadata:
+  creationTimestamp: "2019-08-09T10:17:02Z"
+  name: kubernetes
+  namespace: default
+  resourceVersion: "3492"
+  selfLink: /api/v1/namespaces/default/endpoints/kubernetes
+  uid: d4905523-ba8e-11e9-ba7f-06274dffb608
+subsets:
+- addresses:
+  - ip: 172.xx.xx.223
+  - ip: 172.xx.xx.226
+  - ip: 172.xx.xx.57
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+
+</code></pre></div><h2 id="possible-issues">Possible Issues</h2>
+<ul>
+<li>After the restore-backup command is run and master nodes are rebooted, you may see the below issues when you run kops validate cluster.</li>
+</ul>
+<p>1) If any Master node stuck in <code>not ready</code> status, <a href="/disaster-recovery.html#roll-masters-by-rebooting">reboot</a> that master again, from the aws console or <a href="/disaster-recovery.html#restart-etcd">restart</a> etcd for that master node.</p>
+<p>2) Master nodes are in ready status but worker nodes has not yet joined cluster</p>
+<div class="highlight"><pre class="highlight plaintext"><code>NODE STATUS
+NAME                        ROLE    READY
+ip-172-20-58-111.eu-west-2.compute.internal master  True
+ip-172-20-64-175.eu-west-2.compute.internal master  True
+ip-172-20-97-124.eu-west-2.compute.internal master  True
+
+VALIDATION ERRORS
+KIND    NAME                                        MESSAGE
+Machine i-04d61e3f17c896559                             machine "i-04d61e3f17c896559" has not yet joined cluster
+Machine i-07cee6c33d3f9691f                             machine "i-07cee6c33d3f9691f" has not yet joined cluster
+Machine i-0fe9ef38d7d424d4b                             machine "i-0fe9ef38d7d424d4b" has not yet joined cluster
+</code></pre></div><p>This may happen mainly for restoring disaster situation (total failure, kops delete cluster), as we are building the whole new cluster.</p>
+<p>To fix this, reboot the worker nodes, they will be joining the cluster soon.</p>
+<p>3) All master and worker nodes Joined the cluster, but we see below error&rsquo;s when we run kops validate cluster.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>NODE STATUS
+NAME                        ROLE    READY
+ip-172-20-108-76.eu-west-2.compute.internal node    True
+ip-172-20-45-37.eu-west-2.compute.internal  node    True
+ip-172-20-58-111.eu-west-2.compute.internal master  True
+ip-172-20-64-175.eu-west-2.compute.internal master  True
+ip-172-20-76-168.eu-west-2.compute.internal node    True
+ip-172-20-97-124.eu-west-2.compute.internal master  True
+
+VALIDATION ERRORS
+KIND    NAME                                                MESSAGE
+Pod kube-system/calico-node-7xdcr                           kube-system pod "calico-node-7xdcr" is not ready (calico-node)
+Pod kube-system/calico-node-88x5v                           kube-system pod "calico-node-88x5v" is not ready (calico-node)
+Pod kube-system/calico-node-96s88                           kube-system pod "calico-node-96s88" is pending
+Pod kube-system/calico-node-pz6n8                           kube-system pod "calico-node-pz6n8" is pending
+Pod kube-system/calico-node-tgnfs                           kube-system pod "calico-node-tgnfs" is not ready (calico-node)
+Pod kube-system/calico-node-vg5bd                           kube-system pod "calico-node-vg5bd" is not ready (calico-node)
+Pod kube-system/cronjobber-7fbfcff575-zp2hd                 kube-system pod "cronjobber-7fbfcff575-zp2hd" is pending
+Pod kube-system/etcd-manager-events-ip-..                   kube-system pod "etcd-manager-events-ip-.." is pending
+Pod kube-system/etcd-manager-main-ip-..                     kube-system pod "etcd-manager-main-.." is pending
+Pod kube-system/external-dns-6fbd45b59c-r5vpk               kube-system pod "external-dns-6fbd45b59c-r5vpk" is pending
+Pod kube-system/external-dns-dsd-external-dns-..-fnx6l      kube-system pod "external-dns-dsd-external-dns-67899b9dd7-fnx6l" is pending
+Pod kube-system/kube-apiserver-ip-..                        kube-system pod "kube-apiserver-ip-.." is pending
+Pod kube-system/kube-controller-manager-..                  kube-system pod "kube-controller-manager-.." is pending
+Pod kube-system/kube-dns-57dd96bb49-djtmq                   kube-system pod "kube-dns-57dd96bb49-djtmq" is pending
+Pod kube-system/kube-dns-57dd96bb49-tqfqg                   kube-system pod "kube-dns-57dd96bb49-tqfqg" is pending
+Pod kube-system/kube-dns-autoscaler-867b9fd49d-pblbg        kube-system pod "kube-dns-autoscaler-867b9fd49d-pblbg" is pending
+Pod kube-system/kube-proxy-..                               kube-system pod "kube-proxy-ip-.." is pending
+Pod kube-system/kube-scheduler-..                           kube-system pod "kube-scheduler-ip-.." is pending
+Pod kube-system/metrics-server-c867fff7f-7x5zl              kube-system pod "metrics-server-c867fff7f-7x5zl" is pending
+Pod kube-system/tiller-deploy-6f6fd74b68-s68z5              kube-system pod "tiller-deploy-6f6fd74b68-s68z5" is pending
+</code></pre></div><p>Pods use kubernetes.io/service-account-token to authenticate API requests. After the restore, old tokens (determined by checking creationTimestamp) are not removed, this is causing below errors for the pods which have this issue. So you will need to delete the old secrets, so they can be recreated with the correct keys.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Unable to authenticate the request due to an error: [invalid bearer token, [invalid bearer token, square/go-jose: error in cryptographic primitive]
+</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>kubectl -n kube-system get secrets --sort-by=.metadata.creationTimestamp
+</code></pre></div><p>Comparing to the errors above, these are the tokens which are causing issues.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>NAME                                             TYPE                                  DATA   AGE
+default-token-srztw                              kubernetes.io/service-account-token   3      20d
+kube-proxy-token-x7p78                           kubernetes.io/service-account-token   3      20d
+kube-dns-token-h6qfk                             kubernetes.io/service-account-token   3      20d
+dns-controller-token-vtn85                       kubernetes.io/service-account-token   3      20d
+kube-dns-autoscaler-token-dbm5d                  kubernetes.io/service-account-token   3      20d
+calico-node-token-6w6p2                          kubernetes.io/service-account-token   3      20d
+cronjobber-token-4n82j                           kubernetes.io/service-account-token   3      20d
+tiller-token-xnmnx                               kubernetes.io/service-account-token   3      20d
+metrics-server-token-t9pv9                       kubernetes.io/service-account-token   3      20d
+external-dns-dsd-external-dns-token-w26ts        kubernetes.io/service-account-token   3      20d
+external-dns-token-24kjn                         kubernetes.io/service-account-token   3      20d
+</code></pre></div><p>Run the below command to delete the secrets, they will be recreated.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n kube-system delete secret default-token-srztw ......
+</code></pre></div><p>Now delete the pods, they get recreated and start running.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n kube-system delete pods --all
+</code></pre></div><p>4) Fixing issue 3, will get the cluster in to ready status, but we may see similar issue in other components below:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>NAME                  STATUS   AGE
+cert-manager          Active   20d
+ingress-controllers   Active   20d
+kiam                  Active   20d
+kuberos               Active   20d
+logging               Active   20d
+monitoring            Active   20d
+opa                   Active   20d
+</code></pre></div><p>Do the same approach as we did above, delete the old tokens and restart the pods.</p>
+<p>5) In some scenarios, the in-cluster kubernetes service can become unavailable. As we are using calico for networking, this can mean that calico won&rsquo;t start up and stuck in pending status on (some) nodes.</p>
+<p>This issue is due to old master IPs being set as endpoints in the kubernetes service. Fix this by manually removing the old master IPs from etcd by doing<a href="/disaster-recovery.html#cleanup">cleanup</a>.</p>
+
+
+            
+          </main>
+
+            <ul class="contribution-banner">
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/disaster-recovery.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Cloud%20Platform%20Disaster%20Recovery'&amp;body=Problem%20with%20'Cloud%20Platform%20Disaster%20Recovery'%20(https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
+            </ul>
+
+          <footer class="footer">
+  <div class="footer__licence">
+    <a class="footer__licence-logo" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence</a>
+    <p class="footer__licence-description">All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated</p>
+  </div>
+
+  <div class="footer__copyright">
+    <a class="footer__copyright-logo" href="http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/copyright-and-re-use/crown-copyright/">© Crown copyright</a>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </body>
+</html>
