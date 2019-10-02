@@ -520,19 +520,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -543,6 +530,19 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#delete-a-quot-stuck-quot-resource">Delete a “stuck” resource</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -591,14 +591,14 @@ export PIPELINE_CLUSTER_STATE_BUCKET=cloud-platform-terraform-state
 export PIPELINE_CLUSTER_STATE_KEY_PREFIX="cloud-platform/"
 export cluster=live-1.cloud-platform.service.justice.gov.uk
 </code></pre></div><h2 id="set-the-namespace-name">Set the namespace name</h2><div class="highlight"><pre class="highlight plaintext"><code>export namespace=umar-dev
-</code></pre></div><h2 id="cd-to-the-resources-directory">cd to the <code>resources</code> directory</h2><p><code>cd namespaces/live-1.cloud-platform.service.justice.gov.uk/umar-dev/resources</code></p>
-<h2 id="run-terraform-init">Run <code>terraform init</code></h2><div class="highlight"><pre class="highlight plaintext"><code>terraform init \
+</code></pre></div><h2 id="cd-to-the-resources-directory">cd to the <code>resources</code> directory</h2><div class="highlight"><pre class="highlight plaintext"><code>cd namespaces/live-1.cloud-platform.service.justice.gov.uk/${namespace}/resources
+</code></pre></div><h2 id="run-terraform-init">Run <code>terraform init</code></h2><div class="highlight"><pre class="highlight plaintext"><code>terraform init \
   -backend-config="bucket=${PIPELINE_STATE_BUCKET}" \
   -backend-config="key=${PIPELINE_STATE_KEY_PREFIX}${cluster}/${namespace}/terraform.tfstate" \
   -backend-config="region=${PIPELINE_STATE_REGION}"
 </code></pre></div><h2 id="run-terraform-destroy">Run <code>terraform destroy</code></h2><div class="highlight"><pre class="highlight plaintext"><code>tf destroy \
-  -var="cluster_name=${cluster%%.*}"
-  -var="cluster_state_bucket=${PIPELINE_CLUSTER_STATE_BUCKET}"
+  -var="cluster_name=${cluster%%.*}" \
+  -var="cluster_state_bucket=${PIPELINE_CLUSTER_STATE_BUCKET}" \
   -var="cluster_state_key=${PIPELINE_CLUSTER_STATE_KEY_PREFIX}${cluster%%.*}/terraform.tfstate"
 </code></pre></div><p>After confirming that you&rsquo;re happy with the proposed changes, all the
 namespace&rsquo;s AWS resources should be deleted.</p>
