@@ -114,14 +114,8 @@
         <a href="/create-cluster.html#run-the-build-script-via-the-tools-image">Run the build script, via the tools image</a>
       </li>
       <li>
-        <a href="/create-cluster.html#disable-alerts">Disable Alerts</a>
+        <a href="/create-cluster.html#alerts">Alerts</a>
         <ul>
-          <li>
-            <a href="/create-cluster.html#high-priority-alerts">High Priority Alerts</a>
-          </li>
-          <li>
-            <a href="/create-cluster.html#lower-priority-alerts">Lower priority alerts</a>
-          </li>
           <li>
             <a href="/create-cluster.html#apply-the-changes">Apply the changes</a>
           </li>
@@ -528,6 +522,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -538,19 +545,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#delete-a-quot-stuck-quot-resource">Delete a “stuck” resource</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -594,15 +588,32 @@
 </code></pre></div><p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
 <p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/master/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
 <p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Kubernetes master is running at https://api.david-test1.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext"><code>Run options: exclude {:cluster=&gt;"live-1"}
+..........................
+
+Finished in 4 minutes 53.4 seconds (files took 4.54 seconds to load)
+26 examples, 0 failures
+
+2019-10-07 09:07:49 kubectl cluster-info
+Kubernetes master is running at https://api.david-test1.cloud-platform.service.justice.gov.uk
 KubeDNS is running at https://api.david-test1.cloud-platform.service.justice.gov.uk/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-</code></pre></div><h2 id="disable-alerts">Disable Alerts</h2><p>By default, your test cluster will send alerts to the team slack channels. This can cause confusion if the work that you&rsquo;re doing on the test cluster involves something which, in the live cluster, would be a critical component.</p>
-<h3 id="high-priority-alerts">High Priority Alerts</h3><p>The simplest way to disable high-priority alerts is to prevent them from reaching <a href="https://www.pagerduty.com/">PagerDuty</a>, by removing the token for our PagerDuty account.</p>
-<h4 id="edit-the-file-terraform-cloud-platform-components-terraform-tfvars">Edit the file <code>terraform/cloud-platform-components/terraform.tfvars</code></h4><p>Find the line <code>pagerduty_config = &quot;--------- SOME VALUE ----------&quot;</code>, and replace the value with a dummy value (not empty string), then save the file.</p>
-<h3 id="lower-priority-alerts">Lower priority alerts</h3><p>Low-priority alerts are sent directly to the <code>#lower-priority-alarms</code> slack channel, so the procedure for disabling them is slightly different.</p>
-<h4 id="lower-priority-alerts-edit-the-file-terraform-cloud-platform-components-terraform-tfvars">Edit the file <code>terraform/cloud-platform-components/terraform.tfvars</code></h4><p>Look for the <code>alertmanager_slack_receivers</code> section, and find the entry whose <code>channel</code> value is <code>#lower-priority-alarms</code>.</p>
-<p>Change the value of <code>webhook</code> and replace the string after the last <code>/</code> in the URL with a dummy value, then save the file.</p>
-<h3 id="apply-the-changes">Apply the changes</h3><p>Finally, we will use terraform to apply the changes to the prometheus operator in your test cluster.</p>
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+</code></pre></div><p>The section before <code>kubectl cluster-info</code> is the cluster integration tests, which run at the end of the build
+process. The number of tests will increase, so the output will vary from what is shown here.</p>
+<p>Each dot in the line represents a passing test. If any tests fail, you will see more output explaining
+the nature of the failure.</p>
+<p>Any test failures could indicate a problem with your test cluster, which will need to be resolved before you
+can confidently use it for anything.</p>
+<h2 id="alerts">Alerts</h2><p>The build script replaces the webhook values in the source code with dummy values, to prevent
+alerts from test clusters from showing up in the team slack channels.</p>
+<p>If you want to reverse this, you need to revert the changes to these files, and then do a <code>terraform apply</code>:</p>
+
+<ul>
+<li>high priority alerts: <code>terraform/cloud-platform-components/terraform.tfvars</code> (look for <code>pagerduty_config</code>)</li>
+<li>lower priority alerts: <code>terraform/cloud-platform-components/terraform.tfvars</code> (look for <code>alertmanager_slack_receivers</code>)</li>
+</ul>
+<h3 id="apply-the-changes">Apply the changes</h3><p>Use terraform to apply the changes to the prometheus operator in your test cluster.</p>
 <h4 id="ensure-your-terraform-workspace-and-kubernetes-context-are-pointing-at-your-test-cluster">Ensure your terraform workspace and kubernetes context are pointing at your test cluster</h4><div class="highlight"><pre class="highlight shell"><code><span class="nb">cd </span>terraform/cloud-platform-components
 terraform workspace list
 </code></pre></div><p>If you are not targeting your test cluster workspace, run</p>
@@ -618,20 +629,19 @@ KubeDNS is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk/
 </code></pre></div><p>When you are confident that both your terraform workspace and kubernetes context are set to your test cluster, apply the change to set the pagerduty config value:</p>
 <div class="highlight"><pre class="highlight shell"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>helm_release.prometheus_operator
 </code></pre></div><p>Answer <code>yes</code> if the planned changes look correct.</p>
-<p>This should leave all the alerting infrastructure of your test cluster intact, but prevent any high-priority alerts from reaching PagerDuty (and being routed from there to Slack, or anywhere else).</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-01-07">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 7 October 2019.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 7 January 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 7 January 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
