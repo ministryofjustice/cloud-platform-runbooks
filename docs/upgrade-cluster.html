@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Expanding Persistent Volumes created using StatefulSets | Cloud Platform Runbooks</title>
+    <title>Upgrade a cluster | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Expanding Persistent Volumes created using StatefulSets" />
+      <meta property="og:title" content="Upgrade a cluster" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Expanding Persistent Volumes created using StatefulSets | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html" />
+      <meta property="twitter:title" content="Upgrade a cluster | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html" />
 
     
   </head>
@@ -105,10 +105,10 @@
     <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
     <ul>
       <li>
-        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
+        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites">Pre-requisites</a>
       </li>
       <li>
-        <a href="/create-cluster.html#environment-variables">Environment Variables</a>
+        <a href="/create-cluster.html#create-a-new-cluster-environment-variables">Environment Variables</a>
       </li>
       <li>
         <a href="/create-cluster.html#run-the-build-script-via-the-tools-image">Run the build script, via the tools image</a>
@@ -129,10 +129,10 @@
     <a href="/upgrade-cluster.html#upgrade-a-cluster">Upgrade a cluster</a>
     <ul>
       <li>
-        <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites">Pre-requisites</a>
+        <a href="/upgrade-cluster.html#pre-requisites">Pre-requisites</a>
         <ul>
           <li>
-            <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites-environment-variables">Environment Variables</a>
+            <a href="/upgrade-cluster.html#environment-variables">Environment Variables</a>
           </li>
           <li>
             <a href="/upgrade-cluster.html#sanity-checks">Sanity checks</a>
@@ -600,69 +600,77 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="expanding-persistent-volumes-created-using-statefulsets">Expanding Persistent Volumes created using StatefulSets</h1><p>It is currently not possible to expand PVs created using a StatefulSet directly from the StatefulSet template.</p>
-<p>This is the current work around -</p>
-<p>Edit the &lsquo;storage&rsquo; value under spec:resources for PVC required to be expanded:</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl edit pvc www-web-0</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">accessModes</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
-  <span class="na">resources</span><span class="pi">:</span>
-    <span class="na">requests</span><span class="pi">:</span>
-      <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span> <span class="c1"># edit with new value</span>
-  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">gp2</span>
-  <span class="na">volumeName</span><span class="pi">:</span> <span class="s">pvc-489b1857-91dd-11e9-b4c5-0a5b8815a91e</span>
-</code></pre></div><p>Once the edit has been applied, you should see <code>type: Resizing</code> under status:conditions:</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
-<span class="na">status</span><span class="pi">:</span>
-  <span class="na">accessModes</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
-  <span class="na">capacity</span><span class="pi">:</span>
-    <span class="na">storage</span><span class="pi">:</span> <span class="s">4Gi</span>
-  <span class="na">conditions</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">lastProbeTime</span><span class="pi">:</span> <span class="no">null</span>
-    <span class="na">lastTransitionTime</span><span class="pi">:</span> <span class="s">2019-06-18T15:29:45Z</span>
-    <span class="na">status</span><span class="pi">:</span> <span class="s2">"</span><span class="s">True"</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">Resizing</span> <span class="c1"># You should see value</span>
-  <span class="na">phase</span><span class="pi">:</span> <span class="s">Bound</span>
-</code></pre></div><p>Delete the corresponding pod associated to the pv:</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl delete pod web-0
-pod <span class="s2">"web-0"</span> deleted
-</code></pre></div><p>Once pod is recreated, you should see the new pv disc size in the pvc</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
-<span class="na">status</span><span class="pi">:</span>
-  <span class="na">accessModes</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
-  <span class="na">capacity</span><span class="pi">:</span>
-    <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span>
-  <span class="na">phase</span><span class="pi">:</span> <span class="s">Bound</span>
-</code></pre></div><p>The following command will delete the StatefulSet without deleting the associated pods</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl delete statefulset <span class="nt">--cascade</span><span class="o">=</span><span class="nb">false </span>web <span class="c"># `web` is the name of the StatefulSet</span>
-</code></pre></div><p>Apply the StatefulSet template with new pvc size (with everything else exactly the same) to your namespace.</p>
-<p>There is a enhancement issue for expansion using StatefulSet templates in github waiting to be actioned, at which the above will not be required - https://github.com/kubernetes/enhancements/issues/661</p>
+              <h1 id="upgrade-a-cluster">Upgrade a cluster</h1><h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-requisites:</p>
+
+<ul>
+<li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code>.</p></li>
+<li><p>You have the <a href="https://aws.amazon.com/cli/">AWS CLI</a> profile <code>moj-cp</code> with suitable credentials.</p></li>
+<li><p>You have <a href="https://www.docker.com/">docker</a> installed.</p></li>
+</ul>
+<h3 id="environment-variables">Environment Variables</h3><p>See the file <code>example.env.create-cluster</code> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
+<h3 id="sanity-checks">Sanity checks</h3><p>Ensure Concourse pipelines are green, and pause all of them.</p>
+<p>Take a snapshot of</p>
+
+<ul>
+<li>all non-running pods</li>
+<li>triggered Prometheus alarms</li>
+</ul>
+<h3 id="run-a-shell-in-the-tools-image">Run a shell in the tools image</h3><p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to run the build script and create a cluster.</p>
+<p>The image will need updates for new client tool versions, see https://github.com/ministryofjustice/cloud-platform-tools-image/pull/34 for an example.</p>
+<p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
+<p>With your environment variables set, launch a bash shell on the tools image:</p>
+<div class="highlight"><pre class="highlight shell"><code>make tools-shell
+</code></pre></div><h2 id="run-the-upgrade">Run the upgrade</h2><p>Within the tools image, the file <code>~/.kube/config</code> is not copied from your outside profile, create it for just the needed cluster by running</p>
+<div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>Change the Kubernetes release version, ensuring it is supported by Kops - verify on the <a href="https://github.com/kubernetes/kops/releases">kops releases</a> page.</p>
+<p>If there is a newer AMI available in https://github.com/kubernetes/kops/blob/master/channels/stable, <code>kops edit instance-group masters</code></p>
+<p><code>kops update cluster (--yes)</code> will update k8s components inc calico</p>
+<p><code>kops rolling update cluster -- instance-group-roles=Master</code> will update only the master nodes, no performance impact expected at this point</p>
+<p><code>kops create instance group nodes-&lt;new_group_name&gt;</code> to double the size of the cluster</p>
+
+<ul>
+<li>copy values from instance group nodes</li>
+</ul>
+<p><code>kops update cluster (--yes)</code> will create the new nodes</p>
+<p><code>kubectl cordon nodes &lt;node_name&gt;</code> in the old instance group, this will ensure any new resources will go to the new ig</p>
+<p>Scale up the OPA deployment to ensure at least one pod runs on the new nodes</p>
+<p>Scale up ingress controllers by at least 3, to ensure each AZ on the new nodes gets an instance</p>
+<p>Identify pods with PVCs</p>
+<p><code>kubectl get pvc -A</code></p>
+
+<ul>
+<li><p>kill them</p></li>
+<li><p>check data persistence (eg Prometheus metrics history)</p></li>
+</ul>
+<p><code>kubectl drain nodes &lt;node_name&gt;</code> on the old ig, DaemonSets can be safely excluded</p>
+<p>^ this must be done one node at a time to ensure it actually succeeds so will take ~1min*number of nodes</p>
+<p><code>kops delete ig</code> old instance group</p>
+<p>Unpause pipelines</p>
+<h2 id="upgrade-a-cluster-sanity-checks">Sanity checks</h2><p><code>kops validate cluster</code></p>
+<p>Smoke test and check non-running pods, compare with situation before the upgrade start</p>
+<p>The <code>cloud-platform-smoke-tests</code> image might need updates, see https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/374 for an example.</p>
+<p>Finally, check that <code>terraform</code> agrees with the new cluster status</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl cluster-info
+</code></pre></div><div class="highlight"><pre class="highlight shell"><code><span class="nb">pushd </span>terraform/cloud-platform
+terraform workspace list
+terraform workspace <span class="k">select</span> <span class="o">[</span>your cluster]
+terraform plan
+<span class="nb">popd
+cd </span>terraform/cloud-platform-components
+terraform workspace list
+terraform workspace <span class="k">select</span> <span class="o">[</span>your cluster]
+terraform plan
+<span class="nb">popd</span>
+</code></pre></div><p>Expected result is no changes needed.</p>
+<h2 id="commit">Commit</h2><p>As a last step, edit and commit the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/kops">corresponding</a> kops .yaml file to match the new release.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
-
-        It needs to be reviewed again on 10 December 2019
-        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
-        .
-    </div>
-
-    <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
-       by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
-      This might mean the content is out of date.
-    </div>
-  </div>
-
+            
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/expand.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Expanding%20Persistent%20Volumes%20created%20using%20StatefulSets'&amp;body=Problem%20with%20'Expanding%20Persistent%20Volumes%20created%20using%20StatefulSets'%20(https://runbooks.cloud-platform.service.justice.gov.uk/expand.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/upgrade-cluster.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Upgrade%20a%20cluster'&amp;body=Problem%20with%20'Upgrade%20a%20cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
