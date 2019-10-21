@@ -552,19 +552,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -575,6 +562,19 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#delete-a-quot-stuck-quot-resource">Delete a “stuck” resource</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -633,6 +633,7 @@
 <li><p><a href="https://devcenter.heroku.com/articles/org-users-access">Heroku</a></p></li>
 <li><p><a href="https://sentry.service.dsd.io/organizations/mojds/members/">Sentry</a></p></li>
 <li><p><a href="https://ci.service.dsd.io/configureSecurity/">CI</a></p></li>
+<li><p><a href="https://cloud.docker.com/orgs/ministryofjustice/teams">MoJ teams on docker hub</a></p></li>
 <li><p>Email the administrator of our password management provider to remove the leaver&rsquo;s login access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
 <li><p>Email the VPN provider requesting removal of their VPN access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
 </ul>
@@ -891,7 +892,7 @@
 </ul>
 <p>Example fabric command:</p>
 <div class="highlight"><pre class="highlight shell"><code>fab application:mps aws:mojdsd environment:prod config:./cloudformation/mps.yaml passwords:./cloudformation/mps-secrets.yaml <span class="nt">-i</span> ../config/default.pem  salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><h5 id="b-ssh-onto-all-of-the-deploy-repos-instances-and-use-the-following-salt-code-commands-this-will-enable-updates-to-take-place-without-restarting-the-container-the-use-installation-of-awsjump-will-help-to-easily-switch-between-instances">b. ssh onto all of the deploy repos instances and use  the following salt-code commands. This will enable updates to take place without restarting the container. The use/installation  of <a href="https://github.com/ministryofjustice/template-deploy-jump">awsjump</a> will help to easily switch between instances:</h5><div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>su 
+</code></pre></div><h5 id="b-ssh-onto-all-of-the-deploy-repos-instances-and-use-the-following-salt-code-commands-this-will-enable-updates-to-take-place-without-restarting-the-container-the-use-installation-of-awsjump-will-help-to-easily-switch-between-instances">b. ssh onto all of the deploy repos instances and use  the following salt-code commands. This will enable updates to take place without restarting the container. The use/installation  of <a href="https://github.com/ministryofjustice/template-deploy-jump">awsjump</a> will help to easily switch between instances:</h5><div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>su
 salt_utils.py <span class="nt">-s</span> fooooo
 <span class="nb">cd</span> /srv/pillar/
 salt-call state.sls admins
