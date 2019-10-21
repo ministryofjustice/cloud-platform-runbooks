@@ -620,10 +620,17 @@ DONE
   <span class="nt">--cacert</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt  <span class="se">\</span>
   <span class="nt">--endpoints</span> <span class="s2">"https://etcd-a.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-b.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-c.internal.live-1.cloud-platform.service.justice.gov.uk:4001"</span> endpoint health
 </code></pre></div><h2 id="delete-a-quot-stuck-quot-resource">Delete a &ldquo;stuck&rdquo; resource</h2><p>kubectl can freeze with resources in status &ldquo;Terminating&rdquo;, these workarounds can force a cleanup:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>patch &lt;resource&gt; -p '{"metadata":{"finalizers":[]}}' --type=merge
-</code></pre></div><p>and/or
+<p>Identify what resources are still present in a namspace:
+<code>
+ns=my-app ; for api in `kubectl api-resources --verbs=list --namespaced -o name` ; do echo $api ;  kubectl get $api -n $ns ; done
+</code>
+If a regular <code>delete</code> does not remove the resource, try
 <code>
 kubectl delete &lt;resource&gt; --grace-period=0 --force
+</code>
+and/or
+<code>
+patch &lt;resource&gt; -p &#39;{&quot;metadata&quot;:{&quot;finalizers&quot;:[]}}&#39; --type=merge
 </code>
 Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
 
