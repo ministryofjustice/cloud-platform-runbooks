@@ -552,6 +552,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -563,18 +576,8 @@
       <li>
         <a href="/tips-and-tricks.html#delete-a-quot-stuck-quot-resource">Delete a “stuck” resource</a>
       </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
       <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+        <a href="/tips-and-tricks.html#filter-namespaces-by-specific-label-or-annotation">Filter namespaces by specific label or annotation</a>
       </li>
     </ul>
   </li>
@@ -633,6 +636,13 @@ and/or
 patch &lt;resource&gt; -p &#39;{&quot;metadata&quot;:{&quot;finalizers&quot;:[]}}&#39; --type=merge
 </code>
 Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
+<h2 id="filter-namespaces-by-specific-label-or-annotation">Filter namespaces by specific label or annotation</h2><p>For the label <code>cloud-platform.justice.gov.uk/is-production</code> with value <code>true</code></p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl get ns <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span>
+</code></pre></div><p>You can use <code>awk</code> to output specific column</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> | awk <span class="s1">'{print $1,$2}'</span>
+</code></pre></div><p>To filter namespaces by label and annotation and display as namespace / annotation format</p>
+<div class="highlight"><pre class="highlight shell"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> <span class="nt">-ojson</span> | jq <span class="nt">-r</span> <span class="s1">'.items[] | .metadata.name + " / " + .metadata.annotations["cloud-platform.justice.gov.uk/source-code"] '</span>
+</code></pre></div><p>If you need to install <code>jq</code>, do <code>brew install jq</code></p>
 
 
               <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
