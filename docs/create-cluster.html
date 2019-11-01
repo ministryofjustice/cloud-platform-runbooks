@@ -617,9 +617,12 @@
 <p>With your environment variables set, launch a bash shell on the tools image:</p>
 <div class="highlight"><pre class="highlight shell"><code>make tools-shell
 </code></pre></div><p>Execute the script, supplying the desired name of your new cluster. e.g.:</p>
-<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb david-test1
+<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> david-test1
 </code></pre></div><p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
 <p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/master/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
+<p>By default, the script will create a &lsquo;small&rsquo; cluster. This means the master and worker EC2 instances will be less powerful machine types than in our production cluster. To create a &#39;medium&rsquo; or &#39;production&rsquo; cluster, run the script like this:</p>
+<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> david-test1 <span class="nt">--size</span> medium <span class="c"># or --size production</span>
+</code></pre></div><p>See the script source code for the precise machine types used for the different sizes. The machine types used for &#39;production&rsquo; clusters should always be the same machine types as we use in production.</p>
 <p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>Run options: exclude {:cluster=&gt;"live-1"}
 ..........................
