@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Add nodes to the cluster | Cloud Platform Runbooks</title>
+    <title>Terraform state lock - Error refreshing state | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-cluster.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/error-refreshing-state.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Add nodes to the cluster" />
+      <meta property="og:title" content="Terraform state lock - Error refreshing state" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-cluster.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/error-refreshing-state.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Add nodes to the cluster | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-cluster.html" />
+      <meta property="twitter:title" content="Terraform state lock - Error refreshing state | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/error-refreshing-state.html" />
 
     
   </head>
@@ -608,60 +608,56 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="add-nodes-to-the-cluster">Add nodes to the cluster</h1><p>This runbook covers how to increase the number of nodes in a Kubernetes cluster.</p>
-<p>In the steps below, we assume we want to increase the number of nodes in Live-1, from 40 to 50.</p>
-<h3 id="requirements">Requirements</h3><h4 id="1-ensure-you-have-access-to-the-cloud-platform-aws-account">1. Ensure you have access to the Cloud Platform AWS account</h4><h4 id="2-set-your-environment-variables">2. Set your environment variables :</h4><div class="highlight"><pre class="highlight plaintext"><code>export KOPS_STATE_STORE=s3://cloud-platform-kops-state
-export AWS_PROFILE=moj-cp
-</code></pre></div><h4 id="3-be-authenticated-to-the-cluster">3. Be authenticated to the cluster :</h4><div class="highlight"><pre class="highlight plaintext"><code>kops export kubecfg live-1.cloud-platform.service.justice.gov.uk    
-</code></pre></div><h4 id="4-your-local-kops-version-must-be-1-12-2">4. Your local kops version must be 1.12.2</h4><div class="highlight"><pre class="highlight plaintext"><code>% kops version                                                                                                               
-Version 1.12.2
-</code></pre></div><p>To upgrade kops, get the release from <a href="https://github.com/kubernetes/kops/releases">here</a> (or run <code>brew upgrade kops</code>)</p>
-<h3 id="inline-edit">Inline edit</h3><p>Once authenticated to the cluster</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops get instancegroup                                                                                                                      
-Using cluster from kubectl context: live-1.cloud-platform.service.justice.gov.uk
-NAME            ROLE    MACHINETYPE MIN MAX ZONES
-master-eu-west-2a   Master  c4.4xlarge  1   1   eu-west-2a
-master-eu-west-2b   Master  c4.4xlarge  1   1   eu-west-2b
-master-eu-west-2c   Master  c4.4xlarge  1   1   eu-west-2c
-nodes               Node    r5.xlarge   40  40  eu-west-2a,eu-west-2b,eu-west-2c
-</code></pre></div><p>Now, launch the editor and set <code>minSize</code> and <code>maxSize</code> to the same value, the increased number of nodes.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops edit instancegroup nodes
-Spec:
-    ...
-    maxSize: 50
-    minSize: 50
-    ...
-</code></pre></div><p>Before we apply the changes, kops allow us to confirm what is going to happen:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops update cluster
-Will modify resources:
-AutoscalingGroup/nodes.live-1.cloud-platform.service.justice.gov.uk
-    MaxSize                  40 -&gt; 50
-    MinSize                  40 -&gt; 50 
-</code></pre></div><p><code>THIS SHOULD BE THE ONLY CHANGE THAT YOU SEE, IF YOU SEE ANYTHING MORE: ABORT</code></p>
-<p>If happy with the information above, the changes can be applied with :</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops update cluster --yes
-</code></pre></div><p>The situation can be monitored with :</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops validate cluster
-</code></pre></div><h3 id="persisting-the-changes">Persisting the changes</h3><p>In order to ensure that the new configuration does not get overwritten at the next <code>kops update</code>, we need to persist those changes in the code.</p>
-<h4 id="1-create-a-new-branch-on-the-cloud-platform-infrastructure">1. Create a new branch on the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure </a></h4><h4 id="2-in-terraform-cloud-platform-variables-tf-modify-the-cluster-node-count-variable">2. In /terraform/cloud-platform/variables.tf, modify the <code>cluster_node_count</code> variable</h4><div class="highlight"><pre class="highlight plaintext"><code>variable "cluster_node_count" {
-    description = "The number of worker node in the cluster"
-    default     = "50"
-}
-</code></pre></div><h4 id="3-push-pr-merge">3. Push, PR, Merge</h4><p>Once the PR is merged and a <code>terraform apply</code> is ran, the <code>cloud-platform-infrastructure/kops/live-1.yaml</code> will be updated with the new size.</p>
-<p>For more information on <code>kops update</code> &amp; <code>kops rolling-updtae</code>, have a look at this <a href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">runbook</a>.</p>
+              <h1 id="terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</h1>
+<blockquote>
+<p>Error refreshing state: state data in S3 does not have the expected content.</p>
+</blockquote>
+<p>You may see this error if someone worked on terraform state without using the
+locking mechanism, i.e. they didn&rsquo;t pass this command-line argument during
+<code>terraform init</code>:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>-backend-config="dynamodb_table=${PIPELINE_TERRAFORM_STATE_LOCK_TABLE}" \
+</code></pre></div><p>In this case, the content of the terraform state file will not match the md5
+hash recorded in the corresponding dynamodb record.</p>
+<p>The full error will look something like this:</p>
+
+<blockquote>
+<p>Error refreshing state: state data in S3 does not have the expected content.</p>
+<p>This may be caused by unusually long delays in S3 processing a previous state
+update.  Please wait for a minute or two and try again. If this problem
+persists, and neither S3 nor DynamoDB are experiencing an outage, you may need
+to manually verify the remote state and update the Digest value stored in the
+DynamoDB table to the following value: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
+</blockquote>
+<p>Following the instructions above will enable you to proceed. You can also
+simply delete the dynamodb record for this terraform state file, which will
+have the same effect.</p>
+<p>NB: There seems to be a bug in the AWS console web interface for dynamodb, and
+it sometimes happens that the record you want doesn&rsquo;t appear in the
+<a href="https://eu-west-1.console.aws.amazon.com/dynamodb/home?region=eu-west-1#tables:selected=cloud-platform-environments-terraform-lock;tab=items">alphabetical list of records</a>. If this happens, use the
+<code>query</code> function to search for the records LockID value, and you will find it.</p>
+<p>The value for an environment terraform state file will be:</p>
+<p><code>cloud-platform-terraform-state/cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/[NAMESPACE NAME]/terraform.tfstate-md5</code></p>
+<p>To query the table:</p>
+
+<ul>
+<li>Change <code>Scan</code> to <code>Query</code> in the upper-left dropdown</li>
+<li>Paste the LockID string value in the text box</li>
+<li>Click <code>Start search</code></li>
+</ul>
+<p><a href="../images/dynamodb-query.png" target="_blank" rel="noopener noreferrer"><img src="/images/dynamodb-query.png" alt="dynamodb query" /></a></p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-02-07">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 7 November 2019.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 7 February 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 7 February 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -670,8 +666,8 @@ AutoscalingGroup/nodes.live-1.cloud-platform.service.justice.gov.uk
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/add-nodes-to-the-cluster.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20nodes%20to%20the%20cluster'&amp;body=Problem%20with%20'Add%20nodes%20to%20the%20cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-cluster.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/error-refreshing-state.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Terraform%20state%20lock%20-%20Error%20refreshing%20state'&amp;body=Problem%20with%20'Terraform%20state%20lock%20-%20Error%20refreshing%20state'%20(https://runbooks.cloud-platform.service.justice.gov.uk/error-refreshing-state.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
