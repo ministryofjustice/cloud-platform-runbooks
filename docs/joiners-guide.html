@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Post migration cleanup | Cloud Platform Runbooks</title>
+    <title>Onboarding into Cloud Platform Team | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/post-migration.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/joiners-guide.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Post migration cleanup" />
+      <meta property="og:title" content="Onboarding into Cloud Platform Team" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/post-migration.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/joiners-guide.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Post migration cleanup | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/post-migration.html" />
+      <meta property="twitter:title" content="Onboarding into Cloud Platform Team | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/joiners-guide.html" />
 
     
   </head>
@@ -652,58 +652,70 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="post-migration-cleanup">Post migration cleanup</h1><p>The intention of this document is to provide a run book for all activities required post migration to the Cloud Platform. This is an instructional document and will not provide a detailed description of each task.</p>
-<h2 id="table-of-contents">Table of contents</h2>
+              <h1 id="joiners-guide">Joiners Guide</h1><h2 id="people-team">People Team</h2>
 <ul>
-<li><a href="#when-to-use-this-document">When to use this document?</a></li>
-<li><a href="#1-turn-off-template-deploy-monitoring-and-alerting">Turn off Template Deploy monitoring and alerting</a></li>
-<li><a href="#2-archive-the-deployment-repository">Archive the <em>service</em>-deploy repository</a></li>
-<li><a href="#3-backup-old-template-deploy-data">Backup old Template Deploy data</a></li>
-<li><a href="#4-delete-the-old-cloudformation-stack">Delete the old CloudFormation stack</a></li>
-<li><a href="#5-ensure-removal-of-resources">Ensure removal of resources</a></li>
-<li><a href="#6-ensure-live-service-is-still-functioning">Ensure live service is still functioning!</a></li>
+<li>Collect candidate on first day</li>
+<li>MOJ induction and tour</li>
+<li>SOP - (civil servant)</li>
+<li>Fieldglass - (contractor)</li>
 </ul>
-<h2 id="when-to-use-this-document">When to use this document?</h2><p>Once a service has been migrated to the Cloud Platform from Template Deploy there will be a number of cleanup tasks required to ensure legacy resources have been removed. These tasks will be listed in this document (below). Throughout this process, we recommend making a note/record of deleted resources, including things like S3 buckets and RDS databases. This will allow you to reference your actions to service teams if required.</p>
-<p>Throughout this document, when using the term &ldquo;service team&rdquo;, we&rsquo;re referring to the team in charge of the project that&rsquo;s been migrated.</p>
-<h2 id="0-pre-requisites">0 Pre-requisites</h2><p>There are a couple of suggested pre-requisites before performing the tasks in this document.</p>
-<h4 id="0-1-identify-aws-account">0.1 Identify AWS account</h4><p>Traditionally, production Template Deploy applications lived in the <a href="https://mojdsd.signin.aws.amazon.com/console">mojdsd AWS account</a>, however, this isn&rsquo;t always the case. You&rsquo;ll need to identify which AWS account your application lives in. The recommended approach for this task is to speak to service teams Product Manager.</p>
-<h4 id="0-2-ensure-newly-migrated-application-works">0.2 Ensure newly migrated application works</h4><p>A lot of tasks in this document will involve destroying resources, it is vitally important you are sure 100% of production traffic is being routed to the Cloud Platform.</p>
-<h4 id="0-3-identify-and-inform-service-team">0.3 Identify and inform service team</h4><p>All service teams generally have a Slack channel and a project manager. Please use these means to inform the team of the impending deletion of the Template Deploy version of their application.</p>
-<h2 id="1-turn-off-template-deploy-monitoring-and-alerting">1 Turn off Template Deploy monitoring and alerting</h2><p>Monitoring and alerting for Template Deploy was achieved via a separate CloudFormation stack using a template from <a href="https://github.com/ministryofjustice/MOJ-service-Catalog/blob/master/submodules/cloudwatch-legacy-monitoring.template">another project</a>. This stack mainly consisted of Cloudwatch alarms and dashboards.</p>
-<h4 id="1-1-identify-the-monitoring-cloudformation-stack-name">1.1 Identify the monitoring CloudFormation stack name</h4><p>Access the AWS console and open CloudFormation. Identify the stack name, which has a suffix of <code>-monitoring</code>, for example, <code>graphite-monitoring</code>.</p>
-<h4 id="1-2-delete-monitoring-cloudformation-stack">1.2 Delete monitoring CloudFormation stack</h4><p>CloudFormation stack deletion is fairly trivial. In the AWS console, select your stack, click actions and then delete. This will take a few minutes to complete but will disappear from your list of available stacks.</p>
-<h2 id="2-archive-the-deployment-repository">2 Archive the deployment repository</h2><p>Traditionally there will be a <a href="https://github.com/ministryofjustice?utf8=%E2%9C%93&amp;q=-deploy&amp;type=&amp;language=">Template Deploy GitHub repository</a> usually named in the format <service>-deploy (e.g. <code>graphite-deploy</code>). This repository is redundant and can be archived.</p>
-<p>All actions in this task are performed in the <code>ministryofjustice</code> GitHub account.</p>
-<h4 id="2-1-identify-the-appropriate-repository-name">2.1 Identify the appropriate repository name</h4><p>As stated above, perform a search in the <code>ministryofjustice</code> GitHub account for your service name with the <code>-deploy</code> suffix.</p>
-<h4 id="2-2-change-the-repository-description">2.2 Change the repository description</h4><p>Simply add a <code>**DEPRECATED**</code> message at the front of your description and perhaps a message explaining why the repository has been archived.</p>
-<h4 id="2-3-add-a-note-in-the-readme-md">2.3 Add a note in the README.md</h4><p>It is also appropriate to add a note at the top of the <code>README.md</code> file signaling the reason for deprecation.</p>
-<h4 id="2-4-actually-archive-the-repository">2.4 Actually archive the repository</h4><p>GitHub have written a handy article on how to archive repositories. Please read through <a href="https://help.github.com/en/articles/archiving-repositories">this</a> document.</p>
-<h2 id="3-backup-old-template-deploy-data">3 Backup old Template Deploy data</h2><p>Not all Template Deploy applications have an RDS or data storage of some kind, so this task won&rsquo;t apply to all services.</p>
-<h4 id="3-1-identify-rds-name-in-aws-console">3.1 Identify RDS name in AWS console</h4><p>This can either be identified by the <code>DB Instance</code> name or via a tag. Either way, you can use the search functionality within the AWS console to identify the correct database.</p>
-<h4 id="3-2-take-snapshot-of-database">3.2 Take snapshot of database</h4><p>It is vitally important that we keep a snapshot of the database before it&rsquo;s removed. This allows us to perform an emergency recovery if needed.</p>
-<p>To complete this task in the AWS RDS console, <code>select your database &gt; actions &gt; take snapshot</code>. Give the snapshot a meaningful name and select <code>take snapshot</code>.</p>
-<h2 id="4-delete-the-old-cloudformation-stack">4 Delete the old CloudFormation stack</h2><p>This task is destructive, so please take care in selecting the correct resources. It is recommended to have a second pair of eyes on this task to ensure mistakes are at a minimum.</p>
-<h4 id="4-1-identify-cloudformation-stack-name">4.1 Identify CloudFormation stack name</h4><p>Similar to the step above, the CloudFormation for the application stack will follow a logical naming structure, for example, <code>correspondence-staff-demo</code>. Find the CloudFormation stack that belongs to your migrated service.</p>
-<h4 id="4-2-delete-cloudformation-stack">4.2 Delete CloudFormation stack</h4><p>Before embarking on this task, please ensure you have the correct stack name (this is vitally important). To delete the stack, you must open CloudFormation, use the search function if necessary to locate your desired stack and select the delete button.</p>
-<h2 id="5-ensure-removal-of-resources">5 Ensure removal of resources</h2><p>Following the destruction of the CloudFormation stack, it is recommended that you open services like EC2 to ensure all resources have been removed. This step is optional.</p>
-<h4 id="5-1-search-for-resources">5.1 Search for resources</h4><p>Open EC2 and perform a plaintext search for your project. For example, if your migrated project is named <code>pvb-prod</code> simply type it into the search. Not all resources are named appropriately but they&rsquo;re all tagged correctly.</p>
-<h4 id="5-2-clean-leftover-resources">5.2 Clean leftover resources</h4><p>If your search proves successful and you find resources with your project name, simply select and delete them manually. Making a note for future reference.</p>
-<h2 id="6-ensure-live-service-is-still-functioning">6 Ensure live service is still functioning!</h2><p>Following the successful migration to the Cloud Platform and deletion of the Template Deploy CloudFormation stack, please ensure the service is functioning correctly.</p>
-<h4 id="6-1-is-the-service-accessible-by-url">6.1 Is the service accessible by URL</h4><p>Access the URL using your browser and ensure full functionality (make sure you aren&rsquo;t seeing a cached version).</p>
-<h4 id="6-2-check-with-service-team">6.2 Check with service team</h4><p>Any notes you might&rsquo;ve taken should be shared with the service team, via Slack or email.</p>
+<h2 id="service-desk">Service Desk</h2>
+<ul>
+<li>Supply IT kit</li>
+<li>Lockers</li>
+<li>Google Account</li>
+<li>Relevant mailing-list</li>
+</ul>
+<h2 id="sit-down-with-dm">SIT down with DM</h2>
+<ul>
+<li>Introduce new starter to team</li>
+<li>How our teams works (meetings, board, calendar,</li>
+<li>Working agreements</li>
+<li>Roles in team</li>
+<li>Who we are</li>
+<li>Invite to slack channel(s), mail group, calendar</li>
+<li>Timesheets</li>
+</ul>
+<h2 id="cloud-platform-team">Cloud Platform team</h2>
+<ul>
+<li>What our team does (boundaries with our work and what service teams do)</li>
+<li>What Services do we look after and relationship with service teams</li>
+<li>High level Architecture</li>
+<li>What we are working on</li>
+<li>Share Hosting strategy for the department (where we are trying to get to)</li>
+<li>Deep dive</li>
+<li>How does the team work internally - org chart</li>
+</ul>
+<h2 id="access">ACCESS</h2>
+<ul>
+<li>Access to AWS accounts this includes MOJ DSD, Platforms Intergration,</li>
+<li>Github access - (to be done by new starter)</li>
+<li>Make an admin on <a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/users">Auth0</a></li>
+<li>New starter github user to be added to MOJ github organisation and Webops team</li>
+<li>Add to <a href="https://rattic.service.dsd.io/">Rattic</a> as part of the appropriate group</li>
+<li>GO through user docs</li>
+<li>Authenticate to live cluster</li>
+<li>Create and destroy test cluster</li>
+<li>Access to pagerduty</li>
+<li>Create PGP key</li>
+<li>Add Key to cloud platform infrastructure repository</li>
+<li>As access was needed it was given (what are these things)</li>
+<li>Can everyone in team do this?</li>
+<li>GOAL Welcome to Cloud Platform github</li>
+</ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-02-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 15 November 2019.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 15 February 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 15 February 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -712,8 +724,8 @@
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/post-migration.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Post%20migration%20cleanup'&amp;body=Problem%20with%20'Post%20migration%20cleanup'%20(https://runbooks.cloud-platform.service.justice.gov.uk/post-migration.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/joiners-guide.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Onboarding%20into%20Cloud%20Platform%20Team'&amp;body=Problem%20with%20'Onboarding%20into%20Cloud%20Platform%20Team'%20(https://runbooks.cloud-platform.service.justice.gov.uk/joiners-guide.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
