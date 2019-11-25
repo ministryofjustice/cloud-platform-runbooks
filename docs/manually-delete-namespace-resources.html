@@ -285,11 +285,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -312,6 +307,11 @@
         <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
   </li>
 </ul>
 <ul>
@@ -671,9 +671,10 @@ namespace on the live-1 cluster.</p>
 export PIPELINE_STATE_BUCKET=cloud-platform-terraform-state
 export PIPELINE_STATE_KEY_PREFIX="cloud-platform-environments/"
 export PIPELINE_STATE_REGION="eu-west-1"
-export PIPELINE_CLUSTER_STATE_BUCKET=cloud-platform-terraform-state
-export PIPELINE_CLUSTER_STATE_KEY_PREFIX="cloud-platform/"
 export PIPELINE_TERRAFORM_STATE_LOCK_TABLE=cloud-platform-environments-terraform-lock
+export TF_VAR_cluster_name: "live-1"
+export TF_VAR_cluster_state_bucket: cloud-platform-terraform-state
+export TF_VAR_cluster_state_key: "cloud-platform/live-1/terraform.tfstate"
 export cluster=live-1.cloud-platform.service.justice.gov.uk
 </code></pre></div><h2 id="set-the-namespace-name">Set the namespace name</h2><div class="highlight"><pre class="highlight plaintext"><code>export namespace=umar-dev
 </code></pre></div><h2 id="cd-to-the-resources-directory">cd to the <code>resources</code> directory</h2><div class="highlight"><pre class="highlight plaintext"><code>cd namespaces/live-1.cloud-platform.service.justice.gov.uk/${namespace}/resources
@@ -682,10 +683,7 @@ export cluster=live-1.cloud-platform.service.justice.gov.uk
   -backend-config="key=${PIPELINE_STATE_KEY_PREFIX}${cluster}/${namespace}/terraform.tfstate" \
   -backend-config="dynamodb_table=${PIPELINE_TERRAFORM_STATE_LOCK_TABLE}" \
   -backend-config="region=${PIPELINE_STATE_REGION}"
-</code></pre></div><h2 id="run-terraform-destroy">Run <code>terraform destroy</code></h2><div class="highlight"><pre class="highlight plaintext"><code>tf destroy \
-  -var="cluster_name=${cluster%%.*}" \
-  -var="cluster_state_bucket=${PIPELINE_CLUSTER_STATE_BUCKET}" \
-  -var="cluster_state_key=${PIPELINE_CLUSTER_STATE_KEY_PREFIX}${cluster%%.*}/terraform.tfstate"
+</code></pre></div><h2 id="run-terraform-destroy">Run <code>terraform destroy</code></h2><div class="highlight"><pre class="highlight plaintext"><code>tf destroy
 </code></pre></div><p>After confirming that you&rsquo;re happy with the proposed changes, all the
 namespace&rsquo;s AWS resources should be deleted.</p>
 
