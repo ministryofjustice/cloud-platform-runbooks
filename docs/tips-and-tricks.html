@@ -285,6 +285,11 @@
 </ul>
 <ul>
   <li>
+    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -307,11 +312,6 @@
         <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
       </li>
     </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
   </li>
 </ul>
 <ul>
@@ -628,6 +628,9 @@
       <li>
         <a href="/tips-and-tricks.html#filter-namespaces-by-specific-label-or-annotation">Filter namespaces by specific label or annotation</a>
       </li>
+      <li>
+        <a href="/tips-and-tricks.html#find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</a>
+      </li>
     </ul>
   </li>
 </ul>
@@ -692,7 +695,8 @@ Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
 </code></pre></div><p>To filter namespaces by label and annotation and display as namespace / annotation format</p>
 <div class="highlight"><pre class="highlight shell"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> <span class="nt">-ojson</span> | jq <span class="nt">-r</span> <span class="s1">'.items[] | .metadata.name + " / " + .metadata.annotations["cloud-platform.justice.gov.uk/source-code"] '</span>
 </code></pre></div><p>If you need to install <code>jq</code>, do <code>brew install jq</code></p>
-
+<h2 id="find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-172-20-80-62.eu-west-2.compute.internal
+</code></pre></div>
 
               <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
     <div class='page-expiry--not-expired'>
