@@ -274,26 +274,6 @@
 <ul>
   <li>
     <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
-    <ul>
-      <li>
-        <a href="/manually-delete-namespace-resources.html#start">Start</a>
-      </li>
-      <li>
-        <a href="/manually-delete-namespace-resources.html#set-some-env-vars">Set some env vars.</a>
-      </li>
-      <li>
-        <a href="/manually-delete-namespace-resources.html#set-the-namespace-name">Set the namespace name</a>
-      </li>
-      <li>
-        <a href="/manually-delete-namespace-resources.html#cd-to-the-resources-directory">cd to the resources directory</a>
-      </li>
-      <li>
-        <a href="/manually-delete-namespace-resources.html#run-terraform-init">Run terraform init</a>
-      </li>
-      <li>
-        <a href="/manually-delete-namespace-resources.html#run-terraform-destroy">Run terraform destroy</a>
-      </li>
-    </ul>
   </li>
 </ul>
 <ul>
@@ -614,6 +594,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -630,19 +623,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -668,53 +648,34 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="manually-delete-namespace-resources">Manually Delete Namespace Resources</h1><p>Sometimes AWS resources are not cleanly deleted by the pipeline, because the
-version of the corresponding terraform module has advanced, since the resource
-was created. This often manifests as a plan pipeline failure with an error like
-this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Error: Error asking for user input: 1 error occurred:
-    * module.umar-dev-rds-team.aws_db_instance.rds: configuration for module.umar-dev-rds-team.provider.aws.london is not present; a provider configuration block is required for all operations
-</code></pre></div><p>You can fix this by manually running <code>terraform destroy</code> to get rid of a
-namespace&rsquo;s AWS resources.</p>
-<p>This procedure is adpated from the <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/master/bin/apply">pipeline apply script</a>, which may have been
-updated since this was written. Please check the script if you think this might
-be the case.</p>
-<p>For this example, we are going to delete resources from the <code>umar-dev</code>
-namespace on the live-1 cluster.</p>
-<h2 id="start">Start</h2><p>Start from the root directory of a checkout of the master branch of the
-<a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a>.</p>
-<h2 id="set-some-env-vars">Set some env vars.</h2><div class="highlight"><pre class="highlight plaintext"><code>export PIPELINE_CLUSTER=live-1.cloud-platform.service.justice.gov.uk
-export PIPELINE_STATE_BUCKET=cloud-platform-terraform-state
-export PIPELINE_STATE_KEY_PREFIX="cloud-platform-environments/"
-export PIPELINE_STATE_REGION="eu-west-1"
-export PIPELINE_TERRAFORM_STATE_LOCK_TABLE=cloud-platform-environments-terraform-lock
-export TF_VAR_cluster_name=live-1
-export TF_VAR_cluster_state_bucket=cloud-platform-terraform-state
-export TF_VAR_cluster_state_key=cloud-platform/live-1/terraform.tfstate
-export cluster=live-1.cloud-platform.service.justice.gov.uk
-</code></pre></div><h2 id="set-the-namespace-name">Set the namespace name</h2><div class="highlight"><pre class="highlight plaintext"><code>export namespace=umar-dev
-</code></pre></div><h2 id="cd-to-the-resources-directory">cd to the <code>resources</code> directory</h2><div class="highlight"><pre class="highlight plaintext"><code>cd namespaces/live-1.cloud-platform.service.justice.gov.uk/${namespace}/resources
-</code></pre></div><h2 id="run-terraform-init">Run <code>terraform init</code></h2><div class="highlight"><pre class="highlight plaintext"><code>terraform init \
-  -backend-config="bucket=${PIPELINE_STATE_BUCKET}" \
-  -backend-config="key=${PIPELINE_STATE_KEY_PREFIX}${cluster}/${namespace}/terraform.tfstate" \
-  -backend-config="dynamodb_table=${PIPELINE_TERRAFORM_STATE_LOCK_TABLE}" \
-  -backend-config="region=${PIPELINE_STATE_REGION}"
-</code></pre></div><h2 id="run-terraform-destroy">Run <code>terraform destroy</code></h2><div class="highlight"><pre class="highlight plaintext"><code>tf destroy
-</code></pre></div><p>After confirming that you&rsquo;re happy with the proposed changes, all the
-namespace&rsquo;s AWS resources should be deleted.</p>
+              <h1 id="manually-delete-namespace-resources">Manually Delete Namespace Resources</h1><p>We have a <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/master/bin/delete-namespace.rb">script</a> which will delete all of the AWS resources belonging to a given namespace, by running <code>terraform apply</code> with an empty <code>main.tf</code> file, and then running <code>kubectl delete namespace</code>.</p>
 
+<blockquote>
+<p>The script will not do anything if:</p>
+<p>a) the namespace folder exists in your local working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a>, or</p>
+<p>b) the namespace has <code>is-production: &quot;true&quot;</code></p>
+</blockquote>
+<p>To run the script:</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-18">
+<ol>
+<li><p>populate the environment variables listed in the comment at the top of the script</p></li>
+<li><p>cd to the root of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a></p></li>
+<li><p>Run the script, supplying the namespace name as the only argument, e.g.</p></li>
+</ol>
+<div class="highlight"><pre class="highlight plaintext"><code>./bin/delete-namespace.rb mynamespace
+</code></pre></div>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2020-03-05">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 September 2019.
+      This page was last reviewed on 5 December 2019.
 
-        It needs to be reviewed again on 18 December 2019
+        It needs to be reviewed again on 5 March 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 December 2019
+      This page was set to be reviewed before 5 March 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
