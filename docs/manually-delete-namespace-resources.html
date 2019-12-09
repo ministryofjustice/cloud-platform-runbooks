@@ -278,6 +278,11 @@
 </ul>
 <ul>
   <li>
+    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -300,11 +305,6 @@
         <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
       </li>
     </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
   </li>
 </ul>
 <ul>
@@ -603,6 +603,12 @@
 </ol>
 <div class="highlight"><pre class="highlight plaintext"><code>./bin/delete-namespace.rb mynamespace
 </code></pre></div>
+<blockquote>
+<p>If the script fails partway through, it may leave a new file in your local working copy:</p>
+<p><code>namespaces/live-1.cloud-platform.service.justice.gov.uk/[namespace name]/resources/main.tf</code></p>
+<p>If this happens, just delete the whole <code>namespaces/live-1.cloud-platform.service.justice.gov.uk/[namespace name]</code> folder and re-run the script.</p>
+</blockquote>
+
 
               <div data-module='page-expiry' data-last-reviewed-on="2020-03-05">
     <div class='page-expiry--not-expired'>
