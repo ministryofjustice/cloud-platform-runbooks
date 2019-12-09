@@ -278,11 +278,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -305,6 +300,11 @@
         <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
   </li>
 </ul>
 <ul>
@@ -592,11 +592,13 @@
 <p>a) the namespace folder exists in your local working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a>, or</p>
 <p>b) the namespace has <code>is-production: &quot;true&quot;</code></p>
 </blockquote>
+<p>NB: You need <code>ruby</code> installed, in order to use this tool.</p>
 <p>To run the script:</p>
 
 <ol>
 <li><p>populate the environment variables listed in the comment at the top of the script</p></li>
 <li><p>cd to the root of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a></p></li>
+<li><p>Run <code>bundle install</code></p></li>
 <li><p>Run the script, supplying the namespace name as the only argument, e.g.</p></li>
 </ol>
 <div class="highlight"><pre class="highlight plaintext"><code>./bin/delete-namespace.rb mynamespace
