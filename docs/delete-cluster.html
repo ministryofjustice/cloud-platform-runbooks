@@ -278,11 +278,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -305,6 +300,11 @@
         <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
   </li>
 </ul>
 <ul>
@@ -531,6 +531,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -547,19 +560,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -598,6 +598,7 @@ $ export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 
 <ul>
 <li>Edit the script to change the value of <code>CLUSTER</code> to your test cluster</li>
+<li>Run <code>make tools-shell</code></li>
 <li>Run the script: <code>./destroy-cluster.sh</code></li>
 </ul>
 <p>If any steps fail:</p>
