@@ -414,6 +414,17 @@
         <a href="/running-kops-update-rollingupdate.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
+        <a href="/running-kops-update-rollingupdate.html#updating-the-kops-state">Updating the kops state</a>
+        <ul>
+          <li>
+            <a href="/running-kops-update-rollingupdate.html#generating-an-updated-kops-config-file">Generating an updated kops config file</a>
+          </li>
+          <li>
+            <a href="/running-kops-update-rollingupdate.html#applying-local-changes-to-the-kops-state-store">Applying local changes to the kops state store</a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="/running-kops-update-rollingupdate.html#running-kops-update">Running Kops update</a>
       </li>
       <li>
@@ -421,22 +432,6 @@
       </li>
       <li>
         <a href="/running-kops-update-rollingupdate.html#possible-errors">Possible Errors</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -459,6 +454,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -541,19 +552,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -570,6 +568,19 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -613,7 +624,33 @@
 <li>Set the &ndash;state flag or export KOPS_STATE_STORE</li>
 </ul>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">KOPS_STATE_STORE</span><span class="o">=</span>s3://&lt;bucket&gt;
-</code></pre></div><p>for live-1 KOPS_STATE_STORE=s3://cloud-platform-kops-state</p>
+</code></pre></div>
+<ul>
+<li>Launch a shell using the tools image</li>
+</ul>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">cd </span>cloud-platform-infrastructure<span class="p">;</span> make tools-shell
+</code></pre></div><p>This will ensure you have the correct versions of all required software.</p>
+<p>for live-1 KOPS_STATE_STORE=s3://cloud-platform-kops-state</p>
+<h2 id="updating-the-kops-state">Updating the kops state</h2><p>The kops state file is generated from a template by the terraform code in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform">this directory</a>. The key files are:</p>
+
+<ul>
+<li><code>kops.tf</code></li>
+<li><code>variables.tf</code></li>
+<li><code>templates/kops.yaml.tpl</code></li>
+</ul>
+<h3 id="generating-an-updated-kops-config-file">Generating an updated kops config file</h3><p>After changing the files above, you need to generate a new <code>kops/[cluster name].yaml</code> file.</p>
+<p>From your shell on the tools image:</p>
+<div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg <span class="o">[</span>cluster name].cloud-platform.service.justice.gov.uk
+<span class="nb">cd </span>terraform/cloud-platform
+terraform workspace <span class="k">select</span> <span class="o">[</span>cluster name]
+terraform init
+terraform apply
+</code></pre></div><p>At this point, you should have an updated <code>kops/[cluster name].yaml</code> file in your working copy of the infrastructure repository.
+Commit and push your changes, including those in the terraform source and template files.</p>
+<h3 id="applying-local-changes-to-the-kops-state-store">Applying local changes to the kops state store</h3><p>To apply your local changes to the kops state stored on S3:</p>
+<div class="highlight"><pre class="highlight shell"><code>kops replace <span class="nt">-f</span> kops/[cluster name].yaml
+</code></pre></div><p>WARNING: You will not receive any confirmation of this step.</p>
+<p>After this, you should be able to do a <code>kops update cluster...</code> and <code>kops rolling-update cluster...</code> as described below, to apply your changes to the cluster.</p>
 <h2 id="running-kops-update">Running Kops update</h2><p>Run kops update cluster Without <code>--yes</code> to check the configuration changes for the cluster, it will show you a preview of what it is going to do, this is handy to check what the changes are before applying the changes. Sometimes you will also have to kops rolling-update cluster to roll out the configuration immediately.</p>
 <div class="highlight"><pre class="highlight shell"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>Once you are happy, kops update cluster <code>--yes</code> to apply the changes.</p>
