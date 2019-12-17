@@ -610,12 +610,12 @@
 <p>In the steps below, we assume we want to increase the number of nodes in Live-1, from 40 to 50.</p>
 <h3 id="requirements">Requirements</h3><h4 id="1-ensure-you-have-access-to-the-cloud-platform-aws-account">1. Ensure you have access to the Cloud Platform AWS account</h4><h4 id="2-set-your-environment-variables">2. Set your environment variables :</h4><div class="highlight"><pre class="highlight plaintext"><code>export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 export AWS_PROFILE=moj-cp
-</code></pre></div><h4 id="3-be-authenticated-to-the-cluster">3. Be authenticated to the cluster :</h4><div class="highlight"><pre class="highlight plaintext"><code>kops export kubecfg live-1.cloud-platform.service.justice.gov.uk    
-</code></pre></div><h4 id="4-your-local-kops-version-must-be-1-12-2">4. Your local kops version must be 1.12.2</h4><div class="highlight"><pre class="highlight plaintext"><code>% kops version                                                                                                               
-Version 1.12.2
-</code></pre></div><p>To upgrade kops, get the release from <a href="https://github.com/kubernetes/kops/releases">here</a> (or run <code>brew upgrade kops</code>)</p>
-<h3 id="inline-edit">Inline edit</h3><p>Once authenticated to the cluster</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops get instancegroup                                                                                                                      
+</code></pre></div><h4 id="3-start-a-shell-in-the-tools-image">3. Start a shell in the tools image</h4><p>This will ensure you have the right versions of everything</p>
+<div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-infrastructure
+make tools-shell
+</code></pre></div><h4 id="4-be-authenticated-to-the-cluster">4. Be authenticated to the cluster :</h4><div class="highlight"><pre class="highlight plaintext"><code>kops export kubecfg live-1.cloud-platform.service.justice.gov.uk
+</code></pre></div><h3 id="inline-edit">Inline edit</h3><p>Once authenticated to the cluster</p>
+<div class="highlight"><pre class="highlight plaintext"><code>% kops get instancegroup
 Using cluster from kubectl context: live-1.cloud-platform.service.justice.gov.uk
 NAME            ROLE    MACHINETYPE MIN MAX ZONES
 master-eu-west-2a   Master  c4.4xlarge  1   1   eu-west-2a
@@ -634,7 +634,7 @@ Spec:
 Will modify resources:
 AutoscalingGroup/nodes.live-1.cloud-platform.service.justice.gov.uk
     MaxSize                  40 -&gt; 50
-    MinSize                  40 -&gt; 50 
+    MinSize                  40 -&gt; 50
 </code></pre></div><p><code>THIS SHOULD BE THE ONLY CHANGE THAT YOU SEE, IF YOU SEE ANYTHING MORE: ABORT</code></p>
 <p>If happy with the information above, the changes can be applied with :</p>
 <div class="highlight"><pre class="highlight plaintext"><code>% kops update cluster --yes
@@ -649,17 +649,17 @@ AutoscalingGroup/nodes.live-1.cloud-platform.service.justice.gov.uk
 <p>For more information on <code>kops update</code> &amp; <code>kops rolling-updtae</code>, have a look at this <a href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">runbook</a>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-03-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 16 December 2019.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 16 March 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 16 March 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
