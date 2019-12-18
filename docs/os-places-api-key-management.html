@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Expanding Persistent Volumes created using StatefulSets | Cloud Platform Runbooks</title>
+    <title>OS Places API Key Management | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/os-places-api-key-management.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Expanding Persistent Volumes created using StatefulSets" />
+      <meta property="og:title" content="OS Places API Key Management" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/os-places-api-key-management.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Expanding Persistent Volumes created using StatefulSets | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html" />
+      <meta property="twitter:title" content="OS Places API Key Management | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/os-places-api-key-management.html" />
 
     
   </head>
@@ -105,7 +105,7 @@
     <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
     <ul>
       <li>
-        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
+        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/create-cluster.html#environment-variables">Environment Variables</a>
@@ -558,7 +558,7 @@
     <a href="/os-places-api-key-management.html#os-places-api-key-management">OS Places API Key Management</a>
     <ul>
       <li>
-        <a href="/os-places-api-key-management.html#os-places-api-key-management-pre-requisites">Pre-requisites</a>
+        <a href="/os-places-api-key-management.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/os-places-api-key-management.html#creating-a-new-api-key">Creating a new API key</a>
@@ -625,59 +625,57 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="expanding-persistent-volumes-created-using-statefulsets">Expanding Persistent Volumes created using StatefulSets</h1><p>It is currently not possible to expand PVs created using a StatefulSet directly from the StatefulSet template.</p>
-<p>This is the current work around -</p>
-<p>Edit the &lsquo;storage&rsquo; value under spec:resources for PVC required to be expanded:</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl edit pvc www-web-0</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">accessModes</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
-  <span class="na">resources</span><span class="pi">:</span>
-    <span class="na">requests</span><span class="pi">:</span>
-      <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span> <span class="c1"># edit with new value</span>
-  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">gp2</span>
-  <span class="na">volumeName</span><span class="pi">:</span> <span class="s">pvc-489b1857-91dd-11e9-b4c5-0a5b8815a91e</span>
-</code></pre></div><p>Once the edit has been applied, you should see <code>type: Resizing</code> under status:conditions:</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
-<span class="na">status</span><span class="pi">:</span>
-  <span class="na">accessModes</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
-  <span class="na">capacity</span><span class="pi">:</span>
-    <span class="na">storage</span><span class="pi">:</span> <span class="s">4Gi</span>
-  <span class="na">conditions</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">lastProbeTime</span><span class="pi">:</span> <span class="no">null</span>
-    <span class="na">lastTransitionTime</span><span class="pi">:</span> <span class="s">2019-06-18T15:29:45Z</span>
-    <span class="na">status</span><span class="pi">:</span> <span class="s2">"</span><span class="s">True"</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">Resizing</span> <span class="c1"># You should see value</span>
-  <span class="na">phase</span><span class="pi">:</span> <span class="s">Bound</span>
-</code></pre></div><p>Delete the corresponding pod associated to the pv:</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl delete pod web-0
-pod <span class="s2">"web-0"</span> deleted
-</code></pre></div><p>Once pod is recreated, you should see the new pv disc size in the pvc</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
-<span class="na">status</span><span class="pi">:</span>
-  <span class="na">accessModes</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
-  <span class="na">capacity</span><span class="pi">:</span>
-    <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span>
-  <span class="na">phase</span><span class="pi">:</span> <span class="s">Bound</span>
-</code></pre></div><p>The following command will delete the StatefulSet without deleting the associated pods</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl delete statefulset <span class="nt">--cascade</span><span class="o">=</span><span class="nb">false </span>web <span class="c"># `web` is the name of the StatefulSet</span>
-</code></pre></div><p>Apply the StatefulSet template with new pvc size (with everything else exactly the same) to your namespace.</p>
-<p>There is a enhancement issue for expansion using StatefulSet templates in github waiting to be actioned, at which the above will not be required - https://github.com/kubernetes/enhancements/issues/661</p>
+              <h1 id="os-places-api-key-management">OS Places API Key Management</h1><p>The <a href="https://developer.ordnancesurvey.co.uk/os-places-api">OS Places API</a> is the MoJ&rsquo;s product of choice for addess lookup and verification.</p>
+<p>Service Teams require a key to access the API.</p>
+<h2 id="pre-requisites">Pre-requisites</h2><p>You must have access to the OS Places API portal. If not, please contact your <a href="mailto:os-places-admin@digital.justice.gov.uk">administrator</a>.</p>
+<h2 id="creating-a-new-api-key">Creating a new API key</h2>
+<ol>
+<li><p>Login the the <a href="https://developer.ordnancesurvey.co.uk/os-places-api">OS Places API Portal</a>.</p></li>
+<li><p>Go to &ldquo;My Keys&rdquo;.</p></li>
+<li><p>Click &ldquo;Add a new Key&rdquo;.</p></li>
+<li><p>Input &ldquo;Key Name&rdquo; in the format <code>&lt;Organisation&gt; &lt;Application&gt; &lt;Type of Environment&gt;</code>.</p></li>
+</ol>
+
+<blockquote>
+<p>e.g. HMCTS Apply For Probate Online Production</p>
+</blockquote>
+
+<ol>
+<li><p>Check the &ldquo;OS Names API&rdquo; and &ldquo;OS Places API - Capture and Verification&rdquo; boxes.</p></li>
+<li><p>Click &ldquo;Create Key&rdquo;.</p></li>
+</ol>
+<p>This will return you to the &ldquo;My Keys&rdquo; tab. Select the key you created from the list. You should copy the value for <code>Consumer Key</code>. This is the key that you will need to send to the requester.</p>
+
+<blockquote>
+<p>Note - This key is a secret and should only be transfered via a secure method e.g. email of an encrypted archive with password in a separate message.</p>
+</blockquote>
+<h2 id="revoking-an-api-key">Revoking an API key</h2>
+<ol>
+<li><p>Login the the <a href="https://developer.ordnancesurvey.co.uk/os-places-api">OS Places API Portal</a>.</p></li>
+<li><p>Go to &ldquo;My Keys&rdquo; tab and click on the key you want to revoke.</p></li>
+<li><p>Go to &ldquo;Edit Key&rdquo; and uncheck all products.</p></li>
+<li><p>Click &ldquo;Save Key&rdquo;.</p></li>
+</ol>
+<p>This will disable access to the API. However, you will need to contact OS Places Support to permanently delete the key.</p>
+
+<ol>
+<li><p>Go to &ldquo;Support&rdquo; and click on &ldquo;Contact Us&rdquo;.</p></li>
+<li><p>Complete the form ensuring you include details of the key you want to revoke.</p></li>
+</ol>
+<p>This process can take a couple of days for OS Places to revoke the key. You can check if it has been revoked by going back to the Portal. If the <code>Consumer Key</code> value is <del>struck through</del> then the key has been successfully revoked.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-03-03">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 3 December 2019.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 3 March 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 3 March 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -686,8 +684,8 @@ pod <span class="s2">"web-0"</span> deleted
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/expand.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Expanding%20Persistent%20Volumes%20created%20using%20StatefulSets'&amp;body=Problem%20with%20'Expanding%20Persistent%20Volumes%20created%20using%20StatefulSets'%20(https://runbooks.cloud-platform.service.justice.gov.uk/expand.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/os-places-api-key-management.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'OS%20Places%20API%20Key%20Management'&amp;body=Problem%20with%20'OS%20Places%20API%20Key%20Management'%20(https://runbooks.cloud-platform.service.justice.gov.uk/os-places-api-key-management.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
