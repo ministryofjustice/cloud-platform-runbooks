@@ -411,6 +411,9 @@
     <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">Running Kops Update and Rollingupdate</a>
     <ul>
       <li>
+        <a href="/running-kops-update-rollingupdate.html#using-kops-to-change-the-cluster">Using kops to change the cluster</a>
+      </li>
+      <li>
         <a href="/running-kops-update-rollingupdate.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
@@ -608,6 +611,19 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="running-kops-update-and-rollingupdate">Running Kops Update and Rollingupdate</h1><p>We want to ensure Kops is updated regularly so there is a task in every sprint to run Kops update. It essentially updates various components / configuration coming from kops.</p>
 <p>Note: This is for a kops update not an upgrade. A new release upgrade is described in <a href="/upgrade-cluster.html">a separate runbook</a>.</p>
+<h2 id="using-kops-to-change-the-cluster">Using kops to change the cluster</h2><p>Please do not be tempted to make changes to our production cluster(s) using
+<code>kops edit...</code></p>
+<p>Our cluster state is set by:</p>
+
+<blockquote>
+<p>github code &rarr; generated kops yaml file &rarr; kops s3 config store &rarr; kops state &rarr; the cluster</p>
+</blockquote>
+<p>Using <code>kops edit</code> skips the first two links of this chain, and causes problems
+the next time we try to update the cluster &lsquo;properly&rsquo;, by starting with a
+change to the code on github.</p>
+<p>Instead, please use the procedure below, so that the code in github is always
+the <code>source of truth</code> for the state of the cluster(s), and so that all changes
+have been properly recorded and reviewed as pull requests.</p>
 <h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-reqs:</p>
 
 <ul>
@@ -699,17 +715,17 @@ Cluster validated.
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kubectl get pods <span class="nt">-owide</span> <span class="nt">--all-namespaces</span> | <span class="nb">grep</span> <span class="k">${</span><span class="nv">node_name</span><span class="k">}</span>
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-03-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 17 December 2019.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 17 March 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 17 March 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
