@@ -571,6 +571,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -588,18 +601,8 @@
       <li>
         <a href="/tips-and-tricks.html#find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</a>
       </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
       <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-1-bastion-host">Install tmux and docker on the live-1 bastion host</a>
       </li>
     </ul>
   </li>
@@ -666,6 +669,16 @@ Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
 <div class="highlight"><pre class="highlight shell"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> <span class="nt">-ojson</span> | jq <span class="nt">-r</span> <span class="s1">'.items[] | .metadata.name + " / " + .metadata.annotations["cloud-platform.justice.gov.uk/source-code"] '</span>
 </code></pre></div><p>If you need to install <code>jq</code>, do <code>brew install jq</code></p>
 <h2 id="find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-172-20-80-62.eu-west-2.compute.internal
+</code></pre></div><h2 id="install-tmux-and-docker-on-the-live-1-bastion-host">Install tmux and docker on the live-1 bastion host</h2><p>From <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9">here</a></p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt install tmux
+<span class="nb">sudo </span>apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common
+curl <span class="nt">-fsSL</span> https://download.docker.com/linux/debian/gpg | <span class="nb">sudo </span>apt-key add -
+<span class="nb">sudo </span>add-apt-repository <span class="s2">"deb [arch=amd64] https://download.docker.com/linux/debian </span><span class="k">$(</span>lsb_release <span class="nt">-cs</span><span class="k">)</span><span class="s2"> stable"</span>
+<span class="nb">sudo </span>apt update
+apt-cache policy docker-ce
+<span class="nb">sudo </span>apt install docker-ce
+<span class="nb">sudo </span>systemctl status docker
 </code></pre></div>
 
               <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
