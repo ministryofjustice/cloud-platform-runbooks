@@ -6,7 +6,7 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Rotating the git-crypt key | Cloud Platform Runbooks</title>
+    <title>Git-crypt | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
@@ -19,13 +19,13 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Rotating the git-crypt key" />
+      <meta property="og:title" content="Git-crypt" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Rotating the git-crypt key | Cloud Platform Runbooks" />
+      <meta property="twitter:title" content="Git-crypt | Cloud Platform Runbooks" />
       <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
 
     
@@ -202,9 +202,13 @@
 </ul>
 <ul>
   <li>
-    <a href="/rotate-git-crypt-key.html#rotating-the-git-crypt-key">Rotating the git-crypt key</a>
+    <a href="/rotate-git-crypt-key.html#git-crypt">Git-crypt</a>
     <ul>
       <li>
+        <a href="/rotate-git-crypt-key.html#adding-new-user-to-the-keyring">Adding new user to the keyring</a>
+      </li>
+      <li>
+        <a href="/rotate-git-crypt-key.html#rotating-the-git-crypt-key">Rotating the git-crypt key</a>
         <ul>
           <li>
           </li>
@@ -441,6 +445,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#joiners-guide">Joiners Guide</a>
     <ul>
       <li>
@@ -457,22 +477,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -628,8 +632,32 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="rotating-the-git-crypt-key">Rotating the git-crypt key</h1><p>We use <code>git-crypt</code> for securing secrets committed to <code>git</code>. It uses a symmetric encryption key which is then encrypted for users using their GPG keys.</p>
-<p>When rotating the <code>git-crypt</code> symmetric key, you should follow the steps below:</p>
+              <h1 id="git-crypt">Git-crypt</h1><p>We use <code>git-crypt</code> for securing secrets committed to <code>git</code>. It uses a symmetric encryption key which is then encrypted for users using their GPG keys.</p>
+<h2 id="adding-new-user-to-the-keyring">Adding new user to the keyring</h2>
+<ol>
+<li><p>Ask the user (Slack, email, keyserver, etc) for their public key and import it inside your keyring:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>gpg --import &lt;&lt;EOF
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQGiBEN5tJ0RBADwLLzmO1AR10KILHRJMMq+MtnscrVsOawA4vUhC8oTZHPUXRgE
+AbJgYgUlxMpjsaT14d5xiTUqU1C+85FT764rIk51aEB1AsjudZf/tlv7gCieT64C
+DRDjqr7g7Df5L80zDuPuVdOHn+KlGIlT5X3gypstFKDvSKqN/qQMQhf5KwCg77aq
+----------------------------------------------------------------
+------------------- HERE USER PUBLIC KEY -----------------------
+----------------------------------------------------------------
+3omjJRX0AnQtfN1udwOK0N2FfyZLqChI2ied42DurIeQk+qYoSHhK/sCh4E3BjOg
+U5hJ21cQRxlN1sa1RFaNjoQlIkBH0q2xZSb3p+LM9Ez7keF96VGXZSy0K2Q9xtPi
+NS+0Yc13JFAzDubGfxGOnACePwZ5mNcJB6JNaZXPZN4E5AqDdEg=
+=yaF+
+-----END PGP PUBLIC KEY BLOCK-----
+EOF
+</code></pre></div></li>
+<li><p>Using KeyID/email trust the key as <em>&ldquo;5 = I trust ultimately&rdquo;</em>: <code>gpg --edit-key &quot;alejandro.garrido@digital.justice.gov.uk&quot; trust quit</code></p></li>
+<li><p>Create a new branch inside the git repository where user is going to be added: <code>git checkout -b add-alejandro-gpg</code></p></li>
+<li><p>Use git-crypt CLI to add the user: <code>git-crypt add-gpg-user alejandro.garrido@digital.justice.gov.uk</code></p></li>
+<li><p>Push the branch and create a PR: <code>git push origin add-alejandro-gpg</code></p></li>
+</ol>
+<h2 id="rotating-the-git-crypt-key">Rotating the git-crypt key</h2><p>When rotating the <code>git-crypt</code> symmetric key, you should follow the steps below:</p>
 <h4 id="1-ensure-you-have-unlocked-the-repository-git-crypt-unlock">1. Ensure you have unlocked the repository: <code>git-crypt unlock</code></h4><h4 id="2-make-a-list-of-the-current-users">2. Make a list of the current users:</h4>
 <ul>
 <li>for every file found, extract its filename minus the suffix, which corresponds to the user&rsquo;s key id</li>
@@ -671,17 +699,17 @@
 <p>Note: If you need to <code>checkout</code> an older commit, branch, tag etc., make sure to <code>git-crypt lock</code> your repository before in order to avoid a broken local working directory. Once you&rsquo;ve locked and checked out the desired revision, you can <code>git-crypt unlock</code>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-03-27">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 27 December 2019.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 27 March 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 27 March 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -691,7 +719,7 @@
 
             <ul class="contribution-banner">
               <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/rotate-git-crypt-key.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Rotating%20the%20git-crypt%20key'&amp;body=Problem%20with%20'Rotating%20the%20git-crypt%20key'%20(https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Git-crypt'&amp;body=Problem%20with%20'Git-crypt'%20(https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
