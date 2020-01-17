@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>OS Places API Key Management | Cloud Platform Runbooks</title>
+    <title>EKS Tool/Manager Cluster | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/os-places-api-key-management.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/eks-tools-cluster.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="OS Places API Key Management" />
+      <meta property="og:title" content="EKS Tool/Manager Cluster" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/os-places-api-key-management.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/eks-tools-cluster.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="OS Places API Key Management | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/os-places-api-key-management.html" />
+      <meta property="twitter:title" content="EKS Tool/Manager Cluster | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/eks-tools-cluster.html" />
 
     
   </head>
@@ -379,7 +379,7 @@
     <a href="/eks-tools-cluster.html#provisioning-eks-clusters">Provisioning EKS clusters</a>
     <ul>
       <li>
-        <a href="/eks-tools-cluster.html#provisioning-eks-clusters-pre-requisites">Pre-requisites</a>
+        <a href="/eks-tools-cluster.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/eks-tools-cluster.html#provisioning">Provisioning</a>
@@ -647,7 +647,7 @@
     <a href="/os-places-api-key-management.html#os-places-api-key-management">OS Places API Key Management</a>
     <ul>
       <li>
-        <a href="/os-places-api-key-management.html#pre-requisites">Pre-requisites</a>
+        <a href="/os-places-api-key-management.html#os-places-api-key-management-pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/os-places-api-key-management.html#creating-a-new-api-key">Creating a new API key</a>
@@ -720,50 +720,56 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="os-places-api-key-management">OS Places API Key Management</h1><p>The <a href="https://developer.ordnancesurvey.co.uk/os-places-api">OS Places API</a> is the MoJ&rsquo;s product of choice for addess lookup and verification.</p>
-<p>Service Teams require a key to access the API.</p>
-<h2 id="pre-requisites">Pre-requisites</h2><p>You must have access to the OS Places API portal. If not, please contact your <a href="mailto:os-places-admin@digital.justice.gov.uk">administrator</a>.</p>
-<h2 id="creating-a-new-api-key">Creating a new API key</h2>
-<ol>
-<li><p>Login the the <a href="https://developer.ordnancesurvey.co.uk/os-places-api">OS Places API Portal</a>.</p></li>
-<li><p>Go to &ldquo;My Keys&rdquo;.</p></li>
-<li><p>Click &ldquo;Add a new Key&rdquo;.</p></li>
-<li><p>Input &ldquo;Key Name&rdquo; in the format <code>&lt;Organisation&gt; &lt;Application&gt; &lt;Type of Environment&gt;</code>.</p></li>
-</ol>
+              <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1><p>For the time being EKS is only used for the tools cluster, it mainly holds the Cloud Platform concourse CI and the Prometheus federation.</p>
+<h2 id="pre-requisites">Pre-requisites</h2>
+<ul>
+<li>Make sure you&rsquo;ve access to Cloud Platform AWS account</li>
+<li>Set your environment variables (you might also want to include <code>AWS_*</code> envs):</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>    export KOPS_STATE_STORE=s3://cloud-platform-kops-state
+    export AWS_PROFILE=moj-cp
+</code></pre></div><h2 id="provisioning">Provisioning</h2><h3 id="1-vpc">1. VPC</h3><p>We need to create a VPC where to deploy the cluster, VPCs are deployed using terraform and its code-base can be found in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-network">cloud-platform-infrastructure/terraform/cloud-platform-network</a> folder</p>
+<div class="highlight"><pre class="highlight plaintext"><code>terraform init
+terraform workspace new &lt;WorkspaceName&gt;
+terraform apply
+</code></pre></div><p>You should be able to see your new VPC (called <code>WorkspaceName</code>) inside the AWS Console. Check it before jumping to the next step.</p>
+<p><strong>NOTE</strong>: For conventions purposes please call all terraform workspaces the same</p>
+<h3 id="2-creating-eks-cluster">2. Creating EKS cluster</h3><p>Now it&rsquo;s time to provision the cluster itself, for that we change directory to to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-eks">cloud-platform-infrastructure/terraform/cloud-platform-eks</a> and follow very similar terraform workflow:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>terraform init
+terraform workspace new &lt;WorkspaceName&gt;
+terraform apply -var cluster_node_count="4" -var worker_node_machine_type="m4.large"
+</code></pre></div><p>You adapt the variables <code>cluster_node_count</code> and <code>worker_node_machine_type</code> in base of your needs.</p>
+<p>Once terraform finishes you should be able to find the kubeadmin file (used by <em>kubectl</em> to establish a connection to the cluster) within the <code>files/</code> folder and it should be named as <code>files/kubeconfig_${WorkspaceName}</code>.</p>
+<p>Final check for this step consists in cluster connection, for that we use the <em>kubeconfig</em> file created by the EKS terraform module:</p>
+<p>(<strong>NOTE</strong>: Update the <code>${WorkspaceName}</code> variable with your workspace name)</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ export KUBECONFIG="$(pwd)/files/kubeconfig_${WorkspaceName}"
+$ kubectl cluster-info
+Kubernetes master is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com
+CoreDNS is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
-<blockquote>
-<p>e.g. HMCTS Apply For Probate Online Production</p>
-</blockquote>
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
-<ol>
-<li><p>Check the &ldquo;OS Names API&rdquo; and &ldquo;OS Places API - Capture and Verification&rdquo; boxes.</p></li>
-<li><p>Click &ldquo;Create Key&rdquo;.</p></li>
-</ol>
-<p>This will return you to the &ldquo;My Keys&rdquo; tab. Select the key you created from the list. You should copy the value for <code>Consumer Key</code>. This is the key that you will need to send to the requester.</p>
-
-<blockquote>
-<p>Note - This key is a secret and should only be transfered via a secure method e.g. email of an encrypted archive with password in a separate message.</p>
-</blockquote>
-<h2 id="revoking-an-api-key">Revoking an API key</h2>
-<ol>
-<li><p>Login the the <a href="https://developer.ordnancesurvey.co.uk/os-places-api">OS Places API Portal</a>.</p></li>
-<li><p>Go to &ldquo;Support&rdquo; and click on &ldquo;Contact Us&rdquo;.</p></li>
-<li><p>Complete the form ensuring you include details of the key you want to revoke.</p></li>
-</ol>
-<p>This process can take a couple of days for OS Places to revoke the key. You can check if it has been revoked by going back to the Portal. If the <code>Consumer Key</code> value is <del>struck through</del> then the key has been successfully revoked.</p>
+</code></pre></div><h3 id="3-deploy-components">3. Deploy components</h3><p>Components installation is the last step, for that we need to have the <code>KUBECONFIG</code> variable exported and make sure you have access to the cluster. To deploy components we go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-eks/components">cloud-platform-infrastructure/terraform/cloud-platform-eks/components</a> and follow exactly the same terraform workflow:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>terraform init
+terraform workspace new &lt;WorkspaceName&gt;
+terraform apply
+</code></pre></div><h2 id="todo">TODO</h2>
+<ul>
+<li>It would be nice to have similar script to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/create-cluster.rb"><code>create-cluster.rb</code></a> (or add to it support for EKS) that creates the whole process in one command.</li>
+</ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-04-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 December 2019.
+      This page was last reviewed on 6 January 2020.
 
-        It needs to be reviewed again on 3 March 2020
+        It needs to be reviewed again on 6 April 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 March 2020
+      This page was set to be reviewed before 6 April 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -772,8 +778,8 @@
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/os-places-api-key-management.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'OS%20Places%20API%20Key%20Management'&amp;body=Problem%20with%20'OS%20Places%20API%20Key%20Management'%20(https://runbooks.cloud-platform.service.justice.gov.uk/os-places-api-key-management.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/eks-tools-cluster.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'EKS%20Tool/Manager%20Cluster'&amp;body=Problem%20with%20'EKS%20Tool/Manager%20Cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/eks-tools-cluster.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
