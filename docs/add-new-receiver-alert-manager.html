@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>AWS Compromised Credentials | Cloud Platform Runbooks</title>
+    <title>Add a new Alertmanager receiver and a slack webhook | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/aws-leaked-credentials.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="AWS Compromised Credentials" />
+      <meta property="og:title" content="Add a new Alertmanager receiver and a slack webhook" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-leaked-credentials.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="AWS Compromised Credentials | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-leaked-credentials.html" />
+      <meta property="twitter:title" content="Add a new Alertmanager receiver and a slack webhook | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html" />
 
     
   </head>
@@ -105,7 +105,7 @@
     <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
     <ul>
       <li>
-        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
+        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/create-cluster.html#environment-variables">Environment Variables</a>
@@ -222,7 +222,7 @@
     <a href="/add-new-receiver-alert-manager.html#add-a-new-alertmanager-receiver-and-a-slack-webhook">Add a new Alertmanager receiver and a slack webhook</a>
     <ul>
       <li>
-        <a href="/add-new-receiver-alert-manager.html#add-a-new-alertmanager-receiver-and-a-slack-webhook-pre-requisites">Pre-requisites</a>
+        <a href="/add-new-receiver-alert-manager.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/add-new-receiver-alert-manager.html#creating-a-new-receiver-set">Creating a new receiver set</a>
@@ -761,26 +761,107 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="aws-compromised-credentials">AWS Compromised Credentials</h1><p>This articule is the immediate response, it was created to minimise our window of exposure</p>
-<h2 id="steps-for-a-leaked-credentials">Steps for a leaked credentials</h2><p>1) Login into our AWS Management Console</p>
-<p>2) Go to <strong>Services -&gt; IAM</strong> and search for the user with credentials leaked (<strong>TIP</strong> You can search either by <em>Access Keys</em> or by <em>Username</em>). In case you prefer using the CLI:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>aws iam list-users --output json --query 'Users[?contains(UserName, `testAlejandro`)  == `true`]'
-</code></pre></div><p>3) Within the User, click in &ldquo;Delete user&rdquo; button (top right corner). If you prefer to use the CLI you&rsquo;ll have to delete dependencies (Access Keys, Groups, etc), an example can be found <a href="https://gist.github.com/kgmoore431/886aa60cd7fdc9a43bc5c05f9e956adf">here</a>.</p>
-<p>4) If the service team is known we should notify them via their slack channel (and @ the specific user). If the service team isn&rsquo;t known message should be sent privately on Slack.</p>
-<h2 id="getting-new-credentials">Getting new credentials</h2><p>Most of the users and keys are created through terraform, the process to recreate them are <a href="/rotate-user-aws-credentials.html#4-let-terraform-create-a-new-key">here</a></p>
+              <h1 id="add-a-new-alertmanager-receiver-and-a-slack-webhook">Add a new Alertmanager receiver and a slack webhook</h1><p>When Development Teams require to send custom alarms to their own channels the Alertmanager receiver has to be added to the alertmanager.</p>
+<h2 id="pre-requisites">Pre-requisites</h2><p>You must have the below details from the development team.</p>
+
+<ul>
+<li>namespace name</li>
+<li>team name</li>
+<li>application name</li>
+<li>slack channel</li>
+<li>severity level (warning/information)</li>
+<li>kubernetes secret which has the slack webhook url</li>
+</ul>
+<h2 id="creating-a-new-receiver-set">Creating a new receiver set</h2>
+<ol>
+<li><p>Fill in the template with the details provided from development team and add the array to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-components/terraform.tfvars"><code>terraform.tfvars</code></a> file.
+The <code>terraform.tfvars</code> file is encrypted so you have to <code>git-crypt unlock</code> to view the contents of the file. 
+Check <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/other-topics/git-crypt-setup.html#git-crypt">git-crypt documentation in user guide</a> for more information on how to setup git-crypt.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>{
+    severity = "&lt;unique name based on team info provided"&gt;
+    webhook  = "&lt;slack webhook url&gt;"
+    channel  = "&lt;slack channel&gt;"
+}
+
+</code></pre></div></li>
+<li><p>Create a PR and merge the changes to master</p></li>
+<li><p>Apply the terraform code changes to the live-1</p></li>
+</ol>
+<p>Once the changes are applied, provide the <code>severity</code> to the development team requested. Development team have to use the value as severity label when creating all custom application alerts.</p>
+<p>An example receiver set and a prometheus rule will look as below</p>
+<div class="highlight"><pre class="highlight plaintext"><code>{
+    severity = "cp-team"
+    webhook  = "https://hooks.slack.com/services/HGJKHJKSH/DFJKHKIUO/DJFHKDUJFKSUHUGIDHKUDGD"
+    channel  = "#cloud-platform-alerts"
+}
+</code></pre></div><div class="highlight"><pre class="highlight yaml"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">monitoring.coreos.com/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PrometheusRule</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">alert-rules</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">prometheus-custom-rules-my-application</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">groups</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">node.rules</span>
+    <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">alert</span><span class="pi">:</span> <span class="s">Quota-Exceeded</span>
+      <span class="na">expr</span><span class="pi">:</span> <span class="s">100 * kube_resourcequota{job="kube-state-metrics",type="used",namespace="monitoring"} / ignoring(instance, job, type) (kube_resourcequota{job="kube-state-metrics",type="hard"} &gt; 0) &gt; 90</span>
+      <span class="na">for</span><span class="pi">:</span> <span class="s">5m</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">severity</span><span class="pi">:</span> <span class="s">cp-team</span>
+      <span class="na">annotations</span><span class="pi">:</span>
+        <span class="na">message</span><span class="pi">:</span> <span class="s">Namespace {{ $labels.namespace }} is using {{ printf "%0.0f" $value}}% of its {{ $labels.resource }} quota.</span>
+        <span class="na">runbook_url</span><span class="pi">:</span> <span class="s">https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md###alert-name-kubequotaexceeded</span>
+</code></pre></div><h2 id="information-alerts">Information Alerts</h2><p>AlertManager receivers for slack integration are configured for 2 type of alerts.</p>
+
+<ol>
+<li>to send a warning upon a alert rule condition is met and a recovery message once the condition is reversed<br></li>
+<li>to send a information type alert for monitoring non-problem/non-failure events and no recovery message - e.g for rule condition to positively know something happened (like a database refresh, or app deployment etc) which is not of type of problem/failure.</li>
+</ol>
+<p>All alerts are routed using the severity label set from the prometheus rule. If the severity label matches the keyword <code>info-</code><severity> then it is routed to information type receivers.
+Hence, to receive information alert, prepend <code>info-</code> when setting the <code>severity</code> label of the prometheus rule.</p>
+<p>An example receiver set and a prometheus rule will look as below</p>
+<div class="highlight"><pre class="highlight plaintext"><code>{
+    severity = "cp-team"
+    webhook  = "https://hooks.slack.com/services/HGJKHJKSH/DFJKHKIUO/DJFHKDUJFKSUHUGIDHKUDGD"
+    channel  = "#cloud-platform-alerts"
+}
+</code></pre></div><div class="highlight"><pre class="highlight yaml"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">monitoring.coreos.com/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PrometheusRule</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">role</span><span class="pi">:</span> <span class="s">alert-rules</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">prometheus-custom-rules-my-application</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">groups</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">application-rules</span>
+    <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">alert</span><span class="pi">:</span> <span class="s">Job completed</span>
+      <span class="na">expr</span><span class="pi">:</span> <span class="pi">|-</span>
+        <span class="no">rate(kube_job_status_succeeded{job="kube-state-metrics",namespace="monitoring"}[5m]) &gt; 0</span>
+      <span class="no">for: 30s</span>
+      <span class="no">labels:</span>
+        <span class="no">severity: info-cp-team # Should include `info-` before the severity mentioned in the receiver set above</span>
+        <span class="no">status_icon: information # To have a "i" icon instead of default "?"</span>
+      <span class="no">annotations:</span>
+        <span class="no">message: Latest backup checker Job completed on Namespace {{ $labels.namespace }}</span>
+</code></pre></div><p>Check the user guide for more details on <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/monitoring-an-app/how-to-create-alarms.html#creating-your-own-custom-alerts">how to setup custom prometheus alerts</a>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-31">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-04-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 31 December 2019.
+      This page was last reviewed on 17 January 2020.
 
-        It needs to be reviewed again on 31 March 2020
+        It needs to be reviewed again on 17 April 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 31 March 2020
+      This page was set to be reviewed before 17 April 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -789,8 +870,8 @@
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/aws-leaked-credentials.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'AWS%20Compromised%20Credentials'&amp;body=Problem%20with%20'AWS%20Compromised%20Credentials'%20(https://runbooks.cloud-platform.service.justice.gov.uk/aws-leaked-credentials.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/add-new-receiver-alert-manager.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20a%20new%20Alertmanager%20receiver%20and%20a%20slack%20webhook'&amp;body=Problem%20with%20'Add%20a%20new%20Alertmanager%20receiver%20and%20a%20slack%20webhook'%20(https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
