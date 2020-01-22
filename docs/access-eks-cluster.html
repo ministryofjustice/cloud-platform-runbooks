@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Replacing a master node | Cloud Platform Runbooks</title>
+    <title>Access EKS Cluster | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/replacing-master-node.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Replacing a master node" />
+      <meta property="og:title" content="Access EKS Cluster" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/replacing-master-node.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Replacing a master node | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/replacing-master-node.html" />
+      <meta property="twitter:title" content="Access EKS Cluster | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html" />
 
     
   </head>
@@ -388,7 +388,7 @@
     <a href="/replacing-master-node.html#replacing-a-master-node">Replacing a master node</a>
     <ul>
       <li>
-        <a href="/replacing-master-node.html#pre-requisites">Pre-requisites</a>
+        <a href="/replacing-master-node.html#replacing-a-master-node-pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/replacing-master-node.html#identify-the-failed-master-node">Identify the failed master node</a>
@@ -574,7 +574,7 @@
     <a href="/access-eks-cluster.html#access-eks-cluster">Access EKS cluster</a>
     <ul>
       <li>
-        <a href="/access-eks-cluster.html#access-eks-cluster-pre-requisites">Pre-requisites</a>
+        <a href="/access-eks-cluster.html#pre-requisites">Pre-requisites</a>
         <ul>
           <li>
             <a href="/access-eks-cluster.html#create-kubeconfig-using-aws-command">Create kubeconfig using aws command</a>
@@ -779,120 +779,71 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="replacing-a-master-node">Replacing a master node</h1><p>If one of the master nodes fails due to hardware failure, data directory corruption, etcd volume deletion, or some other problem, it should be replaced as soon as possible.</p>
-<p>To replace the Master node, follow the instructions below for removing the unhealthy member from the cluster, and then re-adding the master node and its volumes via kops</p>
-<h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-reqs:</p>
-
+              <h1 id="access-eks-cluster">Access EKS cluster</h1><p>In order for kubectl to find and access a EKS cluster, it needs a kubeconfig file. When you create a new EKS cluster, the kubeconfig file is created locally within the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-eks/files">cloud-platform-eks/files/</a> named as <code>files/kubeconfig_${WorkspaceName}</code> and only available for the user who created the cluster, other users who is authorized to access the cluster can create the kubeconfig file following the below process.</p>
+<h2 id="pre-requisites">Pre-requisites</h2>
 <ul>
-<li>You are targeting the right cluster.</li>
+<li>Make sure you&rsquo;ve access to Cloud Platform AWS account</li>
+<li>Set your environment variables</li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kubectl config current-context
-</code></pre></div><p>Expected outcome example: <code>live-1.cloud-platform.service.justice.gov.uk</code></p>
+<div class="highlight"><pre class="highlight plaintext"><code>    export KOPS_STATE_STORE=s3://cloud-platform-kops-state
+    export AWS_PROFILE=moj-cp
+</code></pre></div><h3 id="create-kubeconfig-using-aws-command">Create kubeconfig using aws command</h3><p>One way to create a kubeconfig file for the EKS cluster is by running the below aws command</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ export KUBECONFIG=~/.kube/config
+$ aws eks --region eu-west-2 update-kubeconfig --name &lt;cluster-name&gt;
+</code></pre></div><p>You should see the below message</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Added new context arn:aws:eks:eu-west-2:754256621582:cluster/&lt;cluster-name&gt; to .kube/config
 
-<ul>
-<li>You are using the right AWS_PROFILE for this cluster.</li>
-</ul>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">AWS_PROFILE</span><span class="o">=</span>moj-cp
-</code></pre></div>
-<ul>
-<li>Export KOPS_STATE_STORE</li>
-</ul>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">KOPS_STATE_STORE</span><span class="o">=</span>s3://cloud-platform-kops-state
-</code></pre></div><h2 id="identify-the-failed-master-node">Identify the failed master node</h2><p>Run kops validate cluster to identify failed master node.</p>
-<div class="highlight"><pre class="highlight shell"><code>kops validate cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>You will see validation errors as below, which shows that one of the machines not joined the cluster. Make sure it is a master node by looking for the Instance ID, which should be named as <code>master-&lt;availability-zone&gt;.masters.&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk</code> in the Amazon EC2 console, on the Instances page.</p>
-<div class="highlight"><pre class="highlight shell"><code>VALIDATION ERRORS
-KIND    NAME            MESSAGE
-Machine i-046ed8d94d65719a6 machine <span class="s2">"i-046ed8d94d65719a6"</span> has not yet joined cluster
-</code></pre></div><h2 id="remove-the-unhealthy-master-node">Remove the unhealthy master node.</h2><p>As per <a href="https://github.com/etcd-io/etcd/blob/master/Documentation/faq.md#should-i-add-a-member-before-removing-an-unhealthy-member">this guidance</a> remove the unhealthy member first. Identify and remove the unhealthy member by accessing any of the working master nodes using SSH, via the bastion instance.</p>
-<p>In the Amazon EC2 console, on the Instances page, search using <code>${CLUSTER_NAME}</code>to locate bastion instance (<code>bastion.&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk</code>). Use Public DNS (IPv4) In the description of the Instance to login in to bastion as below:</p>
-<div class="highlight"><pre class="highlight shell"><code>ssh <span class="nt">-A</span> admin@ec2-35-176-xx-xx.eu-west-2.compute.amazonaws.com <span class="nt">-p</span> 50422
-</code></pre></div><p>From the bastion, login to any of the working master nodes:</p>
-<div class="highlight"><pre class="highlight shell"><code>ssh 172.20.xx.xx
-</code></pre></div><p>While SSHed onto a master:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker ps | <span class="nb">grep </span>etcd.manager
-</code></pre></div><p>You will see output as below:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>e81b4622417b  kopeio/etcd-manager         k8s_etcd-manager_etcd-manager-main-...
-39c186fba5ea  kopeio/etcd-manager         k8s_etcd-manager_etcd-manager-events-...
-8c77d710ce46  k8s.gcr.io/pause-amd64:3.0  k8s_POD_etcd-manager-main-...
-806e5af8125d  k8s.gcr.io/pause-amd64:3.0  k8s_POD_etcd-manager-events-...
-</code></pre></div><p>Pick the kopeio/etcd-manager container you&rsquo;re interested in (&lsquo;main&rsquo; or &#39;events&rsquo;) and then docker exec onto it</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="o">[</span>container id] bash
-</code></pre></div><p>Run etcdctl like this to get the member list of <code>etcd-main</code>. Change the <code>PORT=4002</code> and <code>ETCD=etcd-events</code> and run it again to get the member list of <code>etcd-events</code></p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">cd</span> /opt/etcd-v3.3.10-linux-amd64/
-<span class="nv">CLUSTER</span><span class="o">=</span>live-1
-<span class="nv">PORT</span><span class="o">=</span>4001
-<span class="nv">ETCD</span><span class="o">=</span>etcd
-<span class="nv">ETCDCTL_API</span><span class="o">=</span>3 <span class="se">\</span>
-  ./etcdctl <span class="nt">--key</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key <span class="se">\</span>
-  <span class="nt">--cert</span>  /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.crt <span class="se">\</span>
-  <span class="nt">--cacert</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt  <span class="se">\</span>
-  <span class="nt">--endpoints</span> <span class="s2">"https://</span><span class="k">${</span><span class="nv">ETCD</span><span class="k">}</span><span class="s2">-a.internal.</span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2">.cloud-platform.service.justice.gov.uk:</span><span class="k">${</span><span class="nv">PORT</span><span class="k">}</span><span class="s2">,https://</span><span class="k">${</span><span class="nv">ETCD</span><span class="k">}</span><span class="s2">-b.internal.</span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2">.cloud-platform.service.justice.gov.uk:</span><span class="k">${</span><span class="nv">PORT</span><span class="k">}</span><span class="s2">,https://</span><span class="k">${</span><span class="nv">ETCD</span><span class="k">}</span><span class="s2">-c.internal.</span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2">.cloud-platform.service.justice.gov.uk:</span><span class="k">${</span><span class="nv">PORT</span><span class="k">}</span><span class="s2">"</span> member list
-</code></pre></div><p>You will see list of members like this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>26153d5a331dc13d, started, etcd-a, https://etcd-a.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:2380, https://etcd-a.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:4001
-27aaafc750f8d2f7, started, etcd-c, https://etcd-c.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:2380, https://etcd-c.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:4001
-8d4a23328d324c94, started, etcd-b, https://etcd-b.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:2380, https://etcd-b.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:4001
-</code></pre></div><p>The first value in each line is the ID of the member. We will need this to remove the member from the etcd cluster.</p>
-<p>Identify the unhealthy member (the old master node) and run the command below to remove the member.</p>
-<p>Kops maintains a separate etcd cluster for events, so we need to remove the old node from the etcd-events cluster as well. Change the <code>PORT=4002</code> and <code>ETCD=etcd-events</code> and run it again to remove the old member from the events etcd cluster.</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">cd</span> /opt/etcd-v3.3.10-linux-amd64/
-<span class="nv">CLUSTER</span><span class="o">=</span>live-1
-<span class="nv">PORT</span><span class="o">=</span>4001
-<span class="nv">ETCD</span><span class="o">=</span>etcd
-<span class="nv">ETCDCTL_API</span><span class="o">=</span>3 <span class="se">\</span>
-  ./etcdctl <span class="nt">--key</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key <span class="se">\</span>
-  <span class="nt">--cert</span>  /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.crt <span class="se">\</span>
-  <span class="nt">--cacert</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt  <span class="se">\</span>
-  <span class="nt">--endpoints</span> <span class="s2">"https://</span><span class="k">${</span><span class="nv">ETCD</span><span class="k">}</span><span class="s2">-a.internal.</span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2">.cloud-platform.service.justice.gov.uk:</span><span class="k">${</span><span class="nv">PORT</span><span class="k">}</span><span class="s2">,https://</span><span class="k">${</span><span class="nv">ETCD</span><span class="k">}</span><span class="s2">-b.internal.</span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2">.cloud-platform.service.justice.gov.uk:</span><span class="k">${</span><span class="nv">PORT</span><span class="k">}</span><span class="s2">,https://</span><span class="k">${</span><span class="nv">ETCD</span><span class="k">}</span><span class="s2">-c.internal.</span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2">.cloud-platform.service.justice.gov.uk:</span><span class="k">${</span><span class="nv">PORT</span><span class="k">}</span><span class="s2">"</span> member remove &lt;member-id&gt;
-</code></pre></div><p>You will get a message:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Member 26153d5a331dc13d removed from cluster bdfd883e2bfa8594
-</code></pre></div><p>Run the member list again and you will see the member has been removed:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>27aaafc750f8d2f7, started, etcd-c, https://etcd-c.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:2380, https://etcd-c.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:4001
-8d4a23328d324c94, started, etcd-b, https://etcd-b.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:2380, https://etcd-b.internal.test-etcd-1.cloud-platform.service.justice.gov.uk:4001
-</code></pre></div><h2 id="replacing-the-master-via-kops">Replacing the master via kops</h2><p>To be sure that everything runs smoothly and is setup correctly, you need to terminate the broken master and remove the volumes attached to it, and launch the new master with kops.</p>
-<p>1) Back up volumes for both etcd main and events by creating snapshots from AWS console.</p>
-<p>2) Take a etcdctl <a href="https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md#snapshotting-the-keyspace">backup</a>, by docker exec onto kopeio/etcd-manager container in any of the working master nodes and run the below command.</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">cd</span> /opt/etcd-v3.3.10-linux-amd64/
-<span class="nv">CLUSTER</span><span class="o">=</span>live-1
-<span class="nv">PORT</span><span class="o">=</span>4001
-<span class="nv">ETCD</span><span class="o">=</span>etcd
-<span class="nv">ETCDCTL_API</span><span class="o">=</span>3 <span class="se">\</span>
-  ./etcdctl <span class="nt">--key</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key <span class="se">\</span>
-  <span class="nt">--cert</span>  /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.crt <span class="se">\</span>
-  <span class="nt">--cacert</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt  <span class="se">\</span>
-  <span class="nt">--endpoints</span> <span class="s2">"https://</span><span class="k">${</span><span class="nv">ETCD</span><span class="k">}</span><span class="s2">-a.internal.</span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2">.cloud-platform.service.justice.gov.uk:</span><span class="k">${</span><span class="nv">PORT</span><span class="k">}</span><span class="s2">,https://</span><span class="k">${</span><span class="nv">ETCD</span><span class="k">}</span><span class="s2">-b.internal.</span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2">.cloud-platform.service.justice.gov.uk:</span><span class="k">${</span><span class="nv">PORT</span><span class="k">}</span><span class="s2">,https://</span><span class="k">${</span><span class="nv">ETCD</span><span class="k">}</span><span class="s2">-c.internal.</span><span class="k">${</span><span class="nv">CLUSTER</span><span class="k">}</span><span class="s2">.cloud-platform.service.justice.gov.uk:</span><span class="k">${</span><span class="nv">PORT</span><span class="k">}</span><span class="s2">"</span> snapshot save /rootfs/mnt/snapshot.db
-</code></pre></div><p>You will get a message as below. The snapshot.db is saved at <code>/rootfs/mnt/</code>, which is volume mounted to a local directory at <code>/mnt</code>.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Snapshot saved at /rootfs/mnt/snapshot.db
-</code></pre></div><p>3) Edit the kops instance group for the master you removed, to scale down by replacing maxSize and minSize values to 0, and run an kops update on the cluster.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops edit instancegroup master-eu-west-2a
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk <span class="nt">--yes</span>
-</code></pre></div><p>4) In the Amazon EC2 console, on the Instances page, search using <code>${CLUSTER_NAME}</code> to locate broken master instance (<code>master-&lt;availability-zone&gt;.masters.&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk</code>). Terminate the broken master instance following this <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/terminating-instances.html">guide</a>.</p>
-<p>5) In the Amazon volume console, search using <code>${CLUSTER_NAME}</code> to locate the right volume associated with the broken master. Remove volumes (main and events) for the broken master.</p>
-<p>For example, volumes will be named as below, for master <code>master-eu-west-2a.masters.live-1.cloud-platform.service.justice.gov.uk</code>.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>a.etcd-main.live-1.cloud-platform.service.justice.gov.uk
-a.etcd-events.live-1.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>6) Create the master instance with kops.</p>
-<p>Edit the kops instancegroup, and scale back up by changing maxSize and minSize values to 1, then run a kops update on the cluster.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops edit instancegroup master-eu-west-2a
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk <span class="nt">--yes</span>
-</code></pre></div><p>Master will be restarted with a clean config and should join the others. Give some time (10-15 min) and validate the cluster, the replacement master node should join the cluster and be in ready status.</p>
-<div class="highlight"><pre class="highlight shell"><code>kops validate cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>You can see the cluster is in ready status.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Your cluster ${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready
-</code></pre></div><h2 id="etcd-volumes">etcd volumes</h2><p>Kubernetes live-1 cluster deployed with kops stores the etcd state in two different AWS EBS volumes per master node. One volume is used to store the Kubernetes main data, the other one for events. For a cluster with three masters this will result in six volumes for etcd data (one in each AZ).</p>
+</code></pre></div><p>Check that kubectl is properly configured by getting the cluster state</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ kubectl cluster-info
+
+</code></pre></div><p>If you see similar response as below, kubectl is correctly configured to access EKS cluster.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Kubernetes master is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com
+CoreDNS is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+</code></pre></div><p>You should now be able to run kubectl commands, try running such as <code>kubectl get namespaces</code>.</p>
+<h3 id="create-kubeconfig-manually-using-template">Create kubeconfig manually using template</h3><p>Kubeconfig file can be created manually, using the below template. Login to AWS console, in the EKS service select the cluster you need to access. You will see all the information related to the EKS cluster, update <code>API server endpoint</code>, <code>Certificate authority</code> and <code>Cluster name</code> in the below kubeconfig template.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: v1
+preferences: {}
+kind: Config
+
+clusters:
+- cluster:
+    server: &lt;API server endpoint&gt;
+    certificate-authority-data: &lt;Certificate authority&gt;
+  name: eks_&lt;Cluster name&gt;
+
+contexts:
+- context:
+    cluster: eks_&lt;Cluster name&gt;
+    user: eks_&lt;Cluster name&gt;
+  name: eks_&lt;Cluster name&gt;
+
+current-context: eks_&lt;Cluster name&gt;
+
+users:
+- name: eks_&lt;Cluster name&gt;
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1alpha1
+      command: aws-iam-authenticator
+      args:
+        - "token"
+        - "-i"
+        - "&lt;Cluster name&gt;"
+</code></pre></div><p>Save the kubeconfig with a filename (eg.: ~/.kube/config_eks) and use the saved kubeconfig file to access the EKS cluster.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-04-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 6 January 2020.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 6 April 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 6 April 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -901,8 +852,8 @@ a.etcd-events.live-1.cloud-platform.service.justice.gov.uk
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/replacing-master-node.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Replacing%20a%20master%20node'&amp;body=Problem%20with%20'Replacing%20a%20master%20node'%20(https://runbooks.cloud-platform.service.justice.gov.uk/replacing-master-node.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/access-eks-cluster.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Access%20EKS%20Cluster'&amp;body=Problem%20with%20'Access%20EKS%20Cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
