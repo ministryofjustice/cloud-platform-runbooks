@@ -354,11 +354,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -381,6 +376,11 @@
         <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
   </li>
 </ul>
 <ul>
@@ -433,6 +433,9 @@
           </li>
           <li>
             <a href="/eks-tools-cluster.html#3-deploy-components">3. Deploy components</a>
+          </li>
+          <li>
+            <a href="/eks-tools-cluster.html#4-delete-the-eks-cluster">4. Delete the EKS cluster</a>
           </li>
         </ul>
       </li>
@@ -589,6 +592,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#joiners-guide">Joiners Guide</a>
     <ul>
       <li>
@@ -605,22 +624,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -812,6 +815,27 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 <div class="highlight"><pre class="highlight plaintext"><code>terraform init
 terraform workspace new &lt;WorkspaceName&gt;
 terraform apply
+</code></pre></div><h3 id="4-delete-the-eks-cluster">4. Delete the EKS cluster</h3><p>Follow these steps, to delete the EKS cluster.</p>
+<p>First, set the kubectl context for the EKS cluster you are deleting. The easiest way to do this is with aws command:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ export KUBECONFIG=~/.kube/config
+$ aws eks --region eu-west-2 update-kubeconfig --name &lt;cluster-name&gt;
+</code></pre></div><p>You should see this output:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Added new context arn:aws:eks:eu-west-2:754256621582:cluster/&lt;cluster-name&gt; to .kube/config
+
+</code></pre></div><p>Then, from the components directory, run these commands to destroy all cluster components, and delete the terraform workspace.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ cd terraform/cloud-platform-eks/components
+$ terraform init
+$ terraform workspace select &lt;clusterName e.g. tools-cluster-eks&gt;
+$ terraform destroy
+$ terraform workspace select default
+$ terraform workspace delete &lt;clusterName&gt;
+</code></pre></div><p>Change directories and perform the following to destroy the EKS cluster, and delete the terraform workspace.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ cd ../cloud-platform-eks
+$ terraform init
+$ terraform workspace select &lt;clusterName e.g. tools-cluster-eks&gt;
+$ terraform destroy
+$ terraform workspace select default
+$ terraform workspace delete &lt;clusterName&gt;
 </code></pre></div><h2 id="todo">TODO</h2>
 <ul>
 <li>It would be nice to have similar script to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/create-cluster.rb"><code>create-cluster.rb</code></a> (or add to it support for EKS) that creates the whole process in one command.</li>
