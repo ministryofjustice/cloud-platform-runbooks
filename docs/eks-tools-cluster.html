@@ -354,11 +354,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -381,6 +376,11 @@
         <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
   </li>
 </ul>
 <ul>
@@ -592,22 +592,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/joiners-guide.html#joiners-guide">Joiners Guide</a>
     <ul>
       <li>
@@ -624,6 +608,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -722,6 +722,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -750,19 +763,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/add-a-new-runbook.html#add-a-new-runbook">Add a new runbook</a>
     <ul>
       <li>
@@ -783,6 +783,7 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1><p>For the time being EKS is only used for the tools cluster, it mainly holds the Cloud Platform concourse CI and the Prometheus federation.</p>
+<p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong>, each of them (EKS or kOps, doesn&rsquo;t matter) creates a Route53 hostzone which is unique</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <ul>
 <li>Make sure you&rsquo;ve access to Cloud Platform AWS account</li>
@@ -796,7 +797,7 @@ terraform workspace new &lt;WorkspaceName&gt;
 terraform apply
 </code></pre></div><p>You should be able to see your new VPC (called <code>WorkspaceName</code>) inside the AWS Console. Check it before jumping to the next step.</p>
 <p><strong>NOTE</strong>: For conventions purposes please call all terraform workspaces the same</p>
-<h3 id="2-creating-eks-cluster">2. Creating EKS cluster</h3><p>Now it&rsquo;s time to provision the cluster itself, for that we change directory to to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-eks">cloud-platform-infrastructure/terraform/cloud-platform-eks</a> and follow very similar terraform workflow:</p>
+<h3 id="2-creating-eks-cluster">2. Creating EKS cluster</h3><p>Now it&rsquo;s time to provision the cluster itself, we change directory to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-eks">cloud-platform-infrastructure/terraform/cloud-platform-eks</a> and follow very similar terraform workflow:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>terraform init
 terraform workspace new &lt;WorkspaceName&gt;
 terraform apply -var cluster_node_count="4" -var worker_node_machine_type="m4.large"
