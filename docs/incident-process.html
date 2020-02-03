@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Add a new Alertmanager receiver and a slack webhook | Cloud Platform Runbooks</title>
+    <title>Incident Process | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Add a new Alertmanager receiver and a slack webhook" />
+      <meta property="og:title" content="Incident Process" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Add a new Alertmanager receiver and a slack webhook | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html" />
+      <meta property="twitter:title" content="Incident Process | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html" />
 
     
   </head>
@@ -149,7 +149,7 @@
     <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
     <ul>
       <li>
-        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites">Pre-requisites</a>
+        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/create-cluster.html#environment-variables">Environment Variables</a>
@@ -266,7 +266,7 @@
     <a href="/add-new-receiver-alert-manager.html#add-a-new-alertmanager-receiver-and-a-slack-webhook">Add a new Alertmanager receiver and a slack webhook</a>
     <ul>
       <li>
-        <a href="/add-new-receiver-alert-manager.html#pre-requisites">Pre-requisites</a>
+        <a href="/add-new-receiver-alert-manager.html#add-a-new-alertmanager-receiver-and-a-slack-webhook-pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/add-new-receiver-alert-manager.html#creating-a-new-receiver-set">Creating a new receiver set</a>
@@ -826,107 +826,126 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="add-a-new-alertmanager-receiver-and-a-slack-webhook">Add a new Alertmanager receiver and a slack webhook</h1><p>When Development Teams require to send custom alarms to their own channels the Alertmanager receiver has to be added to the alertmanager.</p>
-<h2 id="pre-requisites">Pre-requisites</h2><p>You must have the below details from the development team.</p>
+              <h1 id="incident-process">Incident Process</h1><p>This document describes our incident handling process.</p>
+<h2 id="1-confirm-that-the-event-constitutes-an-incident">1. Confirm that the event constitutes an incident</h2><p>We define an incident as an event which:</p>
 
 <ul>
-<li>namespace name</li>
-<li>team name</li>
-<li>application name</li>
-<li>slack channel</li>
-<li>severity level (warning/information)</li>
-<li>kubernetes secret which has the slack webhook url</li>
+<li>is unplanned, and</li>
+<li>impacts end users, or</li>
+<li>degrades user-facing services, or</li>
+<li>increases risk to production services</li>
 </ul>
-<h2 id="creating-a-new-receiver-set">Creating a new receiver set</h2>
-<ol>
-<li><p>Fill in the template with the details provided from development team and add the array to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-components/terraform.tfvars"><code>terraform.tfvars</code></a> file.
-The <code>terraform.tfvars</code> file is encrypted so you have to <code>git-crypt unlock</code> to view the contents of the file. 
-Check <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/other-topics/git-crypt-setup.html#git-crypt">git-crypt documentation in user guide</a> for more information on how to setup git-crypt.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>{
-    severity = "&lt;unique name based on team info provided"&gt;
-    webhook  = "&lt;slack webhook url&gt;"
-    channel  = "&lt;slack channel&gt;"
-}
 
-</code></pre></div></li>
-<li><p>Create a PR and merge the changes to master</p></li>
-<li><p>Apply the terraform code changes to the live-1</p></li>
-</ol>
-<p>Once the changes are applied, provide the <code>severity</code> to the development team requested. Development team have to use the value as severity label when creating all custom application alerts.</p>
-<p>An example receiver set and a prometheus rule will look as below</p>
-<div class="highlight"><pre class="highlight plaintext"><code>{
-    severity = "cp-team"
-    webhook  = "https://hooks.slack.com/services/HGJKHJKSH/DFJKHKIUO/DJFHKDUJFKSUHUGIDHKUDGD"
-    channel  = "#cloud-platform-alerts"
-}
-</code></pre></div><div class="highlight"><pre class="highlight yaml"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">monitoring.coreos.com/v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">PrometheusRule</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
-  <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">role</span><span class="pi">:</span> <span class="s">alert-rules</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">prometheus-custom-rules-my-application</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">groups</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">node.rules</span>
-    <span class="na">rules</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">alert</span><span class="pi">:</span> <span class="s">Quota-Exceeded</span>
-      <span class="na">expr</span><span class="pi">:</span> <span class="s">100 * kube_resourcequota{job="kube-state-metrics",type="used",namespace="monitoring"} / ignoring(instance, job, type) (kube_resourcequota{job="kube-state-metrics",type="hard"} &gt; 0) &gt; 90</span>
-      <span class="na">for</span><span class="pi">:</span> <span class="s">5m</span>
-      <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">severity</span><span class="pi">:</span> <span class="s">cp-team</span>
-      <span class="na">annotations</span><span class="pi">:</span>
-        <span class="na">message</span><span class="pi">:</span> <span class="s">Namespace {{ $labels.namespace }} is using {{ printf "%0.0f" $value}}% of its {{ $labels.resource }} quota.</span>
-        <span class="na">runbook_url</span><span class="pi">:</span> <span class="s">https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md###alert-name-kubequotaexceeded</span>
-</code></pre></div><h2 id="information-alerts">Information Alerts</h2><p>AlertManager receivers for slack integration are configured for 2 type of alerts.</p>
+<blockquote>
+<p>&ldquo;Users&rdquo; includes end-users of services (citizens or members of internal user groups such as prison officers), as well as users of the platform - i.e. members of service teams who maintain or depend on services we host/maintain.</p>
+<p>An example of increased risk might be when one or more members of a high-availability set of components stops working. e.g. if one of our three master nodes in live-1 stopped working, it would not have any visible effect to end users but the cluster would be at increased risk, because we would no longer have a highly-available cluster.</p>
+</blockquote>
+<p>If this event does not constitute an incident, the appropriate response is probably to <a href="http://goo.gl/msfGiS">raise a ticket</a> to fix whatever needs fixing.</p>
+<p>Once you are confident that you have an incident, declare it as such.</p>
+<h2 id="2-declare-the-incident">2. Declare the incident</h2><p>Post a message into the <code>#cloud-platform</code> slack channel, following this format:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>I am declaring an incident because [reason]. The impact is that [impact].
+</code></pre></div><p>This declaration, <strong>by any member of the cloud platform team</strong>, marks the official start of the incident.</p>
 
-<ol>
-<li>to send a warning upon a alert rule condition is met and a recovery message once the condition is reversed<br></li>
-<li>to send a information type alert for monitoring non-problem/non-failure events and no recovery message - e.g for rule condition to positively know something happened (like a database refresh, or app deployment etc) which is not of type of problem/failure.</li>
-</ol>
-<p>All alerts are routed using the severity label set from the prometheus rule. If the severity label matches the keyword <code>info-</code><severity> then it is routed to information type receivers.
-Hence, to receive information alert, prepend <code>info-</code> when setting the <code>severity</code> label of the prometheus rule.</p>
-<p>An example receiver set and a prometheus rule will look as below</p>
-<div class="highlight"><pre class="highlight plaintext"><code>{
-    severity = "cp-team"
-    webhook  = "https://hooks.slack.com/services/HGJKHJKSH/DFJKHKIUO/DJFHKDUJFKSUHUGIDHKUDGD"
-    channel  = "#cloud-platform-alerts"
-}
-</code></pre></div><div class="highlight"><pre class="highlight yaml"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">monitoring.coreos.com/v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">PrometheusRule</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>
-  <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">role</span><span class="pi">:</span> <span class="s">alert-rules</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">prometheus-custom-rules-my-application</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">groups</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">application-rules</span>
-    <span class="na">rules</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">alert</span><span class="pi">:</span> <span class="s">Job completed</span>
-      <span class="na">expr</span><span class="pi">:</span> <span class="pi">|-</span>
-        <span class="no">rate(kube_job_status_succeeded{job="kube-state-metrics",namespace="monitoring"}[5m]) &gt; 0</span>
-      <span class="no">for: 30s</span>
-      <span class="no">labels:</span>
-        <span class="no">severity: info-cp-team # Should include `info-` before the severity mentioned in the receiver set above</span>
-        <span class="no">status_icon: information # To have a "i" icon instead of default "?"</span>
-      <span class="no">annotations:</span>
-        <span class="no">message: Latest backup checker Job completed on Namespace {{ $labels.namespace }}</span>
-</code></pre></div><p>Check the user guide for more details on <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/monitoring-an-app/how-to-create-alarms.html#creating-your-own-custom-alerts">how to setup custom prometheus alerts</a>.</p>
+<blockquote>
+<p>It is important to use this exact form of words so that we can use scripts to pull useful data out of the channel logs, later on.</p>
+</blockquote>
+<p>This message should be used as the start of a slack thread which will form a key source of information during and after the incident (the <strong>incident thread</strong>).</p>
+<p>At your discretion, you may also wish to notify users now via <code>#ask-cloud-platform</code> and/or <code>#cloud-platform-update</code>, however you may prefer to leave this until later in the process, when more information is available.</p>
+<h3 id="examples">Examples</h3><div class="highlight"><pre class="highlight plaintext"><code>I am declaring an incident because one of our master nodes is in a failed
+state. The impact is that the cluster is at increased risk of failure.
+
+I am declaring an incident because Prometheus is down.
+The impact is that service teams are not getting any alerts or metrics data
+for their services.
+
+I am declaring an incident because live-1 is down.
+The impact is that all production and non-production services are down.
+</code></pre></div><h2 id="3-assign-roles">3. Assign roles</h2><p>The two roles which <strong>must</strong> be filled for every incident are the <strong>Incident Lead</strong> and the <strong>Scribe</strong>.</p>
+
+<blockquote>
+<p>In rare cases, the same person might fill both roles, but this is discouraged because it generally leads to poor record keeping.</p>
+</blockquote>
+<p>To fill these roles, ask for volunteers from the team, either verbally or via #cloud-platform. In the unlikely event that you don&rsquo;t get any volunteers, appoint someone.</p>
+<h3 id="3-1-incident-lead">3.1 Incident Lead</h3><p><strong>Responsibilities</strong>:</p>
+
+<ul>
+<li>coordinate our response to the incident</li>
+<li>decide on any additional roles required (e.g. a communications lead may be required)</li>
+<li>ensure that all required roles are filled</li>
+<li>ensure that all tasks which need to be handled are being done</li>
+<li>make the final decision whenever we need to choose a course of action</li>
+<li>set the schedule for any regular team check-ins, if those are deemed necessary</li>
+<li>declare the incident closed, when appropriate</li>
+<li>ensure that the post-incident process is followed</li>
+</ul>
+
+<blockquote>
+<p>NB: The incident lead needs to ensure that things <strong>are being done</strong>, not try to do everything themselves</p>
+</blockquote>
+<p>Once appointed, the incident lead should post this message on the incident slack thread:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>I am the incident lead
+</code></pre></div><p>Again, if you use these words, it will make it easier to scrape data from the thread later.</p>
+<h3 id="3-2-scribe">3.2 Scribe</h3><p><strong>Responsibilities</strong>:</p>
+<p>The scribe is responsible for keeping a log of the incident, including:</p>
+
+<ul>
+<li>important events</li>
+<li>discussion topics</li>
+<li>decisions</li>
+<li>actions</li>
+<li>results of actions/investigations</li>
+</ul>
+
+<blockquote>
+<p>NB: this log is not intended to be a verbatim transcript of discussions. Rather, things like &ldquo;xxx suggested the disk might be full. yyy to investigate and report back&rdquo;</p>
+</blockquote>
+<p>Once appointed, the scribe should post this message on the incident slack thread:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>I am the scribe
+</code></pre></div><p>The form of the log is at the scribe&rsquo;s discretion, provided key events are timestamped, and that it can easily be handed off to another member of the team if they take over as scribe.</p>
+<h3 id="3-3-communications-lead">3.3 Communications Lead</h3><p>Depending on the impact/duration/panic-level of an incident, it <em>may</em> be desirable to appoint a communications lead.</p>
+<p><strong>Responsibilities</strong>:</p>
+
+<ul>
+<li>communicate the incident out to those who are impacted</li>
+<li>decide what, how and how often to issue updates</li>
+<li>give updates at regular intervals</li>
+<li>field enquiries so the team can focus on fixing the incident without interruptions</li>
+<li>disseminate a post-incident report</li>
+</ul>
+<p>People to update:</p>
+
+<ul>
+<li>Users who are affected by the problem - via #ask-cloud-platform, #cloud-platform-update and the affected team’s own slack channels.</li>
+<li>Team members for awareness or because they might be able to help - via #cloud-platform</li>
+<li>People in the team who manage communication with senior leadership in MoJ - Steve, Karen, Tony.</li>
+</ul>
+<p>In the case of high-priority user-impacting incidents there is a need to keep the MoJ Incident Management Team aware. This is done by posting updates in the private <strong>#p1s</strong> slack channel (only Steve and Tony can do this), and via email to <strong><a href="mailto:MoJdtincidentmanagement@justice.gov.uk">MoJdtincidentmanagement@justice.gov.uk</a></strong></p>
+<h3 id="transferring-roles">Transferring roles</h3><p>It may be necessary to transfer roles from one team member to another, e.g. during long-running incidents. In this case, it is the responsibility of whoever is in a role to ensure that someone else takes it over.</p>
+<p>Whoever assumes a role should announce it in the incident slack thread, so that the team is aware.</p>
+<h2 id="4-fix-the-problem">4. Fix the problem</h2><p>Please bear in mind that not every incident requires the whole team to be involved (even if they all <em>want</em> to join in).</p>
+<h2 id="5-end-the-incident">5. End the incident</h2><p>When work on the problem has ceased, either because the problem has been resolved or because resolution is blocked until a later date, the <strong>incident lead</strong> should post a message to the incident thread as follows:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>I am declaring this incident resolved because [resolution / plan]
+</code></pre></div><p>This marks the official end of the incident. If users were notified of the incident, an appropriate message should go out via the same channels to tell them it&rsquo;s over.</p>
+<h2 id="6-post-incident-procedure">6. Post-incident procedure</h2><p>After the incident is resolved:</p>
+
+<ul>
+<li>An incident report <strong>must</strong> be published (format and mechanism TODO)</li>
+<li>A blameless post mortem meeting <strong>may</strong> be scheduled</li>
+<li>A <a href="https://runbooks.cloud-platform.service.justice.gov.uk">runbook</a> for how to fix this issue <strong>should</strong> be published</li>
+</ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-04-17">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-04-29">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 January 2020.
+      This page was last reviewed on 29 January 2020.
 
-        It needs to be reviewed again on 17 April 2020
+        It needs to be reviewed again on 29 April 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 April 2020
+      This page was set to be reviewed before 29 April 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -935,8 +954,8 @@ Hence, to receive information alert, prepend <code>info-</code> when setting the
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/add-new-receiver-alert-manager.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20a%20new%20Alertmanager%20receiver%20and%20a%20slack%20webhook'&amp;body=Problem%20with%20'Add%20a%20new%20Alertmanager%20receiver%20and%20a%20slack%20webhook'%20(https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/incident-process.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Incident%20Process'&amp;body=Problem%20with%20'Incident%20Process'%20(https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
