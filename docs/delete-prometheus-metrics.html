@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Manually Delete Namespace Resources | Cloud Platform Runbooks</title>
+    <title>Delete Prometheus Metrics | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/manually-delete-namespace-resources.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/delete-prometheus-metrics.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Manually Delete Namespace Resources" />
+      <meta property="og:title" content="Delete Prometheus Metrics" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/manually-delete-namespace-resources.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-prometheus-metrics.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Manually Delete Namespace Resources | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/manually-delete-namespace-resources.html" />
+      <meta property="twitter:title" content="Delete Prometheus Metrics | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-prometheus-metrics.html" />
 
     
   </head>
@@ -860,42 +860,86 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="manually-delete-namespace-resources">Manually Delete Namespace Resources</h1><p>We have a <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/master/bin/delete-namespace.rb">script</a> which will delete all of the AWS resources belonging to a given namespace, by running <code>terraform apply</code> with an empty <code>main.tf</code> file, and then running <code>kubectl delete namespace</code>.</p>
+              <h1 id="delete-prometheus-metrics">Delete Prometheus Metrics</h1><p>This runbook describes the process for deleting metrics series from Prometheus.</p>
+<p>More information in <a href="https://www.shellhacks.com/prometheus-delete-time-series-metrics/">this article</a>.</p>
 
 <blockquote>
-<p>The script will not do anything if:</p>
-<p>a) the namespace folder exists in your local working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a>, or</p>
-<p>b) the namespace has <code>is-production: &quot;true&quot;</code></p>
+<p>NB: This procedure has not removed the deleted metrics from the dropdown list on <a href="https://prometheus.cloud-platform.service.justice.gov.uk/graph">this page</a>. So, I&rsquo;m not sure it actually works.</p>
 </blockquote>
-<p>NB: You need <code>ruby</code> installed, in order to use this tool.</p>
-<p>To run the script:</p>
+<h2 id="1-identify-the-metrics-you-want-to-delete">1.  Identify the metrics you want to delete</h2>
+<ul>
+<li><p>Use your web browser&rsquo;s developer tools to inspect the dropdown list from the prometheus UI and copy its source, then save that as a file called <code>metrics-select-box.html</code></p></li>
+<li><p>Filter the list and convert it to plain text</p></li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>cat metrics-select-box.html | sed $'s/&gt;&lt;/&gt;\\\n&lt;/g' | grep jenkins_node_ | sed 's/&lt;.option&gt;//' | sed 's/.*&gt;//' &gt; metrics
+</code></pre></div><p>This example captures all metrics whose names include the string <code>jenkins_node_</code></p>
+<h2 id="2-enable-the-admin-interface-in-prometheus">2. Enable the admin interface in Prometheus</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl -n monitoring edit prometheus prometheus-operator-prometheus
+</code></pre></div><p>Under <code>spec</code> add:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>enableAdminAPI: true
+</code></pre></div><p>This will restart prometheus, leading to a 3-5 minute outage.</p>
+<h2 id="3-launch-a-port-forward-pod">3. Launch a port-forward pod</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl -n monitoring run port-forward-pod \
+  --generator=run-pod/v1 \
+  --image=ministryofjustice/port-forward \
+  --port=9090 \
+  --env="REMOTE_HOST=prometheus-operator-prometheus" \
+  --env="LOCAL_PORT=9090" \
+  --env="REMOTE_PORT=9090"
+</code></pre></div><h2 id="4-forward-local-traffic-to-prometheus">4. Forward local traffic to Prometheus</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl -n monitoring port-forward port-forward-pod 9090:9090
+</code></pre></div><p>This port-forward will die periodically, so you&rsquo;ll need to restart it when that happens.</p>
+<h2 id="5-use-curl-in-another-terminal-to-hit-the-api-endpoint">5. Use curl (in another terminal) to hit the API endpoint</h2><div class="highlight"><pre class="highlight plaintext"><code>curl -v http://localhost:9090/api/v1/query?query=up
+</code></pre></div><p>If this works, you will see a list of metrics as a JSON document.</p>
+<p>You can now delete a single metric like this</p>
+<div class="highlight"><pre class="highlight plaintext"><code>curl -v -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={__name__="jenkins_node_artefacts_javaskeleton_build_kaniko_1_rq4tp_0t7pb_1srvx_builds"}'
+</code></pre></div><h2 id="6-use-this-script-to-delete-multiple-metrics">6. Use this script to delete multiple metrics</h2><p>Use with care.  This will delete <strong>all</strong> the metrics listed in the file <code>metrics</code></p>
+<div class="highlight"><pre class="highlight ruby"><code><span class="c1">#!/usr/bin/env ruby</span>
 
-<ol>
-<li><p>populate the environment variables listed in the comment at the top of the script</p></li>
-<li><p>cd to the root of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a></p></li>
-<li><p>Run <code>bundle install</code></p></li>
-<li><p>Run the script, supplying the namespace name as the only argument, e.g.</p></li>
-</ol>
-<div class="highlight"><pre class="highlight plaintext"><code>./bin/delete-namespace.rb mynamespace
+<span class="k">def</span> <span class="nf">delete_metric</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+  <span class="k">return</span> <span class="k">if</span> <span class="nb">name</span><span class="p">.</span><span class="nf">to_s</span><span class="p">.</span><span class="nf">length</span> <span class="o">==</span> <span class="mi">0</span>
+  <span class="n">execute</span> <span class="sx">%[curl -v -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/delete_series?match[]={__name__="#{name}"}']</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">clean_tombstones</span>
+  <span class="n">execute</span> <span class="sx">%[curl -v -X POST -g 'http://localhost:9090/api/v1/admin/tsdb/clean_tombstones']</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="n">cmd</span>
+  <span class="sb">`</span><span class="si">#{</span><span class="n">cmd</span><span class="si">}</span><span class="sb">`</span>
+<span class="k">end</span>
+
+<span class="n">metrics</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">readlines</span><span class="p">(</span><span class="s2">"metrics"</span><span class="p">)</span>
+
+<span class="n">metrics</span><span class="p">.</span><span class="nf">each_slice</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">list</span><span class="o">|</span>
+  <span class="n">list</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">metric</span><span class="o">|</span> <span class="n">delete_metric</span><span class="p">(</span><span class="n">metric</span><span class="p">.</span><span class="nf">chomp</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">clean_tombstones</span>
+<span class="k">end</span>
+</code></pre></div><p>This works in chunks of 1000 metrics, calling the data compaction command after each chunk.</p>
+<p>Invoke the script like this:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>./delete_metrics.rb 2&gt;&amp;1 | tee delete.log
+</code></pre></div><p>This will fail after a while, because the port-forward will die. So, use the
+delete.log to figure out where the last success occurred, and delete down to
+there in the <code>metrics</code> file</p>
+<div class="highlight"><pre class="highlight plaintext"><code>grep -B 6 204 delete.log | grep POST | tail
+</code></pre></div><p>Repeat until finished.</p>
+<h2 id="7-clean-up">7. Clean up</h2>
+<ul>
+<li><p>Disable the admin interface. As per step 1, remove the <code>enableAdminAPI: true</code> flag (this will bounce prometheus, causing an outage of a few minutes)</p></li>
+<li><p>Remove the port-forward pod</p></li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n monitoring delete pod port-forward-pod
 </code></pre></div>
-<blockquote>
-<p>If the script fails partway through, it may leave a new file in your local working copy:</p>
-<p><code>namespaces/live-1.cloud-platform.service.justice.gov.uk/[namespace name]/resources/main.tf</code></p>
-<p>If this happens, just delete the whole <code>namespaces/live-1.cloud-platform.service.justice.gov.uk/[namespace name]</code> folder and re-run the script.</p>
-</blockquote>
 
-
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-05">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-04-30">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 5 December 2019.
+      This page was last reviewed on 31 January 2020.
 
-        It needs to be reviewed again on 5 March 2020
+        It needs to be reviewed again on 30 April 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 5 March 2020
+      This page was set to be reviewed before 30 April 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -904,8 +948,8 @@
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/manually-delete-namespace-resources.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Manually%20Delete%20Namespace%20Resources'&amp;body=Problem%20with%20'Manually%20Delete%20Namespace%20Resources'%20(https://runbooks.cloud-platform.service.justice.gov.uk/manually-delete-namespace-resources.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/delete-prometheus-metrics.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Delete%20Prometheus%20Metrics'&amp;body=Problem%20with%20'Delete%20Prometheus%20Metrics'%20(https://runbooks.cloud-platform.service.justice.gov.uk/delete-prometheus-metrics.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
