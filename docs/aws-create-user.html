@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Add nodes to the cluster | Cloud Platform Runbooks</title>
+    <title>AWS Console Access | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-cluster.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/aws-create-user.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Add nodes to the cluster" />
+      <meta property="og:title" content="AWS Console Access" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-cluster.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-create-user.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Add nodes to the cluster | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-cluster.html" />
+      <meta property="twitter:title" content="AWS Console Access | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-create-user.html" />
 
     
   </head>
@@ -873,60 +873,31 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="add-nodes-to-the-cluster">Add nodes to the cluster</h1><p>This runbook covers how to increase the number of nodes in a Kubernetes cluster.</p>
-<p>In the steps below, we assume we want to increase the number of nodes in Live-1, from 40 to 50.</p>
-<h3 id="requirements">Requirements</h3><h4 id="1-ensure-you-have-access-to-the-cloud-platform-aws-account">1. Ensure you have access to the Cloud Platform AWS account</h4><h4 id="2-set-your-environment-variables">2. Set your environment variables :</h4><div class="highlight"><pre class="highlight plaintext"><code>export KOPS_STATE_STORE=s3://cloud-platform-kops-state
-export AWS_PROFILE=moj-cp
-</code></pre></div><h4 id="3-start-a-shell-in-the-tools-image">3. Start a shell in the tools image</h4><p>This will ensure you have the right versions of everything</p>
-<div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-infrastructure
-make tools-shell
-</code></pre></div><h4 id="4-be-authenticated-to-the-cluster">4. Be authenticated to the cluster :</h4><div class="highlight"><pre class="highlight plaintext"><code>kops export kubecfg live-1.cloud-platform.service.justice.gov.uk
-</code></pre></div><h3 id="inline-edit">Inline edit</h3><p>Once authenticated to the cluster</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops get instancegroup
-Using cluster from kubectl context: live-1.cloud-platform.service.justice.gov.uk
-NAME            ROLE    MACHINETYPE MIN MAX ZONES
-master-eu-west-2a   Master  c4.4xlarge  1   1   eu-west-2a
-master-eu-west-2b   Master  c4.4xlarge  1   1   eu-west-2b
-master-eu-west-2c   Master  c4.4xlarge  1   1   eu-west-2c
-nodes               Node    r5.xlarge   40  40  eu-west-2a,eu-west-2b,eu-west-2c
-</code></pre></div><p>Now, launch the editor and set <code>minSize</code> and <code>maxSize</code> to the same value, the increased number of nodes.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops edit instancegroup nodes
-Spec:
-    ...
-    maxSize: 50
-    minSize: 50
-    ...
-</code></pre></div><p>Before we apply the changes, kops allow us to confirm what is going to happen:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops update cluster
-Will modify resources:
-AutoscalingGroup/nodes.live-1.cloud-platform.service.justice.gov.uk
-    MaxSize                  40 -&gt; 50
-    MinSize                  40 -&gt; 50
-</code></pre></div><p><code>THIS SHOULD BE THE ONLY CHANGE THAT YOU SEE, IF YOU SEE ANYTHING MORE: ABORT</code></p>
-<p>If happy with the information above, the changes can be applied with :</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops update cluster --yes
-</code></pre></div><p>The situation can be monitored with :</p>
-<div class="highlight"><pre class="highlight plaintext"><code>% kops validate cluster
-</code></pre></div><h3 id="persisting-the-changes">Persisting the changes</h3><p>In order to ensure that the new configuration does not get overwritten at the next <code>kops update</code>, we need to persist those changes in the code.</p>
-<h4 id="1-create-a-new-branch-on-the-cloud-platform-infrastructure">1. Create a new branch on the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure </a></h4><h4 id="2-in-terraform-cloud-platform-variables-tf-modify-the-cluster-node-count-variable">2. In /terraform/cloud-platform/variables.tf, modify the <code>cluster_node_count</code> variable</h4><div class="highlight"><pre class="highlight plaintext"><code>variable "cluster_node_count" {
-    description = "The number of worker node in the cluster"
-    default     = "50"
-}
-</code></pre></div><h4 id="3-push-pr-merge">3. Push, PR, Merge</h4><p>Once the PR is merged and a <code>terraform apply</code> is ran, the <code>cloud-platform-infrastructure/kops/live-1.yaml</code> will be updated with the new size.</p>
-<p>For more information on <code>kops update</code> &amp; <code>kops rolling-updtae</code>, have a look at this <a href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">runbook</a>.</p>
+              <h1 id="aws-console-access">AWS Console Access</h1><p>New joiners for Cloud platform team will need AWS Console access for most things. IAM resources (users, groups, roles, etc) are managed by terraform so new users are nothing more than new resources <strong>in terraform</strong>.</p>
+<p>Related repositories:</p>
+
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/global-resources/iam">cloud-platform-infrastructure/terraform/global-resources/iam</a></p></li>
+<li><p><a href="https://github.com/terraform-aws-modules/terraform-aws-iam">terraform-aws-iam module</a></p></li>
+</ul>
+<h2 id="steps-to-create-delete-users">Steps to create/delete users</h2><p>1) Create a git branch and add (or delete) the user as <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/iam/main.tf">terraform code</a>. Do not forget to link the user to a group.</p>
+<p>2) Using <code>terraform plan</code> verify you&rsquo;re happy with the terraform changes.</p>
+<p>3) Create the PR and ask the team to review it.</p>
+<p>4) Once PR gets merged you must proceed to execute <code>terraform apply</code> and verify user (you can use AWS Console for this).</p>
+<h2 id="activating-mfa-for-new-users">Activating MFA for new users</h2><p>Unfortunataly terraform can&rsquo;t activate MFA for users, this process must be done done manually either <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">thorugh AWS Console (UI)</a> or <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_cliapi.html">throgh the AWS CLI</a>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-05-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 December 2019.
+      This page was last reviewed on 10 February 2020.
 
-        It needs to be reviewed again on 16 March 2020
+        It needs to be reviewed again on 10 May 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 March 2020
+      This page was set to be reviewed before 10 May 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -935,8 +906,8 @@ AutoscalingGroup/nodes.live-1.cloud-platform.service.justice.gov.uk
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/add-nodes-to-the-cluster.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20nodes%20to%20the%20cluster'&amp;body=Problem%20with%20'Add%20nodes%20to%20the%20cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-cluster.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/aws-create-user.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'AWS%20Console%20Access'&amp;body=Problem%20with%20'AWS%20Console%20Access'%20(https://runbooks.cloud-platform.service.justice.gov.uk/aws-create-user.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
