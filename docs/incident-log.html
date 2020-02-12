@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Guidance when recycle-node pipeline job fails | Cloud Platform Runbooks</title>
+    <title>Incident Log | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/recycle-node.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-log.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Guidance when recycle-node pipeline job fails" />
+      <meta property="og:title" content="Incident Log" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/recycle-node.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incident-log.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Guidance when recycle-node pipeline job fails | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/recycle-node.html" />
+      <meta property="twitter:title" content="Incident Log | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incident-log.html" />
 
     
   </head>
@@ -904,48 +904,26 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="recycle-node">Recycle-node</h1><p><a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/master/pipelines/live-1/main/recycle-node.yaml">Recycle-node pipeline</a> runs every week-day, which executes the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/recycle-node.rb">recycle-node.rb</a> script to replace the oldest worker node by:</p>
-
+              <h1 id="incident-log">Incident Log</h1><h2 id="february-2020">February 2020</h2><h3 id="incident-on-12-02-2020-11-45-utc">Incident on 12-02-2020 11:45 UTC</h3>
 <ul>
-<li>Draining the oldest node</li>
-<li>Terminate the drained node.</li>
+<li><p><strong>Status</strong>: Resolved at 12:07 UTC</p></li>
+<li><p><strong>Identified</strong>: Pingdom reported Concourse (concourse.cloud-platform.service.justice.gov.uk) down.</p></li>
+<li><p><strong>Context</strong>: One of the engineers was deleting old clusters (he ran <code>terraform destroy</code>) and he wasn&rsquo;t fully aware in which <em>terraform workspace</em> was working on. Using <code>terraform destroy</code>, EKS nodes/workers were deleted from the manager cluster.</p></li>
+<li><p><strong>Resolution</strong>: Using terraform (<code>terraform apply -var-file vars/manager.tfvars</code> specifically) the cluster nodes where created and the infrastructure aligned? to the desired terraform state</p></li>
 </ul>
-<h2 id="guidance-for-cloud-platform-team-when-recycle-node-pipeline-job-fails">Guidance for cloud-platform team, when recycle-node pipeline job fails:</h2><p>There are couple of reasons where <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/recycle-node">recycle-node pipeline</a> job may fail.</p>
-<p>1) <code>error: unable to drain node &quot;ip-172-20-xxx-xxx.eu-west-2.compute.internal&quot;, aborting command...</code></p>
-<p>Recycle-node pipeline may fail because the pods exist without being part of a replicaset. These seem to be port-forward pods, usually used by developers to connect to an RDS instance from their development environment.</p>
-<p>We&rsquo;re running the process in a relatively gentle way, so it just fail the pipeline, rather than force-draining the node (which would have destroyed these pods).</p>
-<p>The error will be similar as below from the logs of the recycle-node pipeline.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>There are pending nodes to be drained:
- ip-172-20-123-244.eu-west-2.compute.internal
-error: pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet (use --force to override): port-forward
-</code></pre></div><p>If <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/recycle-node">pipeline logs</a> is not showing the pods which is causing the issue, using the node name form above, run the below command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code> kubectl --ignore-daemonsets --delete-local-data drain ip-172-20-123-244.eu-west-2.compute.internal
-</code></pre></div><p>It will show similar message from recycle-node pipeline logs, but also give the list of pods, which is causing the error.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>There are pending nodes to be drained:
- ip-172-20-123-244.eu-west-2.compute.internal
-error: cannot delete Pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet (use --force to override): licences-dev/port-forward
-</code></pre></div><p>Since developers create port-forward pods only used briefly, we track down the namespace owner and ask them to clear them up, by sending a message in the #ask-cloud-platform, something like below.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Recycle-node job failed to replace the node, as it failed to drain the pod.
-If any of these pods are yours, and you're not using them anymore, please could you delete them so that the next time the recycle-node job runs, it is able to replace the node.
-
-licences-dev/port-forward
-</code></pre></div><p>Once the pod which is causing the issue gets deleted, re-run the pipeline which will drain the node successfully and terminate the drained node.</p>
-<p>2) <code>error when evicting pod &quot;some-pod-84d68b65b8-cl6xq&quot; (will retry after 5s): Cannot evict pod as it would violate the pod&#39;s disruption budget</code></p>
-<p>This is because pod may stuck in ImagePullBackoff status. The error is misleading, as error message talks about pod disruption budgets.</p>
-<p>In this case identify the pod and delete it manually and re-run the pipeline which will drain the node successfully and terminate the drained node.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-11">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-05-12">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 11 December 2019.
+      This page was last reviewed on 12 February 2020.
 
-        It needs to be reviewed again on 11 March 2020
+        It needs to be reviewed again on 12 May 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 11 March 2020
+      This page was set to be reviewed before 12 May 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -954,8 +932,8 @@ licences-dev/port-forward
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/recycle-node.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Guidance%20when%20recycle-node%20pipeline%20job%20fails'&amp;body=Problem%20with%20'Guidance%20when%20recycle-node%20pipeline%20job%20fails'%20(https://runbooks.cloud-platform.service.justice.gov.uk/recycle-node.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/incident-log.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Incident%20Log'&amp;body=Problem%20with%20'Incident%20Log'%20(https://runbooks.cloud-platform.service.justice.gov.uk/incident-log.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
