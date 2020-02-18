@@ -152,6 +152,9 @@
         <a href="/incident-log.html#february-2020">February 2020</a>
         <ul>
           <li>
+            <a href="/incident-log.html#incident-on-18-02-2020-14-13-utc">Incident on 18-02-2020 14:13 UTC</a>
+          </li>
+          <li>
             <a href="/incident-log.html#incident-on-12-02-2020-11-45-utc">Incident on 12-02-2020 11:45 UTC</a>
           </li>
         </ul>
@@ -424,7 +427,30 @@
 </ul>
 <ul>
   <li>
-    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
+    <a href="/delete-prometheus-metrics.html#delete-prometheus-metrics">Delete Prometheus Metrics</a>
+    <ul>
+      <li>
+        <a href="/delete-prometheus-metrics.html#1-identify-the-metrics-you-want-to-delete">1.  Identify the metrics you want to delete</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#2-enable-the-admin-interface-in-prometheus">2. Enable the admin interface in Prometheus</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#3-launch-a-port-forward-pod">3. Launch a port-forward pod</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#4-forward-local-traffic-to-prometheus">4. Forward local traffic to Prometheus</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#5-use-curl-in-another-terminal-to-hit-the-api-endpoint">5. Use curl (in another terminal) to hit the API endpoint</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#6-use-this-script-to-delete-multiple-metrics">6. Use this script to delete multiple metrics</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#7-clean-up">7. Clean up</a>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -455,30 +481,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/delete-prometheus-metrics.html#delete-prometheus-metrics">Delete Prometheus Metrics</a>
-    <ul>
-      <li>
-        <a href="/delete-prometheus-metrics.html#1-identify-the-metrics-you-want-to-delete">1.  Identify the metrics you want to delete</a>
-      </li>
-      <li>
-        <a href="/delete-prometheus-metrics.html#2-enable-the-admin-interface-in-prometheus">2. Enable the admin interface in Prometheus</a>
-      </li>
-      <li>
-        <a href="/delete-prometheus-metrics.html#3-launch-a-port-forward-pod">3. Launch a port-forward pod</a>
-      </li>
-      <li>
-        <a href="/delete-prometheus-metrics.html#4-forward-local-traffic-to-prometheus">4. Forward local traffic to Prometheus</a>
-      </li>
-      <li>
-        <a href="/delete-prometheus-metrics.html#5-use-curl-in-another-terminal-to-hit-the-api-endpoint">5. Use curl (in another terminal) to hit the API endpoint</a>
-      </li>
-      <li>
-        <a href="/delete-prometheus-metrics.html#6-use-this-script-to-delete-multiple-metrics">6. Use this script to delete multiple metrics</a>
-      </li>
-      <li>
-        <a href="/delete-prometheus-metrics.html#7-clean-up">7. Clean up</a>
-      </li>
-    </ul>
+    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
   </li>
 </ul>
 <ul>
@@ -714,6 +717,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#joiners-guide">Joiners Guide</a>
     <ul>
       <li>
@@ -730,22 +749,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -904,7 +907,28 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="incident-log">Incident Log</h1><h2 id="february-2020">February 2020</h2><h3 id="incident-on-12-02-2020-11-45-utc">Incident on 12-02-2020 11:45 UTC</h3>
+              <h1 id="incident-log">Incident Log</h1><h2 id="february-2020">February 2020</h2><h3 id="incident-on-18-02-2020-14-13-utc">Incident on 18-02-2020 14:13 UTC</h3>
+<ul>
+<li><p><strong>Status</strong>: Resolved at 14:59 UTC</p></li>
+<li><p><strong>Incident</strong>: Pingdom reported that Prometheus was down (prometheus.cloud-platform.service.justice.gov.uk).</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>The prometheus dashboard was unavailable for everyone, for the whole duration of the incident.</li>
+<li>Between 14:22 and 14:26, prometheus could not receive metrics.</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>Although the Prometheus URL was unreachable, Grafana and Alertmanager were resolving.</li>
+<li>There seemed to be an issue preventing requests to reach the prometheus pods.</li>
+<li>Disk space and other resources, the usual suspects, were ruled out as the cause.</li>
+<li>The domain name amd ingress were both valid.</li>
+</ul></li>
+<li><p><strong>Resolution</strong>: 
+We suspect an intermittent &amp; external networking issue to be the cause of this outage.</p></li>
+</ul>
+<h3 id="incident-on-12-02-2020-11-45-utc">Incident on 12-02-2020 11:45 UTC</h3>
 <ul>
 <li><p><strong>Status</strong>: Resolved at 12:07 UTC</p></li>
 <li><p><strong>Identified</strong>: Pingdom reported Concourse (concourse.cloud-platform.service.justice.gov.uk) down.</p></li>
