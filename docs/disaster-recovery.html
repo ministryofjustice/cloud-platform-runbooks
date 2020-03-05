@@ -210,7 +210,10 @@
         <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites">Pre-requisites</a>
         <ul>
           <li>
-            <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites-environment-variables">Environment Variables</a>
+            <a href="/upgrade-cluster.html#setup-environment">Setup environment</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#run-integration-tests">Run integration tests</a>
           </li>
           <li>
             <a href="/upgrade-cluster.html#sanity-checks">Sanity checks</a>
@@ -222,12 +225,50 @@
       </li>
       <li>
         <a href="/upgrade-cluster.html#run-the-upgrade">Run the upgrade</a>
+        <ul>
+          <li>
+            <a href="/upgrade-cluster.html#authenticate-to-the-cluster">Authenticate to the cluster</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#update-the-live-cluster-manifest">Update the live cluster manifest</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#push-changes-to-kops-state">Push changes to kops state</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#perform-a-rolling-update">Perform a rolling-update</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#take-stock-of-current-running-worker-nodes">Take stock of current running worker nodes</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#create-new-worker-instance-group">Create new worker instance group</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#cordon-old-workers">Cordon old workers</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#scale-number-of-ingress-controllers">Scale number of ingress controllers</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#drain-the-old-worker-nodes">Drain the old worker nodes</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#validate-the-cluster">Validate the cluster</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#run-integration-tests-again">Run integration tests again</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#delete-the-old-instance-group">Delete the old instance group</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#scale-the-ingress-controllers-down">Scale the ingress-controllers down</a>
+          </li>
+        </ul>
       </li>
       <li>
-        <a href="/upgrade-cluster.html#upgrade-a-cluster-sanity-checks">Sanity checks</a>
-      </li>
-      <li>
-        <a href="/upgrade-cluster.html#commit">Commit</a>
+        <a href="/upgrade-cluster.html#commit-changes-back-to-master">Commit changes back to master</a>
       </li>
     </ul>
   </li>
@@ -882,6 +923,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -904,19 +958,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>

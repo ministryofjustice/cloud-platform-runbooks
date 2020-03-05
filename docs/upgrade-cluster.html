@@ -173,7 +173,7 @@
         <a href="/create-cluster.html#create-a-new-cluster-pre-requisites">Pre-requisites</a>
       </li>
       <li>
-        <a href="/create-cluster.html#create-a-new-cluster-environment-variables">Environment Variables</a>
+        <a href="/create-cluster.html#environment-variables">Environment Variables</a>
       </li>
       <li>
         <a href="/create-cluster.html#run-the-build-script-via-the-tools-image">Run the build script, via the tools image</a>
@@ -210,7 +210,10 @@
         <a href="/upgrade-cluster.html#pre-requisites">Pre-requisites</a>
         <ul>
           <li>
-            <a href="/upgrade-cluster.html#environment-variables">Environment Variables</a>
+            <a href="/upgrade-cluster.html#setup-environment">Setup environment</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#run-integration-tests">Run integration tests</a>
           </li>
           <li>
             <a href="/upgrade-cluster.html#sanity-checks">Sanity checks</a>
@@ -222,12 +225,50 @@
       </li>
       <li>
         <a href="/upgrade-cluster.html#run-the-upgrade">Run the upgrade</a>
+        <ul>
+          <li>
+            <a href="/upgrade-cluster.html#authenticate-to-the-cluster">Authenticate to the cluster</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#update-the-live-cluster-manifest">Update the live cluster manifest</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#push-changes-to-kops-state">Push changes to kops state</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#perform-a-rolling-update">Perform a rolling-update</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#take-stock-of-current-running-worker-nodes">Take stock of current running worker nodes</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#create-new-worker-instance-group">Create new worker instance group</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#cordon-old-workers">Cordon old workers</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#scale-number-of-ingress-controllers">Scale number of ingress controllers</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#drain-the-old-worker-nodes">Drain the old worker nodes</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#validate-the-cluster">Validate the cluster</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#run-integration-tests-again">Run integration tests again</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#delete-the-old-instance-group">Delete the old instance group</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#scale-the-ingress-controllers-down">Scale the ingress-controllers down</a>
+          </li>
+        </ul>
       </li>
       <li>
-        <a href="/upgrade-cluster.html#upgrade-a-cluster-sanity-checks">Sanity checks</a>
-      </li>
-      <li>
-        <a href="/upgrade-cluster.html#commit">Commit</a>
+        <a href="/upgrade-cluster.html#commit-changes-back-to-master">Commit changes back to master</a>
       </li>
     </ul>
   </li>
@@ -882,6 +923,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -904,19 +958,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -949,62 +990,80 @@
 <li><p>You have the <a href="https://aws.amazon.com/cli/">AWS CLI</a> profile <code>moj-cp</code> with suitable credentials.</p></li>
 <li><p>You have <a href="https://www.docker.com/">docker</a> installed.</p></li>
 </ul>
-<h3 id="environment-variables">Environment Variables</h3><p>See the file <code>example.env.create-cluster</code> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
+<h3 id="setup-environment">Setup environment</h3><p>Setup the environment variables listed in <code>example.env.create-cluster</code> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
+<h3 id="run-integration-tests">Run integration tests</h3><p>Run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/integration-tests/jobs/apply-tests-live-1">integration test pipeline</a> and wait for the tests to pass. This will ensure the live cluster is functioning as expected.</p>
 <h3 id="sanity-checks">Sanity checks</h3><p>Ensure Concourse pipelines are green, and pause all of them.</p>
 <p>Take a snapshot of</p>
 
 <ul>
-<li>all non-running pods</li>
-<li>triggered Prometheus alarms</li>
+<li>all non-running pods; you can do this by running <code>kubectl get pods -A | grep -v &quot;Running&quot;</code>.</li>
+<li>triggered Prometheus alarms; take a screenshot of the current triggered alarms.</li>
 </ul>
 <h3 id="run-a-shell-in-the-tools-image">Run a shell in the tools image</h3><p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to run the build script and create a cluster.</p>
-<p>The image will need updates for new client tool versions, see https://github.com/ministryofjustice/cloud-platform-tools-image/pull/34 for an example.</p>
-<p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
-<p>With your environment variables set, launch a bash shell on the tools image:</p>
+<p>The image will need updates for new client tool versions, see https://github.com/ministryofjustice/cloud-platform-tools-image/pull/34 for an example. Make the required changes and push the new image to DockerHub.</p>
+<p>From a local copy of the cloud-platform-infrastructure repository, run the following command (ensuring that you&rsquo;re using the new image):</p>
 <div class="highlight"><pre class="highlight shell"><code>make tools-shell
-</code></pre></div><h2 id="run-the-upgrade">Run the upgrade</h2><p>Within the tools image, the file <code>~/.kube/config</code> is not copied from your outside profile, create it for just the needed cluster by running</p>
+</code></pre></div><h2 id="run-the-upgrade">Run the upgrade</h2><h3 id="authenticate-to-the-cluster">Authenticate to the cluster</h3><p>Within the tools image, the file <code>~/.kube/config</code> is not copied from your outside profile, create it for just the needed cluster by running</p>
 <div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>Change the Kubernetes release version, ensuring it is supported by Kops - verify on the <a href="https://github.com/kubernetes/kops/releases">kops releases</a> page.</p>
-<p>If there is a newer AMI available in https://github.com/kubernetes/kops/blob/master/channels/stable, <code>kops edit instance-group masters</code></p>
-<p><code>kops update cluster (--yes)</code> will update k8s components inc calico</p>
-<p><code>kops rolling update cluster [cluster name] --instance-group-roles=Master</code> will update only the master nodes, no performance impact expected at this point</p>
-<p><code>kops create instance group nodes-&lt;new_group_name&gt;</code> to double the size of the cluster</p>
+</code></pre></div><h3 id="update-the-live-cluster-manifest">Update the live cluster manifest</h3><p>Open the cloud-platform-infrastructure repository and make the following changes to the kops/live-1.yaml manifest:</p>
 
 <ul>
-<li>copy values from instance group nodes</li>
+<li>The Kubernetes release version, ensuring it is supported by Kops - verify on the <a href="https://github.com/kubernetes/kops/releases">kops releases</a> page.</li>
+<li>The AMI in each instance group. This can be found here: https://github.com/kubernetes/kops/blob/master/channels/stable </li>
 </ul>
-<p><code>kops update cluster (--yes)</code> will create the new nodes</p>
-<p><code>kubectl cordon nodes &lt;node_name&gt;</code> in the old instance group, this will ensure any new resources will go to the new ig</p>
-<p>Scale up the OPA deployment to ensure at least one pod runs on the new nodes</p>
-<p>Scale up ingress controllers by at least 3, to ensure each AZ on the new nodes gets an instance</p>
-<p>Identify pods with PVCs</p>
-<p><code>kubectl get pvc -A</code></p>
-
-<ul>
-<li><p>kill them</p></li>
-<li><p>check data persistence (eg Prometheus metrics history)</p></li>
-</ul>
-<p><code>kubectl drain nodes &lt;node_name&gt;</code> on the old ig, DaemonSets can be safely excluded</p>
-<p>^ this must be done one node at a time to ensure it actually succeeds so will take ~1min*number of nodes</p>
-<p><code>kops delete ig</code> old instance group</p>
-<p>Unpause pipelines</p>
-<h2 id="upgrade-a-cluster-sanity-checks">Sanity checks</h2><p><code>kops validate cluster</code></p>
-<p>Smoke test and check non-running pods, compare with situation before the upgrade start</p>
-<p>The <code>cloud-platform-smoke-tests</code> image might need updates, see https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/374 for an example.</p>
-<p>Finally, check that <code>terraform</code> agrees with the new cluster status</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl cluster-info
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code><span class="nb">pushd </span>terraform/cloud-platform
-terraform workspace list
-terraform workspace <span class="k">select</span> <span class="o">[</span>your cluster]
-terraform plan
-<span class="nb">popd
-cd </span>terraform/cloud-platform-components
-terraform workspace list
-terraform workspace <span class="k">select</span> <span class="o">[</span>your cluster]
-terraform plan
-<span class="nb">popd</span>
-</code></pre></div><p>Expected result is no changes needed.</p>
-<h2 id="commit">Commit</h2><p>As a last step, edit and commit the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/kops">corresponding</a> kops .yaml file to match the new release.</p>
+<p>Now make the same changes to the template file <code>./terraform/cloud-platform/templates/kops.yaml.tpl</code>.</p>
+<h3 id="push-changes-to-kops-state">Push changes to kops state</h3><p>Run the following to push the above changes to the kops state store in S3.</p>
+<p><code>kops update cluster</code></p>
+<p>Review the changes before committing with:</p>
+<p><code>kops update cluster -yes</code></p>
+<h3 id="perform-a-rolling-update">Perform a rolling-update</h3><p>This is a delicate procedure, so this article will proceed with extreme caution.</p>
+<p>First, get the instance groups:</p>
+<p><code>kops get ig</code></p>
+<p>Update each master individually:</p>
+<p><code>kops rolling-update cluster --instance-group &lt;master-instance-group&gt; (--yes)</code></p>
+<p>Kops will safely eject the instance from the cluster and bring back a new one.</p>
+<p>Once the new master is in a <code>ready</code> state, run the fast integration tests with:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-infrastructure/smoke-tests
+make test-fast
+</code></pre></div><p>This will take around 30 seconds and should pass.</p>
+<p>Perform the same process on the other two masters.</p>
+<h3 id="take-stock-of-current-running-worker-nodes">Take stock of current running worker nodes</h3><p>You&rsquo;ll need a file with all current working worker nodes. Run to output all workers to a text file:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl get nodes | grep node | sed 's/ .*//' &gt; nodes
+</code></pre></div><h3 id="create-new-worker-instance-group">Create new worker instance group</h3><p>To ensure minimal application downtime, we&rsquo;re going to create a new instance group with the changes applied to the live manifest above:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kops create instancegroup nodes-&lt;kubernetes-version&gt;
+kops update cluster
+kops update cluster --yes
+</code></pre></div><p>note: we use the kubernetes-version to identify the new node group.</p>
+<p>New instances will be created, which you&rsquo;ll see with:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>watch kubectl get nodes
+</code></pre></div><h3 id="cordon-old-workers">Cordon old workers</h3><p>Copy the file we created earlier:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>cp nodes cordon_nodes
+</code></pre></div><p>We need to insert the following before each line in this file:</p>
+<p><code>kubectl cordon</code></p>
+<p>To do this quickly in vim I used:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>qq shift+i “kubectl cordon ” esc j ^ q G@q
+</code></pre></div><h3 id="scale-number-of-ingress-controllers">Scale number of ingress controllers</h3><p>The ingress controllers play in important role in a live cluster. To ensure these are running on the new nodes run:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n ingress-controllers edit deploy nginx-ingress-acme-controller
+</code></pre></div><p>And double the number of replicas.</p>
+<h3 id="drain-the-old-worker-nodes">Drain the old worker nodes</h3><p>We now need to move all pods on the old worker nodes to the new. To do this first copy the nodes file we created earlier:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>cp nodes drain_nodes
+</code></pre></div><p>We need to insert the following before each line in this file:</p>
+<p><code>kubectl drain</code></p>
+<p>and then</p>
+<p><code>--ignore-daemonsets --delete-local-data</code></p>
+<p>at the end.</p>
+<p>To do this quickly in vim I used:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>qq shift+i “kubectl drain ” esc shift+a “--ignore-daemonsets --delete-local-data” esc j ^ q G@q
+</code></pre></div><p>Execute the commands in the file with:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>bash drain_nodes
+</code></pre></div><p>Each node will drain all pods, moving them onto the new workers.</p>
+<h3 id="validate-the-cluster">Validate the cluster</h3><p>Ensure all nodes have joined the cluster:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kops validate cluster
+</code></pre></div><h3 id="run-integration-tests-again">Run integration tests again</h3><p>Run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/integration-tests/jobs/apply-tests-live-1">integration test pipeline</a> and wait for the tests to pass. This will ensure you&rsquo;re live cluster is functioning as expected.</p>
+<h3 id="delete-the-old-instance-group">Delete the old instance group</h3><p>When complete and all pods have migrated onto the new workers. Delete the older instance group:</p>
+<h3 id="scale-the-ingress-controllers-down">Scale the ingress-controllers down</h3><p>We can now scale the ingress-controllers back down.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n ingress-controllers edit deploy nginx-ingress-acme-controller
+</code></pre></div><h2 id="commit-changes-back-to-master">Commit changes back to master</h2><p>Any changes made to the cloud-platform-infrastructure repository should be pushed for review. This includes manifest changes and image tag changes.</p>
 
 
             
