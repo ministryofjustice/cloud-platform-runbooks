@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Create a new cluster | Cloud Platform Runbooks</title>
+    <title>Cloud Platform Communications Plan | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Create a new cluster" />
+      <meta property="og:title" content="Cloud Platform Communications Plan" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Create a new cluster | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html" />
+      <meta property="twitter:title" content="Cloud Platform Communications Plan | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html" />
 
     
   </head>
@@ -111,7 +111,7 @@
         <a href="/incident-process.html#2-declare-the-incident">2. Declare the incident</a>
         <ul>
           <li>
-            <a href="/incident-process.html#examples">Examples</a>
+            <a href="/incident-process.html#2-declare-the-incident-examples">Examples</a>
           </li>
         </ul>
       </li>
@@ -932,7 +932,7 @@
         <a href="/cloud-platform-communications-plan.html#tips-on-format-of-communications">Tips on format of communications</a>
         <ul>
           <li>
-            <a href="/cloud-platform-communications-plan.html#tips-on-format-of-communications-examples">Examples</a>
+            <a href="/cloud-platform-communications-plan.html#examples">Examples</a>
           </li>
           <li>
             <a href="/cloud-platform-communications-plan.html#things-to-include-in-incident-communications">Things to include in incident communications</a>
@@ -1016,81 +1016,120 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="create-a-new-cluster">Create a new cluster</h1><h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-requisites:</p>
+              <h1 id="cloud-platform-communications-plan">Cloud Platform Communications Plan</h1><p>This plan details to the who, how and when we will communicate information to users and stakeholders.</p>
+<h2 id="the-plan">The Plan</h2><p>The table below sets out the typical types of communications the Cloud Platform will want to issue.</p>
+<div class="table-container">
+        <table>
+          <tr>
+<th>What information</th>
+<th>Target Audience</th>
+<th>When</th>
+<th>Channel</th>
+</tr>
+<tr>
+<td>New features</td>
+<td>Service Teams</td>
+<td>As features are shipped</td>
+<td>#cloud-platform-update</td>
+</tr>
+<tr>
+<td>Things we have learned</td>
+<td>Justice Digital &amp; Technology</td>
+<td>Regularly when we have key things to show or promote</td>
+<td>Show the Thing</td>
+</tr>
+<tr>
+<td>Service impacting incidents</td>
+<td>Service Teams</td>
+<td>When an incident has been declared, key updates during resolution, and at incident closure</td>
+<td>#cloud-platform-update</td>
+</tr>
+<tr>
+<td>Sharing postmortems for service impacting incidents</td>
+<td>Service Teams</td>
+<td>When postmortem has been documented</td>
+<td>#cloud-platform-update</td>
+</tr>
+<tr>
+<td>Service impacting upgrades/Maintence</td>
+<td>Service Teams</td>
+<td>As required</td>
+<td>#cloud-platform-update</td>
+</tr>
+<tr>
+<td>Sharing successes</td>
+<td>Chief Technology Officer</td>
+<td>Weekly</td>
+<td>One to ones and team meetings</td>
+</tr>
+<tr>
+<td>Sharing successes</td>
+<td>SMT</td>
+<td>Fortnightly</td>
+<td>Architecture &amp; Platforms weeknotes</td>
+</tr>
+<tr>
+<td>Sharing successes</td>
+<td>Justice Digital &amp; Technology</td>
+<td>Regularly when we have key things to show or promote</td>
+<td>Post about them in #chat on Slack/Consider for a Show the Thing</td>
+</tr>
 
+        </table>
+      </div><h2 id="tips-on-format-of-communications">Tips on format of communications</h2><p>The #cloud-platform-update channel is used for a number of different types of communications so it is important that messages posted have a clear description so that users can understand the importance of the message. In the case of incidents or upgrades the message should have a <strong>bold</strong> title that clearly describes what the message will be about.</p>
+<h3 id="examples">Examples</h3>
+<blockquote>
+<p><strong>Kubernetes 1.14 Upgrade</strong></p>
+<p><strong>Incident - Sentry unavailable</strong></p>
+<p><strong>Action Required - Live-0 Decommissioning</strong></p>
+</blockquote>
+<h3 id="things-to-include-in-incident-communications">Things to include in incident communications</h3>
 <ul>
-<li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code> (the script will run this for you, but you must be <em>able</em> to do it)</p></li>
-<li><p>You have <a href="https://aws.amazon.com/cli/">AWS CLI</a> profiles <code>moj-cp</code> and <code>moj-dsd</code> with suitable credentials</p></li>
-<li><p>You have <a href="https://www.docker.com/">docker</a> installed</p></li>
+<li>service impact/what users might be reporting</li>
+<li>action being taken (this might just be that we are investigating the issue)</li>
+<li>when users can expact a progress update (and make sure that the update actually happens when you say it will)</li>
+<li>details of any actions users need to take (if applicable)</li>
+<li>apoligise for the inconvenience (it might not be an issue in our control but this can build trust and let users know that you are taking resolution seriously)</li>
 </ul>
-<h2 id="environment-variables">Environment Variables</h2><p>See the file <code>example.env.create-cluster</code> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.rb</code> script to create a new cluster.</p>
-<p>You can get the auth0 values from the <code>terraform-provider-auth0</code> application on <a href="https://manage.auth0.com/#/applications">auth0</a>.</p>
-<h2 id="run-the-build-script-via-the-tools-image">Run the build script, via the tools image</h2><p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to run the build script and create a cluster.</p>
-<p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
-<p>With your environment variables set, launch a bash shell on the tools image:</p>
-<div class="highlight"><pre class="highlight shell"><code>make tools-shell
-</code></pre></div><p>Execute the script, supplying the desired name of your new cluster. e.g.:</p>
-<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> david-test1
-</code></pre></div><p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
-<p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/master/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
-<p>By default, the script will create a &lsquo;small&rsquo; cluster. This means the master and worker EC2 instances will be less powerful machine types than in our production cluster. To create a &#39;medium&rsquo; or &#39;production&rsquo; cluster, run the script like this:</p>
-<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> david-test1 <span class="nt">--size</span> medium <span class="c"># or --size production</span>
-</code></pre></div><p>See the script source code for the precise machine types used for the different sizes. The machine types used for &#39;production&rsquo; clusters should always be the same machine types as we use in production.</p>
-<p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Run options: exclude {:cluster=&gt;"live-1"}
-..........................
-
-Finished in 4 minutes 53.4 seconds (files took 4.54 seconds to load)
-26 examples, 0 failures
-
-2019-10-07 09:07:49 kubectl cluster-info
-Kubernetes master is running at https://api.david-test1.cloud-platform.service.justice.gov.uk
-KubeDNS is running at https://api.david-test1.cloud-platform.service.justice.gov.uk/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-</code></pre></div><p>The section before <code>kubectl cluster-info</code> is the cluster integration tests, which run at the end of the build
-process. The number of tests will increase, so the output will vary from what is shown here.</p>
-<p>Each dot in the line represents a passing test. If any tests fail, you will see more output explaining
-the nature of the failure.</p>
-<p>Any test failures could indicate a problem with your test cluster, which will need to be resolved before you
-can confidently use it for anything.</p>
-<h2 id="alerts">Alerts</h2><p>The build script replaces the webhook values in the source code with dummy values, to prevent
-alerts from test clusters from showing up in the team slack channels.</p>
-<p>If you want to reverse this, you need to revert the changes to these files, and then do a <code>terraform apply</code>:</p>
-
+<h3 id="example">Example</h3>
+<blockquote>
+<p><strong>High Priority Incident Declared - Cloud Platform</strong>
+We are aware that some users are experiencing issues with the access to services on the Cloud Platform this morning.
+We are unsure of the full impact of these issues and the extent to which this is impacting services.
+An incident team has been formed and the team are investigating.
+We will provide further updates in due course, but in any event the next update will be in 30 minutes.
+Thank you for your patience.</p>
+</blockquote>
+<h3 id="things-to-include-in-upgrade-communications">Things to include in upgrade communications</h3>
 <ul>
-<li>high priority alerts: <code>terraform/cloud-platform-components/terraform.tfvars</code> (look for <code>pagerduty_config</code>)</li>
-<li>lower priority alerts: <code>terraform/cloud-platform-components/terraform.tfvars</code> (look for <code>alertmanager_slack_receivers</code>)</li>
+<li>What you are upgrading</li>
+<li>When the upgrade will take place (including times)</li>
+<li>Why you are upgrading (in might be useful to include a link to some change notes or something that users can refer to if they want more information rather than adding it all in the comms.)</li>
+<li>Details of any service impact or anthing users might need to take action on as a result of changes (including if we are pausing pipelines)</li>
+<li>Refer users back to the #ask-cloud-platform channel if they have questions or something isn&rsquo;t working as expected</li>
 </ul>
-<h3 id="apply-the-changes">Apply the changes</h3><p>Use terraform to apply the changes to the prometheus operator in your test cluster.</p>
-<h4 id="ensure-your-terraform-workspace-and-kubernetes-context-are-pointing-at-your-test-cluster">Ensure your terraform workspace and kubernetes context are pointing at your test cluster</h4><div class="highlight"><pre class="highlight shell"><code><span class="nb">cd </span>terraform/cloud-platform-components
-terraform workspace list
-</code></pre></div><p>If you are not targeting your test cluster workspace, run</p>
-<div class="highlight"><pre class="highlight shell"><code>terraform workspace <span class="k">select</span> <span class="o">[</span>your cluster]
-</code></pre></div><p>Check your kubernetes context by running</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl cluster-info
-</code></pre></div><p>The output should be</p>
-<div class="highlight"><pre class="highlight shell"><code>Kubernetes master is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk
-KubeDNS is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-</code></pre></div><p>&hellip;where <code>XXXXXXX</code> is the name of your test cluster.</p>
-<p>If your context is pointing at live-1, switch to your test cluster by running</p>
-<div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>When you are confident that both your terraform workspace and kubernetes context are set to your test cluster, apply the change to set the pagerduty config value:</p>
-<div class="highlight"><pre class="highlight shell"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>helm_release.prometheus_operator
-</code></pre></div><p>Answer <code>yes</code> if the planned changes look correct.</p>
+<h3 id="tips-on-format-of-communications-example">Example</h3>
+<blockquote>
+<p><strong>Kubernetes 1.14 Upgrade</strong>
+Please be aware that we will be upgrading the version of Kubernetes to 1.14 tomorrow (Friday 27th February) at 7am.
+More information on what&rsquo;s new can be found here - https://sysdig.com/blog/whats-new-kubernetes-1-14/
+There will be no downtime for this change. However we have noticed some latency during testing, and the Concourse pipeline will be paused.
+If you need to deploy any urgent changes to the Environments repository, or if you experience any other problems while the upgrade is underway please let us know over at #ask-cloud-platform. Many thanks.</p>
+</blockquote>
+<h2 id="sharing-information-with-the-wider-ministry-of-justice-and-the-public">Sharing information with the wider Ministry of Justice and the Public</h2><p>There may be occasions where we want to publish something to the wider MoJ or the Public. In these instances we can publish something on the MoJ Digital blog. Requests to publish on the blog should be made to #ask-comms in the first instance.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-06-03">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 December 2019.
+      This page was last reviewed on 3 March 2020.
 
-        It needs to be reviewed again on 3 March 2020
+        It needs to be reviewed again on 3 June 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 March 2020
+      This page was set to be reviewed before 3 June 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1099,8 +1138,8 @@ KubeDNS is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk/
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/create-cluster.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Create%20a%20new%20cluster'&amp;body=Problem%20with%20'Create%20a%20new%20cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/cloud-platform-communications-plan.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Cloud%20Platform%20Communications%20Plan'&amp;body=Problem%20with%20'Cloud%20Platform%20Communications%20Plan'%20(https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
