@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Going on call | Cloud Platform Runbooks</title>
+    <title>Template for Cloud Platform Disaster Recovery run-books | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/template-disaster-recovery.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Going on call" />
+      <meta property="og:title" content="Template for Cloud Platform Disaster Recovery run-books" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/template-disaster-recovery.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Going on call | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html" />
+      <meta property="twitter:title" content="Template for Cloud Platform Disaster Recovery run-books | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/template-disaster-recovery.html" />
 
     
   </head>
@@ -167,10 +167,10 @@
 </ul>
 <ul>
   <li>
-    <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
+    <a href="/create-cluster.html#create-a-new-cluster-2">Create a new cluster</a>
     <ul>
       <li>
-        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
+        <a href="/create-cluster.html#create-a-new-cluster-2-pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/create-cluster.html#environment-variables">Environment Variables</a>
@@ -303,7 +303,7 @@
     <a href="/disaster-recovery.html#cloud-platform-disaster-recovery">Cloud Platform Disaster Recovery</a>
     <ul>
       <li>
-        <a href="/disaster-recovery.html#restore-process">Restore process</a>
+        <a href="/disaster-recovery.html#cloud-platform-disaster-recovery-restore-process">Restore process</a>
       </li>
       <li>
         <a href="/disaster-recovery.html#apply-cloud-platform-resources">Apply cloud-platform resources</a>
@@ -312,10 +312,10 @@
         <a href="/disaster-recovery.html#cloud-platform-disaster-recovery-create-a-new-cluster">Create a new cluster</a>
       </li>
       <li>
-        <a href="/disaster-recovery.html#perform-the-restore">Perform the restore</a>
+        <a href="/disaster-recovery.html#cloud-platform-disaster-recovery-perform-the-restore">Perform the restore</a>
         <ul>
           <li>
-            <a href="/disaster-recovery.html#perform-the-restore-pre-requisites">Pre-requisites</a>
+            <a href="/disaster-recovery.html#cloud-platform-disaster-recovery-perform-the-restore-pre-requisites">Pre-requisites</a>
           </li>
           <li>
             <a href="/disaster-recovery.html#restore-the-cluster-using-etcd-manager-ctl-on-your-computer">Restore the cluster using etcd-manager-ctl on your computer.</a>
@@ -329,7 +329,7 @@
         <a href="/disaster-recovery.html#cleanup">Cleanup</a>
       </li>
       <li>
-        <a href="/disaster-recovery.html#possible-issues">Possible Issues</a>
+        <a href="/disaster-recovery.html#cloud-platform-disaster-recovery-possible-issues">Possible Issues</a>
       </li>
     </ul>
   </li>
@@ -713,13 +713,13 @@
         <a href="/template-disaster-recovery.html#disaster-scenario">Disaster scenario</a>
       </li>
       <li>
-        <a href="/template-disaster-recovery.html#template-for-disaster-recovery-run-books-restore-process">Restore process</a>
+        <a href="/template-disaster-recovery.html#restore-process">Restore process</a>
         <ul>
           <li>
-            <a href="/template-disaster-recovery.html#template-for-disaster-recovery-run-books-restore-process-create-a-new-cluster">Create a new cluster</a>
+            <a href="/template-disaster-recovery.html#create-a-new-cluster">Create a new cluster</a>
           </li>
           <li>
-            <a href="/template-disaster-recovery.html#template-for-disaster-recovery-run-books-restore-process-perform-the-restore">Perform the restore</a>
+            <a href="/template-disaster-recovery.html#perform-the-restore">Perform the restore</a>
           </li>
         </ul>
       </li>
@@ -727,7 +727,7 @@
         <a href="/template-disaster-recovery.html#integration-tests">Integration tests</a>
       </li>
       <li>
-        <a href="/template-disaster-recovery.html#template-for-disaster-recovery-run-books-possible-issues">Possible Issues</a>
+        <a href="/template-disaster-recovery.html#possible-issues">Possible Issues</a>
       </li>
     </ul>
   </li>
@@ -942,84 +942,56 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="going-on-call">Going on call</h1><h2 id="what-s-expected">What’s expected?</h2><h3 id="expected">Expected:</h3>
+              <h1 id="template-for-disaster-recovery-run-books">Template for Disaster Recovery run-books</h1><p>This is a template for writing run-books for other Disaster Recovery scenarios.</p>
+<h2 id="disaster-scenario">Disaster scenario</h2><p>Disaster scenario &ldquo;cluster deleted&rdquo;, where a cluster has been accidentally deleted by running <code>kops delete cluster</code>.</p>
+<h2 id="restore-process">Restore process</h2><p>To restore the cluster, start with <a href="/template-disaster-recovery.html#create-a-new-cluster">creating a new cluster</a> and <a href="/template-disaster-recovery.html#perform-the-restore">perform the restore</a> using etcd backup.</p>
+<h3 id="create-a-new-cluster">Create a new cluster</h3><p>Use <code>kops</code> to create the cluster using &ldquo;kops/${CLUSTER_NAME}.yaml&rdquo; in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/kops">here</a>.</p>
+<p>Set environment variables.</p>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">KOPS_STATE_STORE</span><span class="o">=</span>s3://cloud-platform-kops-state
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">CLUSTER_NAME</span><span class="o">=</span><span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>Run kops command to create the cluster</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kops create -f ../../kops/${CLUSTER_NAME}.yaml
+</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>kops update cluster ${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk --yes
+</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>kops validate cluster
+</code></pre></div><p>Once it reports Your cluster <code>${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready</code> you can proceed to use kubectl to interact with the cluster.</p>
+<h3 id="perform-the-restore">Perform the restore</h3><p>When we have a working cluster (kops validate cluster should show cluster in ready status), then restore cluster back to the point before disaster occurred using backup stored in &lsquo;s3://cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk/backups, by running etcd-manager-ctl.</p>
+<h4 id="pre-requisites">Pre-requisites</h4><p>Install  kops-manager-ctl in your workstation. Run the below command by updating the latest <a href="https://github.com/kopeio/etcd-manager/releases/">release</a> version available for etcd-manager-ctl.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>  curl -Lo etcd-manager-ctl  https://github.com/kopeio/etcd-manager/releases/download/3.0.20190816/etcd-manager-ctl-darwin-amd64 &amp;&amp; chmod +x etcd-manager-ctl &amp;&amp; mv etcd-manager-ctl /usr/local/bin
+</code></pre></div><h4 id="restore-from-backup">Restore from backup</h4><p>Run the below commands, to list the backups for main and events. We are listing backups for the cluster named <code>test-etcd-3.cloud-platform.service.justice.gov.uk</code> in a S3 bucket called <code>cloud-platform-kops-state</code>.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>etcd-manager-ctl --backup-store=s3://cloud-platform-kops-state/test-etcd-3.cloud-platform.service.justice.gov.uk/backups/etcd/main list-backups
+etcd-manager-ctl --backup-store=s3://cloud-platform-kops-state/test-etcd-3.cloud-platform.service.justice.gov.uk/backups/etcd/events list-backups
+
+</code></pre></div><p>Restore the latest backup in the list, or the one containing the timestamp you want to restore from (this will bring the entire cluster back to this point in time). Add a restore command for both main and events as below:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>etcd-manager-ctl -backup-store=s3://cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk/backups/etcd/main restore-backup 2019-08-27T16:44:23Z-001038
+
+etcd-manager-ctl -backup-store=s3://cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk/backups/etcd/events restore-backup 2019-08-27T16:37:56Z-000351
+</code></pre></div><p>Note that this does not start the restore immediately, to start the restore, you need to roll masters quickly by <a href="/template-disaster-recovery.html#roll-masters-by-rebooting">rebooting</a> all the masters from the aws console.</p>
+<h4 id="roll-masters-by-rebooting">Roll masters by rebooting</h4><p>To reboot all masters, follow below process.</p>
+<p>Select all master instances together, and run reboot from actions&gt;instancestate&gt;reboot.</p>
+<p>Run the below command to validate the cluster.</p>
+<div class="highlight"><pre class="highlight shell"><code>kops validate cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>All master and worker node should join the cluster, you can see the cluster is in ready status.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Your cluster ${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready
+</code></pre></div><p>Please note that this process might take a short while(around 1 hr), depending on the size of the cluster.</p>
+<h2 id="integration-tests">Integration tests</h2><p>After the backup restore is completed, run integration tests to verify cluster is working as expected.</p>
+<h2 id="possible-issues">Possible Issues</h2>
 <ul>
-<li>Carry out <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/297533847/Run+Books">well-defined sensible actions</a> in response to critical incidents.</li>
-<li>Understand how to carry out those actions, and what they do.</li>
-<li>Verify access ahead of time to various systems and interfaces required to carry out these actions.</li>
-<li>Getting set up to access production is quite involved if you don’t work on the service you’re supporting, so it’s worth making sure you’ve done so ahead of time.</li>
+<li>After the restore-backup command is run and master nodes are rebooted, you may see the below issues when you run kops validate cluster.</li>
 </ul>
-<h3 id="not-expected">Not Expected:</h3>
-<ul>
-<li>Take heroic actions and be able to solve any out-of-hours critical event single handedly.</li>
-<li>Have very detailed knowledge of every nuance of every MOJ Digital service.</li>
-<li>Carrying out risky activities or take judgement calls beyond your comfort zone without support.</li>
-</ul>
-<h2 id="where-do-i-start">Where do I start?</h2>
-<ol>
-<li>Do two rotations on in-hours second line.</li>
-<li>Get production access to supported services.</li>
-<li>Get access to our on-call tools:
-
-<ul>
-<li><a href="https://my.pingdom.com/">Pingdom</a></li>
-<li><a href="https://moj-digital-tools.pagerduty.com/">Pagerduty</a> (and configure your contact details and notifications, this is the single source of truth for when you are on call.)</li>
-<li><a href="https://mojdsd.signin.aws.amazon.com/">AWS</a></li>
-<li>the MOJDS VPN (and configure it to “send all traffic over VPN connection”)</li>
-</ul></li>
-<li>Do a dry-run of an incident.</li>
-<li>Get on the on-call rota.</li>
-<li>Log your hours.</li>
-</ol>
-<h2 id="what-do-i-get-for-being-on-call">What do I get for being on call?</h2>
-<ul>
-<li>15% of day rate for every 8 hours that you’re on call out of standard working hours. This payment is simply for being on call.</li>
-<li>1/8 of day rate for each full hour actively worked while on call.</li>
-</ul>
-<p>Civil servant equivalent of day rate is base salary / 230</p>
-<h2 id="civil-servants-sop-claim">Civil servants - SOP Claim</h2>
-<ol>
-<li>Get a DOM1 account (you should be given one as soon as Shared Services have registered your joining, or ask your local HR people)</li>
-<li>Log into a DOM1 machine and access SOP using the shortcut on your desktop, and log in.</li>
-<li>Navigate to Employee Self-Service &gt; Individual Compensation Distribution (ICD)</li>
-<li>Select drop-down menu for On-call without pensionable amount</li>
-<li>Add the amount claimed for in the box provided</li>
-<li>Click “Continue”, check the details, add notes in the comment section about the weeks being claimed, and then click “Submit”</li>
-<li>If your claim is submitted before the 8th (or so) of the month, you’ll get it paid in that month’s payroll. If it’s after that, it’ll be in the next month’s.</li>
-</ol>
-<h2 id="civil-servants-sop-problem-resolution">Civil servants - SOP Problem Resolution</h2>
-<ol>
-<li>Take a screenshot of the claim submission problem.</li>
-<li>Navigate to Employee Self-Service &gt; Others &gt; Form Submission</li>
-<li>Select problem area by pressing the magnifying glass icon and pressing “Go”.</li>
-<li>Add comments describing the problem.</li>
-<li>After clicking “Next”, “Add Attachment” to add the screenshot and click “Submit”</li>
-</ol>
-<h2 id="contractors">Contractors</h2><p>The exact process might depend upon which supplier you are through. Some (or maybe all, we haven’t worked out yet) supplier systems don’t cope with trying to bill more than 5 days worth in a week (Specifically Hays fall in to this category).</p>
-<p>If you are not working on a normal work day (Monday–Friday) then you can use this to bill</p>
-
-<ol>
-<li>Ask your contact at the supplier to set you up on Fieldglass for overtime.</li>
-<li>Log your time
-
-<ul>
-<li>??? Log the overtime (More detail once someone has actually done this successfully); or</li>
-<li>If you are billing a ‘work day’ in lieu note this in a comment in the timesheet</li>
-</ul></li>
-</ol>
+<p>1) If any Master node stuck in &ldquo;not ready&rdquo; status, <a href="/template-disaster-recovery.html#roll-masters-by-rebooting">reboot</a> that master again, from the aws console.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2019-05-27">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 27 February 2019.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 27 May 2019
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 27 May 2019
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1028,8 +1000,8 @@
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/on-call.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Going%20on%20call'&amp;body=Problem%20with%20'Going%20on%20call'%20(https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/template-disaster-recovery.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Template%20for%20Cloud%20Platform%20Disaster%20Recovery%20run-books'&amp;body=Problem%20with%20'Template%20for%20Cloud%20Platform%20Disaster%20Recovery%20run-books'%20(https://runbooks.cloud-platform.service.justice.gov.uk/template-disaster-recovery.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
