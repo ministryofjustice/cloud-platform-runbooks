@@ -186,6 +186,9 @@
           </li>
         </ul>
       </li>
+      <li>
+        <a href="/create-cluster.html#authenticating">Authenticating</a>
+      </li>
     </ul>
   </li>
 </ul>
@@ -453,31 +456,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
-    <ul>
-      <li>
-        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -498,6 +476,31 @@
       </li>
       <li>
         <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
+    <ul>
+      <li>
+        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
       </li>
     </ul>
   </li>
@@ -793,22 +796,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/joiners-guide.html#joiners-guide">Joiners Guide</a>
     <ul>
       <li>
@@ -825,6 +812,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1078,7 +1081,12 @@ KubeDNS is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk/
 </code></pre></div><p>When you are confident that both your terraform workspace and kubernetes context are set to your test cluster, apply the change to set the pagerduty config value:</p>
 <div class="highlight"><pre class="highlight shell"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>helm_release.prometheus_operator
 </code></pre></div><p>Answer <code>yes</code> if the planned changes look correct.</p>
-
+<h2 id="authenticating">Authenticating</h2><p>If you want to authenticate to your new cluster in the same way as a regular user would (i.e. logging
+in via auth0, rather than using <code>kops export kubecfg...</code>), the auth0 login URL is:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>https://login.apps.[cluster name].cloud-platform.service.justice.gov.uk
+</code></pre></div><p>e.g. for a cluster called &ldquo;david-test1&rdquo;, the URL to authenticate and download a <code>kubeconfg</code> file is:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>https://login.apps.david-test1.cloud-platform.service.justice.gov.uk
+</code></pre></div>
 
               <div data-module='page-expiry' data-last-reviewed-on="2020-03-03">
     <div class='page-expiry--not-expired'>
