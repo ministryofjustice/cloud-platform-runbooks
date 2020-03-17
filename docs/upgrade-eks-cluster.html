@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Delete terraform state lock | Cloud Platform Runbooks</title>
+    <title>Upgrade EKS cluster | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/delete-state-lock.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-cluster.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Delete terraform state lock" />
+      <meta property="og:title" content="Upgrade EKS cluster" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-state-lock.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-cluster.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Delete terraform state lock | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-state-lock.html" />
+      <meta property="twitter:title" content="Upgrade EKS cluster | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-cluster.html" />
 
     
   </head>
@@ -170,7 +170,7 @@
     <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
     <ul>
       <li>
-        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
+        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/create-cluster.html#environment-variables">Environment Variables</a>
@@ -227,7 +227,7 @@
         </ul>
       </li>
       <li>
-        <a href="/upgrade-cluster.html#run-the-upgrade">Run the upgrade</a>
+        <a href="/upgrade-cluster.html#upgrade-a-cluster-run-the-upgrade">Run the upgrade</a>
         <ul>
           <li>
             <a href="/upgrade-cluster.html#authenticate-to-the-cluster">Authenticate to the cluster</a>
@@ -281,10 +281,10 @@
     <a href="/upgrade-eks-cluster.html#upgrade-eks-cluster-s">Upgrade EKS cluster(s)</a>
     <ul>
       <li>
-        <a href="/upgrade-eks-cluster.html#upgrade-eks-cluster-s-pre-requisites">Pre-requisites</a>
+        <a href="/upgrade-eks-cluster.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
-        <a href="/upgrade-eks-cluster.html#upgrade-eks-cluster-s-run-the-upgrade">Run the upgrade</a>
+        <a href="/upgrade-eks-cluster.html#run-the-upgrade">Run the upgrade</a>
         <ul>
           <li>
             <a href="/upgrade-eks-cluster.html#upgrade-control-plane">Upgrade Control Plane</a>
@@ -1040,49 +1040,42 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="delete-terraform-state-lock">Delete terraform state lock</h1><p>In the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/build-environments">build pipeline</a>, you will sometimes see errors like this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Command: cd namespaces/live-1.cloud-platform.service.justice.gov.uk/jason-lab/resources; terraform apply -auto-approve failed.
+              <h1 id="upgrade-eks-cluster-s">Upgrade EKS cluster(s)</h1><p>EKS clusters are created using <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks</a> module, when new EKS is released it&rsquo;s usually followed by new terraform module version</p>
+<p>EKS cluster upgrades consist in two things:</p>
 
-Error: Error locking state: Error acquiring the state lock: ConditionalCheckFailedException: The conditional request failed
-    status code: 400, request id: 8F9C5H04HLD0TVN4V0PQIRRMFBVV4KQNSO5AEMVJF66Q9ASUAAJG
-</code></pre></div><p>If you see repeated failures trying to acquire the lock on the same namespace,
-it probably means the lock record has been left in place by mistake, because a
-previous run failed to release the lock when it should have.</p>
-<p>To fix this, you need to delete the lock record.</p>
+<ul>
+<li>Upgrade Control Plane</li>
+<li>Upgrade Node Groups</li>
+</ul>
+<h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-requisites:</p>
 
-<ol>
-<li>Go to the <a href="https://eu-west-1.console.aws.amazon.com/dynamodb/home?region=eu-west-1#tables:">dynamodb</a> page of the AWS web console (NB: the relevant table is in the <code>eu-west-1</code> region)</li>
-<li>Click on the <a href="https://eu-west-1.console.aws.amazon.com/dynamodb/home?region=eu-west-1#tables:selected=cloud-platform-environments-terraform-lock;tab=overview">cloud-platform-environments-terraform-lock</a> table, and then the <code>Items</code> tab</li>
-<li>Click <code>Add filter</code></li>
-<li>Enter <code>LockID</code> as the filter attribute, and change <code>String, =</code> to <code>String, contains</code> as the filter criteria</li>
-<li>Enter the namespace name as the string value to match, and click <code>Start search</code></li>
-</ol>
-<p>When you find the relevant lock records, delete them. Terraform will recreate
-any missing records the next time it tries to acquire the lock for that
-terraform state file.</p>
+<ul>
+<li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code>.</p></li>
+<li><p>You have the <a href="https://aws.amazon.com/cli/">AWS CLI</a> profile <code>moj-cp</code> with suitable credentials.</p></li>
+<li><p>You have terraform and docker installed</p></li>
+</ul>
+<h2 id="run-the-upgrade">Run the upgrade</h2><h3 id="upgrade-control-plane">Upgrade Control Plane</h3><p>As we mentioned before: almost always new EKS version implies new <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks module version</a>. As an example, the following instructions were applied to upgrade from 1.14 to 1.15:</p>
+<p>1) Create a PR in Cloud Platform Infrastructure repo <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-eks/cluster.tf">against EKS module</a> (file encrypted with git-crypt to protect users identity) which upgrade to the desired <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks version</a> that supports the EKS version you want to upgrade to</p>
+<div class="highlight"><pre class="highlight plaintext"><code> module "eks" {
+   source  = "terraform-aws-modules/eks/aws"
+-  version = "v8.1.0"
++  version = "v10.0.0"
+</code></pre></div><p>2) Execute <code>terraform plan</code> to check what is going to happen and finally <code>terraform apply</code> to execute the change.
+3) Verify using <a href="https://aws.amazon.com/cli/">AWS CLI</a> or <a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters">AWS Console</a> the Control Plane has the right version.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ aws eks describe-cluster --query 'cluster.version' --name manager
+"1.15"
+$
+</code></pre></div><p><a href="../images/aws-eks-upgrade.png" target="_blank" rel="noopener noreferrer"><img src="/images/aws-eks-upgrade.png" alt="AWS Console" /></a></p>
+<p>4) Most of the time new EKS version implies new versions for <code>kube-proxy</code>/<code>kube-dns</code>/<code>aws-node daemonset</code>. The upgrade process can be found directly in the official <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html">AWS Control Plane upgrade documentation</a> and <strong>MUST BE FOLLOWED, PLEASE DON&rsquo;T SKIP IT</strong>.</p>
+<h3 id="upgrade-node-groups">Upgrade Node Groups</h3><p>The best way to upgrade node groups are through AWS Console. We advise to follow the upgrade instructions from the <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html">official AWS Managed Node Group documentation</a>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-05-24">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 24 February 2020.
-
-        It needs to be reviewed again on 24 May 2020
-        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
-        .
-    </div>
-
-    <div class='page-expiry--expired'>
-      This page was set to be reviewed before 24 May 2020
-       by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
-      This might mean the content is out of date.
-    </div>
-  </div>
-
+            
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/delete-state-lock.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Delete%20terraform%20state%20lock'&amp;body=Problem%20with%20'Delete%20terraform%20state%20lock'%20(https://runbooks.cloud-platform.service.justice.gov.uk/delete-state-lock.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/upgrade-eks-cluster.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Upgrade%20EKS%20cluster'&amp;body=Problem%20with%20'Upgrade%20EKS%20cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-cluster.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
