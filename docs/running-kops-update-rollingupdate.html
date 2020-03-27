@@ -817,22 +817,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/joiners-guide.html#joiners-guide">Joiners Guide</a>
     <ul>
       <li>
@@ -849,6 +833,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -980,19 +980,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1015,6 +1002,19 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -1094,7 +1094,14 @@ terraform init
 terraform apply
 </code></pre></div><p>At this point, you should have an updated <code>kops/[cluster name].yaml</code> file in your working copy of the infrastructure repository.
 Commit and push your changes, including those in the terraform source and template files.</p>
-<h3 id="applying-local-changes-to-the-kops-state-store">Applying local changes to the kops state store</h3><p>To apply your local changes to the kops state stored on S3:</p>
+<h3 id="applying-local-changes-to-the-kops-state-store">Applying local changes to the kops state store</h3><h4 id="backup-the-remote-kops-state">Backup the remote kops state</h4><p>If you want to preserve a backup of the current kops state on S3, you can do so like this:</p>
+<div class="highlight"><pre class="highlight shell"><code>aws s3 cp <span class="nt">--recursive</span> <span class="nv">$KOPS_STATE_STORE</span>/live-1.cloud-platform.service.justice.gov.uk <span class="nv">$KOPS_STATE_STORE</span>/live-1-backup
+</code></pre></div><p>This takes a couple of minutes. At time of writing, this was around 10G of data (mostly etcd backup tarballs).</p>
+
+<blockquote>
+<p>While the backup exists, <code>kops get clusters</code> will report &ldquo;live-1&rdquo; <em>twice</em>. This doesn&rsquo;t do any harm, but you do need to delete the backup in order to resolve this, either via the <code>aws</code> CLI too, or using the AWS web interface for S3.</p>
+</blockquote>
+<h4 id="updating-the-remote-kops-state">Updating the remote kops state</h4><p>To apply your local changes to the kops state stored on S3:</p>
 <div class="highlight"><pre class="highlight shell"><code>kops replace <span class="nt">-f</span> kops/[cluster name].yaml
 </code></pre></div><p>WARNING: You will not receive any confirmation of this step.</p>
 <p>After this, you should be able to do a <code>kops update cluster...</code> and <code>kops rolling-update cluster...</code> as described below, to apply your changes to the cluster.</p>
