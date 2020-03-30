@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Git-crypt | Cloud Platform Runbooks</title>
+    <title>AWS GuardDuty Information /How to Implement | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/aws-guardduty.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Git-crypt" />
+      <meta property="og:title" content="AWS GuardDuty Information /How to Implement" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-guardduty.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Git-crypt | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
+      <meta property="twitter:title" content="AWS GuardDuty Information /How to Implement | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-guardduty.html" />
 
     
   </head>
@@ -1083,84 +1083,258 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="git-crypt">Git-crypt</h1><p>We use <code>git-crypt</code> for securing secrets committed to <code>git</code>. It uses a symmetric encryption key which is then encrypted for users using their GPG keys.</p>
-<h2 id="adding-new-user-to-the-keyring">Adding new user to the keyring</h2>
-<ol>
-<li><p>Ask the user (Slack, email, keyserver, etc) for their public key and import it inside your keyring:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>gpg --import &lt;&lt;EOF
------BEGIN PGP PUBLIC KEY BLOCK-----
+              <h1 id="aws-guardduty-utilising-terraform">AWS GuardDuty utilising Terraform</h1><h2 id="introduction">Introduction</h2><p><a href="https://docs.aws.amazon.com/guardduty/index.html">Amazon GuardDuty</a> is a continuous security monitoring service that analyzes and processes the following data sources:</p>
 
-mQGiBEN5tJ0RBADwLLzmO1AR10KILHRJMMq+MtnscrVsOawA4vUhC8oTZHPUXRgE
-AbJgYgUlxMpjsaT14d5xiTUqU1C+85FT764rIk51aEB1AsjudZf/tlv7gCieT64C
-DRDjqr7g7Df5L80zDuPuVdOHn+KlGIlT5X3gypstFKDvSKqN/qQMQhf5KwCg77aq
-----------------------------------------------------------------
-------------------- HERE USER PUBLIC KEY -----------------------
-----------------------------------------------------------------
-3omjJRX0AnQtfN1udwOK0N2FfyZLqChI2ied42DurIeQk+qYoSHhK/sCh4E3BjOg
-U5hJ21cQRxlN1sa1RFaNjoQlIkBH0q2xZSb3p+LM9Ez7keF96VGXZSy0K2Q9xtPi
-NS+0Yc13JFAzDubGfxGOnACePwZ5mNcJB6JNaZXPZN4E5AqDdEg=
-=yaF+
------END PGP PUBLIC KEY BLOCK-----
-EOF
-</code></pre></div></li>
-<li><p>Using KeyID/email trust the key as <em>&ldquo;5 = I trust ultimately&rdquo;</em>: <code>gpg --edit-key &quot;alejandro.garrido@digital.justice.gov.uk&quot; trust quit</code></p></li>
-<li><p>Create a new branch inside the git repository where user is going to be added: <code>git checkout -b add-alejandro-gpg</code></p></li>
-<li><p>Use git-crypt CLI to add the user: <code>git-crypt add-gpg-user alejandro.garrido@digital.justice.gov.uk</code></p></li>
-<li><p>Push the branch and create a PR: <code>git push origin add-alejandro-gpg</code></p></li>
-</ol>
-<h2 id="rotating-the-git-crypt-key">Rotating the git-crypt key</h2><p>When rotating the <code>git-crypt</code> symmetric key, you should follow the steps below:</p>
-<h4 id="1-ensure-you-have-unlocked-the-repository-git-crypt-unlock">1. Ensure you have unlocked the repository: <code>git-crypt unlock</code></h4><h4 id="2-make-a-list-of-the-current-users">2. Make a list of the current users:</h4>
 <ul>
-<li>for every file found, extract its filename minus the suffix, which corresponds to the user&rsquo;s key id</li>
+<li>VPC Flow Logs</li>
+<li>AWS CloudTrail event logs</li>
+<li>DNS logs.</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  ls .git-crypt/keys/default/0/*.gpg | xargs -I{} -- basename {} .gpg &gt; git-crypt-users
-</code></pre></div><h4 id="3-make-a-list-of-the-encrypted-files">3.  Make a list of the encrypted files:</h4>
+<p>It uses threat intelligence feeds, such as:</p>
+
 <ul>
-<li>for every currently encrypted file, extract its path, relative to the root of the repository</li>
+<li>lists of malicious IPs</li>
+<li>lists of malicious domains</li>
+<li>machine learning to identify unexpected and potentially unauthorized and malicious activity within your AWS environment. </li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  git-crypt status -e | awk '{ print $2; }' &gt; git-crypt-files
-</code></pre></div><h4 id="4-remove-git-crypt-configuration">4.  Remove <code>git-crypt</code> configuration:</h4><div class="highlight"><pre class="highlight plaintext"><code>  rm -rf .git-crypt .git/git-crypt
-</code></pre></div><h4 id="5-re-initialise-git-crypt">5.  Re-initialise <code>git-crypt</code>,</h4><div class="highlight"><pre class="highlight plaintext"><code>  git-crypt init
+<p>GuardDuty informs you of the status of your AWS environment by producing security <a href="https://eu-west-2.console.aws.amazon.com/guardduty/home?region=eu-west-2#/findings?macros=current">findings</a> that you can be viewed in the GuardDuty console or through Amazon CloudWatch events.</p>
+<p>GuardDuty findings include issues like escalations of privileges, uses of exposed credentials, or communication with malicious IPs, URLs, or domains. For example, GuardDuty can detect compromised EC2 instances serving malware or mining bitcoin.</p>
+<p>It also monitors AWS account access behavior for signs of compromise, such as unauthorized infrastructure deployments, like instances deployed in a region that has never been used, or unusual API calls, like a password policy change to reduce password strength.</p>
+<h3 id="aws-guardduty-accounts">AWS GuardDuty Accounts</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_accounts.html#guardduty_master">Master Account</a></li>
+</ul>
+<p>A designated account that can configure GuardDuty as well as view and manage GuardDuty findings for its own account and all associated member accounts.</p>
+
+<ul>
+<li><a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_accounts.html#guardduty_member">Member Accounts</a></li>
+</ul>
+<p>Invited (by Master Account) to enable GuardDuty and become associated with the Master AWS account (once an invitation has been accepted).</p>
+<h2 id="our-current-setup">Our Current setup</h2><p>Our setup at the moment is as follows:</p>
+
+<ul>
+<li><p>There are at present two master accounts - both in the moj-cp AWS account:</p>
+
+<ul>
+<li> One set up in the London AWS region 
+
+<ul>
+<li> This is for our cloud-platform live-1 AWS resources <a href="https://eu-west-2.console.aws.amazon.com/guardduty/home?region=eu-west-2#/findings?macros=current">moj-cp -London region</a></li>
+</ul></li>
+<li> One set up in the Ireland AWS region 
+
+<ul>
+<li> this controls several member AWS linked accounts. It is mainly for template-deploy related <a href="https://eu-west-1.console.aws.amazon.com/guardduty/home?region=eu-west-1#/linked-accounts">member accounts</a>.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="aws-guardduty-findings-for-live-1-aws-resources">AWS GuardDuty Findings for live-1 AWS resources</h3>
+<ul>
+<li>Findings that AWS GuardDuty reports for Global AWS resources/services (i.e IAM, S3 etc) are found in the AWS GuardDuty Findings dashboard master account in the Ireland AWS region. </li>
+<li>Findings that AWS GuardDuty reports for specific regional AWS resources/services (i.e ec2, vpc etc) are found in the master account AWS GuardDuty Findings dashboard in the London AWS region. </li>
+</ul>
+<h3 id="aws-guardduty-findings-for-aws-member-account-resources">AWS GuardDuty Findings for AWS member account resources</h3>
+<ul>
+<li>Findings that AWS GuardDuty reports for  AWS member accounts appear in the AWS GuardDuty Findings dashboard for the relevant member (in that AWS account) and are collated in the master account (Ireland AWS region)<br></li>
+</ul>
+<p>Any findings in GuardDuty are sent to Cloudwatch event rules that then integrate with AWS SNS (Simple Notification Service) topics and subscriptions. These are alerted to Pagerduty (presently &lsquo;in office hours&rsquo;) and then onto slack channels (at the moment #lower-priority-alarms)</p>
+<p>Please see <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_settingup.html">AWS GuardDuty</a> regarding setting up AWS GuardDuty.</p>
+<p>Also see here <a href="https://aws.amazon.com/guardduty/faqs/">AWS Cloudwatch frequently asked questions</a> where most general information regarding this service can be found</p>
+<p>Please also see <a href="https://www.terraform.io/docs/providers/aws/r/guardduty_detector.html">terraform AWS GuardDuty detector </a> regarding setting up the config (here) for terraform AWS GuardDuty detector</p>
+<h2 id="table-of-contents">Table of contents</h2>
+<ul>
+<li><a href="#1-prerequisite-files">1. Prerequisite files</a></li>
+<li><a href="#2-adding-a-new-member-account">2. Adding a new member account</a></li>
+<li><a href="#3-applying-the-terraform-changes">3. Applying the terraform changes</a></li>
+<li><a href="#4-pagerduty-to-slack-integration">4. Pagerduty to Slack integration</a></li>
+</ul>
+<h3 id="1-prerequisite-files">1. Prerequisite files</h3>
+<ul>
+<li><a href="#main-configuration-file">Main Configuration File</a> (guardduty.tf)</li>
+<li><a href="#terraform-variables-file">Terraform Variables File</a> (terraform.tfvars)</li>
+<li><a href="#aws-cloudwatch-event-rules-file">AWS Cloudwatch Event Rules File</a> (event-pattern.json)</li>
+<li><a href="#trusted-ip-list-file">Trusted ip List File</a>  (iplist.txt)</li>
+<li><a href="#variables-initialisation-file">Variables Initialisation File</a> (variables.tf)</li>
+</ul>
+<h4 id="main-configuration-file">Main Configuration File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/guardduty.tf">&#39;guardduty.tf&rsquo;</a> contains code for the following config:</p>
+
+<ul>
+<li>Enabling and turning GuardDuty on for the master account.</li>
+<li>Enabling and turning GuardDuty on for the member account.</li>
+<li>Setting up the S3 bucket and then adding trusted IP ranges etc to its contents.</li>
+<li>On the master account - setting up the iam group with the appropriate iam policies, allowing the setup, configuration and use of GuardDuty. Also allowing full access to the contents of the security bucket.</li>
+<li>On the master account - Adding chosen iam users to the iam groups so that they have admin permissions to set up and use GuardDuty..</li>
+<li>On the master account -Setting up AWS Cloudwatch Event rules to integrate with &#39;AWS GuardDuty Findings&rsquo; and config to alert to the relevant AWS sns topic (and thence onto pagerduty)
+.Also to set up an event pattern (json file).</li>
+<li>On the master account Setting up the relevant GuardDuty AWS SNS (Simple Notification Service) topic and subscription.</li>
+</ul>
+<h4 id="terraform-variables-file">Terraform Variables File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/terraform.tfvars">&#39;terraform.tfvars&rsquo;</a> contains code for the following config variables:</p>
+
+<ul>
+<li>aws_region</li>
+<li>aws_profile for the master and member accounts (set locally in ~/.aws/credentials). This is set up using format &ldquo;moj-<a href="see%20terraform.tfvars%20file">account</a></li>
+<li>aws_account_id (the id for the master and member aws accounts)</li>
+<li>integration_key (the Amazon-GuardDuty service integration key configured in pagerduty to integrate with AWS Guardduty)</li>
+<li>users (admin aws iam  users)</li>
+<li>topic_arn = &quot;arn:aws:sns:eu-west-1:[aws-account-id]:GuardDuty-notifications&rdquo; (this is how it will be configured as an aws sns (simple notification service) topic</li>
+<li>endpoint  = <code>https://events.pagerduty.com/integration/[pagerduty to AWS Guardduty integraion_key]/enqueue</code> this is required by the sns subscription endpoint configuration)</li>
+<li>member_email (the email to which the initial invitation email(s) should be sent {from the master account} when setting up GuardDuty on the member account - this must match email used to set up the root account)
+#### AWS Cloudwatch Event Rules File</li>
+</ul>
+<p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/resources/event-pattern.json">&#39;event-pattern.json&rsquo;</a></p>
+
+<ul>
+<li>A json object that is used by &#39;AWS Cloudwatch Event Rules&rsquo; and related &#39;Targets&rsquo; to select &#39;AWS Guardduty Events&rsquo; (findings) and route them to the AWS sns targets.</li>
+</ul>
+<p>When raising the actual finding in an AWS account, GuardDuty normalizes the raised finding to have one of three integer values. See <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings.html#guardduty_filter-findings">AWS Findings</a> for further information:</p>
+
+<ul>
+<li>  Severity Rating/ScoreRange: Value for Raised Findings
+
+<ul>
+<li>  Low (0.1-3.9): 2</li>
+<li>  Medium (4.0-6.9): 5</li>
+<li>  HIGH (7.0-8.9): 8</li>
+<li>  (9.0 - 10.0) - NA (Reserved by AWS and NOT Implemented for any active findings)</li>
+</ul></li>
+</ul>
+<p>The json file should be configured accordingly:
+Example (high priority):</p>
+<div class="highlight"><pre class="highlight plaintext"><code>{
+  "detail-type": [
+    "GuardDuty Finding"
+  ],
+  "source": [
+    "aws.guardduty"
+  ],
+    "detail": {
+      "severity": [
+        7,
+        7.0,
+        7.1,
+        7.2,
+        7.3,
+        7.4,
+        7.5,
+        7.6,
+        7.7,
+        7.8,
+        7.9,
+        8,
+        8.0,
+        8.1,
+        8.2,
+        8.3,
+        8.4,
+        8.5,
+        8.6,
+        8.7,
+        8.8,
+        8.9
+      ]
+    }
+  }
+</code></pre></div><h4 id="trusted-ip-list-file">Trusted ip List File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/resources/iplist.txt">&#39;iplist.txt&rsquo;</a></p>
+
+<ul>
+<li>A trusted ip list. GuardDuty does not generate findings for IP addresses that are included in this trusted IP list/s
+At this point in time terraform is unable to update this list by &#39;terraform apply&rsquo;. The list has to be manually deleted in the AWS dashboard &gt;  Guardduty &gt; Lists &gt; Trusted IP Lists. Then you can run the &#39;terraform apply.</li>
+</ul>
+<h4 id="variables-initialisation-file">Variables Initialisation File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/variables.tf">&#39;variables.tf&rsquo;</a></p>
+
+<ul>
+<li>Used to set up the terraform variables and defaults required by terraform &#39;guardduty.tf&rsquo;</li>
+</ul>
+<h3 id="2-adding-a-new-member-account">2. Adding a new member account</h3>
+<ul>
+<li>guardduty.tf add the following (incrementing the member no as required):</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code># -----------------------------------------------------------
+# membership7 account provider
+# -----------------------------------------------------------
+
+provider "aws.member7" {
+  region  = "${var.aws_region}"
+  profile = "${var.aws_member7_profile}"
+}
+
+# -----------------------------------------------------------
+# membership7 account GuardDuty detector
+# -----------------------------------------------------------
+
+resource "aws_guardduty_detector" "member7" {
+  provider = "aws.member7"
+
+  enable                       = true
+  finding_publishing_frequency = "FIFTEEN_MINUTES"
+}
+
+# -----------------------------------------------------------
+# membership7 account GuardDuty member
+# -----------------------------------------------------------
+
+resource "aws_guardduty_member" "member7" {
+  account_id         = "${aws_guardduty_detector.member7.account_id}"
+  detector_id        = "${aws_guardduty_detector.master.id}"
+  email              = "${var.member7_email}"
+  invite             = true
+  invitation_message = "please accept guardduty invitation"
+}
 </code></pre></div>
 <ul>
-<li>make sure you have all the users&rsquo; keys,</li>
+<li>variable.tf add the following (incrementing the memmber no as required):</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} gpg --recv-key {}
+<div class="highlight"><pre class="highlight plaintext"><code>variable "aws_member7_account_id" {}
+variable "aws_member7_profile" {}
+variable "member7_email" {}
 </code></pre></div>
 <ul>
-<li>and add all the users back,</li>
+<li>terraform.tfvars add the following (incrementing the member no as required):</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} git-crypt add-gpg-user -n --trusted {}
+<div class="highlight"><pre class="highlight plaintext"><code>aws_member7_profile = "moj-[account name]"
+aws_member7_account_id = "[aws account id]"
+member7_email = "[root email address at time of account creation]"
 </code></pre></div>
 <ul>
-<li>At this point, your git index will have a number of pending changes, do not commit them yet.</li>
+<li>In AWS member account Dashboard go to GuardDuty link &gt; Accounts &gt; Accept the invite
+This will add GuardDuty in the member account. Fidings will now also appear in the GuardDuty master accounty.</li>
 </ul>
-<h4 id="6-re-encrypt-all-the-secrets-the-list-of-secrets-was-extracted-in-git-crypt-files-see-step-2-above-since-the-master-encryption-key-is-being-rotated-all-of-the-secrets-that-have-been-encrypted-with-it-must-be-rotated-once-finished-you-can-add-the-files-to-the-index">6.  Re-encrypt all the secrets: the list of secrets was extracted in <code>git-crypt-files</code> (see step 2. above). Since the master encryption key is being rotated, all of the secrets that have been encrypted with it <em>must</em> be rotated. Once finished, you can add the files to the index</h4><div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-files | xargs git add
-</code></pre></div><h4 id="7-commit-your-changes-one-way-to-check-that-the-files-in-the-git-index-are-properly-encrypted-before-you-commit-your-changes-is-like-so">7. Commit your changes. One way to check that the files in the git index are properly encrypted before you commit your changes is like so:</h4><div class="highlight"><pre class="highlight plaintext"><code>  git show :&lt;path-to-file&gt;
+<h3 id="3-applying-the-terraform-changes">3. Applying the terraform changes</h3><div class="highlight"><pre class="highlight plaintext"><code>terraform init
+terraform plan
+terraform apply (answer 'yes' to actually update remote config)
 </code></pre></div>
 <ul>
-<li>or after committing (and before you&rsquo;ve pushed):</li>
+<li>As at 16/03/2020 there was a problem where an actual AWS account had been removed/deactivated (and credentials no longer worked) - that related to a GuardDuty membership account.</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  git show HEAD:&lt;path-to-file&gt;
-</code></pre></div>
+<p>If possible to alleviate this problem - take the following action in the following order (before the AWS account is actually deactivated/deleted:</p>
+
 <ul>
-<li><p>where <code>&lt;path-to-file&gt;</code> is either absolute from the base of the git repo or relative (eg.: <code>git show:./my-secret-file.yaml</code>)</p></li>
-<li><p>You should see binary output which begins with <code>^@GITCRYPT^@</code>.</p></li>
+<li> remove &#39;resource &ldquo;aws_guardduty_detector&rdquo; &ldquo;member&hellip;.&rdquo;&rsquo; - terraform apply</li>
+<li> remove &#39;resource &ldquo;aws_guardduty_member&rdquo; &ldquo;member&hellip;.&rdquo;&rsquo;   - terraform apply</li>
+<li> then delete/deactivate the actual AWS account</li>
 </ul>
-<p>Note: If you need to <code>checkout</code> an older commit, branch, tag etc., make sure to <code>git-crypt lock</code> your repository before in order to avoid a broken local working directory. Once you&rsquo;ve locked and checked out the desired revision, you can <code>git-crypt unlock</code>.</p>
+<p>If the above is not possible - due to the AWS account having already been deleted then:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>terraform state rm aws_guardduty_detector.member....
+terraform state rm aws_guardduty_member.member....  
+</code></pre></div><h3 id="4-pagerduty-to-slack-integration">4. Pagerduty to Slack integration</h3><p>This is is also set up utilising terraform separately config here:</p>
+
+<ul>
+<li>https://github.com/ministryofjustice/cloudplatforms-terraform-ops/blob/master/main.tf</li>
+<li>https://github.com/ministryofjustice/cloudplatforms-terraform-ops/blob/master/services/amazon-guardduty-notifications/pagerduty.tf</li>
+</ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-27">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-06-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 December 2019.
+      This page was last reviewed on 17 March 2020.
 
-        It needs to be reviewed again on 27 March 2020
+        It needs to be reviewed again on 17 June 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 March 2020
+      This page was set to be reviewed before 17 June 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1169,8 +1343,8 @@ EOF
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/rotate-git-crypt-key.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Git-crypt'&amp;body=Problem%20with%20'Git-crypt'%20(https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/aws-guardduty.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'AWS%20GuardDuty%20Information%20/How%20to%20Implement'&amp;body=Problem%20with%20'AWS%20GuardDuty%20Information%20/How%20to%20Implement'%20(https://runbooks.cloud-platform.service.justice.gov.uk/aws-guardduty.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
