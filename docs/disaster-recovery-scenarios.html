@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>EKS Tool/Manager Cluster | Cloud Platform Runbooks</title>
+    <title>Cloud Platform Disaster Recovery Scenarios | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/eks-tools-cluster.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery-scenarios.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="EKS Tool/Manager Cluster" />
+      <meta property="og:title" content="Cloud Platform Disaster Recovery Scenarios" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/eks-tools-cluster.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery-scenarios.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="EKS Tool/Manager Cluster | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/eks-tools-cluster.html" />
+      <meta property="twitter:title" content="Cloud Platform Disaster Recovery Scenarios | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery-scenarios.html" />
 
     
   </head>
@@ -170,7 +170,7 @@
     <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
     <ul>
       <li>
-        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites">Pre-requisites</a>
+        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/create-cluster.html#environment-variables">Environment Variables</a>
@@ -368,7 +368,7 @@
     <a href="/disaster-recovery.html#cloud-platform-disaster-recovery">Cloud Platform Disaster Recovery</a>
     <ul>
       <li>
-        <a href="/disaster-recovery.html#restore-process">Restore process</a>
+        <a href="/disaster-recovery.html#cloud-platform-disaster-recovery-restore-process">Restore process</a>
       </li>
       <li>
         <a href="/disaster-recovery.html#apply-cloud-platform-resources">Apply cloud-platform resources</a>
@@ -413,7 +413,7 @@
             <a href="/disaster-recovery-scenarios.html#possible-cause">Possible Cause</a>
           </li>
           <li>
-            <a href="/disaster-recovery-scenarios.html#losing-a-namespace-restore-process">Restore process</a>
+            <a href="/disaster-recovery-scenarios.html#restore-process">Restore process</a>
           </li>
         </ul>
       </li>
@@ -658,7 +658,7 @@
     <a href="/eks-tools-cluster.html#provisioning-eks-clusters">Provisioning EKS clusters</a>
     <ul>
       <li>
-        <a href="/eks-tools-cluster.html#pre-requisites">Pre-requisites</a>
+        <a href="/eks-tools-cluster.html#provisioning-eks-clusters-pre-requisites">Pre-requisites</a>
       </li>
       <li>
         <a href="/eks-tools-cluster.html#provisioning">Provisioning</a>
@@ -1104,78 +1104,49 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1><p>For the time being EKS is only used for the tools cluster, it mainly holds the Cloud Platform concourse CI and the Prometheus federation.</p>
-<p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong>, each of them (EKS or kOps, doesn&rsquo;t matter) creates a Route53 hostzone which is unique</p>
-<h2 id="pre-requisites">Pre-requisites</h2>
-<ul>
-<li>Make sure you&rsquo;ve access to Cloud Platform AWS account</li>
-<li>Set your environment variables (you might also want to include <code>AWS_*</code> envs):</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext"><code>    export KOPS_STATE_STORE=s3://cloud-platform-kops-state
-    export AWS_PROFILE=moj-cp
-</code></pre></div><h2 id="provisioning">Provisioning</h2><h3 id="1-vpc">1. VPC</h3><p>We need to create a VPC where to deploy the cluster, VPCs are deployed using terraform and its code-base can be found in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-network">cloud-platform-infrastructure/terraform/cloud-platform-network</a> folder</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform init
-terraform workspace new &lt;WorkspaceName&gt;
-terraform apply
-</code></pre></div><p>You should be able to see your new VPC (called <code>WorkspaceName</code>) inside the AWS Console. Check it before jumping to the next step.</p>
-<p><strong>NOTE</strong>: For conventions purposes please call all terraform workspaces the same.</p>
-<h3 id="2-creating-eks-cluster">2. Creating EKS cluster</h3><p>Now it&rsquo;s time to provision the cluster itself, we change directory to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-eks">cloud-platform-infrastructure/terraform/cloud-platform-eks</a> and follow very similar terraform workflow:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform init
-terraform workspace new &lt;WorkspaceName&gt; 
-terraform apply -var="vpc_name=$VPC_NAME"
-</code></pre></div><p><code>vpc_name</code> must be set, it&rsquo;s the only required variable. It can also be used variables like <code>cluster_node_count</code> and <code>worker_node_machine_type</code> to set up different node groups parameters</p>
-<p>Once terraform finishes you should be able to generate your kubeadmin file (used by <em>kubectl</em> to establish a connection to the cluster) using aws-cli in the following way:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>aws eks --region eu-west-2 update-kubeconfig --name mogaal-eks
-</code></pre></div><p><strong>NOTE</strong>: Replace &ldquo;mogaal-eks&rdquo; with the cluster name (workspace name)</p>
-<p>Final check for this step consists in cluster connection</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ kubectl cluster-info
-Kubernetes master is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com
-CoreDNS is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+              <h1 id="cloud-platform-disaster-recovery-scenarios">Cloud Platform Disaster Recovery Scenarios</h1><p>This section will document various scenarios that will create an incident. Each scenario will have an impact and restore process.</p>
+<h2 id="losing-a-namespace">Losing a Namespace</h2><h3 id="impact">Impact</h3><p>A loss of a namespace will result in losing all resources within the namespace including ingress.</p>
+<h3 id="possible-cause">Possible Cause</h3><p>User error - Executing <code>kubectl delete ns my-namespace-dev</code></p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl get all -n my-namespace-dev
+No resources found in my-namespace-dev namespace.
+</code></pre></div><h3 id="restore-process">Restore process</h3><p>As long as the namespace is over 3 hours old, it can be recovered using Velero.</p>
+<p>First step is to find the name of the most recent backup of the <code>allnamespacebackup</code> schedule:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero backup get
 
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+NAME                                       STATUS      CREATED                         EXPIRES   STORAGE LOCATION   SELECTOR
+velero-allnamespacebackup-00000000000000   Completed   2020-03-30 12:00:37 +0100 BST   29d       default            &lt;none&gt;
+</code></pre></div><p>Using the backup name, you can now run a <code>Velero restore</code> command to restore the deleted namespace.</p>
+<p>Restore command:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --include-namespaces &lt;namespace&gt; --wait
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore create my-namespace-dev-restore --from-backup velero-allnamespacebackup-00000000000000 --include-namespaces my-namespace-dev --wait
+</code></pre></div><p>Once completed, you should be able to see the namespace and all resources recovered:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl get all -n my-namespace-dev
 
-</code></pre></div><h3 id="3-deploy-components">3. Deploy components</h3><p>Components installation is the last step, for that we need to have the <code>KUBECONFIG</code> variable exported and make sure you have access to the cluster. To deploy components we go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-eks/components">cloud-platform-infrastructure/terraform/cloud-platform-eks/components</a> and follow exactly the same terraform workflow:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform init
-terraform workspace new &lt;WorkspaceName&gt;
-terraform apply
-</code></pre></div><h3 id="4-delete-the-eks-cluster">4. Delete the EKS cluster</h3><p>Follow these steps, to delete the EKS cluster.</p>
-<p>First, set the kubectl context for the EKS cluster you are deleting. The easiest way to do this is with aws command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ export KUBECONFIG=~/.kube/config
-$ aws eks --region eu-west-2 update-kubeconfig --name &lt;cluster-name&gt;
-</code></pre></div><p>You should see this output:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Added new context arn:aws:eks:eu-west-2:754256621582:cluster/&lt;cluster-name&gt; to .kube/config
+NAME                       READY   STATUS      RESTARTS   AGE
+pod/pod1                   2/2     Running     0          1m
 
-</code></pre></div><p>Then, from the components directory, run these commands to destroy all cluster components, and delete the terraform workspace.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ cd terraform/cloud-platform-eks/components
-$ terraform init
-$ terraform workspace select &lt;clusterName e.g. tools-cluster-eks&gt;
-$ terraform destroy
-$ terraform workspace select default
-$ terraform workspace delete &lt;clusterName&gt;
-</code></pre></div><p>Change directories and perform the following to destroy the EKS cluster, and delete the terraform workspace.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ cd ../cloud-platform-eks
-$ terraform init
-$ terraform workspace select &lt;clusterName e.g. tools-cluster-eks&gt;
-$ terraform destroy
-$ terraform workspace select default
-$ terraform workspace delete &lt;clusterName&gt;
-</code></pre></div><h2 id="todo">TODO</h2>
-<ul>
-<li>It would be nice to have similar script to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/create-cluster.rb"><code>create-cluster.rb</code></a> (or add to it support for EKS) that creates the whole process in one command.</li>
-</ul>
+NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)      AGE
+service/service1           ClusterIP   None             None          443/TCP      1m
 
+NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/deployment1          1/1     1            1           1m
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-04-06">
+NAME                                 DESIRED   CURRENT   READY   AGE
+replicaset.apps/replicaset1          1         1         1       1m
+</code></pre></div>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2020-06-30">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 January 2020.
+      This page was last reviewed on 30 March 2020.
 
-        It needs to be reviewed again on 6 April 2020
+        It needs to be reviewed again on 30 June 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 April 2020
+      This page was set to be reviewed before 30 June 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1184,8 +1155,8 @@ $ terraform workspace delete &lt;clusterName&gt;
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/eks-tools-cluster.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'EKS%20Tool/Manager%20Cluster'&amp;body=Problem%20with%20'EKS%20Tool/Manager%20Cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/eks-tools-cluster.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/disaster-recovery-scenarios.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Cloud%20Platform%20Disaster%20Recovery%20Scenarios'&amp;body=Problem%20with%20'Cloud%20Platform%20Disaster%20Recovery%20Scenarios'%20(https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery-scenarios.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
