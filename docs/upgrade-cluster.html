@@ -541,6 +541,31 @@
 </ul>
 <ul>
   <li>
+    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
+    <ul>
+      <li>
+        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -567,36 +592,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
-    <ul>
-      <li>
-        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch">Remove data from Elasticsearch</a>
     <ul>
       <li>
@@ -609,6 +604,11 @@
         <a href="/remove-data-from-elasticsearch.html#delete-by-query">Delete by query</a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -881,6 +881,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#joiners-guide">Joiners Guide</a>
     <ul>
       <li>
@@ -897,22 +913,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1147,6 +1147,7 @@
 <div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-infrastructure/smoke-tests
 make test-fast
 </code></pre></div><p>This will take around 30 seconds and should pass.</p>
+<p>Note: During an upgrade, we had an issue where kube-system namespace label got removed, which resulted in OPA webhook restrict applying daemonsets to master node. If the above &ldquo;test-fast&rdquo; fail for that reason, apply the annotation back form <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/master/namespaces/live-1.cloud-platform.service.justice.gov.uk/kube-system/00-namespace.yaml">here</a></p>
 <p>Perform the same process on the other two masters.</p>
 <h3 id="take-stock-of-current-running-worker-nodes">Take stock of current running worker nodes</h3><p>You&rsquo;ll need a file with all current working worker nodes. Run to output all workers to a text file:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>kubectl get nodes | grep node | sed 's/ .*//' &gt; nodes
@@ -1157,7 +1158,8 @@ kops update cluster --yes
 </code></pre></div><p>note: we use the kubernetes-version to identify the new node group.</p>
 <p>New instances will be created, which you&rsquo;ll see with:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>watch kubectl get nodes
-</code></pre></div><h3 id="cordon-old-workers">Cordon old workers</h3><p>Copy the file we created earlier:</p>
+</code></pre></div><p>We have multiple worker instance groups. Perform the same process on the other node instance groups.</p>
+<h3 id="cordon-old-workers">Cordon old workers</h3><p>Copy the file we created earlier:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>cp nodes cordon_nodes
 </code></pre></div><p>We need to insert the following before each line in this file:</p>
 <p><code>kubectl cordon</code></p>
