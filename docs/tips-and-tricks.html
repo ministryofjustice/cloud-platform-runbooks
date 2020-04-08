@@ -541,31 +541,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
-    <ul>
-      <li>
-        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -586,6 +561,31 @@
       </li>
       <li>
         <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
+    <ul>
+      <li>
+        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
       </li>
     </ul>
   </li>
@@ -881,6 +881,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -897,22 +913,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1047,6 +1047,9 @@
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
+        <a href="/tips-and-tricks.html#delete-an-rds-database-snapshot">Delete an RDS database snapshot</a>
+      </li>
+      <li>
         <a href="/tips-and-tricks.html#check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</a>
       </li>
       <li>
@@ -1105,7 +1108,8 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="tips-and-tricks">Tips and Tricks</h1><p>A collection of useful one-liners and code snippets.</p>
-<h2 id="check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">echo</span> | openssl s_client <span class="nt">-connect</span> google.com:443 | openssl x509 <span class="nt">-noout</span> <span class="nt">-enddate</span>
+<h2 id="delete-an-rds-database-snapshot">Delete an RDS database snapshot</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>aws rds delete-db-snapshot <span class="nt">--db-snapshot-identifier</span> cloud-platform-2f8c3c1ceaf0a05d-finalsnapshot
+</code></pre></div><h2 id="check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">echo</span> | openssl s_client <span class="nt">-connect</span> google.com:443 | openssl x509 <span class="nt">-noout</span> <span class="nt">-enddate</span>
 <span class="nv">depth</span><span class="o">=</span>1 C <span class="o">=</span> US, O <span class="o">=</span> Google Trust Services, CN <span class="o">=</span> Google Internet Authority G3
 verify error:num<span class="o">=</span>20:unable to get <span class="nb">local </span>issuer certificate
 verify <span class="k">return</span>:0
@@ -1158,17 +1162,17 @@ apt-cache policy docker-ce
 </code></pre></div><h2 id="output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</h2><p>Use <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/bin/route53-to-csv.rb">this script</a></p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-08">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 8 April 2020.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 8 July 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 8 July 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
