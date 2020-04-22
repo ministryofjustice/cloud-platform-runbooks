@@ -549,6 +549,31 @@
 </ul>
 <ul>
   <li>
+    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
+    <ul>
+      <li>
+        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -575,36 +600,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
-    <ul>
-      <li>
-        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch">Remove data from Elasticsearch</a>
     <ul>
       <li>
@@ -617,6 +612,11 @@
         <a href="/remove-data-from-elasticsearch.html#delete-by-query">Delete by query</a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -875,6 +875,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -891,22 +907,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1101,17 +1101,18 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1><p>For the time being EKS is only used for the tools cluster, it mainly holds the Cloud Platform concourse CI and the Prometheus federation.</p>
-<p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong>, each of them (EKS or kOps, doesn&rsquo;t matter) creates a Route53 hostzone which is unique</p>
+              <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1><p>For the time being EKS is only used for the manager cluster, it mainly holds Cloud Platform concourse CI.</p>
+<p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong> (EKS or kOps). Each one creates a unique Route53 hostzone which is unique to the name</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <ul>
-<li>Make sure you&rsquo;ve access to Cloud Platform AWS account</li>
+<li>Make sure you have access to Cloud Platform AWS account</li>
 <li>Set your environment variables (you might also want to include <code>AWS_*</code> envs):</li>
 </ul>
 <div class="highlight"><pre class="highlight plaintext"><code>    export KOPS_STATE_STORE=s3://cloud-platform-kops-state
     export AWS_PROFILE=moj-cp
-</code></pre></div><h2 id="provisioning">Provisioning</h2><h3 id="1-vpc">1. VPC</h3><p>We need to create a VPC where to deploy the cluster, VPCs are deployed using terraform and its code-base can be found in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-network">cloud-platform-infrastructure/terraform/cloud-platform-network</a> folder</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform init
+</code></pre></div><h2 id="provisioning">Provisioning</h2><h3 id="1-vpc">1. VPC</h3><p>We need to create a VPC to deploy the cluster, VPCs are deployed using terraform code under <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-network">cloud-platform-infrastructure/terraform/cloud-platform-network</a> folder:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-infrastructure/terraform/cloud-platform-network
+terraform init
 terraform workspace new &lt;WorkspaceName&gt;
 terraform apply
 </code></pre></div><p>You should be able to see your new VPC (called <code>WorkspaceName</code>) inside the AWS Console. Check it before jumping to the next step.</p>
@@ -1162,17 +1163,17 @@ $ terraform workspace delete &lt;clusterName&gt;
 </ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-04-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 January 2020.
+      This page was last reviewed on 22 April 2020.
 
-        It needs to be reviewed again on 6 April 2020
+        It needs to be reviewed again on 22 July 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 April 2020
+      This page was set to be reviewed before 22 July 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
