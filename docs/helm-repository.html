@@ -549,31 +549,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
-    <ul>
-      <li>
-        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
-      </li>
-      <li>
-        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
     <ul>
       <li>
@@ -600,6 +575,36 @@
 </ul>
 <ul>
   <li>
+    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
+    <ul>
+      <li>
+        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch">Remove data from Elasticsearch</a>
     <ul>
       <li>
@@ -612,11 +617,6 @@
         <a href="/remove-data-from-elasticsearch.html#delete-by-query">Delete by query</a>
       </li>
     </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -823,21 +823,7 @@
     <a href="/helm-repository.html#cloud-platform-helm-chart-repository">Cloud Platform helm chart repository</a>
     <ul>
       <li>
-        <a href="/helm-repository.html#workflow-to-update-helm-charts">Workflow to update helm charts</a>
-        <ul>
-          <li>
-            <a href="/helm-repository.html#1-make-the-change">1. Make the change</a>
-          </li>
-          <li>
-            <a href="/helm-repository.html#2-create-the-tarball">2. Create the tarball</a>
-          </li>
-          <li>
-            <a href="/helm-repository.html#3-generate-index-yaml">3. Generate index.yaml</a>
-          </li>
-          <li>
-            <a href="/helm-repository.html#4-commit-and-create-the-pr">4. Commit and create the PR</a>
-          </li>
-        </ul>
+        <a href="/helm-repository.html#performing-crud-on-cloud-platform-helm-repository">Performing CRUD on Cloud Platform Helm repository</a>
       </li>
     </ul>
   </li>
@@ -1117,32 +1103,20 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="cloud-platform-helm-chart-repository">Cloud Platform helm chart repository</h1><p>The cloud-platform team uses Github pages as helm chart repository. The main advantage is directly related to maintainability: we don&rsquo;t need to keep an eye ay service, just in source code.</p>
 <p>The <a href="https://github.com/ministryofjustice/cloud-platform-helm-charts">github repository</a> has more details about the it.</p>
-<h2 id="workflow-to-update-helm-charts">Workflow to update helm charts</h2><h3 id="1-make-the-change">1. Make the change</h3><p>The first step is branching from from master and make the desired changes. Before test the change and make sure everyone is happy with <strong>don&rsquo;t forget</strong> to increment the chart&rsquo;s <em>version</em> field inside <code>Chart.yaml</code>.</p>
-<p>Test</p>
-<h3 id="2-create-the-tarball">2. Create the tarball</h3><p>Now we should create the artefact containing our helm chart. Using <code>helm package</code> command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ helm package fluentd-es/
-Successfully packaged chart and saved it to: /Users/mogaal/workspace/github/ministryofjustice/cloud-platform-helm-charts/fluentd-es-2.7.0.tgz
-$ file fluentd-es-2.7.0.tgz
-fluentd-es-2.7.0.tgz: gzip compressed data, extra field, has comment, original size modulo 2^32 47104
-</code></pre></div><p><em>NOTE</em>: Also include the the tarball/artifact in the PR.</p>
-<h3 id="3-generate-index-yaml">3. Generate <code>index.yaml</code></h3><p>The last step consists of regenerate the <code>index.yaml</code> which track all artefact within the repository:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ helm repo index --url  https://ministryofjustice.github.io/cloud-platform-helm-charts/ --merge index.yaml .
-$
-</code></pre></div><p>(yes, no output but the <code>index.yaml</code> should&rsquo;ve been modified)</p>
-<h3 id="4-commit-and-create-the-pr">4. Commit and create the PR</h3><p>The last step is to commit and create the PR, once it gets approved and merged it will take some minutes to appear in the repo.</p>
+<h2 id="performing-crud-on-cloud-platform-helm-repository">Performing CRUD on Cloud Platform Helm repository</h2><p>A detailed guide about create, delete and update Helm Chart repositories is found in main README of the <a href="https://github.com/ministryofjustice/cloud-platform-helm-charts">github project</a></p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-04-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-21">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 January 2020.
+      This page was last reviewed on 21 April 2020.
 
-        It needs to be reviewed again on 20 April 2020
+        It needs to be reviewed again on 21 July 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 April 2020
+      This page was set to be reviewed before 21 July 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
