@@ -1038,6 +1038,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1063,19 +1076,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -1191,30 +1191,43 @@ Thank you for your patience.</p>
 <li>When the upgrade will take place (including times)</li>
 <li>Why you are upgrading (in might be useful to include a link to some change notes or something that users can refer to if they want more information rather than adding it all in the comms.)</li>
 <li>Details of any service impact or anthing users might need to take action on as a result of changes (including if we are pausing pipelines)</li>
+<li>Details of any risks posed to services as a result of not taking requested actions</li>
+<li>Include examples of code if it helps users understand the changes</li>
+<li>Provide a high level overview of the process we will be taking to implement changes</li>
 <li>Refer users back to the #ask-cloud-platform channel if they have questions or something isn&rsquo;t working as expected</li>
 </ul>
 <h3 id="tips-on-format-of-communications-example">Example</h3>
 <blockquote>
-<p><strong>Kubernetes 1.14 Upgrade</strong>
-Please be aware that we will be upgrading the version of Kubernetes to 1.14 tomorrow (Friday 27th February) at 7am.
-More information on what&rsquo;s new can be found here - https://sysdig.com/blog/whats-new-kubernetes-1-14/
-There will be no downtime for this change. However we have noticed some latency during testing, and the Concourse pipeline will be paused.
-If you need to deploy any urgent changes to the Environments repository, or if you experience any other problems while the upgrade is underway please let us know over at #ask-cloud-platform. Many thanks.</p>
+<p><strong>Certificate Manager Upgrade</strong>
+<strong>When</strong>: 23rd April starts at 12:00 PM.
+<strong>What</strong>: Cert-Manager upgrade to v0.14 from v0.8
+<strong>Description</strong>:
+We are upgrading cert-manager, which manages all of the SSL certificates for  &gt; your websites and web applications, from version 0.8 to 0.14.</p>
+<p>This is a significant change. Version 0.14 removes the “v1alpha1” designation for &gt; certificates, and changes the API group from certmanager.k82.io to &gt; &gt; &gt; &gt; cert-manager.io.</p>
+<p><strong>What you need to do</strong>:
+Move all of your certificate definitions into your namespace folders in the environments repository, by the end of 22nd April 2020.</p>
+<p><strong>Certificates in the old format will not work after the upgrade</strong>.</p>
+<p>The Cloud Platform team will make all the required changes to any certificate definitions in the environments repository.</p>
+<p>If you have certificate definitions which are not in the environments repository, you will need to make the required changes to the certificate yaml files, and redeploy the certificates once the upgrade is complete.</p>
+<p><strong>Downtime</strong>: 
+We are not expecting any downtime as a result of this change.</p>
+<p><strong>Process</strong>: (overview of steps that need to be taken my users and the the Cloud Platform Team)</p>
+<p>If you experience any issues during or after the changes implemented please contact the team over at #ask-cloud-platform</p>
 </blockquote>
 <h2 id="sharing-information-with-the-wider-ministry-of-justice-and-the-public">Sharing information with the wider Ministry of Justice and the Public</h2><p>There may be occasions where we want to publish something to the wider MoJ or the Public. In these instances we can publish something on the MoJ Digital blog. Requests to publish on the blog should be made to #ask-comms in the first instance.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-06-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-21">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 March 2020.
+      This page was last reviewed on 21 April 2020.
 
-        It needs to be reviewed again on 3 June 2020
+        It needs to be reviewed again on 21 July 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 June 2020
+      This page was set to be reviewed before 21 July 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
