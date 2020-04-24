@@ -592,9 +592,6 @@
           </li>
         </ul>
       </li>
-      <li>
-        <a href="/remove-orphaned-namespace.html#possible-errors">Possible Errors</a>
-      </li>
     </ul>
   </li>
 </ul>
@@ -813,7 +810,7 @@
         <a href="/running-kops-update-rollingupdate.html#running-kops-rolling-update">Running Kops rolling-update</a>
       </li>
       <li>
-        <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate-possible-errors">Possible Errors</a>
+        <a href="/running-kops-update-rollingupdate.html#possible-errors">Possible Errors</a>
       </li>
     </ul>
   </li>
@@ -875,22 +872,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -907,6 +888,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1102,30 +1099,26 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="remove-39-orphaned-39-namespaces-and-aws-resources">Remove &lsquo;orphaned&rsquo; namespaces and AWS resources</h1><p>Cluster namespaces, and the AWS resources associated with them, should be removed automatically by the build pipeline.</p>
-<p>Sometimes this process doesn&rsquo;t work correctly, or users don&rsquo;t follow it, and we end up with &#39;orphaned&rsquo; namespaces in the cluster. i.e. namespaces which exist in the kubernetes cluster, but which have no associated source code in the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a>.</p>
+<p>Sometimes this process doesn&rsquo;t work correctly, and we end up with &#39;orphaned&rsquo; namespaces in the cluster. i.e. namespaces which exist in the kubernetes cluster but which have no associated source code in the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a>.</p>
 <p>You can remove these namespaces, and their AWS resources, using the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a>.</p>
 <h3 id="1-git-clone-the-environments-checker-repository">1. <code>git clone</code> the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a> repository</h3><h3 id="2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a <code>.env.live1</code> file, containing the environment variables the checker requires</h3><p>The repository contains an <code>example.env.live-1</code> file. Copy this to <code>.env.live1</code> and replace the placeholders with real AWS credentials.</p>
 <h3 id="3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name]
 </code></pre></div><p>This will run a <code>terraform plan</code> showing the resources that the script is going to delete.</p>
 <h3 id="4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name] <span class="nv">DESTROY</span><span class="o">=</span>destroy
 </code></pre></div><p>This will actually delete the AWS resources and the namespace itself.</p>
-<h2 id="possible-errors">Possible Errors</h2><p>AWS resources which were created using older versions of our terraform modules defined the provider inside the code which invoked the module. The process above will not work for those resources, because the module definition disappeared when the source code was removed, so terraform doesn&rsquo;t know how to delete the resource.</p>
-<p>Fixing these problems usually requires getting the original namespace source code by finding the commit in the git log of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a> where it was removed, and checking out a version before then.</p>
-<p>Once you have the source code, you can use <code>terraform init</code> and <code>terraform plan</code> to target and destroy the specific AWS resources which are causing problems.</p>
-<p>See the runbook for <a href="/rotate-user-aws-credentials.html">rotating AWS credentials</a> for an example of doing this.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-24">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 24 April 2020.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 24 July 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 24 July 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
