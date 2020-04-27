@@ -1035,6 +1035,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1060,19 +1073,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -1118,7 +1118,9 @@
 <p>By default, the script will create a &lsquo;small&rsquo; cluster. This means the master and worker EC2 instances will be less powerful machine types than in our production cluster. To create a &#39;medium&rsquo; or &#39;production&rsquo; cluster, run the script like this:</p>
 <div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> david-test1 <span class="nt">--size</span> medium <span class="c"># or --size production</span>
 </code></pre></div><p>See the script source code for the precise machine types used for the different sizes. The machine types used for &#39;production&rsquo; clusters should always be the same machine types as we use in production.</p>
-<p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
+<p>See more options to use when creating the cluster by running</p>
+<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--help</span> 
+</code></pre></div><p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>Run options: exclude {:cluster=&gt;"live-1"}
 ..........................
 
@@ -1167,17 +1169,17 @@ in via auth0, rather than using <code>kops export kubecfg...</code>), the auth0 
 <div class="highlight"><pre class="highlight plaintext"><code>https://login.apps.david-test1.cloud-platform.service.justice.gov.uk
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-27">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 December 2019.
+      This page was last reviewed on 27 April 2020.
 
-        It needs to be reviewed again on 3 March 2020
+        It needs to be reviewed again on 27 July 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 March 2020
+      This page was set to be reviewed before 27 July 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
