@@ -653,7 +653,7 @@
     <a href="/recycle-node.html#recycle-node">Recycle-node</a>
     <ul>
       <li>
-        <a href="/recycle-node.html#guidance-for-cloud-platform-team-when-recycle-node-pipeline-job-fails">Guidance for cloud-platform team, when recycle-node pipeline job fails:</a>
+        <a href="/recycle-node.html#guidance-for-the-cloud-platform-team-when-the-recycle-node-pipeline-job-fails">Guidance for the Cloud Platform team, when the recycle-node pipeline job fails:</a>
       </li>
     </ul>
   </li>
@@ -1098,48 +1098,51 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="recycle-node">Recycle-node</h1><p><a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/master/pipelines/live-1/main/recycle-node.yaml">Recycle-node pipeline</a> runs every week-day, which executes the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/recycle-node.rb">recycle-node.rb</a> script to replace the oldest worker node by:</p>
+              <h1 id="recycle-node">Recycle-node</h1><p>The <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/master/pipelines/live-1/main/recycle-node.yaml">recycle-node pipeline</a> runs every 8 hours, and executes the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/recycle-node.rb">recycle-node.rb</a> script to replace the oldest worker node by:</p>
 
 <ul>
-<li>Draining the oldest node</li>
-<li>Terminate the drained node.</li>
+<li>Cordoning the oldest node</li>
+<li>Deleting any &ldquo;stuck&rdquo; pods</li>
+<li>Draining the node</li>
+<li>Terminating the node</li>
 </ul>
-<h2 id="guidance-for-cloud-platform-team-when-recycle-node-pipeline-job-fails">Guidance for cloud-platform team, when recycle-node pipeline job fails:</h2><p>There are couple of reasons where <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/recycle-node">recycle-node pipeline</a> job may fail.</p>
-<p>1) <code>error: unable to drain node &quot;ip-172-20-xxx-xxx.eu-west-2.compute.internal&quot;, aborting command...</code></p>
-<p>Recycle-node pipeline may fail because the pods exist without being part of a replicaset. These seem to be port-forward pods, usually used by developers to connect to an RDS instance from their development environment.</p>
-<p>We&rsquo;re running the process in a relatively gentle way, so it just fail the pipeline, rather than force-draining the node (which would have destroyed these pods).</p>
-<p>The error will be similar as below from the logs of the recycle-node pipeline.</p>
+<p>Kops will then replace the node with a new one, via AWS auto-scaling.</p>
+<h2 id="guidance-for-the-cloud-platform-team-when-the-recycle-node-pipeline-job-fails">Guidance for the Cloud Platform team, when the recycle-node pipeline job fails:</h2>
+<ul>
+<li> <code>error: unable to drain node &quot;ip-172-20-xxx-xxx.eu-west-2.compute.internal&quot;, aborting command...</code></li>
+</ul>
+<p>The pipeline may fail if pods exist without being part of a replicaset. These are usually port-forward pods, used by developers to connect to an RDS instance from their development environment.</p>
+<p>The error will be similar to this:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>There are pending nodes to be drained:
  ip-172-20-123-244.eu-west-2.compute.internal
 error: pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet (use --force to override): port-forward
-</code></pre></div><p>If <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/recycle-node">pipeline logs</a> is not showing the pods which is causing the issue, using the node name form above, run the below command:</p>
+</code></pre></div><p>We&rsquo;re running the process in a relatively &ldquo;gentle&rdquo; way, so it just fails the pipeline, rather than force-draining the node (which would have destroyed these pods). However, there is a separate concourse pipeline job to delete any such pods after 24 hours, so it is generally safe to ignore these pipeline failures for a day or two. Or, you can manually delete the pod(s) as follows:</p>
+<p>If the <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/af90d767e674a38127af34021bce3bac2749bb61/pipelines/manager/main/maintenance.yaml#L53">pipeline logs</a> are not showing which pods are causing the issue, you can use the node name from above, to run;</p>
 <div class="highlight"><pre class="highlight plaintext"><code> kubectl --ignore-daemonsets --delete-local-data drain ip-172-20-123-244.eu-west-2.compute.internal
-</code></pre></div><p>It will show similar message from recycle-node pipeline logs, but also give the list of pods, which is causing the error.</p>
+</code></pre></div><p>It will show a similar message to the one in the pipeline logs, but will also give the list of pods which are causing the error.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>There are pending nodes to be drained:
  ip-172-20-123-244.eu-west-2.compute.internal
 error: cannot delete Pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet (use --force to override): licences-dev/port-forward
-</code></pre></div><p>Since developers create port-forward pods only used briefly, we track down the namespace owner and ask them to clear them up, by sending a message in the #ask-cloud-platform, something like below.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Recycle-node job failed to replace the node, as it failed to drain the pod.
-If any of these pods are yours, and you're not using them anymore, please could you delete them so that the next time the recycle-node job runs, it is able to replace the node.
+</code></pre></div><p>Then you can track down the namespace owner and ask them to clear up their pods by sending a message in the #ask-cloud-platform, something like:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>The recycle-node job failed because of some manually-created pods. 
+
+If any of these pods are yours, and you're not using them anymore, please could you delete them so that the next time the recycle-node job runs, it is able to replace the node?
 
 licences-dev/port-forward
-</code></pre></div><p>Once the pod which is causing the issue gets deleted, re-run the pipeline which will drain the node successfully and terminate the drained node.</p>
-<p>2) <code>error when evicting pod &quot;some-pod-84d68b65b8-cl6xq&quot; (will retry after 5s): Cannot evict pod as it would violate the pod&#39;s disruption budget</code></p>
-<p>This is because pod may stuck in ImagePullBackoff status. The error is misleading, as error message talks about pod disruption budgets.</p>
-<p>In this case identify the pod and delete it manually and re-run the pipeline which will drain the node successfully and terminate the drained node.</p>
+</code></pre></div><p>Once the pod causing the issue gets deleted, you can re-run the pipeline or just wait for the next scheduled run.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-11">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-21">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 11 December 2019.
+      This page was last reviewed on 21 April 2020.
 
-        It needs to be reviewed again on 11 March 2020
+        It needs to be reviewed again on 21 July 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 11 March 2020
+      This page was set to be reviewed before 21 July 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
