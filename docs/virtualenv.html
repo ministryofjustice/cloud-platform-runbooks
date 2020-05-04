@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Going on call | Cloud Platform Runbooks</title>
+    <title>Virtual environment copy for template deploy updates | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/virtualenv.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Going on call" />
+      <meta property="og:title" content="Virtual environment copy for template deploy updates" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/virtualenv.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Going on call | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html" />
+      <meta property="twitter:title" content="Virtual environment copy for template deploy updates | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/virtualenv.html" />
 
     
   </head>
@@ -1111,84 +1111,133 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="going-on-call">Going on call</h1><h2 id="what-s-expected">What’s expected?</h2><h3 id="expected">Expected:</h3>
+              <h1 id="virtual-environment-copy-for-template-deploy-updates">Virtual environment copy for template deploy updates</h1><p>A copy of a working python virtualenv has been placed here <a href="https://drive.google.com/open?id=1Zgl2CyUGsjMCLhZE2pbVjYxQ2PGnwMDE">PaulFabricVirtualEnv</a></p>
+<p>Should you need to carry out fabric commands etc to update/deploy the remaining template-deploy repos and you do not have a virtualenv already set up then carry out the following:</p>
+<h4 id="set-up-your-virtualenv">Set up your <a href="https://virtualenv.pypa.io/en/latest/">Virtualenv</a>:</h4>
 <ul>
-<li>Carry out <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/297533847/Run+Books">well-defined sensible actions</a> in response to critical incidents.</li>
-<li>Understand how to carry out those actions, and what they do.</li>
-<li>Verify access ahead of time to various systems and interfaces required to carry out these actions.</li>
-<li>Getting set up to access production is quite involved if you don’t work on the service you’re supporting, so it’s worth making sure you’ve done so ahead of time.</li>
+<li>locate where your virtualenvs are being installed by creating one </li>
 </ul>
-<h3 id="not-expected">Not Expected:</h3>
+<div class="highlight"><pre class="highlight plaintext"><code>mkvirtualenv [name]
+</code></pre></div><p>The output from this will give the location of where your virtualenv files are stored</p>
+
 <ul>
-<li>Take heroic actions and be able to solve any out-of-hours critical event single handedly.</li>
-<li>Have very detailed knowledge of every nuance of every MOJ Digital service.</li>
-<li>Carrying out risky activities or take judgement calls beyond your comfort zone without support.</li>
+<li>Just to verify that it has been created</li>
 </ul>
-<h2 id="where-do-i-start">Where do I start?</h2>
-<ol>
-<li>Do two rotations on in-hours second line.</li>
-<li>Get production access to supported services.</li>
-<li>Get access to our on-call tools:
+<div class="highlight"><pre class="highlight plaintext"><code>workon [name]
+</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>pip list
+</code></pre></div><p>It will probably only return a couple of things like :</p>
+<p><code>pip (6.0.6)</code></p>
+<p><code>setuptools (11.0)</code></p>
 
 <ul>
-<li><a href="https://my.pingdom.com/">Pingdom</a></li>
-<li><a href="https://moj-digital-tools.pagerduty.com/">Pagerduty</a> (and configure your contact details and notifications, this is the single source of truth for when you are on call.)</li>
-<li><a href="https://mojdsd.signin.aws.amazon.com/">AWS</a></li>
-<li>the MOJDS VPN (and configure it to “send all traffic over VPN connection”)</li>
-</ul></li>
-<li>Do a dry-run of an incident.</li>
-<li>Get on the on-call rota.</li>
-<li>Log your hours.</li>
-</ol>
-<h2 id="what-do-i-get-for-being-on-call">What do I get for being on call?</h2>
-<ul>
-<li>15% of day rate for every 8 hours that you’re on call out of standard working hours. This payment is simply for being on call.</li>
-<li>1/8 of day rate for each full hour actively worked while on call.</li>
+<li>exit the virtualenv by</li>
 </ul>
-<p>Civil servant equivalent of day rate is base salary / 230</p>
-<h2 id="civil-servants-sop-claim">Civil servants - SOP Claim</h2>
-<ol>
-<li>Get a DOM1 account (you should be given one as soon as Shared Services have registered your joining, or ask your local HR people)</li>
-<li>Log into a DOM1 machine and access SOP using the shortcut on your desktop, and log in.</li>
-<li>Navigate to Employee Self-Service &gt; Individual Compensation Distribution (ICD)</li>
-<li>Select drop-down menu for On-call without pensionable amount</li>
-<li>Add the amount claimed for in the box provided</li>
-<li>Click “Continue”, check the details, add notes in the comment section about the weeks being claimed, and then click “Submit”</li>
-<li>If your claim is submitted before the 8th (or so) of the month, you’ll get it paid in that month’s payroll. If it’s after that, it’ll be in the next month’s.</li>
-</ol>
-<h2 id="civil-servants-sop-problem-resolution">Civil servants - SOP Problem Resolution</h2>
-<ol>
-<li>Take a screenshot of the claim submission problem.</li>
-<li>Navigate to Employee Self-Service &gt; Others &gt; Form Submission</li>
-<li>Select problem area by pressing the magnifying glass icon and pressing “Go”.</li>
-<li>Add comments describing the problem.</li>
-<li>After clicking “Next”, “Add Attachment” to add the screenshot and click “Submit”</li>
-</ol>
-<h2 id="contractors">Contractors</h2><p>The exact process might depend upon which supplier you are through. Some (or maybe all, we haven’t worked out yet) supplier systems don’t cope with trying to bill more than 5 days worth in a week (Specifically Hays fall in to this category).</p>
-<p>If you are not working on a normal work day (Monday–Friday) then you can use this to bill</p>
-
-<ol>
-<li>Ask your contact at the supplier to set you up on Fieldglass for overtime.</li>
-<li>Log your time
-
+<div class="highlight"><pre class="highlight plaintext"><code>deactivate [name]
+</code></pre></div>
 <ul>
-<li>??? Log the overtime (More detail once someone has actually done this successfully); or</li>
-<li>If you are billing a ‘work day’ in lieu note this in a comment in the timesheet</li>
-</ul></li>
-</ol>
+<li><p>Download the file/folder <a href="https://drive.google.com/open?id=1Zgl2CyUGsjMCLhZE2pbVjYxQ2PGnwMDE">PaulFabricVirtualEnv</a> from google drive &lsquo;MoJ Cloud Platforms&rsquo;</p></li>
+<li><p>Unzip/open and rename the unzipped file to the same as your virtualenv created above [name]</p></li>
+<li><p>Copy/overwrite the directory you located earlier [name]</p></li>
+<li><p>Activate your virtualenv and verify that new env uploaded</p></li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>workon [name]
+</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>pip list
+</code></pre></div><p>You should now see a list similar to:</p>
+<p><code>Package         Version</code></p>
+<p><code>--------------- ---------</code></p>
+<p><code>asn1crypto      0.24.0</code></p>
+<p><code>awscli          1.15.77</code></p>
+<p><code>bcrypt          3.1.4</code></p>
+<p><code>bootstrap-cfn   1.5.4</code></p>
+<p><code>bootstrap-salt  2.0.1</code></p>
+<p><code>boto            2.49.0</code></p>
+<p><code>boto3           1.7.76</code></p>
+<p><code>botocore        1.10.76</code></p>
+<p><code>certifi         2018.8.13</code></p>
+<p><code>cffi            1.11.5</code></p>
+<p><code>cfn-flip        1.0.3</code></p>
+<p><code>chardet         3.0.4</code></p>
+<p><code>click           6.7</code></p>
+<p><code>colorama        0.3.9</code></p>
+<p><code>cryptography    2.3</code></p>
+<p><code>datadiff        2.0.0</code></p>
+<p><code>Deprecated      1.2.3</code></p>
+<p><code>dnspython       1.15.0</code></p>
+<p><code>docutils        0.14</code></p>
+<p><code>enum34          1.1.6</code></p>
+<p><code>Fabric          1.14.0</code></p>
+<p><code>futures         3.2.0</code></p>
+<p><code>gnupg           2.3.1</code></p>
+<p><code>idna            2.7</code></p>
+<p><code>ipaddress       1.0.22</code></p>
+<p><code>jmespath        0.9.3</code></p>
+<p><code>ndg-httpsclient 0.5.1</code></p>
+<p><code>netaddr         0.7.19</code></p>
+<p><code>nose            1.3.7</code></p>
+<p><code>paramiko        2.4.1</code></p>
+<p><code>parse           1.8.4</code></p>
+<p><code>pip             18.0</code></p>
+<p><code>psutil          5.4.6</code></p>
+<p><code>pyasn1          0.4.4</code></p>
+<p><code>pycparser       2.18</code></p>
+<p><code>pycrypto        2.6.1</code></p>
+<p><code>pygit2          0.27.2</code></p>
+<p><code>PyGithub        1.43.2</code></p>
+<p><code>PyJWT           1.6.4</code></p>
+<p><code>PyNaCl          1.2.1</code></p>
+<p><code>pyOpenSSL       18.0.0</code></p>
+<p><code>python-dateutil 2.7.3</code></p>
+<p><code>python-slugify  1.2.5</code></p>
+<p><code>PyYAML          3.13</code></p>
+<p><code>requests        2.19.1</code></p>
+<p><code>rsa             3.4.2</code></p>
+<p><code>s3transfer      0.1.13</code></p>
+<p><code>salt-shaker     1.0.4</code></p>
+<p><code>setuptools      40.0.0</code></p>
+<p><code>six             1.11.0</code></p>
+<p><code>testfixtures    6.2.0</code></p>
+<p><code>troposphere     2.3.1</code></p>
+<p><code>Unidecode       1.0.22</code></p>
+<p><code>urllib3         1.23</code></p>
+<p><code>wrapt           1.10.11</code></p>
+<h4 id="example-fabric-commands-that-can-be-used-now">Example Fabric commands that can be used now:</h4>
+<ul>
+<li>ssh keys update (used in conjunction with an vendor_upload or update - commands below)</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>fab application:cla-backend aws:moj-cla-dev environment:training config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem salt.ssh_keys -u username
+</code></pre></div>
+<ul>
+<li>vendor_upload</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>fab application:cla-backend aws:moj-cla-dev environment:training config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem vendor_upload -u username
+</code></pre></div>
+<ul>
+<li>update</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>fab application:cla-backend aws:moj-cla-dev environment:training config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem update  -u username
+</code></pre></div>
+<ul>
+<li>deploy</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>fab application:cla-backend aws:moj-cla-dev environment:training config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem deploy:cla_backend,feature-LGA-1055-knowledgebase-categories.latest -u username
+</code></pre></div>
+<ul>
+<li>list of available fabric commands</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext"><code>fab -l
+</code></pre></div>
 
-
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-27">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-05">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 April 2020.
+      This page was last reviewed on 5 May 2020.
 
-        It needs to be reviewed again on 27 July 2020
+        It needs to be reviewed again on 5 August 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 July 2020
+      This page was set to be reviewed before 5 August 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1197,8 +1246,8 @@
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/on-call.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Going%20on%20call'&amp;body=Problem%20with%20'Going%20on%20call'%20(https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/virtualenv.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Virtual%20environment%20copy%20for%20template%20deploy%20updates'&amp;body=Problem%20with%20'Virtual%20environment%20copy%20for%20template%20deploy%20updates'%20(https://runbooks.cloud-platform.service.justice.gov.uk/virtualenv.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
