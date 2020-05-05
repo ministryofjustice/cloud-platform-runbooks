@@ -549,29 +549,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
     <ul>
       <li>
@@ -597,7 +574,25 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -614,6 +609,11 @@
         <a href="/remove-data-from-elasticsearch.html#delete-by-query">Delete by query</a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -1048,19 +1048,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1086,6 +1073,19 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -1118,20 +1118,14 @@
 <li><p>Note - it is worth reminding the service desk to transfer the leaver&rsquo;s Google Drive to someone in their team</p></li>
 <li><p>Note - for leavers from the cloud-platforms team - ask the service desk to transfer any slack webhook integrations to someone in the team</p></li>
 </ul>
-<h3 id="aws-accounts">AWS Accounts</h3><h4 id="1-purge-them-from-aws-accounts-as-at-28-01-2020-the-following">1/ Purge them from AWS accounts (as at 28/01/2020 the following):</h4>
+<h3 id="aws-accounts">AWS Accounts</h3><h4 id="1-purge-them-from-aws-accounts-as-at-04-05-2020-the-following">1/ Purge them from AWS accounts (as at 04/05/2020 the following):</h4>
 <ul>
 <li><a href="https://justice-cloud-platform.eu.auth0.com/samlp/bnqndz9kxf7wDge8ndCWyVwIX1OEElYf">moj-cp</a></li>
 <li>mojdsd</li>
 <li>moj-cla-dev</li>
-<li>moj-crimebillingonline</li>
-<li>moj-fr</li>
 <li>moj-intra</li>
 <li>moj-manchester-traffic-dev</li>
-<li>moj-laa</li>
-<li>mojanalytics</li>
 <li>moj-pq</li>
-<li>moj-tphmcts</li>
-<li>moj-pi</li>
 </ul>
 <p>Use the link above to login to the moj-cp account. For the others, you will need to login via the <a href="https://console.aws.amazon.com/">AWS console</a></p>
 <h4 id="2-remove-their-access-to">2/ Remove their access to:</h4>
@@ -1157,7 +1151,7 @@
 <li><p><a href="https://github.com/ministryofjustice/cla_backend-deploy">cla_backend-deploy</a></p>
 
 <ul>
-<li><p>Envs as at 30/04/2019</p>
+<li><p>Envs as at 04/05/2020</p>
 
 <ul>
 <li>demo</li>
@@ -1174,7 +1168,7 @@
 <li><p><a href="https://github.com/ministryofjustice/cla_frontend-deploy">cla_frontend-deploy</a></p>
 
 <ul>
-<li><p>Envs as at  30/04/2019</p>
+<li><p>Envs as at  04/05/2020</p>
 
 <ul>
 <li>demo</li>
@@ -1191,7 +1185,7 @@
 <li><p><a href="https://github.com/ministryofjustice/ci-deploy">ci-deploy</a></p>
 
 <ul>
-<li><p>Envs as at 30/04/2019</p>
+<li><p>Envs as at 04/05/2020</p>
 
 <ul>
 <li>dev</li>
@@ -1208,7 +1202,7 @@
 <li><p><a href="https://github.com/ministryofjustice/docker-registry-ng-deploy">docker-registry-ng-deploy</a></p>
 
 <ul>
-<li><p>Envs as at 30/04/2019</p>
+<li><p>Envs as at 04/05/2020</p>
 
 <ul>
 <li>dev</li>
@@ -1220,108 +1214,10 @@
 <div class="highlight"><pre class="highlight shell"><code>fab application:docker-registry aws:mojdsd environment:prod config:./cloudformation/docker-registry.yaml passwords:./cloudformation/docker-registry-secrets.yaml <span class="nt">-i</span> ../config/default.pem salt.ssh_keys vendor_upload  -u [user]
 </code></pre></div>
 <ul>
-<li><p><a href="https://github.com/ministryofjustice/laalaa-deploy">laalaa-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 30/04/2019</p>
-
-<ul>
-<li>dev</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:laalaa aws:moj-laa environment:prod config:./cloudformation/laalaa.yaml passwords:./cloudformation/laalaa-secrets.yaml <span class="nt">-i</span> ../config/default.pem  salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/fala-deploy">fala-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 30/04/2019</p>
-
-<ul>
-<li>dev</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:fala aws:moj-laa environment:prod config:./cloudformation/fala.yaml passwords:./cloudformation/fala-secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/pf-deploy">pf-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 30/04/2019:</p>
-
-<ul>
-<li>dev</li>
-<li>demo</li>
-<li>staging</li>
-<li>production</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:peoplefinder aws:moj-intra environment:production config:./cloudformation/peoplefinder.yaml passwords:./cloudformation/peoplefinder-secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/pvb2-deploy">pvb2-deploy</a></p>
-
-<ul>
-<li><p>Envs as at  30/04/2019:</p>
-
-<ul>
-<li>dev</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:pvb aws:mojdsd environment:prod config:./cloudformation/pvb2.yaml passwords:./cloudformation/pvb2-secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/pvbpublic-deploy">pvbpublic-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 30/04/2019:</p>
-
-<ul>
-<li>dev</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:pvbpublic aws:mojdsd environment:prod config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/correspondence-staff-deploy/pull/71ence-staff-deploy">correspondence-staff-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 30/04/2019:</p>
-
-<ul>
-<li>dev</li>
-<li>demo</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:correspondence-staff aws:mojdsd environment:prod config:./cloudformation/correspondence-staff.yaml passwords:./cloudformation/correspondence-staff-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
 <li><p><a href="https://github.com/ministryofjustice/correspondence-tool-deploy">correspondence-tool-deploy</a></p>
 
 <ul>
-<li><p>Envs as at 30/04/2019:</p>
+<li><p>Envs as at 04/05/2020:</p>
 
 <ul>
 <li>dev</li>
@@ -1369,39 +1265,6 @@
 </code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-noms-ops aws:mojdsd environment:prod config:./cloudformation/noms-ops.yaml passwords:./cloudformation/noms-ops-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
 </code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-send-money aws:mojdsd environment:prod config:./cloudformation/send-money.yaml passwords:./cloudformation/send-money-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
 </code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-transaction-uploader aws:mojdsd environment:prod config:./cloudformation/transaction-uploader.yaml passwords:./cloudformation/transaction-uploader-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/parliamentary-questions-deploy">parliamentary-questions-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 30/04/2019:</p>
-
-<ul>
-<li>dev</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:pq aws:moj-pq environment:prod config:./cloudformation/pq.yaml passwords:./cloudformation/pq-secrets.yaml  -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/moving-people-safely-deploy">moving-people-safely-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 30/04/2019:</p>
-
-<ul>
-<li>dev</li>
-<li>test</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:mps aws:mojdsd environment:prod config:./cloudformation/mps.yaml passwords:./cloudformation/mps-secrets.yaml <span class="nt">-i</span> ../config/default.pem  salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
 </code></pre></div><h5 id="b-ssh-onto-all-of-the-deploy-repos-instances-and-use-the-following-salt-code-commands-this-will-enable-updates-to-take-place-without-restarting-the-container-the-use-installation-of-awsjump-will-help-to-easily-switch-between-instances">b. ssh onto all of the deploy repos instances and use  the following salt-code commands. This will enable updates to take place without restarting the container. The use/installation  of <a href="https://github.com/ministryofjustice/template-deploy-jump">awsjump</a> will help to easily switch between instances:</h5><div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>su
 salt_utils.py <span class="nt">-s</span> fooooo
 <span class="nb">cd</span> /srv/pillar/
@@ -1412,17 +1275,17 @@ exit</span>
 </code></pre></div><p>**do not worry - you will receive some error messages as &ldquo;fooooo&rdquo; does not exist (this is just a placeholder). The update will take place to the ssh users</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-04-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 January 2020.
+      This page was last reviewed on 4 May 2020.
 
-        It needs to be reviewed again on 28 April 2020
+        It needs to be reviewed again on 4 August 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 April 2020
+      This page was set to be reviewed before 4 August 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
