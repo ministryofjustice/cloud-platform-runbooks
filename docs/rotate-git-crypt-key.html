@@ -1022,6 +1022,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1053,19 +1066,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/add-a-new-runbook.html#add-a-new-runbook">Add a new runbook</a>
     <ul>
       <li>
@@ -1088,7 +1088,7 @@
               <h1 id="git-crypt">Git-crypt</h1><p>We use <code>git-crypt</code> for securing secrets committed to <code>git</code>. It uses a symmetric encryption key which is then encrypted for users using their GPG keys.</p>
 <h2 id="adding-new-user-to-the-keyring">Adding new user to the keyring</h2>
 <ol>
-<li><p>Ask the user (Slack, email, keyserver, etc) for their public key and import it inside your keyring:</p>
+<li><p>Ask the user (Slack, email, keyserver, etc) for their public key and import it into your keyring:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>gpg --import &lt;&lt;EOF
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 
@@ -1105,64 +1105,78 @@ NS+0Yc13JFAzDubGfxGOnACePwZ5mNcJB6JNaZXPZN4E5AqDdEg=
 -----END PGP PUBLIC KEY BLOCK-----
 EOF
 </code></pre></div></li>
-<li><p>Using KeyID/email trust the key as <em>&ldquo;5 = I trust ultimately&rdquo;</em>: <code>gpg --edit-key &quot;alejandro.garrido@digital.justice.gov.uk&quot; trust quit</code></p></li>
-<li><p>Create a new branch inside the git repository where user is going to be added: <code>git checkout -b add-alejandro-gpg</code></p></li>
-<li><p>Use git-crypt CLI to add the user: <code>git-crypt add-gpg-user alejandro.garrido@digital.justice.gov.uk</code></p></li>
-<li><p>Push the branch and create a PR: <code>git push origin add-alejandro-gpg</code></p></li>
+<li><p>Using KeyID/email trust the key as <em>&ldquo;5 = I trust ultimately&rdquo;</em>:</p></li>
 </ol>
-<h2 id="rotating-the-git-crypt-key">Rotating the git-crypt key</h2><p>When rotating the <code>git-crypt</code> symmetric key, you should follow the steps below:</p>
-<h4 id="1-ensure-you-have-unlocked-the-repository-git-crypt-unlock">1. Ensure you have unlocked the repository: <code>git-crypt unlock</code></h4><h4 id="2-make-a-list-of-the-current-users">2. Make a list of the current users:</h4>
+<div class="highlight"><pre class="highlight plaintext"><code>gpg --edit-key "alejandro.garrido@digital.justice.gov.uk" trust quit
+</code></pre></div>
+<ol>
+<li>Create a new branch inside the git repository where user is going to be added:</li>
+</ol>
+<div class="highlight"><pre class="highlight plaintext"><code>git checkout -b add-alejandro-gpg
+</code></pre></div>
+<ol>
+<li>Use git-crypt CLI to add the user:</li>
+</ol>
+<div class="highlight"><pre class="highlight plaintext"><code>git-crypt add-gpg-user alejandro.garrido@digital.justice.gov.uk
+</code></pre></div>
+<ol>
+<li>Push the branch and create a PR:</li>
+</ol>
+<div class="highlight"><pre class="highlight plaintext"><code>git push origin add-alejandro-gpg
+</code></pre></div><h2 id="rotating-the-git-crypt-key">Rotating the git-crypt key</h2><p>When rotating the <code>git-crypt</code> symmetric key, you should follow the steps below:</p>
+<h4 id="1-ensure-you-have-unlocked-the-repository">1. Ensure you have unlocked the repository:</h4><div class="highlight"><pre class="highlight plaintext"><code>git-crypt unlock
+</code></pre></div><h4 id="2-make-a-list-of-the-current-users">2. Make a list of the current users:</h4>
 <ul>
 <li>for every file found, extract its filename minus the suffix, which corresponds to the user&rsquo;s key id</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  ls .git-crypt/keys/default/0/*.gpg | xargs -I{} -- basename {} .gpg &gt; git-crypt-users
+<div class="highlight"><pre class="highlight plaintext"><code>ls .git-crypt/keys/default/0/*.gpg | xargs -I{} -- basename {} .gpg &gt; git-crypt-users
 </code></pre></div><h4 id="3-make-a-list-of-the-encrypted-files">3.  Make a list of the encrypted files:</h4>
 <ul>
 <li>for every currently encrypted file, extract its path, relative to the root of the repository</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  git-crypt status -e | awk '{ print $2; }' &gt; git-crypt-files
-</code></pre></div><h4 id="4-remove-git-crypt-configuration">4.  Remove <code>git-crypt</code> configuration:</h4><div class="highlight"><pre class="highlight plaintext"><code>  rm -rf .git-crypt .git/git-crypt
-</code></pre></div><h4 id="5-re-initialise-git-crypt">5.  Re-initialise <code>git-crypt</code>,</h4><div class="highlight"><pre class="highlight plaintext"><code>  git-crypt init
+<div class="highlight"><pre class="highlight plaintext"><code>git-crypt status -e | awk '{ print $2; }' &gt; git-crypt-files
+</code></pre></div><h4 id="4-remove-git-crypt-configuration">4.  Remove <code>git-crypt</code> configuration:</h4><div class="highlight"><pre class="highlight plaintext"><code>rm -rf .git-crypt .git/git-crypt
+</code></pre></div><h4 id="5-re-initialise-git-crypt">5.  Re-initialise <code>git-crypt</code>,</h4><div class="highlight"><pre class="highlight plaintext"><code>git-crypt init
 </code></pre></div>
 <ul>
 <li>make sure you have all the users&rsquo; keys,</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} gpg --recv-key {}
+<div class="highlight"><pre class="highlight plaintext"><code>cat git-crypt-users | xargs -I{} gpg --recv-key {}
 </code></pre></div>
 <ul>
 <li>and add all the users back,</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-users | xargs -I{} git-crypt add-gpg-user -n --trusted {}
+<div class="highlight"><pre class="highlight plaintext"><code>cat git-crypt-users | xargs -I{} git-crypt add-gpg-user -n --trusted {}
 </code></pre></div>
 <ul>
 <li>At this point, your git index will have a number of pending changes, do not commit them yet.</li>
 </ul>
-<h4 id="6-re-encrypt-all-the-secrets-the-list-of-secrets-was-extracted-in-git-crypt-files-see-step-2-above-since-the-master-encryption-key-is-being-rotated-all-of-the-secrets-that-have-been-encrypted-with-it-must-be-rotated-once-finished-you-can-add-the-files-to-the-index">6.  Re-encrypt all the secrets: the list of secrets was extracted in <code>git-crypt-files</code> (see step 2. above). Since the master encryption key is being rotated, all of the secrets that have been encrypted with it <em>must</em> be rotated. Once finished, you can add the files to the index</h4><div class="highlight"><pre class="highlight plaintext"><code>  cat git-crypt-files | xargs git add
-</code></pre></div><h4 id="7-commit-your-changes-one-way-to-check-that-the-files-in-the-git-index-are-properly-encrypted-before-you-commit-your-changes-is-like-so">7. Commit your changes. One way to check that the files in the git index are properly encrypted before you commit your changes is like so:</h4><div class="highlight"><pre class="highlight plaintext"><code>  git show :&lt;path-to-file&gt;
+<h4 id="6-re-encrypt-all-the-secrets-the-list-of-secrets-was-extracted-in-git-crypt-files-see-step-2-above-since-the-master-encryption-key-is-being-rotated-all-of-the-secrets-that-have-been-encrypted-with-it-must-be-rotated-once-finished-you-can-add-the-files-to-the-index">6.  Re-encrypt all the secrets: the list of secrets was extracted in <code>git-crypt-files</code> (see step 2. above). Since the master encryption key is being rotated, all of the secrets that have been encrypted with it <em>must</em> be rotated. Once finished, you can add the files to the index</h4><div class="highlight"><pre class="highlight plaintext"><code>cat git-crypt-files | xargs git add
+</code></pre></div><h4 id="7-commit-your-changes-one-way-to-check-that-the-files-in-the-git-index-are-properly-encrypted-before-you-commit-your-changes-is-like-so">7. Commit your changes. One way to check that the files in the git index are properly encrypted before you commit your changes is like so:</h4><div class="highlight"><pre class="highlight plaintext"><code>git show :&lt;path-to-file&gt;
 </code></pre></div>
 <ul>
 <li>or after committing (and before you&rsquo;ve pushed):</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  git show HEAD:&lt;path-to-file&gt;
+<div class="highlight"><pre class="highlight plaintext"><code>git show HEAD:&lt;path-to-file&gt;
 </code></pre></div>
 <ul>
 <li><p>where <code>&lt;path-to-file&gt;</code> is either absolute from the base of the git repo or relative (eg.: <code>git show:./my-secret-file.yaml</code>)</p></li>
 <li><p>You should see binary output which begins with <code>^@GITCRYPT^@</code>.</p></li>
 </ul>
-<p>Note: If you need to <code>checkout</code> an older commit, branch, tag etc., make sure to <code>git-crypt lock</code> your repository before in order to avoid a broken local working directory. Once you&rsquo;ve locked and checked out the desired revision, you can <code>git-crypt unlock</code>.</p>
+<p>Note: If you need to <code>checkout</code> an older commit, branch, tag etc., make sure to <code>git-crypt lock</code> your repository beforehand in order to avoid a broken local working directory. Once you&rsquo;ve locked and checked out the desired revision, you can <code>git-crypt unlock</code>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-03-27">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 December 2019.
+      This page was last reviewed on 11 May 2020.
 
-        It needs to be reviewed again on 27 March 2020
+        It needs to be reviewed again on 11 August 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 March 2020
+      This page was set to be reviewed before 11 August 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
