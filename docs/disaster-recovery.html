@@ -549,29 +549,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
     <ul>
       <li>
@@ -597,7 +574,25 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -614,6 +609,11 @@
         <a href="/remove-data-from-elasticsearch.html#delete-by-query">Delete by query</a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -859,22 +859,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -891,6 +875,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1022,19 +1022,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1066,6 +1053,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/add-a-new-runbook.html#add-a-new-runbook">Add a new runbook</a>
     <ul>
       <li>
@@ -1086,7 +1086,7 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="cloud-platform-disaster-recovery">Cloud Platform Disaster Recovery</h1><p>Cloud Platform Kubernetes cluster deployed with kops use <a href="https://github.com/kopeio/etcd-manager">etcd-manager</a> to do backups periodically and before cluster modifications. Backups for both the main and events etcd clusters are stored in &lsquo;s3://cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk&rsquo; together with the cluster configuration.</p>
-<p>In case of a disaster situation (total failure, Kops delete cluster, lost data, cluster issues etc.) it&rsquo;s possible to do a restore from the backup using <a href="https://github.com/kopeio/etcd-manager">etcd-manager</a>. More details about the usage can be found <a href="https://github.com/kopeio/etcd-manager/blob/master/docs/backup-restore.md">here</a> and <a href="https://github.com/kubernetes/kops/blob/master/docs/etcd/backup-restore.md">here</a>.</p>
+<p>In case of a disaster situation (total failure, Kops delete cluster, lost data, cluster issues etc.) it&rsquo;s possible to do a restore from the backup using <a href="https://github.com/kopeio/etcd-manager">etcd-manager</a>. More details about the usage can be found <a href="https://github.com/kopeio/etcd-manager/blob/master/docs/backup-restore.md">here</a> and <a href="https://github.com/kubernetes/kops/blob/master/docs/operations/etcd_backup_restore_encryption.md">here</a>.</p>
 <h2 id="restore-process">Restore process</h2><p>Depending on the current state of the cluster, different recovery strategies are appropriate.</p>
 
 <ul>
@@ -1451,17 +1451,17 @@ opa                   Active   20d
 <p>This issue is due to old master IPs being set as endpoints in the kubernetes service. Fix this by manually removing the old master IPs from etcd by doing<a href="/disaster-recovery.html#cleanup">cleanup</a>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 11 May 2020.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 11 August 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 11 August 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
