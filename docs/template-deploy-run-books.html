@@ -549,6 +549,29 @@
 </ul>
 <ul>
   <li>
+    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
     <ul>
       <li>
@@ -568,29 +591,6 @@
       </li>
       <li>
         <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -859,6 +859,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -875,22 +891,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1022,19 +1022,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1066,6 +1053,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/add-a-new-runbook.html#add-a-new-runbook">Add a new runbook</a>
     <ul>
       <li>
@@ -1085,7 +1085,11 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="template-deploy-runbooks">Template-deploy Runbooks</h1><p>(to be de-commissioned as and when template-deploy support ceases)</p>
+              <h1 id="template-deploy-runbooks">Template-deploy Runbooks</h1>
+<blockquote>
+<p>A lot of this information is out of date, and not to be relied upon. However, it&rsquo;s probably not worth bringing it up to date, since the last Template Deploy service is (at the time of writing) in the process of migrating to the Cloud Platform. I&rsquo;m leaving this document as-is for now, but it should be removed at the next review.</p>
+</blockquote>
+<p>(to be de-commissioned as and when template-deploy support ceases)</p>
 <p>Various procedures for supporting our production template-deploy services. If something goes wrong and you are on call you should be able to find the relevant information via the confluence links below</p>
 <h2 id="general-incident-procedure">General Incident Procedure</h2><p>If there is a problem with one of these projects the general procedure is:</p>
 
@@ -1100,31 +1104,38 @@
 <ul>
 <li>Each project should have a ‘sorry the service is currently unavailable’ holding page served from an alternative infrastructure for this case. Check the project&rsquo;s github repository for instructions on how to enable it for that project.</li>
 </ul></li>
-<li><p>Email and notify people
-Keep people informed about the problem, let them know what sort of problem it is (i.e. hosting supplier problem, VM problem, app problem etc.) and if the holding page is up or not.</p>
+<li><p>Email and notify people</p></li>
+</ul>
+<p>Keep people informed about the problem, let them know what sort of problem it is (i.e. hosting supplier problem, VM problem, app problem etc.) and if the holding page is up or not.</p>
 
 <ul>
-<li>Each project should have an incident email list with everyone who needs to know about service outages. Check the project&rsquo;s github repository under here for that address.</li>
-<li>Generally we should keep the project owner and delivery manager (if we have these details) informed about how long we think it will take to fix the problem and if it is something we can fix ourselves or if we need to log a call with a third-party. Check the relevant run-book and/or the project github pages for project owner/delivery manager details. Additional informational can also be found here <a href="https://docs.google.com/spreadsheets/d/1y4i5d4YYj8rnkGFLLCZcnj5_i_mwI1kQZz9rs0OgQDI/edit#gid=0">Products Hosted by Cloud Platform</a>, also <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/298778707/Other+Services">Other Services</a> and <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324273043/Contact+Service+Managers+template-deploy">Contact Service Managers (template-deploy)</a></li>
-<li>Notify the relevant team via their slack channel so that the team knows that something is wrong, and also the latest status of the problem.</li>
-</ul></li>
-<li><p>Diagnose the problem:</p>
+<li><p>Each project should have an incident email list with everyone who needs to know about service outages. Check the project&rsquo;s github repository for that address.</p></li>
+<li><p>Generally we should keep the project owner and delivery manager (if we have these details) informed about how long we think it will take to fix the problem and if it is something we can fix ourselves or if we need to log a call with a third-party. Check the relevant run-book and/or the project github pages for project owner/delivery manager details. Additional informational can also be found here <a href="https://docs.google.com/spreadsheets/d/1y4i5d4YYj8rnkGFLLCZcnj5_i_mwI1kQZz9rs0OgQDI/edit#gid=0">Products Hosted by Cloud Platform</a>, also <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/298778707/Other+Services">Other Services</a> and <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324273043/Contact+Service+Managers+template-deploy">Contact Service Managers (template-deploy)</a></p></li>
+<li><p>Notify the relevant team via their slack channel so that the team knows that something is wrong, and also the latest status of the problem.</p>
 
 <ul>
-<li>Go to the alert URL. This may be found in different places depending on the alerting service and the nature of the alert. You might find it on the dashboard, in the <a href="https://moj-digital-tools.pagerduty.com/incidents">PagerDuty</a> or  <a href="https://mojdt.slack.com/messages/C8PF51AT0">Slack #high-priority-alarms messages</a>, or elsewhere. You may not find it at all.
-NOTE: You may not get a correct URL. At the time of writing, preprod PVB only worked if called on /prisoner, but the alert shows the root URL.</li>
-<li>Resolve the alert on pagerduty. You can do this by following the instruction in the text message on the Incident Response phone, or directly on PagerDuty. If you don’t, it will continue to re-alert.</li>
-<li>Go to Pingdom &gt; Monitoring and filter on the Down status. Apply any other filters that help you find the issue.</li>
-<li>Click on the issue to open the full report.</li>
-<li>Go to the URL section, copy the URL and open it in a browser to check it.</li>
-<li>If the URL works as expected, click Test Check to retest and reset Pingdom.</li>
-<li>If the URL does not work, does not work as expected, or Pingdom will not reset, investigate and fix.</li>
+<li>Diagnose the problem:</li>
 </ul></li>
-<li><p>Fix the problem and test the service is healthy again. Depending on the service, you may need to update your /etc/hosts file to gain access to the site (e.g. where you do not have access to the internal DNS, but the service is delivered via an Apache/Nginx vhost).</p></li>
-<li><p>Take holding page down</p></li>
-<li><p>Send a ‘resolved’ email and notify people</p></li>
-<li><p>Send a final email to the project incident list to let everyone know that the service is back up.</p></li>
-<li><ul>
+<li><p>Go to the alert URL. This may be found in different places depending on the alerting service and the nature of the alert. You might find it on the dashboard, in the <a href="https://moj-digital-tools.pagerduty.com/incidents">PagerDuty</a> or  <a href="https://mojdt.slack.com/messages/C8PF51AT0">Slack #high-priority-alarms messages</a>, or elsewhere. You may not find it at all.</p></li>
+</ul>
+
+<blockquote>
+<p>NOTE: You may not get a correct URL. At the time of writing, preprod PVB only worked if called on /prisoner, but the alert shows the root URL.</p>
+</blockquote>
+
+<ul>
+<li><p>Resolve the alert on pagerduty. You can do this by following the instruction in the text message on the Incident Response phone, or directly on PagerDuty. If you don’t, it will continue to re-alert.</p></li>
+<li><p>Go to Pingdom &gt; Monitoring and filter on the Down status. Apply any other filters that help you find the issue.</p></li>
+<li><p>Click on the issue to open the full report.</p></li>
+<li><p>Go to the URL section, copy the URL and open it in a browser to check it.</p></li>
+<li><p>If the URL works as expected, click Test Check to retest and reset Pingdom.</p></li>
+<li><p>If the URL does not work, does not work as expected, or Pingdom will not reset, investigate and fix.</p>
+
+<ul>
+<li>Fix the problem and test the service is healthy again. Depending on the service, you may need to update your /etc/hosts file to gain access to the site (e.g. where you do not have access to the internal DNS, but the service is delivered via an Apache/Nginx vhost).</li>
+<li>Take down the holding page</li>
+<li>Send a ‘resolved’ email and notify people</li>
+<li>Send a final email to the project incident list to let everyone know that the service is back up.</li>
 <li>Notify the relevant team via their slack channel so that the team knows that the problem is resolved and the service is back up</li>
 </ul></li>
 </ul>
@@ -1163,17 +1174,17 @@ NOTE: You may not get a correct URL. At the time of writing, preprod PVB only wo
 </ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2019-12-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-12">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 September 2019.
+      This page was last reviewed on 12 May 2020.
 
-        It needs to be reviewed again on 10 December 2019
+        It needs to be reviewed again on 12 August 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 December 2019
+      This page was set to be reviewed before 12 August 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
