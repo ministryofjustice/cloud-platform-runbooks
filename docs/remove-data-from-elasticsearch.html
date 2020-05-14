@@ -549,6 +549,29 @@
 </ul>
 <ul>
   <li>
+    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
     <ul>
       <li>
@@ -574,25 +597,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -609,11 +614,6 @@
         <a href="/remove-data-from-elasticsearch.html#delete-by-query">Delete by query</a>
       </li>
     </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -859,22 +859,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -891,6 +875,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1022,19 +1022,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1060,6 +1047,19 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -1095,8 +1095,7 @@ All application logs are sent to that daily index, ex:  <code>logstash-2020.02.0
 <p><strong>Running <code>curl</code> queries has to be done from within the live-1 VPC.</strong></p>
 <h2 id="build-your-query">Build your query</h2><p>It is possible to reuse the body of a <code>search</code> query for a <code>delete</code> query.</p>
 <p>Therefore, if we narrow down a search query to exactly what we want to delete, we&rsquo;ve done most of the work.</p>
-<p>Kibana offers a webconsole to test queries, head over to:</p>
-<p>https://kibana.cloud-platform.service.justice.gov.uk/<em>plugin/kibana/app/kibana#/dev</em>tools/console?_g=()</p>
+<p>Kibana offers a <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/dev_tools/console">webconsole</a> to test queries.</p>
 <p>A standard query is :</p>
 <div class="highlight"><pre class="highlight plaintext"><code>GET /logstash-2020.02.01/_search
 {
@@ -1106,8 +1105,11 @@ All application logs are sent to that daily index, ex:  <code>logstash-2020.02.0
     }
   }
 }
-</code></pre></div><p><strong>Important note: <code>.keyword</code> force elasticsearch to only return exact matches. Without it, you may end up deleting more than you wish</strong></p>
-<p>As a <code>curl</code> command, the query above would translate as:</p>
+</code></pre></div>
+<blockquote>
+<p>Important note: <code>.keyword</code> forces elasticsearch to only return exact matches. Without it, you may end up deleting more than you wish</p>
+</blockquote>
+<p>As a <code>curl</code> command, the query above would translate to:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>curl -XGET "https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/logstash-2020.02.01/_search" -H 'Content-Type: application/json' -d'
 {
   "query": {
@@ -1116,9 +1118,9 @@ All application logs are sent to that daily index, ex:  <code>logstash-2020.02.0
     }
   }
 }'
-</code></pre></div><p>Once the result of the search query fit what you want to delete exactly, carry on to the next step.</p>
+</code></pre></div><p>Once the result of the search query exactly fits what you want to delete, carry on to the next step.</p>
 <h2 id="delete-by-query">Delete by query</h2><p>A <code>POST</code> request against the <code>_delete_by_query</code> endpoint will delete all documents matching the query in the request&rsquo;s body.</p>
-<p>To come back to our use-case, if we want to delete all logs from the <code>my-namespace-production</code> from the 01/02/2020:</p>
+<p>If we want to delete all logs from the <code>my-namespace-production</code> from 01/02/2020:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>    curl -XPOST \
         https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/logstash-2020.02.01/_delete_by_query?pretty \
         -H 'Content-Type: application/json' \
@@ -1126,17 +1128,17 @@ All application logs are sent to that daily index, ex:  <code>logstash-2020.02.0
 </code></pre></div><p>Here again, <code>.keyword</code> is essential.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-05-11">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-14">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 11 February 2020.
+      This page was last reviewed on 14 May 2020.
 
-        It needs to be reviewed again on 11 May 2020
+        It needs to be reviewed again on 14 August 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 11 May 2020
+      This page was set to be reviewed before 14 August 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
