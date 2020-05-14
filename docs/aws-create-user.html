@@ -549,29 +549,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
     <ul>
       <li>
@@ -591,6 +568,29 @@
       </li>
       <li>
         <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1089,27 +1089,28 @@
 <p>Related repositories:</p>
 
 <ul>
-<li><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/global-resources/iam">cloud-platform-infrastructure/terraform/global-resources/iam</a></p></li>
+<li><p>[cloud-platform-infrastructure/terraform/global-resources/iam][iam-main-tf]</p></li>
 <li><p><a href="https://github.com/terraform-aws-modules/terraform-aws-iam">terraform-aws-iam module</a></p></li>
 </ul>
-<h2 id="steps-to-create-delete-users">Steps to create/delete users</h2><p>1) Create a git branch and add (or delete) the user as <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/iam/main.tf">terraform code</a>. Do not forget to link the user to a group.</p>
+<h2 id="steps-to-create-delete-users">Steps to create/delete users</h2><p>1) Create a git branch and add (or delete) the user as [terraform code][iam-main-tf]. Do not forget to link the user to a group.</p>
 <p>2) Using <code>terraform plan</code> verify you&rsquo;re happy with the terraform changes.</p>
 <p>3) Create the PR and ask the team to review it.</p>
 <p>4) Once PR gets merged you must proceed to execute <code>terraform apply</code> and verify user (you can use AWS Console for this).</p>
-<h2 id="activating-mfa-for-new-users">Activating MFA for new users</h2><p>Unfortunataly terraform can&rsquo;t activate MFA for users, this process must be done done manually either <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">thorugh AWS Console (UI)</a> or <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_cliapi.html">throgh the AWS CLI</a>.</p>
+<h2 id="activating-mfa-for-new-users">Activating MFA for new users</h2><p>Unfortunataly terraform can&rsquo;t activate MFA for users, this process must be done done manually either <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">thorugh AWS Console (UI)</a> or <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_cliapi.html">through the AWS CLI</a>.</p>
+<p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/iam/main.tf">iam-main-tf</a></p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-05-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-14">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 February 2020.
+      This page was last reviewed on 14 May 2020.
 
-        It needs to be reviewed again on 10 May 2020
+        It needs to be reviewed again on 14 August 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 May 2020
+      This page was set to be reviewed before 14 August 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
