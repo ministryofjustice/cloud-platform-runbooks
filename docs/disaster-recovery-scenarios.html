@@ -425,6 +425,26 @@
           </li>
         </ul>
       </li>
+      <li>
+        <a href="/disaster-recovery-scenarios.html#losing-the-whole-cluster">Losing the whole cluster</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-the-whole-cluster-impact">Impact</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-the-whole-cluster-possible-cause">Possible Cause</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#how-this-plan-is-tested">How this plan is tested:</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#assumptions">Assumptions</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-the-whole-cluster-restore-process">Restore process</a>
+          </li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ul>
@@ -859,6 +879,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -875,22 +911,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1022,6 +1042,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1047,19 +1080,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -1115,19 +1135,63 @@ deployment.apps/deployment1          1/1     1            1           1m
 
 NAME                                 DESIRED   CURRENT   READY   AGE
 replicaset.apps/replicaset1          1         1         1       1m
+</code></pre></div><h2 id="losing-the-whole-cluster">Losing the whole cluster</h2><h3 id="losing-the-whole-cluster-impact">Impact</h3><p>Severity : HIGH</p>
+<p>Likelihood: LOW</p>
+<p>Losing the whole kubernetes cluster will result in all services not being available. This means all the 
+resources within all namespaces, networking, monitoring and logging systems.</p>
+<h3 id="losing-the-whole-cluster-possible-cause">Possible Cause</h3><p>Losing the whole cluster is less likely and the possible causes may vary.</p>
+<p>User error - Deleting all EC2 instances of <code>&lt;cluster-name&gt;</code> from console by accident</p>
+<p>The first sign of this happening is likely to be Pagerduty alarms to the high/low priority slack channels.</p>
+<h3 id="how-this-plan-is-tested">How this plan is tested:</h3><p>This way of restoring the whole cluster have been tested with below procedure</p>
+
+<ol>
+<li>Create cluster using the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/create-cluster.rb">script</a></li>
+<li>Deploy <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-components/starter-pack.tf">starter pack</a> to replicate user namespaces</li>
+<li>Take backup of the whole cluster using <a href="/velero.html#velero-cluster-backups-and-disaster-recovery">velero</a></li>
+<li>Destroy the cluster excluding the VPC using the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/destroy-cluster.rb">script</a></li>
+<li>Create a cluster with the same name. That way velero can match the backup storage location</li>
+<li>Restore the cluster from the backup taken in Step 3</li>
+</ol>
+<h3 id="assumptions">Assumptions</h3>
+<ul>
+<li>VPC of the cluster is not deleted</li>
+<li>Not all Kubernetes resources are tested for Recovery</li>
+<li>Not all AWS resources are tested for reconnecting to application after restore</li>
+<li>Smoke tests are run excluding one for <code>live-1</code></li>
+<li>Terraform state have been recreated</li>
+</ul>
+<h3 id="losing-the-whole-cluster-restore-process">Restore process</h3><p>Any namespaces over 3 hours old can be recovered using Velero (newer namespaces might not have been backed up before the incident occurred).</p>
+<p>Create the cluster with the <strong>same</strong> name from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/create-cluster.rb">source code</a>
+and provide the exisiting <code>vpc-name</code>. This will link the velero backup locations to the lost cluster.</p>
+<p>Find the name of the most recent backup of the <code>allnamespacebackup</code> schedule:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero backup get
+
+NAME                                       STATUS      CREATED                         EXPIRES   STORAGE LOCATION   SELECTOR
+velero-allnamespacebackup-00000000000000   Completed   2020-03-30 12:00:37 +0100 BST   29d       default            &lt;none&gt;
+</code></pre></div><p>Using the backup name, you can now run a <code>velero restore</code> command to restore the deleted namespace.</p>
+<p>Restore command:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --wait
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore create my-namespace-dev-restore --from-backup velero-allnamespacebackup-00000000000000 --wait
+</code></pre></div><p>Once completed, you should be able to see resources in all namespaces recovered.</p>
+<p>Check the status of the restore and look for errors and warnings:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore describe velero-allnamespacebackup-00000000000000-00000000000000
+</code></pre></div><p>Check the logs of the restore:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore logs velero-allnamespacebackup-00000000000000-00000000000000
+
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-06-30">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-07-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 30 March 2020.
+      This page was last reviewed on 22 April 2020.
 
-        It needs to be reviewed again on 30 June 2020
+        It needs to be reviewed again on 22 July 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 30 June 2020
+      This page was set to be reviewed before 22 July 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
