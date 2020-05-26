@@ -8,5 +8,9 @@ A [CircleCI pipeline] automatically creates the files in the `docs` directory fr
 
 So, any changes made to files in this repository will be overwritten by the next update.
 
+## Repository settings
+
+This repository does not have master branch protection to allow the CircleCI runbooks publishing process to commit compiled runbook documentation files.
+
 [CircleCI pipeline]: https://github.com/ministryofjustice/cloud-platform/tree/master/.circleci/config.yml
 [source files]: https://github.com/ministryofjustice/cloud-platform/tree/master/runbooks
