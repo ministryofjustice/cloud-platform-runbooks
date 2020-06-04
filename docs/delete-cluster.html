@@ -617,6 +617,11 @@
 </ul>
 <ul>
   <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch">Remove data from Elasticsearch</a>
     <ul>
       <li>
@@ -629,11 +634,6 @@
         <a href="/remove-data-from-elasticsearch.html#delete-by-query">Delete by query</a>
       </li>
     </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -879,6 +879,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -895,22 +911,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1042,19 +1042,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1080,6 +1067,19 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -1115,19 +1115,17 @@ $ export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 <p>Read the script before using it. Deleting a cluster is something you should be very cautious about, and ensure you know exactly what you&rsquo;re doing.</p>
 <p>The script is entirely non-interactive, and will not prompt you to confirm anything. It just destroys things.</p>
 </blockquote>
-
-<ul>
-<li>Edit the script to change the value of <code>CLUSTER</code> to your test cluster</li>
-<li>If deleting a different VPC than the one with the same name as CLUSTER, change the value of VPC_NAME</li>
-<li>If you want to delete the VPC along with the cluster, uncomment the relevant line in the <code>main</code> method near the top of the script</li>
-<li>Run <code>make tools-shell</code></li>
-<li>Run the script: <code>./destroy-cluster.rb</code></li>
-</ul>
-<p>If any steps fail:</p>
+<p>First, run <code>make tools-shell</code></p>
+<p>Then invoke the script like this:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>./destroy-cluster.rb --name [short cluster name] --yes
+</code></pre></div><p>Run without <code>--yes</code> to do a dry run, and see what commands would be executed.</p>
+<p>You can get more information using:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>./destroy-cluster.rb --help
+</code></pre></div><p>If any steps fail:</p>
 
 <ul>
 <li>Fix the underlying problem</li>
-<li>Edit the script to comment out any sections of the <code>main</code> function which you no longer need to run</li>
+<li>Edit the script to comment out any sections of the <code>ClusterDeleter.run</code> function which you no longer need to run</li>
 <li>Re-run the script</li>
 </ul>
 <h2 id="delete-the-cluster-manually">Delete the cluster manually</h2><p>In case you prefer not to use the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/destroy-cluster.rb">destroy-cluster.rb</a> script, these are the individual steps to follow, to delete the cluster &ldquo;by hand&rdquo;</p>
@@ -1162,17 +1160,17 @@ $ terraform workspace select default
 $ terraform workspace delete &lt;clusterName&gt;
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-06-26">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-09-03">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 26 March 2020.
+      This page was last reviewed on 3 June 2020.
 
-        It needs to be reviewed again on 26 June 2020
+        It needs to be reviewed again on 3 September 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 26 June 2020
+      This page was set to be reviewed before 3 September 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
