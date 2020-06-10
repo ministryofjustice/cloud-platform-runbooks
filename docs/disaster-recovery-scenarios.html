@@ -456,6 +456,20 @@
         </ul>
       </li>
       <li>
+        <a href="/disaster-recovery-scenarios.html#losing-a-resource">Losing a Resource</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-a-resource-impact">Impact</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-a-resource-possible-cause">Possible Cause</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-a-resource-restore-process">Restore process</a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="/disaster-recovery-scenarios.html#losing-the-whole-cluster">Losing the whole cluster</a>
         <ul>
           <li>
@@ -669,6 +683,11 @@
 </ul>
 <ul>
   <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch">Remove data from Elasticsearch</a>
     <ul>
       <li>
@@ -681,11 +700,6 @@
         <a href="/remove-data-from-elasticsearch.html#delete-by-query">Delete by query</a>
       </li>
     </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -1094,19 +1108,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1132,6 +1133,19 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -1187,6 +1201,27 @@ deployment.apps/deployment1          1/1     1            1           1m
 
 NAME                                 DESIRED   CURRENT   READY   AGE
 replicaset.apps/replicaset1          1         1         1       1m
+</code></pre></div><h2 id="losing-a-resource">Losing a Resource</h2><h3 id="losing-a-resource-impact">Impact</h3><p>A loss of a resource will result in losing a specific kubernetes object such as deployments, secrets and pods etc.</p>
+<h3 id="losing-a-resource-possible-cause">Possible Cause</h3><p>User error - Executing <code>kubectl delete deployment/my-deployment-name ns my-namespace-dev</code></p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl get deployment/my-deployment-name -n my-namespace-dev
+Error from server (NotFound): deployments.extensions "my-deployment-name" not found.
+</code></pre></div><h3 id="losing-a-resource-restore-process">Restore process</h3><p>As long as the namespace is over 3 hours old, it can be recovered using Velero.</p>
+<p>First step is to find the name of the most recent backup of the schedule:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero backup get
+
+NAME                                       STATUS      CREATED                         EXPIRES   STORAGE   LOCATION   SELECTOR
+velero-backup-00000000000000              Completed   2020-03-30 12:00:37 +0100 BST     29d       default             &lt;none&gt;
+</code></pre></div><p>Using the backup name, you can now run a <code>Velero restore</code> command to restore the deleted resource.</p>
+<p>Restore command:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --include-namespaces &lt;namespace&gt; --wait
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore create my-namespace-dev-restore --from-backup velero-backup-00000000000000 --include-namespaces my-namespace-dev --wait
+</code></pre></div><p>Once completed, you should be able to see the resources recovered:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl get deployment/my-depoyment-name -n my-namespace-dev
+
+NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/my-deployment-name        1/1       1            1         1m
+
 </code></pre></div><h2 id="losing-the-whole-cluster">Losing the whole cluster</h2><h3 id="losing-the-whole-cluster-impact">Impact</h3><p>Severity : HIGH</p>
 <p>Likelihood: LOW</p>
 <p>Losing the whole kubernetes cluster will result in all services not being available. This means all the 
