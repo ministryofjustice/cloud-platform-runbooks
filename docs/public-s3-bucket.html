@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Template-deploy Run-books | Cloud Platform Runbooks</title>
+    <title>Make an S3 bucket public | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Template-deploy Run-books" />
+      <meta property="og:title" content="Make an S3 bucket public" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Template-deploy Run-books | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html" />
+      <meta property="twitter:title" content="Make an S3 bucket public | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html" />
 
     
   </head>
@@ -1127,106 +1127,23 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="template-deploy-runbooks">Template-deploy Runbooks</h1>
-<blockquote>
-<p>A lot of this information is out of date, and not to be relied upon. However, it&rsquo;s probably not worth bringing it up to date, since the last Template Deploy service is (at the time of writing) in the process of migrating to the Cloud Platform. I&rsquo;m leaving this document as-is for now, but it should be removed at the next review.</p>
-</blockquote>
-<p>(to be de-commissioned as and when template-deploy support ceases)</p>
-<p>Various procedures for supporting our production template-deploy services. If something goes wrong and you are on call you should be able to find the relevant information via the confluence links below</p>
-<h2 id="general-incident-procedure">General Incident Procedure</h2><p>If there is a problem with one of these projects the general procedure is:</p>
-
-<ul>
-<li><p>Look at the problem and determine if the outage is a short blip or likely to last.</p>
-
-<ul>
-<li>If it’s just a blip then most likely nothing needs to be done.</li>
-</ul></li>
-<li><p>Put the holding page up</p>
-
-<ul>
-<li>Each project should have a ‘sorry the service is currently unavailable’ holding page served from an alternative infrastructure for this case. Check the project&rsquo;s github repository for instructions on how to enable it for that project.</li>
-</ul></li>
-<li><p>Email and notify people</p></li>
-</ul>
-<p>Keep people informed about the problem, let them know what sort of problem it is (i.e. hosting supplier problem, VM problem, app problem etc.) and if the holding page is up or not.</p>
-
-<ul>
-<li><p>Each project should have an incident email list with everyone who needs to know about service outages. Check the project&rsquo;s github repository for that address.</p></li>
-<li><p>Generally we should keep the project owner and delivery manager (if we have these details) informed about how long we think it will take to fix the problem and if it is something we can fix ourselves or if we need to log a call with a third-party. Check the relevant run-book and/or the project github pages for project owner/delivery manager details. Additional informational can also be found here <a href="https://docs.google.com/spreadsheets/d/1y4i5d4YYj8rnkGFLLCZcnj5_i_mwI1kQZz9rs0OgQDI/edit#gid=0">Products Hosted by Cloud Platform</a>, also <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/298778707/Other+Services">Other Services</a> and <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324273043/Contact+Service+Managers+template-deploy">Contact Service Managers (template-deploy)</a></p></li>
-<li><p>Notify the relevant team via their slack channel so that the team knows that something is wrong, and also the latest status of the problem.</p>
-
-<ul>
-<li>Diagnose the problem:</li>
-</ul></li>
-<li><p>Go to the alert URL. This may be found in different places depending on the alerting service and the nature of the alert. You might find it on the dashboard, in the <a href="https://moj-digital-tools.pagerduty.com/incidents">PagerDuty</a> or  <a href="https://mojdt.slack.com/messages/C8PF51AT0">Slack #high-priority-alarms messages</a>, or elsewhere. You may not find it at all.</p></li>
-</ul>
-
-<blockquote>
-<p>NOTE: You may not get a correct URL. At the time of writing, preprod PVB only worked if called on /prisoner, but the alert shows the root URL.</p>
-</blockquote>
-
-<ul>
-<li><p>Resolve the alert on pagerduty. You can do this by following the instruction in the text message on the Incident Response phone, or directly on PagerDuty. If you don’t, it will continue to re-alert.</p></li>
-<li><p>Go to Pingdom &gt; Monitoring and filter on the Down status. Apply any other filters that help you find the issue.</p></li>
-<li><p>Click on the issue to open the full report.</p></li>
-<li><p>Go to the URL section, copy the URL and open it in a browser to check it.</p></li>
-<li><p>If the URL works as expected, click Test Check to retest and reset Pingdom.</p></li>
-<li><p>If the URL does not work, does not work as expected, or Pingdom will not reset, investigate and fix.</p>
-
-<ul>
-<li>Fix the problem and test the service is healthy again. Depending on the service, you may need to update your /etc/hosts file to gain access to the site (e.g. where you do not have access to the internal DNS, but the service is delivered via an Apache/Nginx vhost).</li>
-<li>Take down the holding page</li>
-<li>Send a ‘resolved’ email and notify people</li>
-<li>Send a final email to the project incident list to let everyone know that the service is back up.</li>
-<li>Notify the relevant team via their slack channel so that the team knows that the problem is resolved and the service is back up</li>
-</ul></li>
-</ul>
-<h2 id="existing-runbooks">Existing Runbooks</h2>
-<ul>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305627228/Accelerated+Possession+HMCTS+Supported">Accelerated Possession (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305529230/CLA+Support+Docs">CLA Support Docs</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305430680/Claim+for+Crown+Court+Defence">Claim for Crown Court Defence</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/684261967/Correspondence+Tool+Public+-+Technical+Runbook">Correspondence Tool Public - Technical Runbook</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/630948000/Correspondence+Tool+Staff+-+Technical+Runbook">Correspondence Tool Staff - Technical Runbook</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305398124">Courtfinder (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305430820/Docker+Registry">Docker Registry</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305529326/Docker+Upgrade">Docker Upgrade</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305430833/ELK">ELK</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305627462">Employment Tribunals (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043428/General+Incident+Procedure">General Incident Procedure</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/320668071/Graphite">Graphite</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239389">Help with Fees (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239551/Jenkins">Jenkins</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324075646/LAALAA+Support+Docs">LAALAA Support Docs</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324042897">Make-a-plea (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272360">MOJ Sign On (Heroku)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324141273/Money+to+Prisoners">Money to Prisoners</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272622/Moving+People+Safely">Moving People Safely</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324174116">NOMIS API (Basic Support)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239762/Opsmanual">Opsmanual</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043218">Parliamentary Questions (Unofficial Support)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043234/People+Finder">People Finder</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239849/PFLR+CAIT+Support+Docs">PFLR CAIT Support Docs</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324010630/Postcode+Info">Postcode Info</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324075878/Prison+Visits+Booking">Prison Visits Booking</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272772/Sensu">Sensu</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272831/Status">Status</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324174549">Tax tribunals stacks (Unofficial Support)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043410">Victims Information Service (HMCTS Supported)</a></p></li>
-</ul>
+              <h1 id="make-an-s3-bucket-public">Make an S3 bucket public</h1><p>This <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/cloudformation/aws-account-baseline-templates/aws-s3-enable-encryption-block-public-access">lambda function</a> created by the security team runs weekly, and revokes public access for all our S3 Buckets.</p>
+<p>The lambda function has a <code>S3_EXCEPTION</code> environment variable which stores a list of S3 buckets to ignore. To enable public access to a bucket, it must be added to this list.</p>
+<p>The easiest way to do this is to <a href="https://eu-west-1.console.aws.amazon.com/lambda/home?region=eu-west-1#/functions/S3BucketBlockPublicAccess?tab=configuration">edit the environment variable</a> directly via the aws console.</p>
+<p>The function uses a substring test to see if the current bucket name appears in the <code>S3_EXCEPTION</code> string, so you can use any separator you want when you add the new bucket name to the variable.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-08-12">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-09-09">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 12 May 2020.
+      This page was last reviewed on 9 June 2020.
 
-        It needs to be reviewed again on 12 August 2020
+        It needs to be reviewed again on 9 September 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 12 August 2020
+      This page was set to be reviewed before 9 September 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1235,8 +1152,8 @@
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/template-deploy-run-books.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Template-deploy%20Run-books'&amp;body=Problem%20with%20'Template-deploy%20Run-books'%20(https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/public-s3-bucket.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Make%20an%20S3%20bucket%20public'&amp;body=Problem%20with%20'Make%20an%20S3%20bucket%20public'%20(https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
