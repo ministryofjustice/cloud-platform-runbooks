@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Template-deploy Run-books | Cloud Platform Runbooks</title>
+    <title>Add nodes/change the instance type of the AWS EKS cluster | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-eks-cluster.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Template-deploy Run-books" />
+      <meta property="og:title" content="Add nodes/change the instance type of the AWS EKS cluster" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-eks-cluster.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Template-deploy Run-books | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html" />
+      <meta property="twitter:title" content="Add nodes/change the instance type of the AWS EKS cluster | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-eks-cluster.html" />
 
     
   </head>
@@ -355,7 +355,7 @@
       <li>
         <ul>
           <li>
-            <a href="/add-nodes-to-the-cluster.html#requirements">Requirements</a>
+            <a href="/add-nodes-to-the-cluster.html#add-nodes-to-the-cluster-requirements">Requirements</a>
           </li>
           <li>
             <a href="/add-nodes-to-the-cluster.html#inline-edit">Inline edit</a>
@@ -376,7 +376,7 @@
         <a href="/add-nodes-to-the-eks-cluster.html#add-nodes-to-the-eks-cluster">Add nodes to the eks cluster</a>
         <ul>
           <li>
-            <a href="/add-nodes-to-the-eks-cluster.html#add-nodes-to-the-eks-cluster-requirements">Requirements</a>
+            <a href="/add-nodes-to-the-eks-cluster.html#requirements">Requirements</a>
           </li>
           <li>
             <a href="/add-nodes-to-the-eks-cluster.html#cluster-configuration">Cluster configuration:</a>
@@ -1195,106 +1195,81 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="template-deploy-runbooks">Template-deploy Runbooks</h1>
-<blockquote>
-<p>A lot of this information is out of date, and not to be relied upon. However, it&rsquo;s probably not worth bringing it up to date, since the last Template Deploy service is (at the time of writing) in the process of migrating to the Cloud Platform. I&rsquo;m leaving this document as-is for now, but it should be removed at the next review.</p>
-</blockquote>
-<p>(to be de-commissioned as and when template-deploy support ceases)</p>
-<p>Various procedures for supporting our production template-deploy services. If something goes wrong and you are on call you should be able to find the relevant information via the confluence links below</p>
-<h2 id="general-incident-procedure">General Incident Procedure</h2><p>If there is a problem with one of these projects the general procedure is:</p>
+              <h1 id="add-nodes-change-the-instance-type-of-the-aws-eks-cluster">Add nodes/change the instance type of the AWS EKS cluster</h1><p>This runbook covers how to increase the number of nodes in an eks cluster and/or change the instance type (worker_node_machine_type)</p>
+<p>This can address the problem of CPU high usage/load</p>
+<h2 id="add-nodes-to-the-eks-cluster">Add nodes to the eks cluster</h2><h3 id="requirements">Requirements</h3><h4 id="1-ensure-you-have-access-to-the-cloud-platform-aws-account">1. Ensure you have access to the Cloud Platform AWS account</h4><h4 id="2-access-to-the-eks-cluster">2. Access to the EKS cluster</h4><p><a href="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html#access-eks-cluster">Access to the EKS cluster</a></p>
+<h3 id="cluster-configuration">Cluster configuration:</h3><h4 id="cluster-tf"><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-eks/cluster.tf">cluster.tf</a></h4><p>Use</p>
+<p><code>git crypt unlock</code> to see the following code:</p>
+<div class="highlight"><pre class="highlight plaintext"><code> node_groups = {
+    default_ng = {
+      desired_capacity = var.cluster_node_count
+      max_capacity     = 30
+      min_capacity     = 1
+      subnets          = data.aws_subnet_ids.private.ids
 
-<ul>
-<li><p>Look at the problem and determine if the outage is a short blip or likely to last.</p>
+      instance_type = var.worker_node_machine_type
+      k8s_labels = {
+        Terraform = "true"
+        Cluster   = local.cluster_name
+        Domain    = local.cluster_base_domain_name
+      }
+      additional_tags = {
+        default_ng = "true"
+      }
+    }
+</code></pre></div><h4 id="variable-tf"><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-eks/variables.tf">Variable.tf</a></h4><div class="highlight"><pre class="highlight plaintext"><code>variable "vpc_name" {
+  description = "The VPC name where the cluster(s) are going to be provisioned. VPCs are created in cloud-platform-network"
+  default     = ""
+}
 
-<ul>
-<li>If it’s just a blip then most likely nothing needs to be done.</li>
-</ul></li>
-<li><p>Put the holding page up</p>
+variable "cluster_node_count" {
+  description = "The number of worker node in the cluster"
+  default     = "4"
+}
 
+variable "worker_node_machine_type" {
+  description = "The AWS EC2 instance types to use for worker nodes"
+  default     = "m4.large"
+}
+</code></pre></div><h3 id="issue">Issue</h3><p>There is an issue that you cannot update the default &ldquo;cluster_node_count&rdquo; (in isolation) with terraform
+ - unless you increase the default &ldquo;worker_node_machine_type&rdquo; too.<br>
+The issue is to do with auto-scaling complexities utilising Terrafom - please see <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/autoscaling.md#notes">here</a></p>
+<p>Therefore you either have to update default &ldquo;worker_node_machine_type&rdquo; to - in above example &ldquo;m4.xlarge&rdquo; and also the default &ldquo;cluster_node_count&rdquo; to in above example &ldquo;5&rdquo; or &ldquo;6&rdquo;</p>
+<p>Or you have to edit the &ldquo;Desired size&rdquo; in the &ldquo;AWS EKS dashboard Edit Node Group&rdquo; (once you have carried out the AWS dashboard change - update the terraform config, <code>terraform apply</code>  accordingly - so that it is in sync with the AWS dashboard):</p>
+<h4 id="aws-dashboard-eks-edit-node-group"><a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters/manager/nodegroups/manager-default_ng-able-koala/edit-nodegroup">AWS dashboard EKS - Edit Node Group:</a></h4><div class="highlight"><pre class="highlight plaintext"><code>Group size
+Minimum size
+Set the minimum number of nodes that the group can scale in to.
+1
+nodes
+Maximum size
+Set the maximum number of nodes that the group can scale out to.
+30
+nodes
+Desired size
+Set the desired number of nodes that the group should launch with initially.
+4
+nodes
+</code></pre></div><h2 id="change-the-aws-eks-instance-type-worker-node-machine-type">Change the AWS EKS instance type (worker_node_machine_type)</h2>
 <ul>
-<li>Each project should have a ‘sorry the service is currently unavailable’ holding page served from an alternative infrastructure for this case. Check the project&rsquo;s github repository for instructions on how to enable it for that project.</li>
-</ul></li>
-<li><p>Email and notify people</p></li>
+<li><p>update default &ldquo;worker_node_machine_type&rdquo; to - in above example &ldquo;m4.xlarge&rdquo;</p></li>
+<li><p>A &lsquo;terraform plan&rsquo; will show that that it will replace the existing nodes</p></li>
+<li><p>`terraform apply&rsquo; the changes in the usual way</p></li>
+<li><p>monitor how the update is going in the <a href="https://eu-west-2.console.aws.amazon.com/ec2/autoscaling/home?region=eu-west-2#AutoScalingGroups:view=tags;filter=eks">AWS Autoscaling dashboard:</a></p></li>
 </ul>
-<p>Keep people informed about the problem, let them know what sort of problem it is (i.e. hosting supplier problem, VM problem, app problem etc.) and if the holding page is up or not.</p>
-
-<ul>
-<li><p>Each project should have an incident email list with everyone who needs to know about service outages. Check the project&rsquo;s github repository for that address.</p></li>
-<li><p>Generally we should keep the project owner and delivery manager (if we have these details) informed about how long we think it will take to fix the problem and if it is something we can fix ourselves or if we need to log a call with a third-party. Check the relevant run-book and/or the project github pages for project owner/delivery manager details. Additional informational can also be found here <a href="https://docs.google.com/spreadsheets/d/1y4i5d4YYj8rnkGFLLCZcnj5_i_mwI1kQZz9rs0OgQDI/edit#gid=0">Products Hosted by Cloud Platform</a>, also <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/298778707/Other+Services">Other Services</a> and <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324273043/Contact+Service+Managers+template-deploy">Contact Service Managers (template-deploy)</a></p></li>
-<li><p>Notify the relevant team via their slack channel so that the team knows that something is wrong, and also the latest status of the problem.</p>
-
-<ul>
-<li>Diagnose the problem:</li>
-</ul></li>
-<li><p>Go to the alert URL. This may be found in different places depending on the alerting service and the nature of the alert. You might find it on the dashboard, in the <a href="https://moj-digital-tools.pagerduty.com/incidents">PagerDuty</a> or  <a href="https://mojdt.slack.com/messages/C8PF51AT0">Slack #high-priority-alarms messages</a>, or elsewhere. You may not find it at all.</p></li>
-</ul>
-
-<blockquote>
-<p>NOTE: You may not get a correct URL. At the time of writing, preprod PVB only worked if called on /prisoner, but the alert shows the root URL.</p>
-</blockquote>
-
-<ul>
-<li><p>Resolve the alert on pagerduty. You can do this by following the instruction in the text message on the Incident Response phone, or directly on PagerDuty. If you don’t, it will continue to re-alert.</p></li>
-<li><p>Go to Pingdom &gt; Monitoring and filter on the Down status. Apply any other filters that help you find the issue.</p></li>
-<li><p>Click on the issue to open the full report.</p></li>
-<li><p>Go to the URL section, copy the URL and open it in a browser to check it.</p></li>
-<li><p>If the URL works as expected, click Test Check to retest and reset Pingdom.</p></li>
-<li><p>If the URL does not work, does not work as expected, or Pingdom will not reset, investigate and fix.</p>
-
-<ul>
-<li>Fix the problem and test the service is healthy again. Depending on the service, you may need to update your /etc/hosts file to gain access to the site (e.g. where you do not have access to the internal DNS, but the service is delivered via an Apache/Nginx vhost).</li>
-<li>Take down the holding page</li>
-<li>Send a ‘resolved’ email and notify people</li>
-<li>Send a final email to the project incident list to let everyone know that the service is back up.</li>
-<li>Notify the relevant team via their slack channel so that the team knows that the problem is resolved and the service is back up</li>
-</ul></li>
-</ul>
-<h2 id="existing-runbooks">Existing Runbooks</h2>
-<ul>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305627228/Accelerated+Possession+HMCTS+Supported">Accelerated Possession (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305529230/CLA+Support+Docs">CLA Support Docs</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305430680/Claim+for+Crown+Court+Defence">Claim for Crown Court Defence</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/684261967/Correspondence+Tool+Public+-+Technical+Runbook">Correspondence Tool Public - Technical Runbook</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/630948000/Correspondence+Tool+Staff+-+Technical+Runbook">Correspondence Tool Staff - Technical Runbook</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305398124">Courtfinder (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305430820/Docker+Registry">Docker Registry</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305529326/Docker+Upgrade">Docker Upgrade</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305430833/ELK">ELK</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305627462">Employment Tribunals (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043428/General+Incident+Procedure">General Incident Procedure</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/320668071/Graphite">Graphite</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239389">Help with Fees (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239551/Jenkins">Jenkins</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324075646/LAALAA+Support+Docs">LAALAA Support Docs</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324042897">Make-a-plea (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272360">MOJ Sign On (Heroku)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324141273/Money+to+Prisoners">Money to Prisoners</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272622/Moving+People+Safely">Moving People Safely</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324174116">NOMIS API (Basic Support)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239762/Opsmanual">Opsmanual</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043218">Parliamentary Questions (Unofficial Support)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043234/People+Finder">People Finder</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239849/PFLR+CAIT+Support+Docs">PFLR CAIT Support Docs</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324010630/Postcode+Info">Postcode Info</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324075878/Prison+Visits+Booking">Prison Visits Booking</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272772/Sensu">Sensu</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272831/Status">Status</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324174549">Tax tribunals stacks (Unofficial Support)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043410">Victims Information Service (HMCTS Supported)</a></p></li>
-</ul>
+<p>Note that it will create the instances/nodes before it deletes the existing - so there should be no down time</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-08-12">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-08-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 12 May 2020.
+      This page was last reviewed on 15 May 2020.
 
-        It needs to be reviewed again on 12 August 2020
+        It needs to be reviewed again on 15 August 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 12 August 2020
+      This page was set to be reviewed before 15 August 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1303,8 +1278,8 @@
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/template-deploy-run-books.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Template-deploy%20Run-books'&amp;body=Problem%20with%20'Template-deploy%20Run-books'%20(https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/add-nodes-to-the-eks-cluster.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20nodes/change%20the%20instance%20type%20of%20the%20AWS%20EKS%20cluster'&amp;body=Problem%20with%20'Add%20nodes/change%20the%20instance%20type%20of%20the%20AWS%20EKS%20cluster'%20(https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-eks-cluster.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
