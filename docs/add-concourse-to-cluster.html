@@ -945,22 +945,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -977,6 +961,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1188,7 +1188,7 @@
 <li>Copy an existing pipeline</li>
 </ul>
 <p>e.g.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>cp pipelines/live-1/main/plan-environments.yaml pipelines/david-test1/main/
+<div class="highlight"><pre class="highlight plaintext"><code>cp pipelines/manager/main/reporting.yaml pipelines/david-test1/main/
 </code></pre></div>
 <ul>
 <li><p>Edit the pipeline yaml file as required (you probably want to remove everything relating to Pingdom)</p></li>
@@ -1212,17 +1212,17 @@
 <p>If your pipeline requires secrets, such as AWS credentials, you need to define those as kubernetes secrets in the <code>concourse-main</code> namespace (or <code>concourse-&lt;team name&gt;</code> if you&rsquo;re using a different concourse team, rather than <code>main</code>)</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-06-09">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-09-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 9 March 2020.
+      This page was last reviewed on 15 June 2020.
 
-        It needs to be reviewed again on 9 June 2020
+        It needs to be reviewed again on 15 September 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 9 June 2020
+      This page was set to be reviewed before 15 September 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
