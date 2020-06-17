@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>AWS Compromised Credentials | Cloud Platform Runbooks</title>
+    <title>Export data from AWS Elasticsearch into a CSV file | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/aws-leaked-credentials.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/export-elasticsearch-to-csv.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="AWS Compromised Credentials" />
+      <meta property="og:title" content="Export data from AWS Elasticsearch into a CSV file" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-leaked-credentials.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/export-elasticsearch-to-csv.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="AWS Compromised Credentials | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-leaked-credentials.html" />
+      <meta property="twitter:title" content="Export data from AWS Elasticsearch into a CSV file | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/export-elasticsearch-to-csv.html" />
 
     
   </head>
@@ -1213,26 +1213,40 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="aws-compromised-credentials">AWS Compromised Credentials</h1><p>This article is the immediate response, it was created to minimise our window of exposure</p>
-<h2 id="steps-for-a-leaked-credentials">Steps for a leaked credentials</h2><p>1) Login into our AWS Management Console</p>
-<p>2) Go to <strong>Services -&gt; IAM</strong> and search for the user with credentials leaked (<strong>TIP</strong> You can search either by <em>Access Keys</em> or by <em>Username</em>). In case you prefer using the CLI:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>aws iam list-users --output json --query 'Users[?contains(UserName, `testAlejandro`)  == `true`]'
-</code></pre></div><p>3) Within the User, click in &ldquo;Delete user&rdquo; button (top right corner). If you prefer to use the CLI you&rsquo;ll have to delete dependencies (Access Keys, Groups, etc), an example can be found <a href="https://gist.github.com/kgmoore431/886aa60cd7fdc9a43bc5c05f9e956adf">here</a>.</p>
-<p>4) If the service team is known we should notify them via their slack channel (and @ the specific user). If the service team isn&rsquo;t known message should be sent privately on Slack.</p>
-<h2 id="getting-new-credentials">Getting new credentials</h2><p>Most of the users and keys are created through terraform, the process to recreate them are <a href="/rotate-user-aws-credentials.html#4-let-terraform-create-a-new-key">here</a></p>
+              <h1 id="export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</h1><p>This runbook aims to guide you through exporting data from Elasticsearch into a CSV file.</p>
+<p>The CSV Export feature in Kibana is a proprietary feature of Elasticsearch that requires X-Pack to be configured and installed in our Elasticsearch cluster which is not provided and supported in the Elasticsearch that is offered by AWS.</p>
+<h2 id="workaround">Workaround</h2><p>The workaround, is using <a href="https://github.com/gboddin/es2csv">es2csv</a>, which is a third party tool that saves the search result to a CSV file. Please refer this <a href="https://www.skedler.com/blog/the-best-tools-for-exporting-elasticsearch-data-to-csv/">blog page</a> for more information.</p>
+<p>Cloud-platform-live Elasticsearch endpoint (https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com) is accessible within the cluster.</p>
+<h3 id="install-es2csv">Install es2csv</h3><p>kubectl exec in to any of the fluentd pod in logging namespace and install es2csv</p>
+<div class="highlight"><pre class="highlight plaintext"><code>  kubectl -n logging exec -ti fluentd-es-xxxxx -- /bin/bash
+</code></pre></div><p>You also need Python 2.7.x and pip</p>
+<div class="highlight"><pre class="highlight plaintext"><code>  apt update
+  apt install python-pip
+  apt install git
+  python -m pip install git+https://github.com/gboddin/es2csv.git
+</code></pre></div><h3 id="usage">Usage</h3><div class="highlight"><pre class="highlight plaintext"><code>es2csv -q 'kubernetes.namespace_name:starter-pack' -u https://&lt;ES_endpoint&gt;:443   -i logstash-* -f kubernetes_cluster -o kibanatest.csv --verify-certs
+
+    Here, the parameters are :
+        -q Query
+        -u URL
+        -i Indices
+        -f Fields to be preserved
+        -o Output file name
+</code></pre></div><p>For more usage examples please refer <a href="https://github.com/taraslayshchuk/es2csv/blob/master/docs/EXAMPLES.rst">this</a></p>
+<p>Note: Once the export is completed, delete the fluentd pod you installed es2csv</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-08-04">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-09-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 4 May 2020.
+      This page was last reviewed on 17 June 2020.
 
-        It needs to be reviewed again on 4 August 2020
+        It needs to be reviewed again on 17 September 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 4 August 2020
+      This page was set to be reviewed before 17 September 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1241,8 +1255,8 @@
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/aws-leaked-credentials.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'AWS%20Compromised%20Credentials'&amp;body=Problem%20with%20'AWS%20Compromised%20Credentials'%20(https://runbooks.cloud-platform.service.justice.gov.uk/aws-leaked-credentials.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/export-elasticsearch-to-csv.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Export%20data%20from%20AWS%20Elasticsearch%20into%20a%20CSV%20file'&amp;body=Problem%20with%20'Export%20data%20from%20AWS%20Elasticsearch%20into%20a%20CSV%20file'%20(https://runbooks.cloud-platform.service.justice.gov.uk/export-elasticsearch-to-csv.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
