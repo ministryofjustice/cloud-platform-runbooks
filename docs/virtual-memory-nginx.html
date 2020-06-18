@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Cloud Platform Communications Plan | Cloud Platform Runbooks</title>
+    <title>Nginx failed allocate shared memory | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/virtual-memory-nginx.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Cloud Platform Communications Plan" />
+      <meta property="og:title" content="Nginx failed allocate shared memory" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/virtual-memory-nginx.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Cloud Platform Communications Plan | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html" />
+      <meta property="twitter:title" content="Nginx failed allocate shared memory | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/virtual-memory-nginx.html" />
 
     
   </head>
@@ -141,7 +141,7 @@
         <a href="/incident-process.html#2-declare-the-incident">2. Declare the incident</a>
         <ul>
           <li>
-            <a href="/incident-process.html#2-declare-the-incident-examples">Examples</a>
+            <a href="/incident-process.html#examples">Examples</a>
           </li>
         </ul>
       </li>
@@ -1148,7 +1148,7 @@
         <a href="/cloud-platform-communications-plan.html#tips-on-format-of-communications">Tips on format of communications</a>
         <ul>
           <li>
-            <a href="/cloud-platform-communications-plan.html#examples">Examples</a>
+            <a href="/cloud-platform-communications-plan.html#tips-on-format-of-communications-examples">Examples</a>
           </li>
           <li>
             <a href="/cloud-platform-communications-plan.html#things-to-include-in-incident-communications">Things to include in incident communications</a>
@@ -1235,133 +1235,29 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="cloud-platform-communications-plan">Cloud Platform Communications Plan</h1><p>This plan details to the who, how and when we will communicate information to users and stakeholders.</p>
-<h2 id="the-plan">The Plan</h2><p>The table below sets out the typical types of communications the Cloud Platform will want to issue.</p>
-<div class="table-container">
-        <table>
-          <tr>
-<th>What information</th>
-<th>Target Audience</th>
-<th>When</th>
-<th>Channel</th>
-</tr>
-<tr>
-<td>New features</td>
-<td>Service Teams</td>
-<td>As features are shipped</td>
-<td>#cloud-platform-update</td>
-</tr>
-<tr>
-<td>Things we have learned</td>
-<td>Justice Digital &amp; Technology</td>
-<td>Regularly when we have key things to show or promote</td>
-<td>Show the Thing</td>
-</tr>
-<tr>
-<td>Service impacting incidents</td>
-<td>Service Teams</td>
-<td>When an incident has been declared, key updates during resolution, and at incident closure</td>
-<td>#cloud-platform-update</td>
-</tr>
-<tr>
-<td>Sharing postmortems for service impacting incidents</td>
-<td>Service Teams</td>
-<td>When postmortem has been documented</td>
-<td>#cloud-platform-update</td>
-</tr>
-<tr>
-<td>Service impacting upgrades/Maintence</td>
-<td>Service Teams</td>
-<td>As required</td>
-<td>#cloud-platform-update</td>
-</tr>
-<tr>
-<td>Sharing successes</td>
-<td>Chief Technology Officer</td>
-<td>Weekly</td>
-<td>One to ones and team meetings</td>
-</tr>
-<tr>
-<td>Sharing successes</td>
-<td>SMT</td>
-<td>Fortnightly</td>
-<td>Architecture &amp; Platforms weeknotes</td>
-</tr>
-<tr>
-<td>Sharing successes</td>
-<td>Justice Digital &amp; Technology</td>
-<td>Regularly when we have key things to show or promote</td>
-<td>Post about them in #chat on Slack/Consider for a Show the Thing</td>
-</tr>
-
-        </table>
-      </div><h2 id="tips-on-format-of-communications">Tips on format of communications</h2><p>The #cloud-platform-update channel is used for a number of different types of communications so it is important that messages posted have a clear description so that users can understand the importance of the message. In the case of incidents or upgrades the message should have a <strong>bold</strong> title that clearly describes what the message will be about.</p>
-<h3 id="examples">Examples</h3>
-<blockquote>
-<p><strong>Kubernetes 1.14 Upgrade</strong></p>
-<p><strong>Incident - Sentry unavailable</strong></p>
-<p><strong>Action Required - Live-0 Decommissioning</strong></p>
-</blockquote>
-<h3 id="things-to-include-in-incident-communications">Things to include in incident communications</h3>
-<ul>
-<li>service impact/what users might be reporting</li>
-<li>action being taken (this might just be that we are investigating the issue)</li>
-<li>when users can expact a progress update (and make sure that the update actually happens when you say it will)</li>
-<li>details of any actions users need to take (if applicable)</li>
-<li>apoligise for the inconvenience (it might not be an issue in our control but this can build trust and let users know that you are taking resolution seriously)</li>
-</ul>
-<h3 id="example">Example</h3>
-<blockquote>
-<p><strong>High Priority Incident Declared - Cloud Platform</strong>
-We are aware that some users are experiencing issues with the access to services on the Cloud Platform this morning.
-We are unsure of the full impact of these issues and the extent to which this is impacting services.
-An incident team has been formed and the team are investigating.
-We will provide further updates in due course, but in any event the next update will be in 30 minutes.
-Thank you for your patience.</p>
-</blockquote>
-<h3 id="things-to-include-in-upgrade-communications">Things to include in upgrade communications</h3>
-<ul>
-<li>What you are upgrading</li>
-<li>When the upgrade will take place (including times)</li>
-<li>Why you are upgrading (in might be useful to include a link to some change notes or something that users can refer to if they want more information rather than adding it all in the comms.)</li>
-<li>Details of any service impact or anthing users might need to take action on as a result of changes (including if we are pausing pipelines)</li>
-<li>Details of any risks posed to services as a result of not taking requested actions</li>
-<li>Include examples of code if it helps users understand the changes</li>
-<li>Provide a high level overview of the process we will be taking to implement changes</li>
-<li>Refer users back to the #ask-cloud-platform channel if they have questions or something isn&rsquo;t working as expected</li>
-</ul>
-<h3 id="tips-on-format-of-communications-example">Example</h3>
-<blockquote>
-<p><strong>Certificate Manager Upgrade</strong>
-<strong>When</strong>: 23rd April starts at 12:00 PM.
-<strong>What</strong>: Cert-Manager upgrade to v0.14 from v0.8
-<strong>Description</strong>:
-We are upgrading cert-manager, which manages all of the SSL certificates for  &gt; your websites and web applications, from version 0.8 to 0.14.</p>
-<p>This is a significant change. Version 0.14 removes the “v1alpha1” designation for &gt; certificates, and changes the API group from certmanager.k82.io to &gt; &gt; &gt; &gt; cert-manager.io.</p>
-<p><strong>What you need to do</strong>:
-Move all of your certificate definitions into your namespace folders in the environments repository, by the end of 22nd April 2020.</p>
-<p><strong>Certificates in the old format will not work after the upgrade</strong>.</p>
-<p>The Cloud Platform team will make all the required changes to any certificate definitions in the environments repository.</p>
-<p>If you have certificate definitions which are not in the environments repository, you will need to make the required changes to the certificate yaml files, and redeploy the certificates once the upgrade is complete.</p>
-<p><strong>Downtime</strong>: 
-We are not expecting any downtime as a result of this change.</p>
-<p><strong>Process</strong>: (overview of steps that need to be taken my users and the the Cloud Platform Team)</p>
-<p>If you experience any issues during or after the changes implemented please contact the team over at #ask-cloud-platform</p>
-</blockquote>
-<h2 id="sharing-information-with-the-wider-ministry-of-justice-and-the-public">Sharing information with the wider Ministry of Justice and the Public</h2><p>There may be occasions where we want to publish something to the wider MoJ or the Public. In these instances we can publish something on the MoJ Digital blog. Requests to publish on the blog should be made to #ask-comms in the first instance.</p>
+              <h1 id="failed-to-allocate-shared-memory">Failed to allocate shared memory</h1><p>Due to the amount of ingresses <code>live-1</code> is managining, we are facing shared memory issues with nginx ingress controller. Even though we <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/pull/3/files">applied some remediations</a>, every second week we still face the same problem</p>
+<div class="highlight"><pre class="highlight plaintext"><code>nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller 2020/06/18 13:11:18 [emerg] 2307#2307: "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg603175912:14532
+nginx-ingress-acme-controller-58997b668-p69lw nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller nginx: [emerg] "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg603175912:14532
+nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller 2020/06/18 13:11:18 [emerg] 2307#2307: "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg603175912:14532
+nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller nginx: [emerg] "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg603175912:14532
+nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller 2020/06/18 13:11:22 [emerg] 2362#2362: "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg088279079:14532
+nginx: [emerg] "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg088279079:14532
+</code></pre></div><p>Partial solution for this is to delete/recycle all pods within <code>ingress-controllers</code> namespace. You can do it in groups of 3 as below:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ kubectl -n ingress-controllers delete pod nginx-ingress-acme-controller-XXXXXXX nginx-ingress-acme-controller-YYYYY nginx-ingress-acme-controller-ZZZZZ
+</code></pre></div><p>Wait until the new ones get spin up and carry on with the other 3 pods remaining</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-21">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-09-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 April 2020.
+      This page was last reviewed on 18 June 2020.
 
-        It needs to be reviewed again on 21 July 2020
+        It needs to be reviewed again on 18 September 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 July 2020
+      This page was set to be reviewed before 18 September 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1370,8 +1266,8 @@ We are not expecting any downtime as a result of this change.</p>
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/cloud-platform-communications-plan.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Cloud%20Platform%20Communications%20Plan'&amp;body=Problem%20with%20'Cloud%20Platform%20Communications%20Plan'%20(https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/virtual-memory-nginx.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Nginx%20failed%20allocate%20shared%20memory'&amp;body=Problem%20with%20'Nginx%20failed%20allocate%20shared%20memory'%20(https://runbooks.cloud-platform.service.justice.gov.uk/virtual-memory-nginx.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
