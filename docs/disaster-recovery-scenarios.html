@@ -530,6 +530,23 @@
           </li>
         </ul>
       </li>
+      <li>
+        <a href="/disaster-recovery-scenarios.html#deleted-terraform-state">Deleted terraform state</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#deleted-terraform-state-impact">Impact</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#deleted-terraform-state-possible-cause">Possible Cause</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#deleted-terraform-state-restore-process">Restore process</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#recovering-more-complex-scenarios">Recovering more complex scenarios</a>
+          </li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ul>
@@ -987,22 +1004,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1019,6 +1020,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1370,7 +1387,42 @@ in <a href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-clust
 <div class="highlight"><pre class="highlight plaintext"><code>kops validate cluster &lt;cluster name&gt;
 </code></pre></div><p>The validation should be success and should say</p>
 <p><strong>&ldquo;Your cluster <code>&lt;cluster name&gt;</code>.cloud-platform.service.justice.gov.uk is ready&rdquo;</strong></p>
+<h2 id="deleted-terraform-state">Deleted terraform state</h2><p>Severity : low</p>
+<p>Likelihood: medium</p>
+<h3 id="deleted-terraform-state-impact">Impact</h3><p>Items removed from the terraform state are not physically destroyed but no longer managed by terraform. This means infrastructure is orphaned with no state.</p>
+<p>For example, if you remove an AWS instance from the state, the AWS instance will continue running, but terraform plan will no longer see that instance.</p>
+<h3 id="deleted-terraform-state-possible-cause">Possible Cause</h3><p>User error - Executing <code>terraform state rm module.starter_pack.kubernetes_namespace.starter_pack</code>  will remove kubernetes starter_pack namespace from terraform state. When state is removed, running &ldquo;terraform apply&rdquo; will raise error, as terraform cannot track about existing resource and try to create new one.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>terraform apply -target=module.starter_pack.kubernetes_namespace.starter_pack
 
+Error: namespaces "starter-pack" already exists
+</code></pre></div><h3 id="deleted-terraform-state-restore-process">Restore process</h3><p>In order to regain control of resource removed from terraform state, we will use the <a href="https://www.terraform.io/docs/import/index.html">import command</a> to recover the metadata for this resource. Import requires a resource address and the resource ID. The resource address is a combination of the resource type and resource name.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>terraform import module.starter_pack.kubernetes_namespace.starter_pack starter-pack
+
+</code></pre></div><p>The import command creates a new state file pulling in information about the specified kubernetes_namespace.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>module.starter_pack.kubernetes_namespace.starter_pack: Importing from ID "starter-pack"...
+module.starter_pack.kubernetes_namespace.starter_pack: Refreshing state... [id=starter-pack]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+</code></pre></div><p>Now running terraform apply after import, will not raise any error.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>terraform apply -target=module.starter_pack.kubernetes_namespace.starter_pack
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+</code></pre></div><h3 id="recovering-more-complex-scenarios">Recovering more complex scenarios</h3><p>There are scenarios, where terraform state is corrupted or terraform state is removed for the whole module.
+Executing <code>terraform state rm module.starter_pack</code>, will remove all resources in &ldquo;starter_pack&rdquo; module from terraform state.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>terraform plan -target=module.starter_pack
+
+Plan: 7 to add, 0 to change, 0 to destroy.
+</code></pre></div><p>In this scenario, terraform state can be restored from the remote_state stored in the terraform backend S3 bucket.</p>
+<p>For example <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-components">cloud-platform-components</a> state is stored in &ldquo;cloud-platform-terraform-state/cloud-platform-components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-components/main.tf#L1-L9">here</a>.</p>
+<p>Access the S3 bucket where the effected terraform state is stored. From the list of terraform.tfstate file versions, identify the file before the state got removed and download as terraform.tfstate. Upload the file again, this will set uploaded file as latest version.</p>
+<p>Now running terraform plan will show, infrastructure is up-to-date.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>terraform plan -target=module.starter_pack
+
+No changes. Infrastructure is up-to-date.
+</code></pre></div>
 
               <div data-module='page-expiry' data-last-reviewed-on="2020-07-22">
     <div class='page-expiry--not-expired'>
