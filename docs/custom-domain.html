@@ -6,12 +6,12 @@
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
       <meta name="robots" content="noindex">
 
-    <title>Delete terraform state lock | Cloud Platform Runbooks</title>
+    <title>Add a custom domain | Cloud Platform Runbooks</title>
 
     <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
     <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/delete-state-lock.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/custom-domain.html">
 
 
     <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
@@ -19,14 +19,14 @@
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Delete terraform state lock" />
+      <meta property="og:title" content="Add a custom domain" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-state-lock.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/custom-domain.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Delete terraform state lock | Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-state-lock.html" />
+      <meta property="twitter:title" content="Add a custom domain | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/custom-domain.html" />
 
     
   </head>
@@ -1240,39 +1240,36 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="delete-terraform-state-lock">Delete terraform state lock</h1><p>In the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/build-environments">build pipeline</a>, you will sometimes see errors like this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Command: cd namespaces/live-1.cloud-platform.service.justice.gov.uk/jason-lab/resources; terraform apply -auto-approve failed.
+              <h1 id="add-a-custom-domain">Add a custom domain</h1><p>When a user is trying to set up a custom domain, as per this <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/other-topics/custom-domain-cert.html">user guide article</a>, they will create a new hosted zone in the <code>cloud-platform</code> AWS account.</p>
+<p>If this is a new sub-domain of <code>service.justice.gov.uk</code>, these steps are required:</p>
 
-Error: Error locking state: Error acquiring the state lock: ConditionalCheckFailedException: The conditional request failed
-    status code: 400, request id: 8F9C5H04HLD0TVN4V0PQIRRMFBVV4KQNSO5AEMVJF66Q9ASUAAJG
-</code></pre></div><p>If you see repeated failures trying to acquire the lock on the same namespace,
-it probably means the lock record has been left in place by mistake, because a
-previous run failed to release the lock when it should have.</p>
-<p>To fix this, you need to delete the lock record.</p>
+<ul>
+<li>Wait for the new hosted zone to be created by the pipeline, once the user&rsquo;s PR to define it has been merged</li>
+<li>Find the hosted zone record in the Route53 section of the AWS console of the cloud-platform account, and copy the nameserver details from the <code>NS</code> record. Create a temporary copy of these values (on the clipboard or a text file)</li>
+<li>Switch to the mojdsd AWS account console, and find the <a href="https://console.aws.amazon.com/route53/home?region=eu-west-1#resource-record-sets:Z1QLRMQEXOI5G4">hosted zone for service.justice.gov.uk</a> in the Route53 section</li>
+<li>Use the &ldquo;Create Record Set&rdquo; button:
 
-<ol>
-<li>Go to the <a href="https://eu-west-1.console.aws.amazon.com/dynamodb/home?region=eu-west-1#tables:">dynamodb</a> page of the AWS web console (NB: the relevant table is in the <code>eu-west-1</code> region)</li>
-<li>Click on the <a href="https://eu-west-1.console.aws.amazon.com/dynamodb/home?region=eu-west-1#tables:selected=cloud-platform-environments-terraform-lock;tab=overview">cloud-platform-environments-terraform-lock</a> table, and then the <code>Items</code> tab</li>
-<li>Click <code>Add filter</code></li>
-<li>Enter <code>LockID</code> as the filter attribute, and change <code>String, =</code> to <code>String, contains</code> as the filter criteria</li>
-<li>Enter the namespace name as the string value to match, and click <code>Start search</code></li>
-</ol>
-<p>When you find the relevant lock records, delete them. Terraform will recreate
-any missing records the next time it tries to acquire the lock for that
-terraform state file.</p>
+<ul>
+<li>Name: The new sub-domain</li>
+<li>Type: NS - Name server</li>
+<li>TTL: 300</li>
+<li>Value: The nameserver details you copied from the cloud-platform AWS account hosted zone</li>
+<li>Routing Policy: Simple</li>
+</ul></li>
+</ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-08-26">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-09-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 26 May 2020.
+      This page was last reviewed on 18 June 2020.
 
-        It needs to be reviewed again on 26 August 2020
+        It needs to be reviewed again on 18 September 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 26 August 2020
+      This page was set to be reviewed before 18 September 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1281,8 +1278,8 @@ terraform state file.</p>
           </main>
 
             <ul class="contribution-banner">
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/delete-state-lock.html.md.erb">View source</a></li>
-              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Delete%20terraform%20state%20lock'&amp;body=Problem%20with%20'Delete%20terraform%20state%20lock'%20(https://runbooks.cloud-platform.service.justice.gov.uk/delete-state-lock.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/custom-domain.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20a%20custom%20domain'&amp;body=Problem%20with%20'Add%20a%20custom%20domain'%20(https://runbooks.cloud-platform.service.justice.gov.uk/custom-domain.html)">Report problem</a></li>
               <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
             </ul>
 
