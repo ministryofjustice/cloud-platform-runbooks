@@ -490,16 +490,16 @@
         </ul>
       </li>
       <li>
-        <a href="/disaster-recovery-scenarios.html#losing-a-resource">Losing a Resource</a>
+        <a href="/disaster-recovery-scenarios.html#losing-a-kubernetes-component-or-object">Losing a Kubernetes Component or Object</a>
         <ul>
           <li>
-            <a href="/disaster-recovery-scenarios.html#losing-a-resource-impact">Impact</a>
+            <a href="/disaster-recovery-scenarios.html#losing-a-kubernetes-component-or-object-impact">Impact</a>
           </li>
           <li>
-            <a href="/disaster-recovery-scenarios.html#losing-a-resource-possible-cause">Possible Cause</a>
+            <a href="/disaster-recovery-scenarios.html#losing-a-kubernetes-component-or-object-possible-cause">Possible Cause</a>
           </li>
           <li>
-            <a href="/disaster-recovery-scenarios.html#losing-a-resource-restore-process">Restore process</a>
+            <a href="/disaster-recovery-scenarios.html#losing-a-kubernetes-component-or-object-restore-process">Restore process</a>
           </li>
         </ul>
       </li>
@@ -1014,22 +1014,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1046,6 +1030,22 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1177,6 +1177,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
     <ul>
       <li>
@@ -1202,19 +1215,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
       </li>
     </ul>
   </li>
@@ -1270,11 +1270,11 @@ deployment.apps/deployment1          1/1     1            1           1m
 
 NAME                                 DESIRED   CURRENT   READY   AGE
 replicaset.apps/replicaset1          1         1         1       1m
-</code></pre></div><h2 id="losing-a-resource">Losing a Resource</h2><h3 id="losing-a-resource-impact">Impact</h3><p>A loss of a resource will result in losing a specific kubernetes object such as deployments, secrets and pods etc.</p>
-<h3 id="losing-a-resource-possible-cause">Possible Cause</h3><p>User error - Executing <code>kubectl delete deployment/my-deployment-name ns my-namespace-dev</code></p>
+</code></pre></div><h2 id="losing-a-kubernetes-component-or-object">Losing a Kubernetes Component or Object</h2><h3 id="losing-a-kubernetes-component-or-object-impact">Impact</h3><p>A loss of a kubernetes object such as a deployment, secret and Namespace can result in an application not working correctly. A loss of a Kubernetes component such as kube-scheduler or kube-control-manager can result in the cluster not working correctly.</p>
+<h3 id="losing-a-kubernetes-component-or-object-possible-cause">Possible Cause</h3><p>User error - Executing <code>kubectl delete deployment/my-deployment-name ns my-namespace-dev</code></p>
 <div class="highlight"><pre class="highlight plaintext"><code>kubectl get deployment/my-deployment-name -n my-namespace-dev
 Error from server (NotFound): deployments.extensions "my-deployment-name" not found.
-</code></pre></div><h3 id="losing-a-resource-restore-process">Restore process</h3><p>As long as the namespace is over 3 hours old, it can be recovered using Velero.</p>
+</code></pre></div><h3 id="losing-a-kubernetes-component-or-object-restore-process">Restore process</h3><p>As long as the namespace is over 3 hours old, it can be recovered using Velero.</p>
 <p>First step is to find the name of the most recent backup of the schedule:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>velero backup get
 
@@ -1286,7 +1286,7 @@ velero-backup-00000000000000              Completed   2020-03-30 12:00:37 +0100 
 </code></pre></div><p>Example:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>velero restore create my-namespace-dev-restore --from-backup velero-backup-00000000000000 --include-namespaces my-namespace-dev --wait
 </code></pre></div><p>Once completed, you should be able to see the resources recovered:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl get deployment/my-depoyment-name -n my-namespace-dev
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl get deployment/my-deployment-name -n my-namespace-dev
 
 NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/my-deployment-name        1/1       1            1         1m
