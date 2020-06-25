@@ -1,0 +1,1290 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+      <meta name="robots" content="noindex">
+
+    <title>Make an S3 bucket public | Cloud Platform Runbooks</title>
+
+    <!--[if gt IE 8]><!--><link href="/stylesheets/screen.css" rel="stylesheet" media="screen" /><!--<![endif]-->
+    <!--[if lte IE 8]><link href="/stylesheets/screen-old-ie.css" rel="stylesheet" media="screen" /><![endif]-->
+
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html">
+
+
+    <link href="/stylesheets/print.css" rel="stylesheet" media="print" />
+    <script src="/javascripts/application.js"></script>
+
+      <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta property="og:site_name" content="Cloud Platform Runbooks" />
+      <meta property="og:title" content="Make an S3 bucket public" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html" />
+      <meta property="twitter:card" content="summary" />
+      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta property="twitter:title" content="Make an S3 bucket public | Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html" />
+
+    
+  </head>
+
+  <body>
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="skip-link">Skip to main content</a>
+
+        <header class="header header--full-width">
+  <div class="header__container">
+    <div class="header__brand">
+        <a href="/">
+        <span class="header__title">
+          Cloud Platform Runbooks
+            <span class="phase-banner">INTERNAL</span>
+        </span>
+        </a>
+    </div>
+
+      <div data-module="navigation">
+        <button type="button" class="header__navigation-toggle js-nav-toggle" aria-controls="navigation" aria-label="Show or hide top level navigation">Menu</button>
+
+        <nav id="navigation" class="header__navigation js-nav" aria-label="Top Level Navigation" aria-hidden="true">
+          <ul>
+              <li>
+                <a href="mailto:platforms+runbooks@digital.justice.gov.uk?subject=Runbooks+feedback">Feedback / Report a problem</a>
+              </li>
+              <li>
+                <a href="/">Documentation</a>
+              </li>
+              <li>
+                <a href="https://github.com/ministryofjustice/cloud-platform/tree/master/runbooks">GitHub</a>
+              </li>
+          </ul>
+        </nav>
+      </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </a>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents">
+              <div class="search" data-module="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search">
+    <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
+    <label for="search"  class="search__label">Search (via Google)</label>
+    <input type="text" id="search" name="q" placeholder="Search" aria-controls="search-results" class="form-control" />
+  </form>
+  <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
+    <div class="search-results__inner">
+      <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
+      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <div class="search-results__content"></div>
+    </div>
+  </div>
+</div>
+
+              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
+                      <ul>
+  <li>
+    <a href="/#cloud-platform-runbooks">Cloud Platform Runbooks</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/how-we-work.html#how-we-work">How We Work</a>
+    <ul>
+      <li>
+        <a href="/how-we-work.html#getting-help">Getting Help</a>
+      </li>
+      <li>
+        <a href="/how-we-work.html#the-board-tickets">The Board / Tickets</a>
+        <ul>
+          <li>
+            <a href="/how-we-work.html#adding-tickets">Adding tickets</a>
+          </li>
+          <li>
+            <a href="/how-we-work.html#making-changes-to-code">Making changes to code</a>
+          </li>
+          <li>
+            <a href="/how-we-work.html#reviewing-merging-prs">Reviewing/Merging PRs</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/how-we-work.html#the-hammer-of-justice">The 🔨 Hammer of Justice</a>
+      </li>
+      <li>
+        <a href="/how-we-work.html#documentation">Documentation</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/incident-process.html#incident-process">Incident Process</a>
+    <ul>
+      <li>
+        <a href="/incident-process.html#1-confirm-that-the-event-constitutes-an-incident">1. Confirm that the event constitutes an incident</a>
+      </li>
+      <li>
+        <a href="/incident-process.html#2-declare-the-incident">2. Declare the incident</a>
+        <ul>
+          <li>
+            <a href="/incident-process.html#examples">Examples</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/incident-process.html#3-assign-roles">3. Assign roles</a>
+        <ul>
+          <li>
+            <a href="/incident-process.html#3-1-incident-lead">3.1 Incident Lead</a>
+          </li>
+          <li>
+            <a href="/incident-process.html#3-2-scribe">3.2 Scribe</a>
+          </li>
+          <li>
+            <a href="/incident-process.html#3-3-communications-lead">3.3 Communications Lead</a>
+          </li>
+          <li>
+            <a href="/incident-process.html#transferring-roles">Transferring roles</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/incident-process.html#4-fix-the-problem">4. Fix the problem</a>
+      </li>
+      <li>
+        <a href="/incident-process.html#5-end-the-incident">5. End the incident</a>
+      </li>
+      <li>
+        <a href="/incident-process.html#6-post-incident-procedure">6. Post-incident procedure</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/incident-log.html#incident-log">Incident Log</a>
+    <ul>
+      <li>
+        <a href="/incident-log.html#april-2020">April 2020</a>
+        <ul>
+          <li>
+            <a href="/incident-log.html#incident-on-2020-04-215-10-58-utc">Incident on 2020-04-215 10:58 UTC</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/incident-log.html#february-2020">February 2020</a>
+        <ul>
+          <li>
+            <a href="/incident-log.html#incident-on-2020-02-25-10-58-utc">Incident on 2020-02-25 10:58 UTC</a>
+          </li>
+          <li>
+            <a href="/incident-log.html#incident-on-2020-02-18-14-13-utc">Incident on 2020-02-18 14:13 UTC</a>
+          </li>
+          <li>
+            <a href="/incident-log.html#incident-on-2020-02-12-11-45-utc">Incident on 2020-02-12 11:45 UTC</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/create-cluster.html#create-a-new-cluster">Create a new cluster</a>
+    <ul>
+      <li>
+        <a href="/create-cluster.html#pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/create-cluster.html#environment-variables">Environment Variables</a>
+      </li>
+      <li>
+        <a href="/create-cluster.html#run-the-build-script-via-the-tools-image">Run the build script, via the tools image</a>
+      </li>
+      <li>
+        <a href="/create-cluster.html#alerts">Alerts</a>
+        <ul>
+          <li>
+            <a href="/create-cluster.html#apply-the-changes">Apply the changes</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/create-cluster.html#authenticating">Authenticating</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-concourse-to-cluster.html#add-concourse-to-a-test-cluster">Add Concourse to a test cluster</a>
+    <ul>
+      <li>
+        <a href="/add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/add-concourse-to-cluster.html#process">Process</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/upgrade-cluster.html#upgrade-a-cluster">Upgrade a cluster</a>
+    <ul>
+      <li>
+        <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites">Pre-requisites</a>
+        <ul>
+          <li>
+            <a href="/upgrade-cluster.html#setup-environment">Setup environment</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#run-integration-tests">Run integration tests</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#sanity-checks">Sanity checks</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#run-a-shell-in-the-tools-image">Run a shell in the tools image</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/upgrade-cluster.html#run-the-upgrade">Run the upgrade</a>
+        <ul>
+          <li>
+            <a href="/upgrade-cluster.html#authenticate-to-the-cluster">Authenticate to the cluster</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#update-the-live-cluster-manifest">Update the live cluster manifest</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#push-changes-to-kops-state">Push changes to kops state</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#perform-a-rolling-update">Perform a rolling-update</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#take-stock-of-current-running-worker-nodes">Take stock of current running worker nodes</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#create-new-worker-instance-group">Create new worker instance group</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#cordon-old-workers">Cordon old workers</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#scale-number-of-ingress-controllers">Scale number of ingress controllers</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#drain-the-old-worker-nodes">Drain the old worker nodes</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#validate-the-cluster">Validate the cluster</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#run-integration-tests-again">Run integration tests again</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#delete-the-old-instance-group">Delete the old instance group</a>
+          </li>
+          <li>
+            <a href="/upgrade-cluster.html#scale-the-ingress-controllers-down">Scale the ingress-controllers down</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/upgrade-cluster.html#commit-changes-back-to-master">Commit changes back to master</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/upgrade-eks-cluster.html#upgrade-eks-cluster-s">Upgrade EKS cluster(s)</a>
+    <ul>
+      <li>
+        <a href="/upgrade-eks-cluster.html#upgrade-eks-cluster-s-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/upgrade-eks-cluster.html#upgrade-eks-cluster-s-run-the-upgrade">Run the upgrade</a>
+        <ul>
+          <li>
+            <a href="/upgrade-eks-cluster.html#upgrade-control-plane">Upgrade Control Plane</a>
+          </li>
+          <li>
+            <a href="/upgrade-eks-cluster.html#upgrade-node-groups">Upgrade Node Groups</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/delete-cluster.html#delete-a-cluster">Delete a cluster</a>
+    <ul>
+      <li>
+        <a href="/delete-cluster.html#delete-the-cluster-using-the-script">Delete the cluster using the script</a>
+      </li>
+      <li>
+        <a href="/delete-cluster.html#delete-the-cluster-manually">Delete the cluster manually</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-nodes-to-the-cluster.html#add-nodes-to-the-cluster">Add nodes to the cluster</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/add-nodes-to-the-cluster.html#requirements">Requirements</a>
+          </li>
+          <li>
+            <a href="/add-nodes-to-the-cluster.html#inline-edit">Inline edit</a>
+          </li>
+          <li>
+            <a href="/add-nodes-to-the-cluster.html#persisting-the-changes">Persisting the changes</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-nodes-to-the-eks-cluster.html#add-nodes-change-the-instance-type-of-the-aws-eks-cluster">Add nodes/change the instance type of the AWS EKS cluster</a>
+    <ul>
+      <li>
+        <a href="/add-nodes-to-the-eks-cluster.html#add-nodes-to-the-eks-cluster">Add nodes to the eks cluster</a>
+        <ul>
+          <li>
+            <a href="/add-nodes-to-the-eks-cluster.html#add-nodes-to-the-eks-cluster-requirements">Requirements</a>
+          </li>
+          <li>
+            <a href="/add-nodes-to-the-eks-cluster.html#cluster-configuration">Cluster configuration:</a>
+          </li>
+          <li>
+            <a href="/add-nodes-to-the-eks-cluster.html#issue">Issue</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/add-nodes-to-the-eks-cluster.html#change-the-aws-eks-instance-type-worker-node-machine-type">Change the AWS EKS instance type (worker_node_machine_type)</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/rotate-git-crypt-key.html#git-crypt">Git-crypt</a>
+    <ul>
+      <li>
+        <a href="/rotate-git-crypt-key.html#adding-new-user-to-the-keyring">Adding new user to the keyring</a>
+      </li>
+      <li>
+        <a href="/rotate-git-crypt-key.html#rotating-the-git-crypt-key">Rotating the git-crypt key</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/virtual-memory-nginx.html#failed-to-allocate-shared-memory">Failed to allocate shared memory</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/custom-domain.html#add-a-custom-domain">Add a custom domain</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-receiver-alert-manager.html#add-a-new-alertmanager-receiver-and-a-slack-webhook">Add a new Alertmanager receiver and a slack webhook</a>
+    <ul>
+      <li>
+        <a href="/add-new-receiver-alert-manager.html#add-a-new-alertmanager-receiver-and-a-slack-webhook-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/add-new-receiver-alert-manager.html#creating-a-new-receiver-set">Creating a new receiver set</a>
+      </li>
+      <li>
+        <a href="/add-new-receiver-alert-manager.html#information-alerts">Information Alerts</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/disaster-recovery.html#cloud-platform-disaster-recovery">Cloud Platform Disaster Recovery</a>
+    <ul>
+      <li>
+        <a href="/disaster-recovery.html#restore-process">Restore process</a>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#apply-cloud-platform-resources">Apply cloud-platform resources</a>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#cloud-platform-disaster-recovery-create-a-new-cluster">Create a new cluster</a>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#perform-the-restore">Perform the restore</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery.html#perform-the-restore-pre-requisites">Pre-requisites</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery.html#restore-the-cluster-using-etcd-manager-ctl-on-your-computer">Restore the cluster using etcd-manager-ctl on your computer.</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery.html#restore-process-inside-the-etcd-container-using-etcd-manager-ctl">Restore process inside the etcd container using etcd-manager-ctl.</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#cleanup">Cleanup</a>
+      </li>
+      <li>
+        <a href="/disaster-recovery.html#possible-issues">Possible Issues</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/disaster-recovery-scenarios.html#cloud-platform-disaster-recovery-scenarios">Cloud Platform Disaster Recovery Scenarios</a>
+    <ul>
+      <li>
+        <a href="/disaster-recovery-scenarios.html#losing-a-namespace">Losing a Namespace</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#impact">Impact</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#possible-cause">Possible Cause</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-a-namespace-restore-process">Restore process</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/disaster-recovery-scenarios.html#losing-a-kubernetes-component-or-object">Losing a Kubernetes Component or Object</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-a-kubernetes-component-or-object-impact">Impact</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-a-kubernetes-component-or-object-possible-cause">Possible Cause</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-a-kubernetes-component-or-object-restore-process">Restore process</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/disaster-recovery-scenarios.html#losing-the-whole-cluster">Losing the whole cluster</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-the-whole-cluster-impact">Impact</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-the-whole-cluster-possible-cause">Possible Cause</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#how-this-plan-is-tested">How this plan is tested:</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#assumptions">Assumptions</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#losing-the-whole-cluster-restore-process">Restore process</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/disaster-recovery-scenarios.html#deleted-corrupted-the-kops-state">Deleted/corrupted the kops state</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#deleted-corrupted-the-kops-state-impact">Impact</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#deleted-corrupted-the-kops-state-possible-cause">Possible Cause</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#restore-process-for-corrupted-kops-state">Restore process for corrupted kops state</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#restore-process-for-deleted-s3-bucket-where-kops-state-is-stored">Restore process for deleted S3 bucket where kops state is stored</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/disaster-recovery-scenarios.html#deleted-terraform-state">Deleted terraform state</a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#deleted-terraform-state-impact">Impact</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#deleted-terraform-state-possible-cause">Possible Cause</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#deleted-terraform-state-restore-process">Restore process</a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#recovering-more-complex-scenarios">Recovering more complex scenarios</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/rotate-user-aws-credentials.html#rotate-user-aws-credentials">Rotate User AWS Credentials</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+          <li>
+            <a href="/rotate-user-aws-credentials.html#2-identify-the-compromised-terraform-object">2. Identify the compromised terraform object</a>
+          </li>
+          <li>
+            <a href="/rotate-user-aws-credentials.html#3-destroy-the-compromised-key">3. Destroy the compromised key</a>
+          </li>
+          <li>
+            <a href="/rotate-user-aws-credentials.html#4-let-terraform-create-a-new-key">4. Let terraform create a new key</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/aws-leaked-credentials.html#aws-compromised-credentials">AWS Compromised Credentials</a>
+    <ul>
+      <li>
+        <a href="/aws-leaked-credentials.html#steps-for-a-leaked-credentials">Steps for a leaked credentials</a>
+      </li>
+      <li>
+        <a href="/aws-leaked-credentials.html#getting-new-credentials">Getting new credentials</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/aws-create-user.html#aws-console-access">AWS Console Access</a>
+    <ul>
+      <li>
+        <a href="/aws-create-user.html#steps-to-create-delete-users">Steps to create/delete users</a>
+      </li>
+      <li>
+        <a href="/aws-create-user.html#activating-mfa-for-new-users">Activating MFA for new users</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/aws-guardduty.html#aws-guardduty-information-how-to-implement">AWS GuardDuty Information / How to Implement</a>
+    <ul>
+      <li>
+        <a href="/aws-guardduty.html#introduction">Introduction</a>
+        <ul>
+          <li>
+            <a href="/aws-guardduty.html#aws-guardduty-accounts">AWS GuardDuty Accounts</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/aws-guardduty.html#our-current-setup">Our Current setup</a>
+        <ul>
+          <li>
+            <a href="/aws-guardduty.html#aws-guardduty-findings-for-live-1-aws-resources">AWS GuardDuty Findings for live-1 AWS resources</a>
+          </li>
+          <li>
+            <a href="/aws-guardduty.html#aws-guardduty-findings-for-aws-member-account-resources">AWS GuardDuty Findings for AWS member account resources</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/aws-guardduty.html#table-of-contents">Table of contents</a>
+        <ul>
+          <li>
+            <a href="/aws-guardduty.html#1-prerequisite-files">1. Prerequisite files</a>
+          </li>
+          <li>
+            <a href="/aws-guardduty.html#2-adding-a-new-member-account">2. Adding a new member account</a>
+          </li>
+          <li>
+            <a href="/aws-guardduty.html#3-applying-the-terraform-changes">3. Applying the terraform changes</a>
+          </li>
+          <li>
+            <a href="/aws-guardduty.html#4-pagerduty-to-slack-integration">4. Pagerduty to Slack integration</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/public-s3-bucket.html#make-an-s3-bucket-public">Make an S3 bucket public</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/delete-prometheus-metrics.html#delete-prometheus-metrics">Delete Prometheus Metrics</a>
+    <ul>
+      <li>
+        <a href="/delete-prometheus-metrics.html#1-identify-the-metrics-you-want-to-delete">1.  Identify the metrics you want to delete</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#2-enable-the-admin-interface-in-prometheus">2. Enable the admin interface in Prometheus</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#3-launch-a-port-forward-pod">3. Launch a port-forward pod</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#4-forward-local-traffic-to-prometheus">4. Forward local traffic to Prometheus</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#5-use-curl-in-another-terminal-to-hit-the-api-endpoint">5. Use curl (in another terminal) to hit the API endpoint</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#6-use-this-script-to-delete-multiple-metrics">6. Use this script to delete multiple metrics</a>
+      </li>
+      <li>
+        <a href="/delete-prometheus-metrics.html#7-clean-up">7. Clean up</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources">Remove ‘orphaned’ namespaces and AWS resources</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository">1. git clone the environments checker repository</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a .env.live1 file, containing the environment variables the checker requires</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</a>
+    <ul>
+      <li>
+        <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#target-the-live-1-cluster">Target the live-1 cluster</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-some-environment-variables">Set some environment variables</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#set-the-namespace-name">Set the namespace name</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-init">Terraform Init</a>
+      </li>
+      <li>
+        <a href="/manually-apply-namespace.html#terraform-plan-apply">Terraform Plan/Apply</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch">Remove data from Elasticsearch</a>
+    <ul>
+      <li>
+        <a href="/remove-data-from-elasticsearch.html#things-to-know">Things to know</a>
+      </li>
+      <li>
+        <a href="/remove-data-from-elasticsearch.html#build-your-query">Build your query</a>
+      </li>
+      <li>
+        <a href="/remove-data-from-elasticsearch.html#delete-by-query">Delete by query</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/delete-state-lock.html#delete-terraform-state-lock">Delete terraform state lock</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/error-refreshing-state.html#terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/replacing-master-node.html#replacing-a-master-node">Replacing a master node</a>
+    <ul>
+      <li>
+        <a href="/replacing-master-node.html#replacing-a-master-node-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/replacing-master-node.html#identify-the-failed-master-node">Identify the failed master node</a>
+      </li>
+      <li>
+        <a href="/replacing-master-node.html#remove-the-unhealthy-master-node">Remove the unhealthy master node.</a>
+      </li>
+      <li>
+        <a href="/replacing-master-node.html#replacing-the-master-via-kops">Replacing the master via kops</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/recycle-node.html#recycle-node">Recycle-node</a>
+    <ul>
+      <li>
+        <a href="/recycle-node.html#guidance-for-the-cloud-platform-team-when-the-recycle-node-pipeline-job-fails">Guidance for the Cloud Platform team, when the recycle-node pipeline job fails:</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/eks-tools-cluster.html#provisioning-eks-clusters">Provisioning EKS clusters</a>
+    <ul>
+      <li>
+        <a href="/eks-tools-cluster.html#provisioning-eks-clusters-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/eks-tools-cluster.html#provisioning">Provisioning</a>
+        <ul>
+          <li>
+            <a href="/eks-tools-cluster.html#1-vpc">1. VPC</a>
+          </li>
+          <li>
+            <a href="/eks-tools-cluster.html#2-creating-eks-cluster">2. Creating EKS cluster</a>
+          </li>
+          <li>
+            <a href="/eks-tools-cluster.html#3-deploy-components">3. Deploy components</a>
+          </li>
+          <li>
+            <a href="/eks-tools-cluster.html#4-delete-the-eks-cluster">4. Delete the EKS cluster</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/eks-tools-cluster.html#todo">TODO</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/post-migration.html#post-migration-cleanup">Post migration cleanup</a>
+    <ul>
+      <li>
+        <a href="/post-migration.html#post-migration-cleanup-table-of-contents">Table of contents</a>
+      </li>
+      <li>
+        <a href="/post-migration.html#when-to-use-this-document">When to use this document?</a>
+      </li>
+      <li>
+        <a href="/post-migration.html#0-pre-requisites">0. Pre-requisites</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#1-turn-off-template-deploy-monitoring-and-alerting">1. Turn off Template Deploy monitoring and alerting</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#2-archive-the-deployment-repository">2. Archive the deployment repository</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#3-backup-old-template-deploy-data">3. Backup old Template Deploy data</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#4-delete-the-old-cloudformation-stack">4. Delete the old CloudFormation stack</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#5-ensure-removal-of-resources">5. Ensure removal of resources</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/post-migration.html#6-ensure-live-service-is-still-functioning">6. Ensure live service is still functioning!</a>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/expand.html#expanding-persistent-volumes-created-using-statefulsets">Expanding Persistent Volumes created using StatefulSets</a>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/velero.html#velero-cluster-backups-and-disaster-recovery">Velero - Cluster backups and disaster recovery</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/velero.html#backups">Backups</a>
+        <ul>
+          <li>
+            <a href="/velero.html#why">Why?</a>
+          </li>
+          <li>
+            <a href="/velero.html#what">What?</a>
+          </li>
+          <li>
+            <a href="/velero.html#how">How?</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/virtualenv.html#virtual-environment-copy-for-template-deploy-updates">Virtual environment copy for template deploy updates</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">Running Kops Update and Rollingupdate</a>
+    <ul>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#using-kops-to-change-the-cluster">Using kops to change the cluster</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#updating-the-kops-state">Updating the kops state</a>
+        <ul>
+          <li>
+            <a href="/running-kops-update-rollingupdate.html#generating-an-updated-kops-config-file">Generating an updated kops config file</a>
+          </li>
+          <li>
+            <a href="/running-kops-update-rollingupdate.html#applying-local-changes-to-the-kops-state-store">Applying local changes to the kops state store</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-update">Running Kops update</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#running-kops-rolling-update">Running Kops rolling-update</a>
+      </li>
+      <li>
+        <a href="/running-kops-update-rollingupdate.html#possible-errors">Possible Errors</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/helm-repository.html#cloud-platform-helm-chart-repository">Cloud Platform helm chart repository</a>
+    <ul>
+      <li>
+        <a href="/helm-repository.html#performing-crud-on-cloud-platform-helm-repository">Performing CRUD on Cloud Platform Helm repository</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/access-eks-cluster.html#access-eks-cluster">Access EKS cluster</a>
+    <ul>
+      <li>
+        <a href="/access-eks-cluster.html#access-eks-cluster-pre-requisites">Pre-requisites</a>
+        <ul>
+          <li>
+            <a href="/access-eks-cluster.html#create-kubeconfig-using-aws-command">Create kubeconfig using aws command</a>
+          </li>
+          <li>
+            <a href="/access-eks-cluster.html#create-kubeconfig-manually-using-template">Create kubeconfig manually using template</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
+    <ul>
+      <li>
+        <a href="/joiners-guide.html#people-team">People Team</a>
+      </li>
+      <li>
+        <a href="/joiners-guide.html#service-desk">Service Desk</a>
+      </li>
+      <li>
+        <a href="/joiners-guide.html#sit-down-with-dm">SIT down with DM</a>
+      </li>
+      <li>
+        <a href="/joiners-guide.html#cloud-platform-team">Cloud Platform team</a>
+      </li>
+      <li>
+        <a href="/joiners-guide.html#access">ACCESS</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/leavers-guide.html#leavers-guide">Leavers Guide</a>
+    <ul>
+      <li>
+        <a href="/leavers-guide.html#revoking-access">Revoking Access</a>
+        <ul>
+          <li>
+            <a href="/leavers-guide.html#digital-services">Digital Services</a>
+          </li>
+          <li>
+            <a href="/leavers-guide.html#aws-accounts">AWS Accounts</a>
+          </li>
+          <li>
+            <a href="/leavers-guide.html#template-deploy-cloud-platforms">Template Deploy - Cloud Platforms</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/on-call.html#going-on-call">Going on call</a>
+    <ul>
+      <li>
+        <a href="/on-call.html#what-s-expected">What’s expected?</a>
+        <ul>
+          <li>
+            <a href="/on-call.html#expected">Expected:</a>
+          </li>
+          <li>
+            <a href="/on-call.html#not-expected">Not Expected:</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/on-call.html#where-do-i-start">Where do I start?</a>
+      </li>
+      <li>
+        <a href="/on-call.html#what-do-i-get-for-being-on-call">What do I get for being on call?</a>
+      </li>
+      <li>
+        <a href="/on-call.html#civil-servants-sop-claim">Civil servants - SOP Claim</a>
+      </li>
+      <li>
+        <a href="/on-call.html#civil-servants-sop-problem-resolution">Civil servants - SOP Problem Resolution</a>
+      </li>
+      <li>
+        <a href="/on-call.html#contractors">Contractors</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manual-ssl-certificate-processes.html#create-manual-ssl-certificate-processes">Create Manual SSL Certificate Processes</a>
+    <ul>
+      <li>
+        <a href="/manual-ssl-certificate-processes.html#create-manual-ssl-certificate-processes-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/manual-ssl-certificate-processes.html#requesting-a-new-certificate-via-gandi-net">Requesting a new certificate via Gandi.net</a>
+      </li>
+      <li>
+        <a href="/manual-ssl-certificate-processes.html#renewing-a-new-certificate-via-gandi-net">Renewing a new certificate via Gandi.net</a>
+      </li>
+      <li>
+        <a href="/manual-ssl-certificate-processes.html#revoking-gandi-net-certificates">Revoking Gandi.net certificates</a>
+      </li>
+      <li>
+        <a href="/manual-ssl-certificate-processes.html#costs-funding-information">Costs/Funding information</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/os-places-api-key-management.html#os-places-api-key-management">OS Places API Key Management</a>
+    <ul>
+      <li>
+        <a href="/os-places-api-key-management.html#os-places-api-key-management-pre-requisites">Pre-requisites</a>
+      </li>
+      <li>
+        <a href="/os-places-api-key-management.html#creating-a-new-api-key">Creating a new API key</a>
+      </li>
+      <li>
+        <a href="/os-places-api-key-management.html#revoking-an-api-key">Revoking an API key</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/cloud-platform-communications-plan.html#cloud-platform-communications-plan">Cloud Platform Communications Plan</a>
+    <ul>
+      <li>
+        <a href="/cloud-platform-communications-plan.html#the-plan">The Plan</a>
+      </li>
+      <li>
+        <a href="/cloud-platform-communications-plan.html#tips-on-format-of-communications">Tips on format of communications</a>
+        <ul>
+          <li>
+            <a href="/cloud-platform-communications-plan.html#tips-on-format-of-communications-examples">Examples</a>
+          </li>
+          <li>
+            <a href="/cloud-platform-communications-plan.html#things-to-include-in-incident-communications">Things to include in incident communications</a>
+          </li>
+          <li>
+            <a href="/cloud-platform-communications-plan.html#example">Example</a>
+          </li>
+          <li>
+            <a href="/cloud-platform-communications-plan.html#things-to-include-in-upgrade-communications">Things to include in upgrade communications</a>
+          </li>
+          <li>
+            <a href="/cloud-platform-communications-plan.html#tips-on-format-of-communications-example">Example</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/cloud-platform-communications-plan.html#sharing-information-with-the-wider-ministry-of-justice-and-the-public">Sharing information with the wider Ministry of Justice and the Public</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/tips-and-tricks.html#tips-and-tricks">Tips and Tricks</a>
+    <ul>
+      <li>
+        <a href="/tips-and-tricks.html#delete-an-rds-database-snapshot">Delete an RDS database snapshot</a>
+      </li>
+      <li>
+        <a href="/tips-and-tricks.html#check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</a>
+      </li>
+      <li>
+        <a href="/tips-and-tricks.html#run-etcdctl-on-a-master-node">Run etcdctl on a master node</a>
+      </li>
+      <li>
+        <a href="/tips-and-tricks.html#delete-a-quot-stuck-quot-resource">Delete a “stuck” resource</a>
+      </li>
+      <li>
+        <a href="/tips-and-tricks.html#filter-namespaces-by-specific-label-or-annotation">Filter namespaces by specific label or annotation</a>
+      </li>
+      <li>
+        <a href="/tips-and-tricks.html#find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</a>
+      </li>
+      <li>
+        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-1-bastion-host">Install tmux and docker on the live-1 bastion host</a>
+      </li>
+      <li>
+        <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks">Template-deploy Runbooks</a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure">General Incident Procedure</a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks">Existing Runbooks</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-a-new-runbook.html#add-a-new-runbook">Add a new runbook</a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+              <h1 id="make-an-s3-bucket-public">Make an S3 bucket public</h1><p>This <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/cloudformation/aws-account-baseline-templates/aws-s3-enable-encryption-block-public-access">lambda function</a> created by the security team runs weekly, and revokes public access for all our S3 Buckets.</p>
+<p>The lambda function has a <code>S3_EXCEPTION</code> environment variable which stores a list of S3 buckets to ignore. To enable public access to a bucket, it must be added to this list.</p>
+<p>The easiest way to do this is to <a href="https://eu-west-1.console.aws.amazon.com/lambda/home?region=eu-west-1#/functions/S3BucketBlockPublicAccess?tab=configuration">edit the environment variable</a> directly via the aws console.</p>
+<p>The function uses a substring test to see if the current bucket name appears in the <code>S3_EXCEPTION</code> string, so you can use any separator you want when you add the new bucket name to the variable.</p>
+
+
+              <div data-module='page-expiry' data-last-reviewed-on="2020-09-09">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 9 June 2020.
+
+        It needs to be reviewed again on 9 September 2020
+        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
+        .
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 9 September 2020
+       by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
+      This might mean the content is out of date.
+    </div>
+  </div>
+
+          </main>
+
+            <ul class="contribution-banner">
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/source/public-s3-bucket.html.md.erb">View source</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Make%20an%20S3%20bucket%20public'&amp;body=Problem%20with%20'Make%20an%20S3%20bucket%20public'%20(https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html)">Report problem</a></li>
+              <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
+            </ul>
+
+          <footer class="footer">
+  <div class="footer__licence">
+    <a class="footer__licence-logo" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence</a>
+    <p class="footer__licence-description">All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated</p>
+  </div>
+
+  <div class="footer__copyright">
+    <a class="footer__copyright-logo" href="http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/copyright-and-re-use/crown-copyright/">© Crown copyright</a>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </body>
+</html>
