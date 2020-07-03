@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1297,7 +1297,7 @@
 
 <ul>
 <li>The Kubernetes release version, ensuring it is supported by Kops - verify on the <a href="https://github.com/kubernetes/kops/releases">kops releases</a> page.</li>
-<li>The AMI in each instance group. This can be found here: https://github.com/kubernetes/kops/blob/master/channels/stable </li>
+<li>The AMI in each instance group. This can be found here: https://github.com/kubernetes/kops/blob/master/channels/stable</li>
 </ul>
 <p>Now make the same changes to the template file <code>./terraform/cloud-platform/templates/kops.yaml.tpl</code>.</p>
 <h3 id="push-changes-to-kops-state">Push changes to kops state</h3><p>Run the following to push the above changes to the kops state store in S3.</p>
@@ -1314,7 +1314,7 @@
 <div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-infrastructure/smoke-tests
 make test-fast
 </code></pre></div><p>This will take around 30 seconds and should pass.</p>
-<p>Note: During an upgrade, we had an issue where kube-system namespace label got removed, which resulted in OPA webhook restrict applying daemonsets to master node. If the above &ldquo;test-fast&rdquo; fail for that reason, apply the annotation back form <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/master/namespaces/live-1.cloud-platform.service.justice.gov.uk/kube-system/00-namespace.yaml">here</a></p>
+<p>Note: During an upgrade, we had an issue where kube-system namespace label got removed, which resulted in OPA webhook restrict applying daemonsets to master node. If the above &ldquo;test-fast&rdquo; fail for that reason, apply the annotation back form <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/main/namespaces/live-1.cloud-platform.service.justice.gov.uk/kube-system/00-namespace.yaml">here</a></p>
 <p>Perform the same process on the other two masters.</p>
 <h3 id="take-stock-of-current-running-worker-nodes">Take stock of current running worker nodes</h3><p>You&rsquo;ll need a file with all current working worker nodes. Run to output all workers to a text file:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>kubectl get nodes | grep node | sed 's/ .*//' &gt; nodes

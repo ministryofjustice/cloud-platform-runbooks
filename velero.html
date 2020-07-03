@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1279,7 +1279,7 @@
 <li>A command-line client that runs locally</li>
 </ul>
 <h4 id="velero-cli-install">Velero CLI Install:</h4><div class="highlight"><pre class="highlight plaintext"><code>brew install velero
-</code></pre></div><p>Velero is installed on all clusters as part of the cloud-platform-components install. Click <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-components/velero.tf">here</a> to view the velero.tf file.</p>
+</code></pre></div><p>Velero is installed on all clusters as part of the cloud-platform-components install. Click <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/velero.tf">here</a> to view the velero.tf file.</p>
 <p>Velero is installed in <code>namespace:velero</code> using helm. The chart used can be found <a href="https://github.com/helm/charts/tree/master/stable/velero">here</a></p>
 <p>You can verify the Velero server pod is installed and running using the kubectl get pods command:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>kubectl get pods -n velero
@@ -1302,7 +1302,7 @@
 <p>If you accidentally deleted <code>namespace:home</code>, you can recover the namespace and all resources by running the following command:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>velero restore create --from-backup my-app-backup01
 </code></pre></div><h4 id="scheduled-backups">Scheduled backups</h4><p>Currently there is one scheduled backup created as part of the default install.
-This schedule is called <code>velero-allnamespacebackup</code>. This backup includes all namespaces, resources and persistent volumes (EBS) associated with StatefulSets. 
+This schedule is called <code>velero-allnamespacebackup</code>. This backup includes all namespaces, resources and persistent volumes (EBS) associated with StatefulSets.
 The Schedule is set to run every 3 hours.</p>
 <p>To view all stored backups within the cluster, run the following command:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>velero get backups

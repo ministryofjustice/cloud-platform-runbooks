@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1344,7 +1344,7 @@
 <li><a href="#trusted-ip-list-file">Trusted ip List File</a>  (iplist.txt)</li>
 <li><a href="#variables-initialisation-file">Variables Initialisation File</a> (variables.tf)</li>
 </ul>
-<h4 id="main-configuration-file">Main Configuration File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/guardduty.tf">&#39;guardduty.tf&rsquo;</a> contains code for the following config:</p>
+<h4 id="main-configuration-file">Main Configuration File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/global-resources/guardduty.tf">&#39;guardduty.tf&rsquo;</a> contains code for the following config:</p>
 
 <ul>
 <li>Enabling and turning GuardDuty on for the master account.</li>
@@ -1356,7 +1356,7 @@
 .Also to set up an event pattern (json file).</li>
 <li>On the master account Setting up the relevant GuardDuty AWS SNS (Simple Notification Service) topic and subscription.</li>
 </ul>
-<h4 id="terraform-variables-file">Terraform Variables File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/terraform.tfvars">&#39;terraform.tfvars&rsquo;</a> contains code for the following config variables:</p>
+<h4 id="terraform-variables-file">Terraform Variables File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/global-resources/terraform.tfvars">&#39;terraform.tfvars&rsquo;</a> contains code for the following config variables:</p>
 
 <ul>
 <li>aws_region</li>
@@ -1369,7 +1369,7 @@
 <li>member_email (the email to which the initial invitation email(s) should be sent {from the master account} when setting up GuardDuty on the member account - this must match email used to set up the root account)
 #### AWS Cloudwatch Event Rules File</li>
 </ul>
-<p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/resources/event-pattern.json">&#39;event-pattern.json&rsquo;</a></p>
+<p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/global-resources/resources/event-pattern.json">&#39;event-pattern.json&rsquo;</a></p>
 
 <ul>
 <li>A json object that is used by &#39;AWS Cloudwatch Event Rules&rsquo; and related &#39;Targets&rsquo; to select &#39;AWS Guardduty Events&rsquo; (findings) and route them to the AWS sns targets.</li>
@@ -1422,13 +1422,13 @@ Example (high priority):</p>
       ]
     }
   }
-</code></pre></div><h4 id="trusted-ip-list-file">Trusted ip List File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/resources/iplist.txt">&#39;iplist.txt&rsquo;</a></p>
+</code></pre></div><h4 id="trusted-ip-list-file">Trusted ip List File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/global-resources/resources/iplist.txt">&#39;iplist.txt&rsquo;</a></p>
 
 <ul>
 <li>A trusted ip list. GuardDuty does not generate findings for IP addresses that are included in this trusted IP list/s
 At this point in time terraform is unable to update this list by &#39;terraform apply&rsquo;. The list has to be manually deleted in the AWS dashboard &gt;  Guardduty &gt; Lists &gt; Trusted IP Lists. Then you can run the &#39;terraform apply.</li>
 </ul>
-<h4 id="variables-initialisation-file">Variables Initialisation File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/variables.tf">&#39;variables.tf&rsquo;</a></p>
+<h4 id="variables-initialisation-file">Variables Initialisation File</h4><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/global-resources/variables.tf">&#39;variables.tf&rsquo;</a></p>
 
 <ul>
 <li>Used to set up the terraform variables and defaults required by terraform &#39;guardduty.tf&rsquo;</li>
@@ -1507,8 +1507,8 @@ terraform state rm aws_guardduty_member.member....
 </code></pre></div><h3 id="4-pagerduty-to-slack-integration">4. Pagerduty to Slack integration</h3><p>This is is also set up utilising terraform separately config here:</p>
 
 <ul>
-<li>https://github.com/ministryofjustice/cloudplatforms-terraform-ops/blob/master/main.tf</li>
-<li>https://github.com/ministryofjustice/cloudplatforms-terraform-ops/blob/master/services/amazon-guardduty-notifications/pagerduty.tf</li>
+<li>https://github.com/ministryofjustice/cloudplatforms-terraform-ops/blob/main/main.tf</li>
+<li>https://github.com/ministryofjustice/cloudplatforms-terraform-ops/blob/main/services/amazon-guardduty-notifications/pagerduty.tf</li>
 </ul>
 
 

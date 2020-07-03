@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1283,7 +1283,7 @@
 <p>3) Create the PR and ask the team to review it.</p>
 <p>4) Once PR gets merged you must proceed to execute <code>terraform apply</code> and verify user (you can use AWS Console for this).</p>
 <h2 id="activating-mfa-for-new-users">Activating MFA for new users</h2><p>Unfortunataly terraform can&rsquo;t activate MFA for users, this process must be done done manually either <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">thorugh AWS Console (UI)</a> or <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_cliapi.html">through the AWS CLI</a>.</p>
-<p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/global-resources/iam/main.tf">iam-main-tf</a></p>
+<p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/global-resources/iam/main.tf">iam-main-tf</a></p>
 
 
               <div data-module='page-expiry' data-last-reviewed-on="2020-08-14">

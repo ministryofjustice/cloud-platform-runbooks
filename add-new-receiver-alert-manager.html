@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1284,8 +1284,8 @@
 </ul>
 <h2 id="creating-a-new-receiver-set">Creating a new receiver set</h2>
 <ol>
-<li><p>Fill in the template with the details provided from development team and add the array to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-components/terraform.tfvars"><code>terraform.tfvars</code></a> file.
-The <code>terraform.tfvars</code> file is encrypted so you have to <code>git-crypt unlock</code> to view the contents of the file. 
+<li><p>Fill in the template with the details provided from development team and add the array to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars"><code>terraform.tfvars</code></a> file.
+The <code>terraform.tfvars</code> file is encrypted so you have to <code>git-crypt unlock</code> to view the contents of the file.
 Check <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/other-topics/git-crypt-setup.html#git-crypt">git-crypt documentation in user guide</a> for more information on how to setup git-crypt.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>{
     severity = "&lt;unique name based on team info provided"&gt;
@@ -1327,7 +1327,7 @@ Check <a href="https://user-guide.cloud-platform.service.justice.gov.uk/document
 </code></pre></div><h2 id="information-alerts">Information Alerts</h2><p>AlertManager receivers for slack integration are configured for 2 type of alerts.</p>
 
 <ol>
-<li>to send a warning upon a alert rule condition is met and a recovery message once the condition is reversed<br></li>
+<li>to send a warning upon a alert rule condition is met and a recovery message once the condition is reversed</li>
 <li>to send a information type alert for monitoring non-problem/non-failure events and no recovery message - e.g for rule condition to positively know something happened (like a database refresh, or app deployment etc) which is not of type of problem/failure.</li>
 </ol>
 <p>All alerts are routed using the severity label set from the prometheus rule. If the severity label matches the keyword <code>info-</code><severity> then it is routed to information type receivers.

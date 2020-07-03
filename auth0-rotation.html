@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1278,31 +1278,31 @@
 <li>You must have all the tools and variables (such as Terraform, TF&rsquo;s auth0 provider, environment variables, kops, etc) ready to apply changes against our infrastructure repo.</li>
 <li>It will be handy to have auth0 management console already opened in a browser tab, so you can verify and monitor the changes.</li>
 </ul>
-<h2 id="1-taint-resources-terraform">1) Taint resources (terraform)</h2><p>The first step is to recreate auth0 app. We will have to taint the auth0 resource, so it gets recreated with new credentials. Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform"><code>cloud-platform-infrastructure/terraform/cloud-platform</code> directory</a> and run</p>
+<h2 id="1-taint-resources-terraform">1) Taint resources (terraform)</h2><p>The first step is to recreate auth0 app. We will have to taint the auth0 resource, so it gets recreated with new credentials. Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform"><code>cloud-platform-infrastructure/terraform/cloud-platform</code> directory</a> and run</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ terraform workspace select live-1
 $ terraform taint module.auth0.auth0_client.components
 </code></pre></div><p>Ensure with <code>terraform plan</code> that auth0 resource is going to be recreated. It will also recreate kops template file, which we are going to need in the next step. If you are happy with the changes apply them:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ terraform apply
-</code></pre></div><h2 id="2-rolling-update-of-cluster-kops">2) Rolling update of cluster (kops)</h2><p>From the previous step a new <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/kops/live-1.yaml">cloud-platform-infrastructure/kops/live-1.yaml</a> file should have been generated. To apply this file we <a href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html#updating-the-remote-kops-state">already have a runbook</a>, follow it step by step.</p>
+</code></pre></div><h2 id="2-rolling-update-of-cluster-kops">2) Rolling update of cluster (kops)</h2><p>From the previous step a new <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/kops/live-1.yaml">cloud-platform-infrastructure/kops/live-1.yaml</a> file should have been generated. To apply this file we <a href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html#updating-the-remote-kops-state">already have a runbook</a>, follow it step by step.</p>
 <p><strong>NOTE</strong>: As you will see, the change will require rolling replacement of the master nodes</p>
-<h2 id="3-apply-changes-within-components-terraform">3) Apply changes within components (terraform)</h2><p>Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-components"><code>cloud-platform-infrastructure/terraform/cloud-platform-components</code> directory</a> and to ensure changes match resources below, if they do, apply them:</p>
+<h2 id="3-apply-changes-within-components-terraform">3) Apply changes within components (terraform)</h2><p>Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-components"><code>cloud-platform-infrastructure/terraform/cloud-platform-components</code> directory</a> and to ensure changes match resources below, if they do, apply them:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ terraform apply -target=module.prometheus.kubernetes_secret.grafana_secret -target=module.prometheus.helm_release.prometheus_proxy -target=module.prometheus.helm_release.alertmanager_proxy  -target=helm_release.kuberos
 </code></pre></div><p>Unfortunately, grafana pod will not pick up the secret change, so it needs to be recyled (just delete it and it will automatically get redeployed):</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ GrafanaPodName=$(kubectl -n monitoring get pods -o name | grep grafana)
 $ kubectl -n monitoring delete pod $GrafanaPodName
-</code></pre></div><h2 id="4-update-environment-repo">4) Update environment repo</h2><p>We already have a <a href="https://github.com/ministryofjustice/cloud-platform/issues/2006">ticket</a> to get rid of this step. Meanwhile we get it done, we should update <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/master/namespaces/live-1.cloud-platform.service.justice.gov.uk/monitoring/oidc-components-secret.yaml"><code>oidc-components-secret.yaml</code> file</a> with the new auth0 credentials.</p>
+</code></pre></div><h2 id="4-update-environment-repo">4) Update environment repo</h2><p>We already have a <a href="https://github.com/ministryofjustice/cloud-platform/issues/2006">ticket</a> to get rid of this step. Meanwhile we get it done, we should update <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/main/namespaces/live-1.cloud-platform.service.justice.gov.uk/monitoring/oidc-components-secret.yaml"><code>oidc-components-secret.yaml</code> file</a> with the new auth0 credentials.</p>
 <p>This step requires a PR and someone available to approve it.</p>
 <h2 id="5-verifiying-changes">5) Verifiying changes</h2><p>In order to verify that the changes were successfully applied, follow the checklist below (order doesn&rsquo;t matter):</p>
 
 <ul>
-<li>You can authenticate to the cluster (follow <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#authentication">user guide</a>) </li>
+<li>You can authenticate to the cluster (follow <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#authentication">user guide</a>)</li>
 <li>Ensure you can authenticate to <a href="https://grafana.cloud-platform.service.justice.gov.uk/">Grafana</a></li>
 <li>Ensure you can authenticate to <a href="https://alertmanager.cloud-platform.service.justice.gov.uk/">AlertManager</a></li>
 <li>Ensure you can authenticate to <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/home?_g=()">Kibana</a></li>
 <li>Ensure you can authenticate to <a href="https://prometheus.cloud-platform.service.justice.gov.uk/">Prometheus</a></li>
 </ul>
 <p>If all of this works, jump to the last step which is update our pipelines.</p>
-<h2 id="6-update-pipelines">6) Update pipelines</h2><p>Our pipelines read auth0 credentials from a K8S secret inside the manager cluster. This secret is updated through concourse&rsquo;s TF module variable called <code>tf_provider_auth0_client_secret</code> and <code>tf_provider_auth0_client_id</code> in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-eks/components/terraform.tfvars">cloud-platform-infrastructure/blob/master/terraform/cloud-platform-eks/components/terraform.tfvars</a></p>
+<h2 id="6-update-pipelines">6) Update pipelines</h2><p>Our pipelines read auth0 credentials from a K8S secret inside the manager cluster. This secret is updated through concourse&rsquo;s TF module variable called <code>tf_provider_auth0_client_secret</code> and <code>tf_provider_auth0_client_id</code> in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/components/terraform.tfvars">cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/components/terraform.tfvars</a></p>
 <p>You only need to update the source code file and have your changed merged to master. The [bootstrap pipeline] will apply your change.</p>
 
 

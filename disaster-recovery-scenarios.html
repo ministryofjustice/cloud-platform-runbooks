@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1324,7 +1324,7 @@ deployment.apps/my-deployment-name        1/1       1            1         1m
 
 </code></pre></div><h2 id="losing-the-whole-cluster">Losing the whole cluster</h2><h3 id="losing-the-whole-cluster-impact">Impact</h3><p>Severity : HIGH</p>
 <p>Likelihood: LOW</p>
-<p>Losing the whole kubernetes cluster will result in all services not being available. This means all the 
+<p>Losing the whole kubernetes cluster will result in all services not being available. This means all the
 resources within all namespaces, networking, monitoring and logging systems.</p>
 <h3 id="losing-the-whole-cluster-possible-cause">Possible Cause</h3><p>Losing the whole cluster is less likely and the possible causes may vary.</p>
 <p>User error - Deleting all EC2 instances of <code>&lt;cluster-name&gt;</code> from console by accident</p>
@@ -1332,10 +1332,10 @@ resources within all namespaces, networking, monitoring and logging systems.</p>
 <h3 id="how-this-plan-is-tested">How this plan is tested:</h3><p>This way of restoring the whole cluster have been tested with below procedure</p>
 
 <ol>
-<li>Create cluster using the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/create-cluster.rb">script</a></li>
-<li>Deploy <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-components/starter-pack.tf">starter pack</a> to replicate user namespaces</li>
+<li>Create cluster using the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/create-cluster.rb">script</a></li>
+<li>Deploy <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/starter-pack.tf">starter pack</a> to replicate user namespaces</li>
 <li>Take backup of the whole cluster using <a href="/velero.html#velero-cluster-backups-and-disaster-recovery">velero</a></li>
-<li>Destroy the cluster excluding the VPC using the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/destroy-cluster.rb">script</a></li>
+<li>Destroy the cluster excluding the VPC using the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/destroy-cluster.rb">script</a></li>
 <li>Create a cluster with the same name. That way velero can match the backup storage location</li>
 <li>Restore the cluster from the backup taken in Step 3</li>
 </ol>
@@ -1348,7 +1348,7 @@ resources within all namespaces, networking, monitoring and logging systems.</p>
 <li>Terraform state have been recreated</li>
 </ul>
 <h3 id="losing-the-whole-cluster-restore-process">Restore process</h3><p>Any namespaces over 3 hours old can be recovered using Velero (newer namespaces might not have been backed up before the incident occurred).</p>
-<p>Create the cluster with the <strong>same</strong> name from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/create-cluster.rb">source code</a>
+<p>Create the cluster with the <strong>same</strong> name from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/create-cluster.rb">source code</a>
 and provide the exisiting <code>vpc-name</code>. This will link the velero backup locations to the lost cluster.</p>
 <p>Find the name of the most recent backup of the <code>allnamespacebackup</code> schedule:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>velero backup get
@@ -1370,9 +1370,9 @@ velero-allnamespacebackup-00000000000000   Completed   2020-03-30 12:00:37 +0100
 <p>Likelihood: LOW/MEDIUM</p>
 <p>When the kops state is corrupted, in most cases the kubernetes cluster will still be operational.</p>
 <p>This means the services will not have any impact, if the issue is resolved in a shorter amount of time.</p>
-<p>Leaving the cluster in the corrupted kops state for a prolonged period will reduce the cluster being highly available 
+<p>Leaving the cluster in the corrupted kops state for a prolonged period will reduce the cluster being highly available
 and not handle any failover in case one or more masters has gone down.</p>
-<p>Hence, Cloud platform team will not be able to perform any infrastructure changes. Also, teams will not able to communicate with the cluster 
+<p>Hence, Cloud platform team will not be able to perform any infrastructure changes. Also, teams will not able to communicate with the cluster
 to deploy applications or schedule any jobs.</p>
 <h3 id="deleted-corrupted-the-kops-state-possible-cause">Possible Cause</h3><p>Kops state may get corruputed when the kops template is changed for</p>
 
@@ -1397,7 +1397,7 @@ Validation Failed
 <div class="highlight"><pre class="highlight plaintext"><code>
 error reading cluster configuration: Cluster.kops.k8s.io "&lt;cluster name&gt;.cloud-platform.service.justice.gov.uk" not found
 </code></pre></div><h3 id="restore-process-for-corrupted-kops-state">Restore process for corrupted kops state</h3><p>The cluster kops state is stored in the generated yaml file inside the folder kops/<code>&lt;CLUSTER_NAME&gt;</code>.yaml.</p>
-<p>For <code>live-1</code> the generated kops yaml file is stored in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/kops/live-1.yaml">github</a>.
+<p>For <code>live-1</code> the generated kops yaml file is stored in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/kops/live-1.yaml">github</a>.
 So, checkout the previous working commit and update the remote kops state with that file.</p>
 <p>If the cluster state is corrupted due to the latest changes to the yaml file, revert back the changes and update the remote kops state.</p>
 <p>Below are the steps to update and restore the kops state</p>
@@ -1411,9 +1411,9 @@ kops update cluster
 <div class="highlight"><pre class="highlight plaintext"><code>kops update cluster --yes
 </code></pre></div><p><strong>If the above command reports that the cluster needs to be rolled, do the rolling-update and with <code>--yes</code> option</strong></p>
 <div class="highlight"><pre class="highlight plaintext"><code>kops rolling-update cluster --yes
-</code></pre></div><p>For more information on kops update, rolling-update and debugging instructions, refer 
+</code></pre></div><p>For more information on kops update, rolling-update and debugging instructions, refer
 <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">runbook for kops update</a></p>
-<p>If the restore process require creating new instancegroup for worker nodes, follow the procedure mentioned 
+<p>If the restore process require creating new instancegroup for worker nodes, follow the procedure mentioned
 in <a href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html#upgrade-a-cluster">Upgrade a cluster</a>.</p>
 <p>The difference to the upgrading procedure would be</p>
 
@@ -1457,7 +1457,7 @@ Executing <code>terraform state rm module.starter_pack</code>, will remove all r
 
 Plan: 7 to add, 0 to change, 0 to destroy.
 </code></pre></div><p>In this scenario, terraform state can be restored from the remote_state stored in the terraform backend S3 bucket.</p>
-<p>For example <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-components">cloud-platform-components</a> state is stored in &ldquo;cloud-platform-terraform-state/cloud-platform-components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-components/main.tf#L1-L9">here</a>.</p>
+<p>For example <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-components">cloud-platform-components</a> state is stored in &ldquo;cloud-platform-terraform-state/cloud-platform-components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/main.tf#L1-L9">here</a>.</p>
 <p>Access the S3 bucket where the effected terraform state is stored. From the list of terraform.tfstate file versions, identify the file before the state got removed and download as terraform.tfstate. Upload the file again, this will set uploaded file as latest version.</p>
 <p>Now running terraform plan will show, infrastructure is up-to-date.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>terraform plan -target=module.starter_pack

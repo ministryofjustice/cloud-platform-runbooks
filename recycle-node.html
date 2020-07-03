@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1271,7 +1271,7 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="recycle-node">Recycle-node</h1><p>The <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/master/pipelines/live-1/main/recycle-node.yaml">recycle-node pipeline</a> runs every 8 hours, and executes the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/recycle-node.rb">recycle-node.rb</a> script to replace the oldest worker node by:</p>
+              <h1 id="recycle-node">Recycle-node</h1><p>The <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/live-1/main/recycle-node.yaml">recycle-node pipeline</a> runs every 8 hours, and executes the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/recycle-node.rb">recycle-node.rb</a> script to replace the oldest worker node by:</p>
 
 <ul>
 <li>Cordoning the oldest node</li>
@@ -1297,7 +1297,7 @@ error: pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or 
  ip-172-20-123-244.eu-west-2.compute.internal
 error: cannot delete Pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet (use --force to override): licences-dev/port-forward
 </code></pre></div><p>Then you can track down the namespace owner and ask them to clear up their pods by sending a message in the #ask-cloud-platform, something like:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>The recycle-node job failed because of some manually-created pods. 
+<div class="highlight"><pre class="highlight plaintext"><code>The recycle-node job failed because of some manually-created pods.
 
 If any of these pods are yours, and you're not using them anymore, please could you delete them so that the next time the recycle-node job runs, it is able to replace the node?
 

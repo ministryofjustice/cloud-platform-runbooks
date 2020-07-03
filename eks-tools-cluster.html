@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1280,16 +1280,16 @@
 </ul>
 <div class="highlight"><pre class="highlight plaintext"><code>    export KOPS_STATE_STORE=s3://cloud-platform-kops-state
     export AWS_PROFILE=moj-cp
-</code></pre></div><h2 id="provisioning">Provisioning</h2><h3 id="1-vpc">1. VPC</h3><p>We need to create a VPC to deploy the cluster, VPCs are deployed using terraform code under <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-network">cloud-platform-infrastructure/terraform/cloud-platform-network</a> folder:</p>
+</code></pre></div><h2 id="provisioning">Provisioning</h2><h3 id="1-vpc">1. VPC</h3><p>We need to create a VPC to deploy the cluster, VPCs are deployed using terraform code under <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-network">cloud-platform-infrastructure/terraform/cloud-platform-network</a> folder:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-infrastructure/terraform/cloud-platform-network
 terraform init
 terraform workspace new &lt;WorkspaceName&gt;
 terraform apply
 </code></pre></div><p>You should be able to see your new VPC (called <code>WorkspaceName</code>) inside the AWS Console. Check it before jumping to the next step.</p>
 <p><strong>NOTE</strong>: For conventions purposes please call all terraform workspaces the same.</p>
-<h3 id="2-creating-eks-cluster">2. Creating EKS cluster</h3><p>Now it&rsquo;s time to provision the cluster itself, we change directory to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-eks">cloud-platform-infrastructure/terraform/cloud-platform-eks</a> and follow very similar terraform workflow:</p>
+<h3 id="2-creating-eks-cluster">2. Creating EKS cluster</h3><p>Now it&rsquo;s time to provision the cluster itself, we change directory to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-eks">cloud-platform-infrastructure/terraform/cloud-platform-eks</a> and follow very similar terraform workflow:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>terraform init
-terraform workspace new &lt;WorkspaceName&gt; 
+terraform workspace new &lt;WorkspaceName&gt;
 terraform apply -var="vpc_name=$VPC_NAME"
 </code></pre></div><p><code>vpc_name</code> must be set, it&rsquo;s the only required variable. It can also be used variables like <code>cluster_node_count</code> and <code>worker_node_machine_type</code> to set up different node groups parameters</p>
 <p>Once terraform finishes you should be able to generate your kubeadmin file (used by <em>kubectl</em> to establish a connection to the cluster) using aws-cli in the following way:</p>
@@ -1302,7 +1302,7 @@ CoreDNS is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
-</code></pre></div><h3 id="3-deploy-components">3. Deploy components</h3><p>Components installation is the last step, for that we need to have the <code>KUBECONFIG</code> variable exported and make sure you have access to the cluster. To deploy components we go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform-eks/components">cloud-platform-infrastructure/terraform/cloud-platform-eks/components</a> and follow exactly the same terraform workflow:</p>
+</code></pre></div><h3 id="3-deploy-components">3. Deploy components</h3><p>Components installation is the last step, for that we need to have the <code>KUBECONFIG</code> variable exported and make sure you have access to the cluster. To deploy components we go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-eks/components">cloud-platform-infrastructure/terraform/cloud-platform-eks/components</a> and follow exactly the same terraform workflow:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>terraform init
 terraform workspace new &lt;WorkspaceName&gt;
 terraform apply
@@ -1329,7 +1329,7 @@ $ terraform workspace select default
 $ terraform workspace delete &lt;clusterName&gt;
 </code></pre></div><h2 id="todo">TODO</h2>
 <ul>
-<li>It would be nice to have similar script to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/create-cluster.rb"><code>create-cluster.rb</code></a> (or add to it support for EKS) that creates the whole process in one command.</li>
+<li>It would be nice to have similar script to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/create-cluster.rb"><code>create-cluster.rb</code></a> (or add to it support for EKS) that creates the whole process in one command.</li>
 </ul>
 
 

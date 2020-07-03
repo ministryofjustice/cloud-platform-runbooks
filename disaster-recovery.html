@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1276,11 +1276,11 @@
 <h2 id="restore-process">Restore process</h2><p>Depending on the current state of the cluster, different recovery strategies are appropriate.</p>
 
 <ul>
-<li><p>In a disaster situation (total failure), where a cluster has been deleted by running <code>Kops delete cluster</code> and cloud-platform resources have been destroyed by running terraform destroy in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform">terraform/cloud-platform</a>, then start with <a href="/disaster-recovery.html#apply-cloud-platform-resources">apply-cloud-platform</a>.</p></li>
-<li><p>In a disaster situation (Kops delete cluster) but cloud-platform resources are not affected (i.e. when you run terraform plan in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform">terraform/cloud-platform</a>, result should be <code>Plan: 0 to add, 0 to change, 0 to destroy</code>), then start with <a href="/disaster-recovery.html#create-a-new-cluster">create-a-new-cluster</a>.</p></li>
+<li><p>In a disaster situation (total failure), where a cluster has been deleted by running <code>Kops delete cluster</code> and cloud-platform resources have been destroyed by running terraform destroy in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform">terraform/cloud-platform</a>, then start with <a href="/disaster-recovery.html#apply-cloud-platform-resources">apply-cloud-platform</a>.</p></li>
+<li><p>In a disaster situation (Kops delete cluster) but cloud-platform resources are not affected (i.e. when you run terraform plan in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform">terraform/cloud-platform</a>, result should be <code>Plan: 0 to add, 0 to change, 0 to destroy</code>), then start with <a href="/disaster-recovery.html#create-a-new-cluster">create-a-new-cluster</a>.</p></li>
 <li><p>In situations where cluster is available (running <code>Kops validate cluster</code>, should result in <code>Your cluster ${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready</code>), but affected with (lost data, cluster issues etc.), start with <a href="/disaster-recovery.html#perform-the-restore">perform-the-restore</a></p></li>
 </ul>
-<h2 id="apply-cloud-platform-resources">Apply cloud-platform resources</h2><p>This <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/terraform/cloud-platform">terraform/cloud-platform</a> directory contains resources for the Cloud Platform environments - e.g. bastion hosts and kops. This will apply the outline of a Kubernetes cluster, including a kops.tf to be used to create or modify a cluster.</p>
+<h2 id="apply-cloud-platform-resources">Apply cloud-platform resources</h2><p>This <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform">terraform/cloud-platform</a> directory contains resources for the Cloud Platform environments - e.g. bastion hosts and kops. This will apply the outline of a Kubernetes cluster, including a kops.tf to be used to create or modify a cluster.</p>
 <p>Before you begin, there are a few pre-reqs:</p>
 
 <ul>
@@ -1297,9 +1297,9 @@
 <span class="nv">$ </span>terraform workspace <span class="k">select</span> <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>
 <span class="nv">$ </span>terraform plan
 <span class="nv">$ </span>terraform apply
-</code></pre></div><p>Applying cloud-platform resources, terraform creates a <code>kops/${CLUSTER_NAME}.yaml</code> file in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/kops">kops</a> directory.</p>
+</code></pre></div><p>Applying cloud-platform resources, terraform creates a <code>kops/${CLUSTER_NAME}.yaml</code> file in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/kops">kops</a> directory.</p>
 <h2 id="create-a-new-cluster">Create a new cluster</h2><p>Use <code>kops</code> to create the cluster using <code>kops/${CLUSTER_NAME}.yaml</code>, which contains the cluster specification including an additional IAM policy to allow Route53 management, and config for OIDC authentication and RBAC.</p>
-<p>If the cloud-platform resources were not destroyed in the disaster, use the existing <code>kops/${CLUSTER_NAME}.yaml</code> in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/master/kops">here</a> to create the cluster, else use the <code>kops/${CLUSTER_NAME}.yaml</code> file created by applying cloud-platform resources above.</p>
+<p>If the cloud-platform resources were not destroyed in the disaster, use the existing <code>kops/${CLUSTER_NAME}.yaml</code> in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/kops">here</a> to create the cluster, else use the <code>kops/${CLUSTER_NAME}.yaml</code> file created by applying cloud-platform resources above.</p>
 <p>Set environment variables.</p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">KOPS_STATE_STORE</span><span class="o">=</span>s3://cloud-platform-kops-state
 <span class="nv">$ </span><span class="nb">export </span><span class="nv">CLUSTER_NAME</span><span class="o">=</span><span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk

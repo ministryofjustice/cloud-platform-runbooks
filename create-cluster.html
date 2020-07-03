@@ -762,20 +762,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
   </li>
 </ul>
 <ul>
@@ -796,7 +783,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources">Manually Delete Namespace Resources</a>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround">Workaround</a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv">Install es2csv</a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage">Usage</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1042,6 +1042,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references">References</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team">Onboarding into the Cloud Platform Team</a>
     <ul>
       <li>
@@ -1058,22 +1074,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access">ACCESS</a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies">Open Policy Agent policies</a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy">Adding a policy</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests">Writing tests</a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references">References</a>
       </li>
     </ul>
   </li>
@@ -1287,12 +1287,12 @@
 </code></pre></div><p>Execute the script, supplying the desired name of your new cluster. e.g.:</p>
 <div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> david-test1
 </code></pre></div><p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
-<p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/master/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
+<p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
 <p>By default, the script will create a &lsquo;small&rsquo; cluster. This means the master and worker EC2 instances will be less powerful machine types than in our production cluster. To create a &#39;medium&rsquo; or &#39;production&rsquo; cluster, run the script like this:</p>
 <div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> david-test1 <span class="nt">--size</span> medium <span class="c"># or --size production</span>
 </code></pre></div><p>See the script source code for the precise machine types used for the different sizes. The machine types used for &#39;production&rsquo; clusters should always be the same machine types as we use in production.</p>
 <p>See more options to use when creating the cluster by running</p>
-<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--help</span> 
+<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--help</span>
 </code></pre></div><p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>Run options: exclude {:cluster=&gt;"live-1"}
 ..........................
