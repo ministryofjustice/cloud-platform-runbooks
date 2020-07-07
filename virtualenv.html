@@ -712,29 +712,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources"><span>Remove ‘orphaned’ namespaces and AWS resources</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository"><span>1. git clone the environments checker repository</span></a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires"><span>2. Create a .env.live1 file, containing the environment variables the checker requires</span></a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace"><span>3. Do a dry run of deleting the target namespace</span></a>
-          </li>
-          <li>
-            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace"><span>4. Delete the AWS resources and the cluster namespace</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources"><span>Manually Plan/Apply Namespace Resources</span></a>
     <ul>
       <li>
@@ -760,21 +737,23 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources"><span>Manually Delete Namespace Resources</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch"><span>Remove data from Elasticsearch</span></a>
+    <a href="/remove-orphaned-namespace.html#remove-39-orphaned-39-namespaces-and-aws-resources"><span>Remove ‘orphaned’ namespaces and AWS resources</span></a>
     <ul>
       <li>
-        <a href="/remove-data-from-elasticsearch.html#things-to-know"><span>Things to know</span></a>
-      </li>
-      <li>
-        <a href="/remove-data-from-elasticsearch.html#build-your-query"><span>Build your query</span></a>
-      </li>
-      <li>
-        <a href="/remove-data-from-elasticsearch.html#delete-by-query"><span>Delete by query</span></a>
+        <ul>
+          <li>
+            <a href="/remove-orphaned-namespace.html#1-git-clone-the-environments-checker-repository"><span>1. git clone the environments checker repository</span></a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires"><span>2. Create a .env.live1 file, containing the environment variables the checker requires</span></a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#3-do-a-dry-run-of-deleting-the-target-namespace"><span>3. Do a dry run of deleting the target namespace</span></a>
+          </li>
+          <li>
+            <a href="/remove-orphaned-namespace.html#4-delete-the-aws-resources-and-the-cluster-namespace"><span>4. Delete the AWS resources and the cluster namespace</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -795,6 +774,27 @@
         </ul>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch"><span>Remove data from Elasticsearch</span></a>
+    <ul>
+      <li>
+        <a href="/remove-data-from-elasticsearch.html#things-to-know"><span>Things to know</span></a>
+      </li>
+      <li>
+        <a href="/remove-data-from-elasticsearch.html#build-your-query"><span>Build your query</span></a>
+      </li>
+      <li>
+        <a href="/remove-data-from-elasticsearch.html#delete-by-query"><span>Delete by query</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources"><span>Manually Delete Namespace Resources</span></a>
   </li>
 </ul>
 <ul>
@@ -1040,6 +1040,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies"><span>Open Policy Agent policies</span></a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy"><span>Adding a policy</span></a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests"><span>Writing tests</span></a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references"><span>References</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
@@ -1056,22 +1072,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access"><span>ACCESS</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies"><span>Open Policy Agent policies</span></a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy"><span>Adding a policy</span></a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests"><span>Writing tests</span></a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references"><span>References</span></a>
       </li>
     </ul>
   </li>
@@ -1405,7 +1405,7 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/master/runbooks/source/virtualenv.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/virtualenv.html.md.erb">View source</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Virtual%20environment%20copy%20for%20template%20deploy%20updates'&amp;body=Problem%20with%20'Virtual%20environment%20copy%20for%20template%20deploy%20updates'%20(https://runbooks.cloud-platform.service.justice.gov.uk/virtualenv.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
