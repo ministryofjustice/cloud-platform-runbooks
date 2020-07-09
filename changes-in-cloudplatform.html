@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
       <meta name="robots" content="noindex">
 
-    <title>Leavers Guide - Cloud Platform Runbooks</title>
+    <title>Change Process in Cloud Platform - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/changes-in-cloudplatform.html">
 
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Leavers Guide" />
+      <meta property="og:title" content="Change Process in Cloud Platform" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/changes-in-cloudplatform.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Leavers Guide - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html" />
+      <meta property="twitter:title" content="Change Process in Cloud Platform - Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/changes-in-cloudplatform.html" />
 
     
   </head>
@@ -1291,181 +1291,62 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="leavers-guide">Leavers Guide</h1><h2 id="revoking-access">Revoking Access</h2><h3 id="digital-services">Digital Services</h3><p>The central Digital Services team will be able to remove and revoke access from a number of different accounts outside of the technical team.</p>
-<p>Contact the <a href="mailto:servicedesk%40digital.justice.gov.uk">Service Desk</a>  (or slack channel #digitalservicedesk). They will go through their own leaver&rsquo;s process, as documented <a href="https://dsdmoj.atlassian.net/wiki/spaces/DSD/pages/44957720/Leavers">here</a>:.</p>
+              <h1 id="change-process-in-cloud-platform">Change Process in Cloud Platform</h1><p>Cloud Platform team implements and encourage Infrastructure as a Code methodology to manage the platform. It means every single change is done through code (if you spot something different raise it with us please
+)</p>
+<p><a href="cloud-platform-infrastructure">cloud-platform-infrastructure repository</a> is our main repository where infrastructure gets created and all components fits together. From this repository everything gets linked</p>
+<p>Mostly all components are terraform modules and they are managed in their own git repository, you can list all modules <a href="https://github.com/ministryofjustice?q=cloud-platform-terraform&amp;type=&amp;language=">here</a>
+.</p>
+<h2 id="making-changes-to-cloud-plarform-infrastructure">Making Changes to cloud-plarform-infrastructure</h2>
+<ol>
+<li>Create a PR which includes the change you want to make.</li>
+<li>Chase the team to get your PR approved, if it involves downtime ensure you have communications in place.</li>
+<li>Apply changes from your branch without merging the PR.</li>
+<li>If the change is successful merge the PR inmediatly.</li>
+</ol>
+<h2 id="marking-changes-to-terraform-modules">Marking Changes to terraform modules</h2><p>Mostly all Cloud Platform infrastructure are compose in blocks of terraform modules. Updating a module is very simple and consist in the following steps:</p>
+
+<ol>
+<li>Create PR and ask a team member for approval.</li>
+<li>Merge PR</li>
+<li>Create a release following <a href="https://semver.org/">semantic version spec.</a></li>
+<li>In order to keep our definitions/instances <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/architecture-decision-record/015-Keeping-Terraform-modules-up-to-date.md">up to date</a>: update all existing instances in <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a> and <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>. If this step affects team&rsquo;s environments it will need planning and communication.</li>
+</ol>
+<p>Step 2 and 3 can be done at any time and they don&rsquo;t affect the running infrastructure because all terraform modules calls have pinned release version. None terraform module should point to master branches or latest releases automatically.</p>
+<p>Finally create the PR which update the definition where your module is called and get ready to apply it following the guidelines above.</p>
+<h2 id="making-changes-to-helm-charts">Making Changes to Helm Charts</h2><p>Cloud Platform&rsquo;s helm charts are hosted in <a href="https://github.com/ministryofjustice/cloud-platform-helm-charts">cloud-platform-helm-charts</a> repository using <a href="https://helm.sh/docs/topics/chart_repository/#github-pages-example">Github Pages</a>. Changes in Helm Charts should include:</p>
 
 <ul>
-<li><p>Note - it is worth reminding the service desk to transfer the leaver&rsquo;s Google Drive to someone in their team</p></li>
-<li><p>Note - for leavers from the cloud-platforms team - ask the service desk to transfer any slack webhook integrations to someone in the team</p></li>
+<li>Bump chart version everytime you make a change</li>
+<li>Regenerate the <code>index.yml</code> following <a href="https://github.com/ministryofjustice/cloud-platform-helm-charts/tree/gh-pages#regenerating-the-indexyaml">this</a> instructions</li>
+<li>PR against gh-pages branch</li>
 </ul>
-<h3 id="aws-accounts">AWS Accounts</h3><h4 id="1-purge-them-from-aws-accounts-as-at-04-05-2020-the-following">1/ Purge them from AWS accounts (as at 04/05/2020 the following):</h4>
-<ul>
-<li><a href="https://justice-cloud-platform.eu.auth0.com/samlp/bnqndz9kxf7wDge8ndCWyVwIX1OEElYf">moj-cp</a></li>
-<li>mojdsd</li>
-<li>moj-cla-dev</li>
-<li>moj-intra</li>
-<li>moj-manchester-traffic-dev</li>
-<li>moj-pq</li>
-</ul>
-<p>Use the link above to login to the moj-cp account. For the others, you will need to login via the <a href="https://console.aws.amazon.com/">AWS console</a></p>
-<h4 id="2-remove-their-access-to">2/ Remove their access to:</h4>
-<ul>
-<li><p><a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/users">Auth0 justice-cloud-platform</a></p></li>
-<li><p><a href="https://manage.auth0.com/dashboard/eu/moj-cloud-platforms-dev/users">Auth0 moj-cloud-platforms</a></p></li>
-<li><p><a href="https://my.pingdom.com/3/users">Pingdom</a></p></li>
-<li><p><a href="https://moj-digital-tools.pagerduty.com/users">Pagerduty</a></p></li>
-<li><p><a href="https://devcenter.heroku.com/articles/org-users-access">Heroku</a></p></li>
-<li><p><a href="https://sentry.service.dsd.io/organizations/mojds/members/">Sentry</a></p></li>
-<li><p><a href="https://ci.service.dsd.io/configureSecurity/">CI</a></p></li>
-<li><p><a href="https://cloud.docker.com/orgs/ministryofjustice/teams">MoJ teams on docker hub</a></p></li>
-<li><p>Email the administrator of our password management provider to remove the leaver&rsquo;s login access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
-<li><p>Email the VPN provider requesting removal of their VPN access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
-</ul>
-<h4 id="3-remove-them-from-the-support-rota-if-applicable-pagerduty">3/ Remove them from the support rota (if applicable). <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">Pagerduty</a></h4><h4 id="4-remove-them-from-platforms-digital-justice-gov-uk-google-group-if-applicable-link-here">4/ Remove them from platforms@digital.justice.gov.uk google group (if applicable). <a href="https://groups.google.com/a/digital.justice.gov.uk/forum/#!managemembers/platforms/members/active">Link here</a>  </h4><p>Reference <a href="mailto:platforms@digital.justice.gov.uk">platforms@digital.justice.gov.uk</a></p>
-<h3 id="template-deploy-cloud-platforms">Template Deploy - Cloud Platforms</h3><p>Remove this section once it is no longer needed</p>
-<h4 id="1-remove-them-from-moj-organisation-membership-on-github-whilst-it-is-digital-services-responsibility-i-prefer-to-do-this-to-enable-you-carry-out-the-fab-salt-ssh-key-actions-following-at-2-below">1/ Remove them from MoJ organisation membership on GitHub (Whilst it is Digital Services responsibility - I prefer to do this to enable you carry out the fab salt.ssh_key actions following at <a href="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html#2-update-all-deploy-repos-to-revoke-their-user-ssh-access-using-the-salt-state">2/ below</a>.</h4><h4 id="2-update-all-deploy-repos-to-revoke-their-user-ssh-access-using-the-salt-state">2/ Update all deploy repos to revoke their user ssh access using the salt state.</h4><h5 id="a-carry-out-fabric-command-on-each-of-following-deploy-repos-as-at-30-04-2019">a. Carry out fabric command on each of following deploy repos (as at 30/04/2019)</h5><p>**Note for all of the following fabric commands carry out &ldquo;salt.ssh_keys&rdquo; &ldquo;vendor_upload&rdquo; rather than an &ldquo;update&rdquo; command this enables you to ssh onto each instance and carry out an update to the ssh users without interruption to the applications by restarting the containers:</p>
-<p>**consider the use of the Dockerfile fabric image  instead of the following fabric commands. Personally I could not get them to function correctly for &ldquo;salt.ssh_keys&rdquo; &ldquo;vendor_upload&rdquo;.</p>
-<p>Reference <a href="https://mojdt.slack.com/archives/C514ETYJX/p1532609061000168">Dockerfile fabric image</a></p>
+<h2 id="making-changes-to-environments-service-teams">Making changes to environments (Service Teams)</h2><p>Cloud Platform source of truth for team&rsquo;s environments (kubernetes namespaces) is <a href="https://github.com/ministryofjustice/cloud-platform-environments">cloud-platform-environments</a>, changes under this repository fol
+low similar process:</p>
 
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/cla_backend-deploy">cla_backend-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 04/05/2020</p>
-
-<ul>
-<li>demo</li>
-<li>staging</li>
-<li>training</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command. The following should be carried out in a virtual environment (see instructions 2. and 3. here <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/82640903/Quickstart+-+Template+Deploy">Step-by-step guide Quickstart - Template Deploy</a>):</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:cla-backend aws:moj-cla-dev environment:prod config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> <span class="o">[</span>user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/cla_frontend-deploy">cla_frontend-deploy</a></p>
-
-<ul>
-<li><p>Envs as at  04/05/2020</p>
-
-<ul>
-<li>demo</li>
-<li>staging</li>
-<li>training</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:cla-frontend aws:moj-cla-dev environment:prod config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/ci-deploy">ci-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 04/05/2020</p>
-
-<ul>
-<li>dev</li>
-<li>hmcts</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:ci aws:mojdsd environment:prod config:./cloudformation/ci.yaml passwords:./cloudformation/ci-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/docker-registry-ng-deploy">docker-registry-ng-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 04/05/2020</p>
-
-<ul>
-<li>dev</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:docker-registry aws:mojdsd environment:prod config:./cloudformation/docker-registry.yaml passwords:./cloudformation/docker-registry-secrets.yaml <span class="nt">-i</span> ../config/default.pem salt.ssh_keys vendor_upload  -u [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/correspondence-tool-deploy">correspondence-tool-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 04/05/2020:</p>
-
-<ul>
-<li>dev</li>
-<li>demo</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:correspondence-tool aws:mojdsd environment:prod config:./cloudformation/correspondence-tool.yaml passwords:./cloudformation/correspondence-tool-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/money-to-prisoners-deploy">money-to-prisoners-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 30/04/2019:</p>
-
-<ul>
-<li>api dev</li>
-<li>bank-admin dev</li>
-<li>cashbook dev</li>
-<li>noms-ops dev</li>
-<li>send-money dev</li>
-<li>transaction-uploader dev</li>
-<li>api test</li>
-<li>bank-admin test</li>
-<li>cashbook test</li>
-<li>noms-ops test</li>
-<li>send-money test</li>
-<li>transaction-uploader test</li>
-<li>api prod</li>
-<li>bank-admin prod</li>
-<li>cashbook prod</li>
-<li>noms-ops prod</li>
-<li>send-money prod</li>
-<li>transaction-uploader prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-api aws:mojdsd environment:prod config:./cloudformation/api.yaml passwords:./cloudformation/api-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-bank-admin aws:mojdsd environment:prod config:./cloudformation/bank-admin.yaml passwords:./cloudformation/bank-admin-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-cashbook aws:mojdsd environment:prod config:./cloudformation/cashbook.yaml passwords:./cloudformation/cashbook-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-noms-ops aws:mojdsd environment:prod config:./cloudformation/noms-ops.yaml passwords:./cloudformation/noms-ops-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-send-money aws:mojdsd environment:prod config:./cloudformation/send-money.yaml passwords:./cloudformation/send-money-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-transaction-uploader aws:mojdsd environment:prod config:./cloudformation/transaction-uploader.yaml passwords:./cloudformation/transaction-uploader-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><h5 id="b-ssh-onto-all-of-the-deploy-repos-instances-and-use-the-following-salt-code-commands-this-will-enable-updates-to-take-place-without-restarting-the-container-the-use-installation-of-awsjump-will-help-to-easily-switch-between-instances">b. ssh onto all of the deploy repos instances and use  the following salt-code commands. This will enable updates to take place without restarting the container. The use/installation  of <a href="https://github.com/ministryofjustice/template-deploy-jump">awsjump</a> will help to easily switch between instances:</h5><div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>su
-salt_utils.py <span class="nt">-s</span> fooooo
-<span class="nb">cd</span> /srv/pillar/
-salt-call state.sls admins
-/usr/bin/salt-call pillar.get admins <span class="nt">--out</span><span class="o">=</span>json 2&gt; /dev/null
-<span class="nb">exit
-exit</span>
-</code></pre></div><p>**do not worry - you will receive some error messages as &ldquo;fooooo&rdquo; does not exist (this is just a placeholder). The update will take place to the ssh users</p>
+<ol>
+<li>Create PR and verify for the changes in the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform">plan pipeline</a>, if you are happy with them ask a team member fo
+r approval.</li>
+<li>Merge PR</li>
+</ol>
+<p>Within environment repository we have end to end process fully automated with pipelines. Once the change is merged it is going to be automatically applied the apply pipeline (<a href="https://concourse.clou
+d-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform/jobs/apply-live-1/builds/151">apply-live-1</a> and <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/
+pipelines/environments-terraform/jobs/apply-namespace-changes-live-1/builds/90">apply-namespace-changes-live-1</a>) and if the change is destroying a namespace it will be done by <a href="https://concourse.cloud-platform.servic
+e.justice.gov.uk/teams/main/pipelines/environments-terraform/jobs/destroy-deleted-namespaces/builds/85">destroy-deleeted-namespace</a> pipeline</p>
+<h2 id="communications">Communications</h2><p>If changes involve downtime we must inform teams about it via slack (#cloud-platform-update). It is important to include <strong>which services</strong> are going to be down and <strong>for how long</strong>.</p>
+<p>Sometimes teams misunderstand downtimes of Cloud Platform services also involve downtime of <strong>their services</strong>, so it is very handy being  precise about the change.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-08-04">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-10-07">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 4 May 2020.
+      This page was last reviewed on 7 July 2020.
 
-        It needs to be reviewed again on 4 August 2020
+        It needs to be reviewed again on 7 October 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 4 August 2020
+      This page was set to be reviewed before 7 October 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1475,8 +1356,8 @@ exit</span>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/leavers-guide.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Leavers%20Guide'&amp;body=Problem%20with%20'Leavers%20Guide'%20(https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/changes-in-cloudplatform.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Change%20Process%20in%20Cloud%20Platform'&amp;body=Problem%20with%20'Change%20Process%20in%20Cloud%20Platform'%20(https://runbooks.cloud-platform.service.justice.gov.uk/changes-in-cloudplatform.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
