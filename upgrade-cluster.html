@@ -1336,7 +1336,7 @@
 <li>The Kubernetes release version, ensuring it is supported by Kops - verify on the <a href="https://github.com/kubernetes/kops/releases">kops releases</a> page.</li>
 <li>The AMI in each instance group. This can be found here: https://github.com/kubernetes/kops/blob/master/channels/stable</li>
 </ul>
-<p>Now make the same changes to the template file <code>./terraform/cloud-platform/templates/kops.yaml.tpl</code>.</p>
+<p>Make the same changes to the template file located inside <a href="https://github.com/ministryofjustice/cloud-platform-terraform-kops/blob/main/templates/kops.yaml.tpl">cloud-platform-terraform-kops terraform module</a> followed by a new release. The release must be also referenced in our <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform/main.tf#L57-L75">definition/instance file</a>.</p>
 <h3 id="push-changes-to-kops-state">Push changes to kops state</h3><p>Run the following to push the above changes to the kops state store in S3.</p>
 <p><code>kops update cluster</code></p>
 <p>Review the changes before committing with:</p>
