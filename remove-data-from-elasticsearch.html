@@ -801,6 +801,9 @@
       <li>
         <a href="/remove-data-from-elasticsearch.html#delete-by-query"><span>Delete by query</span></a>
       </li>
+      <li>
+        <a href="/remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
+      </li>
     </ul>
   </li>
 </ul>
@@ -1313,7 +1316,8 @@
 <h2 id="things-to-know">Things to know</h2><p>An important thing to understand is the difference between an index and a document. 
 An index contains documents. In our case, documents are log entries.</p>
 <p>The current logging strategy is to have one index per day, containing all the daily logs.
-All application logs are sent to that daily index, ex:  <code>logstash-2020.02.01</code></p>
+All application logs are sent to that daily index, ex:  <code>logstash-2020.02.01</code>
+If you want your query to cover all log data stored in the Elasticsearch cluster, you can use expression in the index like <code>logstash-2*</code></p>
 <p>Although it is possible to delete a whole index with a curator job, this guide will only cover the deletion of specific documents.</p>
 <p><strong>Running <code>curl</code> queries has to be done from within the live-1 VPC.</strong></p>
 <h2 id="build-your-query">Build your query</h2><p>It is possible to reuse the body of a <code>search</code> query for a <code>delete</code> query.</p>
@@ -1349,19 +1353,92 @@ All application logs are sent to that daily index, ex:  <code>logstash-2020.02.0
         -H 'Content-Type: application/json' \
         -d'{"query":{"match":{"kubernetes.namespace_name.keyword": "my-namespace-production"}}}'
 </code></pre></div><p>Here again, <code>.keyword</code> is essential.</p>
+<p>To run the <code>curl</code> commands, you can <code>exec</code> into any of the pods(eg. fluentd-es) inside the cluster. You may have to install <code>curl</code>.</p>
+<p>After executing the commands and removing the data, make sure to delete the pod as it will contain the search results of sensitve data 
+you have queried using <code>curl</code>. A fluentd pod will be recreated automatically.</p>
+<h2 id="removing-specific-logs-filtered-by-phrase">Removing specific logs filtered by phrase</h2><p>If you want to delete logs which has a certain phrase, you can use below queries.</p>
+<p>Searching for a phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like</p>
+<div class="highlight"><pre class="highlight plaintext"><code>
+curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/logstash-2*/_search?pretty \
+-H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "multi_match": {
+            "type": "phrase",
+            "query": "What is your name?",
+            "lenient": true
+          }
+        },
+        {
+          "range": {
+            "@timestamp": {
+              "format": "strict_date_optional_time",
+              "gte": "2020-06-13T12:19:24.804Z",
+              "lte": "2020-07-14T15:19:24.804Z"
+            }
+          }
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}'
+
+</code></pre></div><p>Deleting the logs which has a phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like</p>
+<div class="highlight"><pre class="highlight plaintext"><code>curl -XPOST https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/logstash-2*/_delete_by_query?pretty \
+-H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "multi_match": {
+            "type": "phrase",
+            "query": "What is your name?",
+            "lenient": true
+          }
+        },
+        {
+          "range": {
+            "@timestamp": {
+              "format": "strict_date_optional_time",
+              "gte": "2020-06-13T12:19:24.804Z",
+              "lte": "2020-07-14T15:19:24.804Z"
+            }
+          }
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}'
+
+</code></pre></div><p>If you have complex search patterns used in kibana which you want to delete, 
+ - narrow down the kibana search in the webconsole
+ - click on the &ldquo;Inspect&rdquo;
+ - In the popup search window, click on the tab &ldquo;Request&rdquo;
+ - Copy and paste the object which mentions <code>&quot;query&quot;: {</code> to the above curl command and modify dates as you need</p>
+<p>If you are searching for phrases which has single-quote characters, it may need special handling when adding those to the query.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-08-14">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-10-14">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 14 May 2020.
+      This page was last reviewed on 14 July 2020.
 
-        It needs to be reviewed again on 14 August 2020
+        It needs to be reviewed again on 14 October 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 14 August 2020
+      This page was set to be reviewed before 14 October 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
