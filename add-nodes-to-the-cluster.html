@@ -1314,63 +1314,66 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="add-nodes-to-the-cluster">Add nodes to the cluster</h1><p>This runbook covers how to increase the number of nodes in a Kubernetes cluster.</p>
-<p>In the steps below, we assume we want to increase the number of nodes in Live-1, from 40 to 50.</p>
+              <h1 id="add-nodes-to-the-cluster">Add nodes to the cluster</h1><p>This runbook covers how to increase the number of nodes in a Kops Kubernetes cluster.</p>
+<p>In the steps below, we assume we want to increase the number of nodes in Live-1, from 21 to 30.</p>
 <h3 id="requirements">Requirements</h3><h4 id="1-ensure-you-have-access-to-the-cloud-platform-aws-account">1. Ensure you have access to the Cloud Platform AWS account</h4><h4 id="2-set-your-environment-variables">2. Set your environment variables :</h4><div class="highlight"><pre class="highlight plaintext"><code>export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 export AWS_PROFILE=moj-cp
 </code></pre></div><h4 id="3-start-a-shell-in-the-tools-image">3. Start a shell in the tools image</h4><p>This will ensure you have the right versions of everything</p>
 <div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-infrastructure
 make tools-shell
 </code></pre></div><h4 id="4-be-authenticated-to-the-cluster">4. Be authenticated to the cluster :</h4><div class="highlight"><pre class="highlight plaintext"><code>kops export kubecfg live-1.cloud-platform.service.justice.gov.uk
-</code></pre></div><h3 id="inline-edit">Inline edit</h3><p>Once authenticated to the cluster
-&ldquo;`
-$ kops get instancegroup
-Using cluster from kubectl context: live-1.cloud-platform.service.justice.gov.uk</p>
-<p>NAME                    ROLE    MACHINETYPE     MIN     MAX     ZONES
+</code></pre></div><h3 id="inline-edit">Inline edit</h3><p>Once authenticated to the cluster</p>
+<div class="highlight"><pre class="highlight plaintext"><code>$ kops get instancegroup
+Using cluster from kubectl context: live-1.cloud-platform.service.justice.gov.uk
+
+NAME                    ROLE    MACHINETYPE     MIN     MAX     ZONES
 2xlarge-nodes-1.15.10   Node    r5.2xlarge      2       2       eu-west-2b
 master-eu-west-2a       Master  c4.4xlarge      1       1       eu-west-2a
 master-eu-west-2b       Master  c4.4xlarge      1       1       eu-west-2b
 master-eu-west-2c       Master  c4.4xlarge      1       1       eu-west-2c
 nodes-1.15.10           Node    r5.xlarge       21      21      eu-west-2a,eu-west-2b,eu-west-2c
-&rdquo;`</p>
-<p>Now, launch the editor and set <code>minSize</code> and <code>maxSize</code> to the same value, the increased number of nodes.</p>
+</code></pre></div><p>Now, launch the editor and set <code>minSize</code> and <code>maxSize</code> to the same value, the increased number of nodes.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>% kops edit instancegroup nodes-1.15.10
 spec:
     ...
-    maxSize: 50
-    minSize: 50
+    maxSize: 30
+    minSize: 30
     ...
 </code></pre></div><p>Before we apply the changes, kops allow us to confirm what is going to happen:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>% kops update cluster
 Will modify resources:
 AutoscalingGroup/nodes-1.15.10.live-1.cloud-platform.service.justice.gov.uk
-    MaxSize                  40 -&gt; 50
-    MinSize                  40 -&gt; 50
+    MaxSize                  21 -&gt; 30
+    MinSize                  21 -&gt; 30
 </code></pre></div><p><code>THIS SHOULD BE THE ONLY CHANGE THAT YOU SEE, IF YOU SEE ANYTHING MORE: ABORT</code></p>
-<p>If happy with the information above, the changes can be applied with :</p>
+<p>If happy with the information above, the changes can be applied with:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>% kops update cluster --yes
-</code></pre></div><p>The situation can be monitored with :</p>
+</code></pre></div><p>Change progress can be monitored with:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>% kops validate cluster
 </code></pre></div><h3 id="persisting-the-changes">Persisting the changes</h3><p>In order to ensure that the new configuration does not get overwritten at the next <code>kops update</code>, we need to persist those changes in the code.</p>
-<h4 id="1-create-a-new-branch-on-the-cloud-platform-infrastructure">1. Create a new branch on the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure </a></h4><h4 id="2-in-terraform-cloud-platform-variables-tf-modify-the-cluster-node-count-variable">2. In /terraform/cloud-platform/variables.tf, modify the <code>cluster_node_count</code> variable</h4><div class="highlight"><pre class="highlight plaintext"><code>variable "cluster_node_count" {
-    description = "The number of worker node in the cluster"
-    default     = "50"
+<h4 id="1-create-a-new-branch-of-the-cloud-platform-infrastructure-repo">1. Create a new branch of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure </a> repo</h4><h4 id="2-in-terraform-cloud-platform-variables-tf-modify-the-cluster-node-count-variable">2. In /terraform/cloud-platform/variables.tf, modify the <code>cluster_node_count</code> variable</h4><div class="highlight"><pre class="highlight plaintext"><code>variable "cluster_node_count" {
+  description = "The number of worker node in the cluster"
+  default = {
+    live-1  = "21"
+    default = "3"
+  }
 }
-</code></pre></div><h4 id="3-push-pr-merge">3. Push, PR, Merge</h4><p>Once the PR is merged and a <code>terraform apply</code> is run, the <code>cloud-platform-infrastructure/kops/live-1.yaml</code> will be updated with the new size.</p>
+</code></pre></div><h4 id="3-push-review-merge">3. Push, Review, Merge</h4><p>Once the PR is merged and a <code>terraform apply</code> is run, the <code>cloud-platform-infrastructure/kops/live-1.yaml</code> will be updated with the new size.</p>
+<p>The updated <code>kops/live-1.yaml</code> file should also be committed to the repository, in a second PR.</p>
 <p>For more information on <code>kops update</code> &amp; <code>kops rolling-updtae</code>, have a look at this <a href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">runbook</a>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-21">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-10-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 April 2020.
+      This page was last reviewed on 22 July 2020.
 
-        It needs to be reviewed again on 21 July 2020
+        It needs to be reviewed again on 22 October 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 July 2020
+      This page was set to be reviewed before 22 October 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
