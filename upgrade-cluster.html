@@ -1082,6 +1082,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies"><span>Open Policy Agent policies</span></a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy"><span>Adding a policy</span></a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#writing-tests"><span>Writing tests</span></a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references"><span>References</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
@@ -1098,22 +1114,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access"><span>ACCESS</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies"><span>Open Policy Agent policies</span></a>
-    <ul>
-      <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy"><span>Adding a policy</span></a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#writing-tests"><span>Writing tests</span></a>
-      </li>
-      <li>
-        <a href="/add-new-opa-policy.html#references"><span>References</span></a>
       </li>
     </ul>
   </li>
@@ -1366,6 +1366,11 @@ kops update cluster --yes
 <p>New instances will be created, which you&rsquo;ll see with:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>watch kubectl get nodes
 </code></pre></div><p>We have multiple worker instance groups. Perform the same process on the other node instance groups.</p>
+
+<blockquote>
+<p>The &ldquo;main&rdquo; worker instancegroup (i.e. the one which contains the bulk of our worker nodes) is referenced in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/3b73b4616d22818fe297f1a1821e58c4c7aa1989/recycle-node.rb#L25">recycle-node.rb</a> script.
+Update that file with the new instancegroup name, so that the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/maintenance/jobs/recycle-node-live-1">recycle node pipeline job</a> continues to work after the upgrade.</p>
+</blockquote>
 <h3 id="cordon-old-workers">Cordon old workers</h3><p>Copy the file we created earlier:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>cp nodes cordon_nodes
 </code></pre></div><p>We need to insert the following before each line in this file:</p>
@@ -1396,7 +1401,22 @@ kops update cluster --yes
 </code></pre></div><h2 id="commit-changes-back-to-master">Commit changes back to master</h2><p>Any changes made to the cloud-platform-infrastructure repository should be pushed for review. This includes manifest changes and image tag changes.</p>
 
 
-            
+              <div data-module='page-expiry' data-last-reviewed-on="2020-10-22">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 22 July 2020.
+
+        It needs to be reviewed again on 22 October 2020
+        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
+        .
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 22 October 2020
+       by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
+      This might mean the content is out of date.
+    </div>
+  </div>
+
           </main>
 
           <aside>
