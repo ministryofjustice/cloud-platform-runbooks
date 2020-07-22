@@ -1287,6 +1287,9 @@
       <li>
         <a href="/tips-and-tricks.html#add-more-rss-feeds-to-cloud-platform-rss-channel"><span>Add more RSS feeds to #cloud-platform-rss channel</span></a>
       </li>
+      <li>
+        <a href="/tips-and-tricks.html#find-files-which-don-39-t-contain-a-particular-string"><span>Find files which don’t contain a particular string</span></a>
+      </li>
     </ul>
   </li>
 </ul>
@@ -1369,7 +1372,8 @@ apt-cache policy docker-ce
 <p>To validate your feed url, test using the <a href="https://validator.w3.org/feed/">w3c validator</a></p>
 <p>To get the RSS feed url for github projects, use <code>&lt;github repo url&gt;/releases.atom</code></p>
 <p>To add your first feed to a new slack channel, follow steps provided by <a href="https://slack.com/intl/en-gb/help/articles/218688467-Add-RSS-feeds-to-Slac://slack.com/intl/en-gb/help/articles/218688467-Add-RSS-feeds-to-Slack">slack</a></p>
-
+<h2 id="find-files-which-don-39-t-contain-a-particular-string">Find files which <em>don&rsquo;t</em> contain a particular string</h2><div class="highlight"><pre class="highlight plaintext"><code>for file in $(find * -name '*.erb'); do grep -q last_reviewed_on $file || echo $file; done
+</code></pre></div>
 
               <div data-module='page-expiry' data-last-reviewed-on="2020-09-30">
     <div class='page-expiry--not-expired'>
