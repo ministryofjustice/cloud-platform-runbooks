@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
       <meta name="robots" content="noindex">
 
-    <title>Going on call - Cloud Platform Runbooks</title>
+    <title>Scheduled PR Reminders - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/scheduled-pr-reminders.html">
 
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Going on call" />
+      <meta property="og:title" content="Scheduled PR Reminders" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/scheduled-pr-reminders.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Going on call - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html" />
+      <meta property="twitter:title" content="Scheduled PR Reminders - Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/scheduled-pr-reminders.html" />
 
     
   </head>
@@ -1330,84 +1330,38 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="going-on-call">Going on call</h1><h2 id="what-s-expected">What’s expected?</h2><h3 id="expected">Expected:</h3>
+              <h1 id="scheduled-pr-reminders">Scheduled PR Reminders</h1><p>Scheduled reminders helps the Cloud Platform focus on the most important review requests that require their attention. Scheduled reminders for pull requests will send a message to various Slack channels with all open pull requests that the team have been asked to review (or need merging), at a specified time. For example, you can create a scheduled reminder to send a message to your team&rsquo;s main communication channel in Slack, including all open pull requests that the team is requested to review, every Wednesday at 9:00 a.m.</p>
+<p>All reminders are created on Github Team level - For the Cloud Platform team, the team is <code>webops</code></p>
+<p>To view all scheduled reminders for team webops;</p>
+<p>https://github.com/ministryofjustice &gt; Teams &gt; Webops &gt; Settings &gt; Scheduled Reminders</p>
+<p>There is currently 2 reminders setup;</p>
+
 <ul>
-<li>Carry out <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/297533847/Run+Books">well-defined sensible actions</a> in response to critical incidents.</li>
-<li>Understand how to carry out those actions, and what they do.</li>
-<li>Verify access ahead of time to various systems and interfaces required to carry out these actions.</li>
-<li>Getting set up to access production is quite involved if you don’t work on the service you’re supporting, so it’s worth making sure you’ve done so ahead of time.</li>
+<li><p><strong>cloud-platform-notify</strong></p>
+<p>Report all open PRs for all cloud-platform-* repos every hour between 9am-5pm UTC Monday to Friday.</p></li>
+<li><p><strong>cloud-platform</strong></p>
+<p>Report all open PRs for the cloud-platform-environments and cloud-platform-infrastructure repos at 9am UTC Monday to Friday.</p></li>
 </ul>
-<h3 id="not-expected">Not Expected:</h3>
-<ul>
-<li>Take heroic actions and be able to solve any out-of-hours critical event single handedly.</li>
-<li>Have very detailed knowledge of every nuance of every MOJ Digital service.</li>
-<li>Carrying out risky activities or take judgement calls beyond your comfort zone without support.</li>
-</ul>
-<h2 id="where-do-i-start">Where do I start?</h2>
-<ol>
-<li>Do two rotations on in-hours second line.</li>
-<li>Get production access to supported services.</li>
-<li>Get access to our on-call tools:
-
-<ul>
-<li><a href="https://my.pingdom.com/">Pingdom</a></li>
-<li><a href="https://moj-digital-tools.pagerduty.com/">Pagerduty</a> (and configure your contact details and notifications, this is the single source of truth for when you are on call.)</li>
-<li><a href="https://mojdsd.signin.aws.amazon.com/">AWS</a></li>
-<li>the MOJDS VPN (and configure it to “send all traffic over VPN connection”)</li>
-</ul></li>
-<li>Do a dry-run of an incident.</li>
-<li>Get on the on-call rota.</li>
-<li>Log your hours.</li>
-</ol>
-<h2 id="what-do-i-get-for-being-on-call">What do I get for being on call?</h2>
-<ul>
-<li>15% of day rate for every 8 hours that you’re on call out of standard working hours. This payment is simply for being on call.</li>
-<li>1/8 of day rate for each full hour actively worked while on call.</li>
-</ul>
-<p>Civil servant equivalent of day rate is base salary / 230</p>
-<h2 id="civil-servants-sop-claim">Civil servants - SOP Claim</h2>
-<ol>
-<li>Get a DOM1 account (you should be given one as soon as Shared Services have registered your joining, or ask your local HR people)</li>
-<li>Log into a DOM1 machine and access SOP using the shortcut on your desktop, and log in.</li>
-<li>Navigate to Employee Self-Service &gt; Individual Compensation Distribution (ICD)</li>
-<li>Select drop-down menu for On-call without pensionable amount</li>
-<li>Add the amount claimed for in the box provided</li>
-<li>Click “Continue”, check the details, add notes in the comment section about the weeks being claimed, and then click “Submit”</li>
-<li>If your claim is submitted before the 8th (or so) of the month, you’ll get it paid in that month’s payroll. If it’s after that, it’ll be in the next month’s.</li>
-</ol>
-<h2 id="civil-servants-sop-problem-resolution">Civil servants - SOP Problem Resolution</h2>
-<ol>
-<li>Take a screenshot of the claim submission problem.</li>
-<li>Navigate to Employee Self-Service &gt; Others &gt; Form Submission</li>
-<li>Select problem area by pressing the magnifying glass icon and pressing “Go”.</li>
-<li>Add comments describing the problem.</li>
-<li>After clicking “Next”, “Add Attachment” to add the screenshot and click “Submit”</li>
-</ol>
-<h2 id="contractors">Contractors</h2><p>The exact process might depend upon which supplier you are through. Some (or maybe all, we haven’t worked out yet) supplier systems don’t cope with trying to bill more than 5 days worth in a week (Specifically Hays fall in to this category).</p>
-<p>If you are not working on a normal work day (Monday–Friday) then you can use this to bill</p>
+<h3 id="steps-required-for-new-repositories">Steps required for new repositories</h3><p>New repositories are not automatically added to reminders and require the following steps;</p>
 
 <ol>
-<li>Ask your contact at the supplier to set you up on Fieldglass for overtime.</li>
-<li>Log your time
-
-<ul>
-<li>??? Log the overtime (More detail once someone has actually done this successfully); or</li>
-<li>If you are billing a ‘work day’ in lieu note this in a comment in the timesheet</li>
-</ul></li>
+<li><p>Add the new repository to the Github Slack app - 
+https://github.com/ministryofjustice &gt; Settings &gt; Installed Github Apps &gt; Slack</p></li>
+<li><p>Go into the reminder that the new repository is required to be reported on and add it in the &lsquo;select repositories&rsquo; section.</p></li>
 </ol>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-27">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-10-23">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 April 2020.
+      This page was last reviewed on 23 July 2020.
 
-        It needs to be reviewed again on 27 July 2020
+        It needs to be reviewed again on 23 October 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 July 2020
+      This page was set to be reviewed before 23 October 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1417,8 +1371,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/on-call.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Going%20on%20call'&amp;body=Problem%20with%20'Going%20on%20call'%20(https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/scheduled-pr-reminders.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Scheduled%20PR%20Reminders'&amp;body=Problem%20with%20'Scheduled%20PR%20Reminders'%20(https://runbooks.cloud-platform.service.justice.gov.uk/scheduled-pr-reminders.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
