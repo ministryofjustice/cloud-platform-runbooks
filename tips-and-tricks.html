@@ -1295,6 +1295,9 @@
         <a href="/tips-and-tricks.html#find-all-pods-running-on-a-specific-worker-node"><span>Find all pods running on a specific worker node</span></a>
       </li>
       <li>
+        <a href="/tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
+      </li>
+      <li>
         <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-1-bastion-host"><span>Install tmux and docker on the live-1 bastion host</span></a>
       </li>
       <li>
@@ -1372,6 +1375,8 @@ Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
 <div class="highlight"><pre class="highlight shell"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> <span class="nt">-ojson</span> | jq <span class="nt">-r</span> <span class="s1">'.items[] | .metadata.name + " / " + .metadata.annotations["cloud-platform.justice.gov.uk/source-code"] '</span>
 </code></pre></div><p>If you need to install <code>jq</code>, do <code>brew install jq</code></p>
 <h2 id="find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-172-20-80-62.eu-west-2.compute.internal
+</code></pre></div><h2 id="count-pods-running-on-all-nodes">Count pods running on all nodes</h2><p>Paste this into the search field on <a href="https://prometheus.cloud-platform.service.justice.gov.uk">Prometheus</a>:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>max by(node) (max by(instance) (kubelet_running_pod_count{job="kubelet",metrics_path="/metrics"}) * on(instance) group_left(node) kubelet_node_name{job="kubelet",metrics_path="/metrics"})
 </code></pre></div><h2 id="install-tmux-and-docker-on-the-live-1-bastion-host">Install tmux and docker on the live-1 bastion host</h2><p>From <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9">here</a></p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>apt update
 <span class="nb">sudo </span>apt <span class="nb">install </span>tmux
