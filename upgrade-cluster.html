@@ -267,6 +267,9 @@
     <a href="/upgrade-cluster.html#upgrade-a-cluster"><span>Upgrade a cluster</span></a>
     <ul>
       <li>
+        <a href="/upgrade-cluster.html#planning"><span>Planning</span></a>
+      </li>
+      <li>
         <a href="/upgrade-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
         <ul>
           <li>
@@ -1333,7 +1336,25 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="upgrade-a-cluster">Upgrade a cluster</h1><h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-requisites:</p>
+              <h1 id="upgrade-a-cluster">Upgrade a cluster</h1><h2 id="planning">Planning</h2><p>When you start working on a upgrade ticket, checkout the below points which will give a synopsis for the upgrade.</p>
+
+<ul>
+<li>Check which versions are available to upgrade to. </li>
+<li>Check whether the current cluster is upgradable to that version (skipping a major version is not recommended)</li>
+<li>Check the release notes of the kops and kubernetes version for any breaking changes</li>
+<li>Check and add notes of every CHANGELOG.md of kops between the current kops version of your cluster to the version you want to upgrade to</li>
+<li>Check and add notes of every CHANGELOG.md of kubernetes between the current kubernetes version of your cluster to the version you want to upgrade to.
+
+<ul>
+<li>There might be few changes between certain minor version which might not be mentioned in major version CHANGELOG.</li>
+</ul></li>
+<li>Review the CHANGELOG notes with another member of the team
+
+<ul>
+<li>Check for breaking changes, deprecations and suggested alternatives for any addons/components. </li>
+</ul></li>
+</ul>
+<h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-requisites:</p>
 
 <ul>
 <li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code>.</p></li>
