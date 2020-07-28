@@ -1334,10 +1334,15 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="add-a-new-runbook">Add a new runbook</h1><p>To add a new runbook, you will create a file in the <code>runbooks/source</code> directory of the <a href="https://github.com/ministryofjustice/cloud-platform">cloud-platform</a> repository.</p>
-<h4 id="1-git-pull-to-get-the-latest-changes">1. <code>git pull</code> to get the latest changes</h4><h4 id="2-create-a-feature-branch-for-your-new-runbook">2. Create a feature branch for your new runbook</h4><h4 id="3-cd-runbooks">3. <code>cd runbooks</code></h4><h4 id="4-run-make-server-to-start-a-development-webserver-to-view-your-changes">4. Run <code>make server</code> to start a development webserver to view your changes</h4><h4 id="5-add-your-runbook-as-a-new-file-in-the-source-directory">5. Add your runbook as a new file in the [source] directory</h4>
+
 <ul>
-<li>Your filename must match <code>*.html.md.erb</code></li>
-<li>Your file must have a header section like this</li>
+<li><code>git pull</code> to get the latest changes</li>
+<li>Create a feature branch for your new runbook</li>
+<li><code>cd runbooks</code></li>
+<li>Run <code>bundle install</code>, <code>bundle exec middleman server</code> to start a development webserver to view your changes</li>
+<li><p>Add your runbook as a new file in the [source] directory</p></li>
+<li><p>Your filename must match <code>*.html.md.erb</code></p></li>
+<li><p>Your file must have a header section like this</p></li>
 </ul>
 <div class="highlight"><pre class="highlight plaintext"><code>---
 title: Add a new runbook
@@ -1358,17 +1363,17 @@ review_in: 3 months
 </code></pre></div><h4 id="6-push-your-feature-branch-and-raise-a-pr">6. Push your feature branch and raise a PR</h4><h4 id="7-merge-your-pr-and-delete-your-feature-branch">7. Merge your PR and delete your feature branch</h4><p>CircleCI will compile and deploy a new version of the runbooks guide, with your changes.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-21">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-10-28">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 April 2020.
+      This page was last reviewed on 28 July 2020.
 
-        It needs to be reviewed again on 21 July 2020
+        It needs to be reviewed again on 28 October 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 July 2020
+      This page was set to be reviewed before 28 October 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
