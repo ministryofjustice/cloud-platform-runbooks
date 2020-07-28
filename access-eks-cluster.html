@@ -1342,8 +1342,7 @@
 <li>Make sure you&rsquo;ve access to Cloud Platform AWS account</li>
 <li>Set your environment variables</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>    export KOPS_STATE_STORE=s3://cloud-platform-kops-state
-    export AWS_PROFILE=moj-cp
+<div class="highlight"><pre class="highlight plaintext"><code>    export AWS_PROFILE=moj-cp
 </code></pre></div><h3 id="create-kubeconfig-using-aws-command">Create kubeconfig using aws command</h3><p>One way to create a kubeconfig file for the EKS cluster is by running the below aws command</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ export KUBECONFIG=~/.kube/config
 $ aws eks --region eu-west-2 update-kubeconfig --name &lt;cluster-name&gt;
@@ -1390,17 +1389,17 @@ users:
 </code></pre></div><p>Save the kubeconfig with a filename (eg.: ~/.kube/config_eks) and use the saved kubeconfig file to access the EKS cluster.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-07-27">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-10-28">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 April 2020.
+      This page was last reviewed on 28 July 2020.
 
-        It needs to be reviewed again on 27 July 2020
+        It needs to be reviewed again on 28 October 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 July 2020
+      This page was set to be reviewed before 28 October 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
