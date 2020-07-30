@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
       <meta name="robots" content="noindex">
 
-    <title>How We Work - Cloud Platform Runbooks</title>
+    <title>How to Investigate Divergence Errors - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/how-we-work.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/divergence-error.html">
 
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="How We Work" />
+      <meta property="og:title" content="How to Investigate Divergence Errors" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/how-we-work.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/divergence-error.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="How We Work - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/how-we-work.html" />
+      <meta property="twitter:title" content="How to Investigate Divergence Errors - Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/divergence-error.html" />
 
     
   </head>
@@ -1343,58 +1343,70 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="how-we-work">How We Work</h1><p>This page describes the tasks and duties of members of the Cloud Platform (CP) team, and explains some of our working practices.</p>
-<h2 id="getting-help">Getting Help</h2><p>If you need help at any point, don&rsquo;t hesitate to ask the team. Among other things, you can:</p>
+              <h1 id="how-to-investigate-divergence-errors">How to Investigate Divergence Errors</h1><p>The <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/divergence">divergence pipelines</a> alert us if the state of the cluster does not match the source code in our git repositories.</p>
+<p>Usually, the pipeline failure will include the <code>terraform plan</code> output that explains exactly what has diverged.</p>
+<h2 id="reproduce-the-plan">Reproduce the plan</h2><p>To run the same <code>terraform plan</code> command as the pipeline does:</p>
 
 <ul>
-<li>Post in #cloud-platform explaining the problem</li>
-<li>Post in #cloud-platform to ask for someone to pair-program with you</li>
-<li>Mention the issue during the daily standup</li>
-</ul>
-<h2 id="the-board-tickets">The Board / Tickets</h2><p>We use a kanban process to manage our backlog of work on this <a href="https://app.zenhub.com/workspaces/cloud-platform-team-5ccb0b8a81f66118c983c189/board">zenhub board</a>, which aggregates GitHub Issues from the various CP team repositories.</p>
-<p>We work in two-week sprints, and the process of getting work done should look like this:</p>
+<li>Ensure you have the following environment variables set:
 
 <ul>
-<li>Assign the topmost ticket (i.e. github issue) of the &ldquo;This Sprint&rdquo; column to yourself, and move it to the &ldquo;In Progress&rdquo; column</li>
-<li>Let the team know what you&rsquo;re working on by posting in the <code>#cloud-platform</code> slack channel</li>
-<li>Create a new branch in each affected github repository and make whatever changes are necessary</li>
-<li>Raise a pull request (PR), and get at least one other CP team member to review your changes</li>
-<li>After your PR has been approved, merge it and, if necessary, apply your changes using terraform or whatever else is required to apply your change to our infrastructure</li>
-<li>Close the github issue, and move on to the next ticket</li>
+<li><code>AWS_ACCESS_KEY_ID</code></li>
+<li><code>AWS_SECRET_ACCESS_KEY</code></li>
+</ul></li>
+<li>Start in a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure</a> repo</li>
+<li><code>cd</code> into the directory matching the pipeline which is failing:</li>
 </ul>
-<h3 id="adding-tickets">Adding tickets</h3><p>Anyone in the team is encouraged to add new tickets at any time. So if you think of something we ought to do, please <a href="https://github.com/ministryofjustice/cloud-platform/issues/new/choose">raise a ticket</a> for it.</p>
-<h3 id="making-changes-to-code">Making changes to code</h3><p>Please read these <a href="https://ministryofjustice.github.io/technical-guidance/guides/using-git">technical guidelines</a> for how we prefer to work on code.</p>
-<h3 id="reviewing-merging-prs">Reviewing/Merging PRs</h3>
+<div class="table-container">
+        <table>
+          <tr>
+<th>Pipeline</th>
+<th>Directory</th>
+</tr>
+<tr>
+<td>divergence-global-iam</td>
+<td>terraform/cross-account-IAM</td>
+</tr>
+<tr>
+<td>divergence-kops</td>
+<td>terraform/cloud-platform</td>
+</tr>
+<tr>
+<td>divergence-eks</td>
+<td>terraform/cloud-platform-eks</td>
+</tr>
+<tr>
+<td>divergence-networking</td>
+<td>terraform/cloud-platform-network</td>
+</tr>
+<tr>
+<td>divergence-k8s-components</td>
+<td>terraform/cloud-platform-components</td>
+</tr>
+
+        </table>
+      </div>
 <ul>
-<li>Whoever raises a PR is responsible for getting someone to review it, and for merging it after it has been approved</li>
-<li>Please be pro-active about reviewing other team members&rsquo; PRs</li>
-<li>When reviewing a PR, please add a &ldquo;reaction&rdquo; emoji to the corresponding slack message, so that other team members know you&rsquo;re doing so. This avoids duplicated effort. We tend to use 👀 to show we&rsquo;re reviewing a PR, and/or ✔ when we&rsquo;ve approved it.</li>
+<li>Check you&rsquo;re using the correct terraform workspace (e.g. <code>terraform workspace select live-1</code>)</li>
+<li>Check you&rsquo;re targeting the correct kubernetes cluster, by running <code>kubectl cluster-info</code></li>
+<li>Run the terraform plan</li>
 </ul>
-<h2 id="the-hammer-of-justice">The 🔨 Hammer of Justice</h2><p>The origin of the name is lost, but it sounds a lot more fun than &ldquo;support manager&rdquo; 😏</p>
-<p>We designate one member of the team to be the hammer on each working day. Please volunteer when you feel comfortable, so that we all take a turn.</p>
-<p>The main responsibility of the hammer is to monitor the <code>#ask-cloud-platform</code> slack channel, and ensure that any queries are handled, and that users&rsquo; PRs against the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a> are reviewed in a timely fashion.</p>
-<p>It is <strong>not</strong> the hammer&rsquo;s job to <strong>do</strong> all of the work necessary to solve every query in the channel.</p>
-<p>It <strong>is</strong> the hammer&rsquo;s job to ensure that all queries are handled. This may involve asking other team members for help with particular queries where they have relevant expertise, or if there are more queries coming in than you can handle.</p>
-
-<blockquote>
-<p>Anyone can (and should) respond to queries in <code>#ask-cloud-platform</code>. You don&rsquo;t have to be the hammer to help.</p>
-</blockquote>
-<h2 id="documentation">Documentation</h2><p>Most of our user-facing documentation is in the <a href="https://user-guide.cloud-platform.service.justice.gov.uk">user guide</a>, and documentation for the team is in the <a href="https://runbooks.cloud-platform.service.justice.gov.uk">runbooks</a> site.</p>
-<p>There are also a lot of important <code>README.md</code> files like <a href="https://github.com/ministryofjustice/cloud-platform#ministry-of-justice-cloud-platform-master-repo">this one</a>, especially for our terraform modules. We also have code samples like <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/blob/main/example/rds.tf">this</a> for each of our terraform modules.</p>
-<p>It is important to keep all of this up to date as the underlying code changes, so please remember to factor this in when estimating and working on tickets.</p>
+<div class="highlight"><pre class="highlight shell"><code>terraform init
+terraform plan
+</code></pre></div><p>You should see the same differences as reported in the divergence pipeline.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-09-08">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-10-30">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 8 June 2020.
+      This page was last reviewed on 30 July 2020.
 
-        It needs to be reviewed again on 8 September 2020
+        It needs to be reviewed again on 30 October 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 8 September 2020
+      This page was set to be reviewed before 30 October 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1404,8 +1416,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/how-we-work.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'How%20We%20Work'&amp;body=Problem%20with%20'How%20We%20Work'%20(https://runbooks.cloud-platform.service.justice.gov.uk/how-we-work.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/divergence-error.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'How%20to%20Investigate%20Divergence%20Errors'&amp;body=Problem%20with%20'How%20to%20Investigate%20Divergence%20Errors'%20(https://runbooks.cloud-platform.service.justice.gov.uk/divergence-error.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
