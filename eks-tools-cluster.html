@@ -229,6 +229,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/add-concourse-to-cluster.html#add-concourse-to-a-test-cluster"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="/add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="/add-concourse-to-cluster.html#process"><span>Process</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/changes-in-cloudplatform.html#change-process-in-cloud-platform"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -245,19 +258,6 @@
       </li>
       <li>
         <a href="/changes-in-cloudplatform.html#communications"><span>Communications</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/add-concourse-to-cluster.html#add-concourse-to-a-test-cluster"><span>Add Concourse to a test cluster</span></a>
-    <ul>
-      <li>
-        <a href="/add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="/add-concourse-to-cluster.html#process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -790,11 +790,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources"><span>Manually Delete Namespace Resources</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch"><span>Remove data from Elasticsearch</span></a>
     <ul>
       <li>
@@ -810,6 +805,11 @@
         <a href="/remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
       </li>
     </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/manually-delete-namespace-resources.html#manually-delete-namespace-resources"><span>Manually Delete Namespace Resources</span></a>
   </li>
 </ul>
 <ul>
@@ -920,9 +920,6 @@
             <a href="/eks-tools-cluster.html#4-delete-the-eks-cluster"><span>4. Delete the EKS cluster</span></a>
           </li>
         </ul>
-      </li>
-      <li>
-        <a href="/eks-tools-cluster.html#todo"><span>TODO</span></a>
       </li>
     </ul>
   </li>
@@ -1345,6 +1342,11 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1><p>For the time being EKS is only used for the manager cluster, it mainly holds Cloud Platform concourse CI.</p>
 <p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong> (EKS or kOps). Each one creates a unique Route53 hostzone which is unique to the name</p>
+<p>You can create a new EKS test cluster using the <code>create-cluster</code> script.</p>
+<p>Execute the script, by giving the <code>-k eks or --kind eks</code> option and the desired name of your new cluster. e.g.:</p>
+<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> mogaal-eks <span class="nt">--kind</span> eks
+</code></pre></div><p>Check the [create a cluster] runbook for pre-requisites and environment variables to run the script.</p>
+<p>Alternatively, if you need more control over the test cluster parameters, or you just prefer to do it manually, the rest of this document describes the process.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <ul>
 <li>Make sure you have access to Cloud Platform AWS account</li>
@@ -1399,23 +1401,20 @@ $ terraform workspace select &lt;clusterName e.g. tools-cluster-eks&gt;
 $ terraform destroy
 $ terraform workspace select default
 $ terraform workspace delete &lt;clusterName&gt;
-</code></pre></div><h2 id="todo">TODO</h2>
-<ul>
-<li>It would be nice to have similar script to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/create-cluster.rb"><code>create-cluster.rb</code></a> (or add to it support for EKS) that creates the whole process in one command.</li>
-</ul>
+</code></pre></div><p><a href="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html#create-a-new-cluster">create a cluster</a></p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-11-04">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-11-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 4 August 2020.
+      This page was last reviewed on 6 August 2020.
 
-        It needs to be reviewed again on 4 November 2020
+        It needs to be reviewed again on 6 November 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 4 November 2020
+      This page was set to be reviewed before 6 November 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
