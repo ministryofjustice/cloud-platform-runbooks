@@ -1343,9 +1343,9 @@
               <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1><p>For the time being EKS is only used for the manager cluster, it mainly holds Cloud Platform concourse CI.</p>
 <p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong> (EKS or kOps). Each one creates a unique Route53 hostzone which is unique to the name</p>
 <p>You can create a new EKS test cluster using the <code>create-cluster</code> script.</p>
-<p>Execute the script, by giving the <code>-k eks or --kind eks</code> option and the desired name of your new cluster. e.g.:</p>
+<p>Execute the script, by giving the <code>-k eks</code> or <code>--kind eks</code> option and the desired name of your new cluster. e.g.:</p>
 <div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> mogaal-eks <span class="nt">--kind</span> eks
-</code></pre></div><p>Check the [create a cluster] runbook for pre-requisites and environment variables to run the script.</p>
+</code></pre></div><p>Check the [create a cluster][create a cluster] runbook for pre-requisites and environment variables to run the script.</p>
 <p>Alternatively, if you need more control over the test cluster parameters, or you just prefer to do it manually, the rest of this document describes the process.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <ul>
