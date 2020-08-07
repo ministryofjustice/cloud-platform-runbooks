@@ -176,10 +176,18 @@
     <a href="/incident-log.html#incident-log"><span>Incident Log</span></a>
     <ul>
       <li>
+        <a href="/incident-log.html#august-2020"><span>August 2020</span></a>
+        <ul>
+          <li>
+            <a href="/incident-log.html#incident-on-2020-08-04-17-13-utc"><span>Incident on 2020-08-04  17:13 UTC</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="/incident-log.html#april-2020"><span>April 2020</span></a>
         <ul>
           <li>
-            <a href="/incident-log.html#incident-on-2020-04-215-10-58-utc"><span>Incident on 2020-04-215 10:58 UTC</span></a>
+            <a href="/incident-log.html#incident-on-2020-04-15-10-58-utc"><span>Incident on 2020-04-15 10:58 UTC</span></a>
           </li>
         </ul>
       </li>
@@ -1340,9 +1348,31 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="incident-log">Incident Log</h1><h2 id="april-2020">April 2020</h2><h3 id="incident-on-2020-04-215-10-58-utc">Incident on 2020-04-215 10:58 UTC</h3>
+              <h1 id="incident-log">Incident Log</h1><h2 id="august-2020">August 2020</h2><h3 id="incident-on-2020-08-04-17-13-utc">Incident on 2020-08-04  17:13 UTC</h3>
 <ul>
-<li><p><strong>Status</strong>: Resolved at 2020-04-215 15:09 UTC</p></li>
+<li><p><strong>Status</strong>: Resolved at 2020-08-05 16:16 UTC</p></li>
+<li><p><strong>Incident</strong>: Integration tests failed for cert-manager, apply pipeline failed showing it doesnot have permissions and
+divergence pipeline shows drift for live-1 components</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>Increased risk for cluster failure because some of the components doesnot have the correct configuration needed for the <code>live-1</code> production cluster</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>One of the engineers was creating a test EKS cluster and ran <code>terraform apply</code> on EKS components</li>
+<li>Without fully aware of the current cluster context, the <code>terraform apply</code> for EKS test cluster components has been applied to the <code>live-1</code> kops cluster</li>
+<li>This has changed the configuration of several resources in the <code>live-1</code> cluster </li>
+<li>Timeline : <a href="https://docs.google.com/document/d/1VrABxeHLMOnoM4yYoCi9N4N4zRY1SK1hTjrZ9s05zuc/edit?usp=sharing">https://docs.google.com/document/d/1VrABxeHLMOnoM4yYoCi9N4N4zRY1SK1hTjrZ9s05zuc/edit?usp=sharing</a></li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1596621864015400">https://mojdt.slack.com/archives/C514ETYJX/p1596621864015400</a>, </li>
+</ul></li>
+<li><p><strong>Resolution</strong>:
+Compare each resource configuration with the terraform state and applied the correct configuration from the code specific to kops cluster</p></li>
+</ul>
+<h2 id="april-2020">April 2020</h2><h3 id="incident-on-2020-04-15-10-58-utc">Incident on 2020-04-15 10:58 UTC</h3>
+<ul>
+<li><p><strong>Status</strong>: Resolved at 2020-04-15 15:09 UTC</p></li>
 <li><p><strong>Incident</strong>: After an upgrade of the Nginx ingresses, support for legacy TLS was dropped.</p></li>
 <li><p><strong>Impact</strong>:</p>
 
