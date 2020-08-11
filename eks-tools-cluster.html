@@ -1403,7 +1403,7 @@ $ terraform destroy
 $ terraform workspace select default
 $ terraform workspace delete &lt;clusterName&gt;
 </code></pre></div><p>Change directories and perform the following to destroy the EKS cluster, and delete the terraform workspace.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ cd ../cloud-platform-eks
+<div class="highlight"><pre class="highlight plaintext"><code>$ cd .. # working dir is now `cloud-platform-eks`
 $ terraform init
 $ terraform workspace select &lt;clusterName e.g. tools-cluster-eks&gt;
 $ terraform destroy
