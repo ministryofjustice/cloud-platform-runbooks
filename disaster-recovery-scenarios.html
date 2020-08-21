@@ -644,6 +644,38 @@
           </li>
         </ul>
       </li>
+      <li>
+        <a href="/disaster-recovery-scenarios.html#overwriting-kops-cluster-39-s-components-with-eks-components"><span>Overwriting KOPS cluster’s components with EKS components</span></a>
+        <ul>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#overwriting-kops-cluster-39-s-components-with-eks-components-impact"><span>Impact</span></a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#overwriting-kops-cluster-39-s-components-with-eks-components-possible-cause"><span>Possible Cause</span></a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#overwriting-kops-cluster-39-s-components-with-eks-components-restore-process"><span>Restore process</span></a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#reproducing-incident-steps"><span>Reproducing Incident Steps</span></a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#velero-backup"><span>Velero Backup</span></a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#apply-the-eks-components-to-the-kops-cluster"><span>Apply the EKS components to the KOPS cluster</span></a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#observations-of-incident"><span>Observations of Incident</span></a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#destroy-the-eks-components"><span>Destroy the EKS components</span></a>
+          </li>
+          <li>
+            <a href="/disaster-recovery-scenarios.html#re-apply-the-kops-components"><span>Re-apply the KOPS components</span></a>
+          </li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ul>
@@ -1587,7 +1619,155 @@ Node    &lt;node-name&gt;     master "&lt;node-name&gt;" is not ready
 
 Validation Failed
 </code></pre></div><h3 id="lost-or-corrupt-etcd-volume-restore-process">Restore process</h3><p>Restoring corrupt or lost etcd involves two steps: remove the unhealthy etcd member and replace the effected master node via kops. Covering both steps, we already have a <a href="https://runbooks.cloud-platform.service.justice.gov.uk/replacing-failed-master-node.html#replacing-a-failed-master-node">runbook</a>, follow it step by step to restore unhealthy etcd.</p>
+<h2 id="overwriting-kops-cluster-39-s-components-with-eks-components">Overwriting KOPS cluster&rsquo;s components with EKS components</h2><h3 id="overwriting-kops-cluster-39-s-components-with-eks-components-impact">Impact</h3><p>Certain components that are unique to EKS such as concourse will be introduced to the KOPS cluster. 
+A number of components will have specific annotations applied to them that are only applicable for an EKS cluster.</p>
+<h3 id="overwriting-kops-cluster-39-s-components-with-eks-components-possible-cause">Possible Cause</h3><p>The EKS components are applied whilst the <code>kubectl context</code> is set to a kops cluster.</p>
+<h3 id="overwriting-kops-cluster-39-s-components-with-eks-components-restore-process">Restore process</h3><p>Use <code>terraform destroy</code> to delete all existing components from the <code>cloud-platform-eks/components</code> folder and re-apply using <code>terraform apply</code> from the <code>cloud-platform-components</code> folder.</p>
+<p>Only those resources that are part of the state can be re-applied, however there are certain resources created by service teams such as certificates and resources created from CRDs that will not be restored by <code>terraform apply.</code>
+For these resources a Velero restore will have to be executed.</p>
+<h3 id="reproducing-incident-steps">Reproducing Incident Steps</h3><p>To test the recovery of the CRD resources, first ensure that they exist so that when recovering we can verify they are restored by Velero. Below are templates for each of the CRDs used.</p>
+<p>Service Monitor</p>
+<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: dr-test-service
+spec:
+  selector:
+    matchLabels:
+      app: dr-test-service
+  endpoints:
+  - port: http
+    interval: 15s
+</code></pre></div><p>Save the above yaml and execute into the desired namespace e.g <code>kubectl create -f &lt;FILE_NAME&gt;.yaml -n &lt;NAMESPACE&gt;</code></p>
+<p>Prometheus Rule</p>
+<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    role: alert-rules
+  name: prometheus-custom-rules-data-dev
+spec:
+  groups:
+  - name: node.rules
+    rules:
+    - alert: cica--Quota-Exceeded--dev
+      expr: 100 * kube_resourcequota{job="kube-state-metrics",type="used",namespace="&lt;NAMESPACE&gt;"} / ignoring(instance, job, type) (kube_resourcequota{job="kube-state-metrics",type="hard"} &gt; 0) &gt; 90
+      for: 5m
+      labels:
+        severity: cica-dev-dev
+      annotations:
+        message: Namespace {{ $labels.namespace }} is using {{ printf "%0.0f" $value}}% of its {{ $labels.resource }} quota.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree
+    - alert: cica--KubeJobFailed--dev
+      annotations:
+        message: Job {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobfailed
+      expr: kube_job_status_failed{job="kube-state-metrics",namespace="&lt;NAMESPACE&gt;"}  &gt; 0
+      for: 1m
+      labels:
+        severity: cica-dev-dev
+    - alert: cica--KubeletTooManyPods--dev
+      expr: kubelet_running_pod_count{job="kubelet",namespace="&lt;NAMESPACE&gt;"}
+        &gt; 0 * 0.9
+      for: 5m
+      labels:
+        severity: cica-dev-team
+      annotations:
+        message: Kubelet {{ $labels.instance }} is running {{ $value }} Pods, close to the
+          limit of 1 Test.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
+    - alert: cica-dev-Node-Disk-Space-Low
+      annotations:
+        message: A node is reporting low disk space below 10%. Action is required on a node.
+        runbook_url: https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/master/terraform/cloud-platform-components/resources/prometheusrule-alerts/Custom-Alerts.md#node-disk-space-low
+      expr: ((node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes) &lt; 10
+      for: 30m
+      labels:
+        severity: cica-dev-team
+    - alert: cica--KubeDeploymentReplicasMismatch--dev
+      annotations:
+       message: Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not matched the expected number of replicas for longer than an hour.
+       runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedeploymentreplicasmismatch
+      expr: kube_deployment_spec_replicas{job="kube-state-metrics",namespace="&lt;NAMESPACE&gt;"}
+        != kube_deployment_status_replicas_available{job="kube-state-metrics",namespace="&lt;NAMESPACE&gt;"}
+      for: 1h
+      labels:
+        severity: cica-dev-dev
 
+</code></pre></div><p>Replace the placeholder <code>&lt;NAMESPACE&gt;</code> with the namespace where this will will created.</p>
+<p>Save the above yaml and execute into the desired namespace e.g <code>kubectl create -f &lt;FILE_NAME&gt;.yaml -n &lt;NAMESPACE&gt;</code></p>
+<p>Certificate</p>
+<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: cert-manager.io/v1alpha3
+kind: Certificate
+metadata:
+  name: cert-dr-test
+spec:
+  secretName: dr-test-tls-certificate
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+  - helloworld-app-starter-pack.apps.&lt;CLUSTER_NAME&gt;.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>Save the above yaml and execute into the desired namespace e.g <code>kubectl create -f &lt;FILE_NAME&gt;.yaml -n &lt;NAMESPACE&gt;</code></p>
+<h3 id="velero-backup">Velero Backup</h3><p>Before destroying ensure you have taken a backup using velero.</p>
+<p><code>velero backup create my-app-backup01</code></p>
+<h3 id="apply-the-eks-components-to-the-kops-cluster">Apply the EKS components to the KOPS cluster</h3><p>1) Ensure you have access to both a test KOPS cluster and a EKS test cluster</p>
+<p>2) Ensure kubectl context is set to the KOPS cluster</p>
+<p>3) Browse to the <code>cloud-platform-infrastructure/terraform/cloud-platform-eks/components</code></p>
+<p>4) Ensure you are on the terraform workspace of the kops cluster</p>
+<p>4) Execute <code>terraform apply</code> (enter &lsquo;yes&rsquo; when prompted to confirm the apply)</p>
+<h3 id="observations-of-incident">Observations of Incident</h3><p>Once the EKS components have been applied to the KOPS cluster, the following changes to the cluster should be observed</p>
+
+<ul>
+<li><p>Following components are newly created in the kops cluster (unique to EKS)</p>
+
+<ul>
+<li>concourse</li>
+</ul></li>
+<li><p>Following components are modified:</p></li>
+</ul>
+<p>Cert-manager</p>
+<p>(1)</p>
+<p>The following annotation is applied to the deployment:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>iam.amazonaws.com/permitted : aws_iam_role.cert_manager.0.name
+</code></pre></div><p>(2)</p>
+<p>In ClusterIssuer resource the iam role is applied to the route53 within the solvers block:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>    solvers:
+    - selector: {}
+      dns01:
+        cnameStrategy: "Follow"
+        # Here we define a list of DNS-01 providers that can solve DNS challenges
+        route53:
+          region: eu-west-2
+          role: "${iam_role}"
+</code></pre></div><p>External DNS</p>
+<p>(1)</p>
+<p>Following annotations are applied to the external dns pods</p>
+<div class="highlight"><pre class="highlight plaintext"><code>podAnnotations:
+  iam.amazonaws.com/role: "${iam_role}"
+</code></pre></div><p>The following annotations are added to external dns deployment</p>
+<div class="highlight"><pre class="highlight plaintext"><code>  annotations:
+    eks.amazonaws.com/role-arn: "${eks_service_account}"  
+</code></pre></div><h3 id="destroy-the-eks-components">Destroy the EKS components</h3><p>The first step for recovery is to destroy what was applied from the same directory.</p>
+<p>Ensure you in the <code>cloud-platform-infrastructure/terraform/cloud-platform-eks/components</code> directory.</p>
+<p>Execute <code>terraform destroy -auto-approve</code></p>
+<h3 id="re-apply-the-kops-components">Re-apply the KOPS components</h3><p>Re-create the components but this time run <code>terraform apply -auto-approve</code> from the <code>...terraform/cloud-platform-components</code> directory</p>
+<p>After re-creating the components you may notice that the CRD resources and ingress certificates are still missing. To restore these run <code>velero restore...</code> as follows:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero backup get
+
+NAME                                       STATUS      CREATED                         EXPIRES   STORAGE   LOCATION   SELECTOR
+velero-backup-00000000000000              Completed   2020-03-30 12:00:37 +0100 BST     29d       default             &lt;none&gt;
+</code></pre></div><p>Using the backup name, you can now run a <code>velero restore...</code> command to restore the deleted resource.</p>
+<p>Restore command:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; 
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero restore create my-namespace-dev-restore --from-backup velero-backup-00000000000000
+</code></pre></div><p>Once completed, you should be able to see the CRD resources that were created earlier, above before the incident.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl get prometheusrules -n &lt;NAMESPACE&gt;
+kubectl get servicemonitors -n &lt;NAMESPACE&gt;
+kubectl get certificates -n &lt;NAMESPACE&gt;
+
+</code></pre></div>
 
               <div data-module='page-expiry' data-last-reviewed-on="2020-11-04">
     <div class='page-expiry--not-expired'>
