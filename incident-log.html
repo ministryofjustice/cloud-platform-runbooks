@@ -179,6 +179,9 @@
         <a href="/incident-log.html#august-2020"><span>August 2020</span></a>
         <ul>
           <li>
+            <a href="/incident-log.html#incident-on-2020-08-25-11-26-utc-connectivity-issues-with-eu-west-2a"><span>Incident on 2020-08-25 11.26 UTC - Connectivity issues with eu-west-2a</span></a>
+          </li>
+          <li>
             <a href="/incident-log.html#incident-on-2020-08-14-10-43-utc-ingress-controllers-crashlooping"><span>Incident on 2020-08-14  10.43 UTC - Ingress-controllers crashlooping</span></a>
           </li>
           <li>
@@ -1403,7 +1406,29 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="incident-log">Incident Log</h1><h2 id="august-2020">August 2020</h2><h3 id="incident-on-2020-08-14-10-43-utc-ingress-controllers-crashlooping">Incident on 2020-08-14  10.43 UTC - Ingress-controllers crashlooping</h3>
+              <h1 id="incident-log">Incident Log</h1><h2 id="august-2020">August 2020</h2><h3 id="incident-on-2020-08-25-11-26-utc-connectivity-issues-with-eu-west-2a">Incident on 2020-08-25 11.26 UTC - Connectivity issues with eu-west-2a</h3>
+<ul>
+<li><p><strong>Status</strong>: Resolved at 2020-08-25 12.30 UTC</p></li>
+<li><p><strong>Incident</strong>: The AWS  Availability Zones <code>eu-west-2a</code>, which contain some of our kubernetes nodes had an outage. API latency was elevated, some EC2 became unreachable and overall connectivity was unstable.</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>Two kubernetes nodes became unreachable</li>
+<li>No new node could be launched in eu-west-2a </li>
+<li>Kubernetes had issues talking to some of these nodes, preventing some API calls to succeed (Pods were not terminating)</li>
+<li>New pods were not able to pull their Docker images.</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>Pods and Nodes sitting in other Availability Zones (b &amp; c) were not impacted</li>
+<li>Slack threads: (Issue detected)[https://mojdt.slack.com/archives/C514ETYJX/p1598351210195200], (Incident Declared)[https://mojdt.slack.com/archives/C514ETYJX/p1598351210195200],</li>
+<li>We now have 25 pods in the cluster, instead of 21</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:
+The incident was mitigated by deploying more 2-4 nodes in healthy Availability Zones, manually deleting the non-responding pods ,and terminating the impacted nodes</p></li>
+</ul>
+<h3 id="incident-on-2020-08-14-10-43-utc-ingress-controllers-crashlooping">Incident on 2020-08-14  10.43 UTC - Ingress-controllers crashlooping</h3>
 <ul>
 <li><p><strong>Status</strong>: Resolved at 2020-08-14 11:38 UTC</p></li>
 <li><p><strong>Incident</strong>: There are 6 replicas of the ingress-controller pod and 2 out of the 6 were crashlooping. A restart of the pods did not resolve the issue. As per a normal runbook process, a recycle of all pods was required. However after restarting pods 4 and 5, they also started to crashloop. The risk was when restarting pods 5 and 6 -  all 6 pods could be down and all ingresses down for the cluster.</p></li>
