@@ -176,6 +176,14 @@
     <a href="/incident-log.html#incident-log"><span>Incident Log</span></a>
     <ul>
       <li>
+        <a href="/incident-log.html#september-2020"><span>September 2020</span></a>
+        <ul>
+          <li>
+            <a href="/incident-log.html#incident-on-2020-09-07-12-54-utc-all-users-are-unable-to-create-new-ingress-rules"><span>Incident on 2020-09-07 12.54 UTC - All users are unable to create new ingress rules.</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="/incident-log.html#august-2020"><span>August 2020</span></a>
         <ul>
           <li>
@@ -1424,7 +1432,32 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="incident-log">Incident Log</h1><h2 id="august-2020">August 2020</h2><h3 id="incident-on-2020-08-25-11-26-utc-connectivity-issues-with-eu-west-2a">Incident on 2020-08-25 11.26 UTC - Connectivity issues with eu-west-2a</h3>
+              <h1 id="incident-log">Incident Log</h1><h2 id="september-2020">September 2020</h2><h3 id="incident-on-2020-09-07-12-54-utc-all-users-are-unable-to-create-new-ingress-rules">Incident on 2020-09-07 12.54 UTC - All users are unable to create new ingress rules.</h3>
+<ul>
+<li><p><strong>Status</strong>: Resolved at 2020-09-07 15.56 UTC</p></li>
+<li><p><strong>Incident</strong>: The Ingress API refused 100% of POST requests.</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>If a user were to provision a new service, they would be unable to create an ingress into the cluster.</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li><a href="https://github.com/ministryofjustice/cloud-platform-terraform-teams-ingress-controller/compare/0.0.9...0.1.0">Version 0.1.0</a> of the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-teams-ingress-controller">teams ingress controller module</a> enabled the creation of a <code>validationwebhookconfiguration</code> resource.</li>
+<li>By enabling this option we created a single point of failure for all ingress-controller pods in the <code>ingress-controller</code> namespace.</li>
+<li>A new 0.1.0 ingress controller failed to create in the &ldquo;live-1&rdquo; cluster due to AWS resource limits.</li>
+<li>Validation webhook stopped new rules from creating, with the error:
+<code>
+Error from server (InternalError): error when creating &quot;ingress.yaml&quot;: Internal error occurred: failed calling webhook &quot;validate.nginx.ingress.kubernetes.io&quot;: Post https://offender-categorisation-prod-nx-controller-admission.ingress-controllers.svc:443/extensions/v1beta1/ingresses?timeout=30s: x509: certificate signed by unknown authority
+</code></li>
+<li>Initial investigation thread: https://mojdt.slack.com/archives/C514ETYJX/p1599478794246900</li>
+<li>Incident declared: https://mojdt.slack.com/archives/C514ETYJX/p1599479640251900</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:
+The team manually removed the all the additional admission controllers created by 0.1.0. They then removed the admission webhook from the module and created a new release (0.1.1). All ingress modules currently on 0.1.0 were upgraded to the new release 0.1.1.</p></li>
+</ul>
+<h2 id="august-2020">August 2020</h2><h3 id="incident-on-2020-08-25-11-26-utc-connectivity-issues-with-eu-west-2a">Incident on 2020-08-25 11.26 UTC - Connectivity issues with eu-west-2a</h3>
 <ul>
 <li><p><strong>Status</strong>: Resolved at 2020-08-25 12.30 UTC</p></li>
 <li><p><strong>Incident</strong>: The AWS  Availability Zones <code>eu-west-2a</code>, which contain some of our kubernetes nodes had an outage. API latency was elevated, some EC2 became unreachable and overall connectivity was unstable.</p></li>
