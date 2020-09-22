@@ -1455,12 +1455,15 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="recover-from-an-etcd-failure">Recover from an etcd failure</h1><p>The intention of this document is to provide you with instruction on how to recover from an etcd failure. Etcd failures can include data corruption, volume deletion or hardware malfunctions which cause a myriad of issues on Kubernetes master nodes. By following the instructions in this document you should be able to:
-- Identify a failed etcd instance.
-- Remove the failed etcd instance from the cluster.
-- Backup the etcd EBS volume and perform a local data snapshot.
-- Add a new master with a new etcd instance.
-- Validate the cluster following etcd replacement.</p>
+              <h1 id="recover-from-an-etcd-failure">Recover from an etcd failure</h1><p>The intention of this document is to provide you with instruction on how to recover from an etcd failure. Etcd failures can include data corruption, volume deletion or hardware malfunctions which cause a myriad of issues on Kubernetes master nodes. By following the instructions in this document you should be able to:</p>
+
+<ul>
+<li>Identify a failed etcd instance.</li>
+<li>Remove the failed etcd instance from the cluster.</li>
+<li>Backup the etcd EBS volume and perform a local data snapshot.</li>
+<li>Add a new master with a new etcd instance.</li>
+<li>Validate the cluster following etcd replacement.</li>
+</ul>
 <h2 id="pre-requisites">Pre-requisites</h2><p>Before you begin, there are a few pre-reqs:</p>
 
 <ul>
@@ -1488,7 +1491,6 @@ Machine i-046ed8d94d65719a6 machine <span class="s2">"i-046ed8d94d65719a6"</sp
 <p>Make sure it is a master node by looking for the Instance ID in the Amazon EC2 console, on the Instances page. The instance ID should be something like:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>master-&lt;availability_zone&gt;.masters.&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk
 </code></pre></div><h2 id="remove-the-unhealthy-etcd-member">Remove the unhealthy etcd member.</h2><p>As per <a href="https://github.com/etcd-io/etcd/blob/master/Documentation/faq.md#should-i-add-a-member-before-removing-an-unhealthy-member">this guidance</a> remove the unhealthy etcd member (i.e. the failed master node) first.</p>
-<p>Identify and remove the unhealthy member by accessing any of the working master nodes using SSH, via the bastion instance.</p>
 <p>Open your terminal and execute the following command to exec onto an etcd pod:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>CONTAINER=$(kubectl get pods -n kube-system | grep etcd-manager-main | head -n 1 | awk '{print $1}')
 kubectl exec -it -n kube-system $CONTAINER bash
