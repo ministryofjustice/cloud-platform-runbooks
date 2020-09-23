@@ -217,10 +217,10 @@
           </li>
         </ul>
       </li>
+      <li>
+        <a href="/incident-log.html#about-this-incident-log"><span>About this incident log</span></a>
+      </li>
     </ul>
-  </li>
-  <li>
-    <a href="/incident-log.html#about-this-incident-log"><span>About this incident log</span></a>
   </li>
 </ul>
 <ul>
@@ -1646,10 +1646,10 @@ Compare each resource configuration with the terraform state and applied the cor
 
 <ul>
 <li>IE11 users could not access any services running on the Cloud Platform</li>
-<li>A few teams came forward with the issue :
-&mdash; LAA
-&mdash; Correspondence Tool
-&mdash; Prisoner Money</li>
+<li>A few teams came forward with the issue :</li>
+<li>LAA</li>
+<li>Correspondence Tool</li>
+<li>Prisoner Money</li>
 </ul></li>
 <li><p><strong>Context</strong>:</p>
 
@@ -1740,10 +1740,15 @@ We suspect an intermittent &amp; external networking issue to be the cause of th
 <li><p><strong>Time to repair</strong>: 16m</p></li>
 <li><p><strong>Time to recovery</strong>: 22m</p></li>
 <li><p><strong>Identified</strong>: Pingdom reported Concourse (concourse.cloud-platform.service.justice.gov.uk) down.</p></li>
-<li><p><strong>Context</strong>: One of the engineers was deleting old clusters (he ran <code>terraform destroy</code>) and he wasn&rsquo;t fully aware in which <em>terraform workspace</em> was working on. Using <code>terraform destroy</code>, EKS nodes/workers were deleted from the manager cluster.</p></li>
-<li><p><strong>Resolution</strong>: Using terraform (<code>terraform apply -var-file vars/manager.tfvars</code> specifically) the cluster nodes where created and the infrastructure aligned? to the desired terraform state</p></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>One of the engineers was deleting old clusters (he ran <code>terraform destroy</code>) and he wasn&rsquo;t fully aware in which <em>terraform workspace</em> was working on. Using <code>terraform destroy</code>, EKS nodes/workers were deleted from the manager cluster.</li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1581508273080900">https://mojdt.slack.com/archives/C514ETYJX/p1581508273080900</a></li>
+<li><strong>Resolution</strong>: Using terraform (<code>terraform apply -var-file vars/manager.tfvars</code> specifically) the cluster nodes where created and the infrastructure aligned? to the desired terraform state</li>
+</ul></li>
 </ul>
-<h1 id="about-this-incident-log">About this incident log</h1><p>The purpose of publishing this incident log:</p>
+<h2 id="about-this-incident-log">About this incident log</h2><p>The purpose of publishing this incident log:</p>
 
 <ul>
 <li>for the Cloud Platform team to learn from incidents</li>
@@ -1755,7 +1760,7 @@ We suspect an intermittent &amp; external networking issue to be the cause of th
 <ul>
 <li>The words used in the timeline of an incident: fault occurs, team becomes aware (of something bad), incident declared (the team acknowledges and has an idea of the impact), repaired (system is fully functional), resolved (fully functional and future failures are prevented)</li>
 <li><em>Incident time</em> - The start of the failure (Before March 2020 it was the time the incident was declared)</li>
-<li><em>Time to Repair</em> - (Used only up to March 2020) The time between the incident being declared and when service is fully restored. Only includes <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/reference/operational-processes.html#hours-of-support">Hours of Support</a>.</li>
+<li><em>Time to Repair</em> - The time between the incident being declared and when service is fully restored. Only includes <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/reference/operational-processes.html#hours-of-support">Hours of Support</a>.</li>
 <li><em>Time to Resolve</em> - The time between when the fault occurs and when system is fully functional (and include any immediate work done to prevent future failures). Only includes <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/reference/operational-processes.html#hours-of-support">Hours of Support</a>. This is a broader metric of incident response performance, compared to Time to Repair.</li>
 </ul>
 <p>Source: <a href="https://www.atlassian.com/incident-management/kpis/common-metrics">Atlassian</a></p>
