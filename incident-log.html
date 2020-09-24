@@ -179,6 +179,9 @@
         <a href="/incident-log.html#q3-2020-july-september"><span>Q3 2020 (July - September)</span></a>
         <ul>
           <li>
+            <a href="/incident-log.html#incident-on-2020-09-22-18-27-some-cloud-platform-components-destroyed"><span>Incident on 2020-09-22 18:27 - Some cloud-platform components destroyed.</span></a>
+          </li>
+          <li>
             <a href="/incident-log.html#incident-on-2020-09-07-12-54-all-users-are-unable-to-create-new-ingress-rules"><span>Incident on 2020-09-07 12:54 - All users are unable to create new ingress rules</span></a>
           </li>
           <li>
@@ -1462,8 +1465,48 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="incident-log">Incident Log</h1><h2 id="q3-2020-july-september">Q3 2020 (July - September)</h2>
 <ul>
-<li><p><strong>Mean Time To Repair</strong>: 1h 15m</p></li>
-<li><p><strong>Mean Time To Resolve</strong>: 9h 39m</p></li>
+<li><p><strong>Mean Time To Repair</strong>: 1h 8m</p></li>
+<li><p><strong>Mean Time To Resolve</strong>: 8h 37m</p></li>
+</ul>
+<h3 id="incident-on-2020-09-22-18-27-some-cloud-platform-components-destroyed">Incident on 2020-09-22 18:27 - Some cloud-platform components destroyed.</h3>
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected 2020-09-22 18:27</li>
+<li>Incident declared 2020-09-22 18:40</li>
+<li>Repaired 2020-09-22 19:05</li>
+<li>Resolved 2020-09-14 21:41</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 38m</p></li>
+<li><p><strong>Time to resolve</strong>: 3h 14m</p></li>
+<li><p><strong>Incident</strong>: Some components of our production kubernetes cluster (live-1) were accidentally deleted, this caused some services running on cloud-platform gone down.</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>Some users could not access services running on the Cloud Platform.</li>
+<li>Prometheus/alertmanager/grafana is not accessible.</li>
+<li>kibana is not accessible.</li>
+<li>Cannot create new certificates.</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>Test cluster deletion script triggered to delete a test cluster, kube context incorrectly targeted the live-1 cluster and deleted some cloud-platform components.</li>
+<li>Components include default ingress-controller, prometheus-operator, logging, cert-manager, kiam and external-dns. As ingress-controller gone down some users could not access services running on the Cloud Platform.</li>
+<li>Formbuilder services not accessible even after ingress-controller is restored.</li>
+<li>Timeline: <a href="https://docs.google.com/document/d/1nmhFcLkOEmyvN2E7PwUdo8l2O9EDpVx7c8-4d9pMBSg/edit#heading=h.ttkde0ugh32m">Timeline</a> for the incident.</li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1600710001173700">Slack thread</a> for the incident.</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:</p>
+
+<ul>
+<li>Team prioritised to restore default ingress controller, ingress-controller has a dependency of external-dns to update route53 records with<br>
+new NLB and kiam for providing AWSAssumeRole for external-dns, these components (ingress-controller, external-dns and kiam) got restored successfully. Services start to come back up.</li>
+<li>Formbuilder services are still pointing to the old NLB (network load balancer before ingress got replaced), reason for this is route53 TXT records was set incorrect owner field, so external-dns couldn&rsquo;t update the new NLB information in the A record. Team fixed the owner information in the TXT record, external DNS updated formbuilder route53 records to point to new NLB. Formbuilder services is up and running.</li>
+<li>Team did target apply to restore remaining components. </li>
+<li>Apply pipleine run to restore all the certificates, servicemonitors and prometheus-rules from the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environment repository</a>.</li>
+</ul></li>
 </ul>
 <h3 id="incident-on-2020-09-07-12-54-all-users-are-unable-to-create-new-ingress-rules">Incident on 2020-09-07 12:54 - All users are unable to create new ingress rules</h3>
 <ul>
