@@ -179,6 +179,9 @@
         <a href="/incident-log.html#q3-2020-july-september"><span>Q3 2020 (July - September)</span></a>
         <ul>
           <li>
+            <a href="/incident-log.html#incident-on-2020-09-28-13-10-termination-of-nodes-updating-kops-instance-group"><span>Incident on 2020-09-28 13:10 - Termination of nodes updating kops Instance Group.</span></a>
+          </li>
+          <li>
             <a href="/incident-log.html#incident-on-2020-09-21-18-27-some-cloud-platform-components-destroyed"><span>Incident on 2020-09-21 18:27 - Some cloud-platform components destroyed.</span></a>
           </li>
           <li>
@@ -1478,8 +1481,43 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="incident-log">Incident Log</h1><h2 id="q3-2020-july-september">Q3 2020 (July - September)</h2>
 <ul>
-<li><p><strong>Mean Time To Repair</strong>: 1h 8m</p></li>
-<li><p><strong>Mean Time To Resolve</strong>: 8h 37m</p></li>
+<li><p><strong>Mean Time To Repair</strong>: 59m</p></li>
+<li><p><strong>Mean Time To Resolve</strong>: 7h 22m</p></li>
+</ul>
+<h3 id="incident-on-2020-09-28-13-10-termination-of-nodes-updating-kops-instance-group">Incident on 2020-09-28 13:10 - Termination of nodes updating kops Instance Group.</h3>
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected 2020-09-28 13:14</li>
+<li>Incident declared 2020-09-28 14:05</li>
+<li>Repaired 2020-09-28 14:20</li>
+<li>Resolved 2020-09-28 14:44</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 15m</p></li>
+<li><p><strong>Time to resolve</strong>: 1h 30m</p></li>
+<li><p><strong>Incident</strong>: Periods of downtime while the cloud-platform team was applying per Availability Zone instance groups for worker nodes change in live-1. Failures caused mainly due to termination of a group of 9 nodes and letting kops to handle the cycling of pods, which took very long time for the new containers to be created in the new node group.</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>Some users noticed cycling of pods but taking a long time for the containers to be created.</li>
+<li>Prometheus/alertmanager/kibana health check failures.</li>
+<li>Users noticed short-lived pingdom alerts &amp; health check failures.</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>kops node group (nodes-1.16.13) updated minSize from 25 to 18 nodes and ran kops update cluster &ndash;yes, this terminated 9 nodes from existing worker node  group (nodes-1.16.13).</li>
+<li>Pods are in pending status for a long time waiting to be scheduled in the new nodes.</li>
+<li>Teams using their own ingress-controller have 1 replica for non-prod namespaces, causing some pingdom alerts &amp; health check failures.</li>
+<li>Timeline: <a href="https://docs.google.com/document/d/1ysz7KYjFrZ7YJ3QhyWQGvbgoPW8D0XHJpMgfJB6g2hc/edit#heading=h.ttkde0ugh32m">Timeline</a> for the incident.</li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1601298352147700">Slack thread</a> for the incident.</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:</p>
+
+<ul>
+<li>This is resolved by cordoning and draining nodes one by one before deleting the instance group.</li>
+</ul></li>
 </ul>
 <h3 id="incident-on-2020-09-21-18-27-some-cloud-platform-components-destroyed">Incident on 2020-09-21 18:27 - Some cloud-platform components destroyed.</h3>
 <ul>
