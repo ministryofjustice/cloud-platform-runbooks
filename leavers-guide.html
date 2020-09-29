@@ -1267,9 +1267,6 @@
           <li>
             <a href="/leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
           </li>
-          <li>
-            <a href="/leavers-guide.html#template-deploy-cloud-platforms"><span>Template Deploy - Cloud Platforms</span></a>
-          </li>
         </ul>
       </li>
     </ul>
@@ -1490,10 +1487,6 @@
 <ul>
 <li><a href="https://justice-cloud-platform.eu.auth0.com/samlp/bnqndz9kxf7wDge8ndCWyVwIX1OEElYf">moj-cp</a></li>
 <li>mojdsd</li>
-<li>moj-cla-dev</li>
-<li>moj-intra</li>
-<li>moj-manchester-traffic-dev</li>
-<li>moj-pq</li>
 </ul>
 <p>Use the link above to login to the moj-cp account. For the others, you will need to login via the <a href="https://console.aws.amazon.com/">AWS console</a></p>
 <h4 id="2-remove-their-access-to">2/ Remove their access to:</h4>
@@ -1510,150 +1503,19 @@
 <li><p>Email the VPN provider requesting removal of their VPN access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
 </ul>
 <h4 id="3-remove-them-from-the-support-rota-if-applicable-pagerduty">3/ Remove them from the support rota (if applicable). <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">Pagerduty</a></h4><h4 id="4-remove-them-from-platforms-digital-justice-gov-uk-google-group-if-applicable-link-here">4/ Remove them from platforms@digital.justice.gov.uk google group (if applicable). <a href="https://groups.google.com/a/digital.justice.gov.uk/forum/#!managemembers/platforms/members/active">Link here</a>  </h4><p>Reference <a href="mailto:platforms@digital.justice.gov.uk">platforms@digital.justice.gov.uk</a></p>
-<h3 id="template-deploy-cloud-platforms">Template Deploy - Cloud Platforms</h3><p>Remove this section once it is no longer needed</p>
-<h4 id="1-remove-them-from-moj-organisation-membership-on-github-whilst-it-is-digital-services-responsibility-i-prefer-to-do-this-to-enable-you-carry-out-the-fab-salt-ssh-key-actions-following-at-2-below">1/ Remove them from MoJ organisation membership on GitHub (Whilst it is Digital Services responsibility - I prefer to do this to enable you carry out the fab salt.ssh_key actions following at <a href="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html#2-update-all-deploy-repos-to-revoke-their-user-ssh-access-using-the-salt-state">2/ below</a>.</h4><h4 id="2-update-all-deploy-repos-to-revoke-their-user-ssh-access-using-the-salt-state">2/ Update all deploy repos to revoke their user ssh access using the salt state.</h4><h5 id="a-carry-out-fabric-command-on-each-of-following-deploy-repos-as-at-30-04-2019">a. Carry out fabric command on each of following deploy repos (as at 30/04/2019)</h5><p>**Note for all of the following fabric commands carry out &ldquo;salt.ssh_keys&rdquo; &ldquo;vendor_upload&rdquo; rather than an &ldquo;update&rdquo; command this enables you to ssh onto each instance and carry out an update to the ssh users without interruption to the applications by restarting the containers:</p>
-<p>**consider the use of the Dockerfile fabric image  instead of the following fabric commands. Personally I could not get them to function correctly for &ldquo;salt.ssh_keys&rdquo; &ldquo;vendor_upload&rdquo;.</p>
-<p>Reference <a href="https://mojdt.slack.com/archives/C514ETYJX/p1532609061000168">Dockerfile fabric image</a></p>
-
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/cla_backend-deploy">cla_backend-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 04/05/2020</p>
-
-<ul>
-<li>demo</li>
-<li>staging</li>
-<li>training</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command. The following should be carried out in a virtual environment (see instructions 2. and 3. here <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/82640903/Quickstart+-+Template+Deploy">Step-by-step guide Quickstart - Template Deploy</a>):</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:cla-backend aws:moj-cla-dev environment:prod config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> <span class="o">[</span>user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/cla_frontend-deploy">cla_frontend-deploy</a></p>
-
-<ul>
-<li><p>Envs as at  04/05/2020</p>
-
-<ul>
-<li>demo</li>
-<li>staging</li>
-<li>training</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:cla-frontend aws:moj-cla-dev environment:prod config:./cloudformation/template.yaml passwords:./cloudformation/secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/ci-deploy">ci-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 04/05/2020</p>
-
-<ul>
-<li>dev</li>
-<li>hmcts</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:ci aws:mojdsd environment:prod config:./cloudformation/ci.yaml passwords:./cloudformation/ci-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/docker-registry-ng-deploy">docker-registry-ng-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 04/05/2020</p>
-
-<ul>
-<li>dev</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:docker-registry aws:mojdsd environment:prod config:./cloudformation/docker-registry.yaml passwords:./cloudformation/docker-registry-secrets.yaml <span class="nt">-i</span> ../config/default.pem salt.ssh_keys vendor_upload  -u [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/correspondence-tool-deploy">correspondence-tool-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 04/05/2020:</p>
-
-<ul>
-<li>dev</li>
-<li>demo</li>
-<li>staging</li>
-<li>prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:correspondence-tool aws:mojdsd environment:prod config:./cloudformation/correspondence-tool.yaml passwords:./cloudformation/correspondence-tool-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div>
-<ul>
-<li><p><a href="https://github.com/ministryofjustice/money-to-prisoners-deploy">money-to-prisoners-deploy</a></p>
-
-<ul>
-<li><p>Envs as at 30/04/2019:</p>
-
-<ul>
-<li>api dev</li>
-<li>bank-admin dev</li>
-<li>cashbook dev</li>
-<li>noms-ops dev</li>
-<li>send-money dev</li>
-<li>transaction-uploader dev</li>
-<li>api test</li>
-<li>bank-admin test</li>
-<li>cashbook test</li>
-<li>noms-ops test</li>
-<li>send-money test</li>
-<li>transaction-uploader test</li>
-<li>api prod</li>
-<li>bank-admin prod</li>
-<li>cashbook prod</li>
-<li>noms-ops prod</li>
-<li>send-money prod</li>
-<li>transaction-uploader prod</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Example fabric command:</p>
-<div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-api aws:mojdsd environment:prod config:./cloudformation/api.yaml passwords:./cloudformation/api-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-bank-admin aws:mojdsd environment:prod config:./cloudformation/bank-admin.yaml passwords:./cloudformation/bank-admin-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-cashbook aws:mojdsd environment:prod config:./cloudformation/cashbook.yaml passwords:./cloudformation/cashbook-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-noms-ops aws:mojdsd environment:prod config:./cloudformation/noms-ops.yaml passwords:./cloudformation/noms-ops-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-send-money aws:mojdsd environment:prod config:./cloudformation/send-money.yaml passwords:./cloudformation/send-money-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><div class="highlight"><pre class="highlight shell"><code>fab application:money-to-prisoners-transaction-uploader aws:mojdsd environment:prod config:./cloudformation/transaction-uploader.yaml passwords:./cloudformation/transaction-uploader-secrets.yaml    -i ../config/default.pem salt.ssh_keys vendor_upload <span class="nt">-u</span> [user]
-</code></pre></div><h5 id="b-ssh-onto-all-of-the-deploy-repos-instances-and-use-the-following-salt-code-commands-this-will-enable-updates-to-take-place-without-restarting-the-container-the-use-installation-of-awsjump-will-help-to-easily-switch-between-instances">b. ssh onto all of the deploy repos instances and use  the following salt-code commands. This will enable updates to take place without restarting the container. The use/installation  of <a href="https://github.com/ministryofjustice/template-deploy-jump">awsjump</a> will help to easily switch between instances:</h5><div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>su
-salt_utils.py <span class="nt">-s</span> fooooo
-<span class="nb">cd</span> /srv/pillar/
-salt-call state.sls admins
-/usr/bin/salt-call pillar.get admins <span class="nt">--out</span><span class="o">=</span>json 2&gt; /dev/null
-<span class="nb">exit
-exit</span>
-</code></pre></div><p>**do not worry - you will receive some error messages as &ldquo;fooooo&rdquo; does not exist (this is just a placeholder). The update will take place to the ssh users</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-08-04">
+              <div data-module='page-expiry' data-last-reviewed-on="2020-12-29">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 4 May 2020.
+      This page was last reviewed on 29 September 2020.
 
-        It needs to be reviewed again on 4 August 2020
+        It needs to be reviewed again on 29 December 2020
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 4 August 2020
+      This page was set to be reviewed before 29 December 2020
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
