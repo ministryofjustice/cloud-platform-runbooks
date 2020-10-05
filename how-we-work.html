@@ -120,6 +120,11 @@
       </li>
       <li>
         <a href="/how-we-work.html#the-hammer-of-justice"><span>The 🔨 Hammer of Justice</span></a>
+        <ul>
+          <li>
+            <a href="/how-we-work.html#backlog-tickets"><span>Backlog Tickets</span></a>
+          </li>
+        </ul>
       </li>
       <li>
         <a href="/how-we-work.html#documentation"><span>Documentation</span></a>
@@ -1507,14 +1512,29 @@
 <li>When reviewing a PR, please add a &ldquo;reaction&rdquo; emoji to the corresponding slack message, so that other team members know you&rsquo;re doing so. This avoids duplicated effort. We tend to use 👀 to show we&rsquo;re reviewing a PR, and/or ✔ when we&rsquo;ve approved it.</li>
 </ul>
 <h2 id="the-hammer-of-justice">The 🔨 Hammer of Justice</h2><p>The origin of the name is lost, but it sounds a lot more fun than &ldquo;support manager&rdquo; 😏</p>
-<p>We designate one member of the team to be the hammer on each working day. Please volunteer when you feel comfortable, so that we all take a turn.</p>
-<p>The main responsibility of the hammer is to monitor the <code>#ask-cloud-platform</code> slack channel, and ensure that any queries are handled, and that users&rsquo; PRs against the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a> are reviewed in a timely fashion.</p>
-<p>It is <strong>not</strong> the hammer&rsquo;s job to <strong>do</strong> all of the work necessary to solve every query in the channel.</p>
-<p>It <strong>is</strong> the hammer&rsquo;s job to ensure that all queries are handled. This may involve asking other team members for help with particular queries where they have relevant expertise, or if there are more queries coming in than you can handle.</p>
+<p>We designate one member of the team to be the Hammer on each working day. Please volunteer when you feel comfortable, so that we all take a turn.</p>
+<p>The Hammer is responsible for:</p>
+
+<ul>
+<li>Ensuring questions/problems in the <code>#ask-cloud-platform</code> slack channel are being worked on, and that users receive frequent updates until a problem is resolved</li>
+<li>Ensuring that users&rsquo; PRs raised against the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a> are reviewed in a timely fashion</li>
+<li>Ensuring that Cloud Platform team members&rsquo; PRs are reviewed in a timely fashion</li>
+</ul>
+<p>It is <strong>not</strong> the Hammer&rsquo;s job to <strong>answer</strong> every query in the channel, and <strong>review</strong> every PR</p>
+<p>It <strong>is</strong> the Hammer&rsquo;s job to ensure that all queries are handled, and that PRs are reviewed. This may involve asking other team members for help with particular queries where they have relevant expertise, or if there are more queries coming in than you can handle.</p>
 
 <blockquote>
-<p>Anyone can (and should) respond to queries in <code>#ask-cloud-platform</code>. You don&rsquo;t have to be the hammer to help.</p>
+<p>Anyone can (and should) respond to queries in <code>#ask-cloud-platform</code>, and review PRs. You don&rsquo;t have to be the Hammer to help.</p>
 </blockquote>
+<h3 id="backlog-tickets">Backlog Tickets</h3><p>Working on tickets in the backlog when you&rsquo;re the Hammer is not advised. The constant context switching makes it hard to get significant work done, and there is also the risk that questions go unanswered and PRs get blocked waiting for review because you&rsquo;re head down in a problem and don&rsquo;t notice them.</p>
+<p>Instead, when not answering queries and reviewing PRs, the Hammer should work on fixing &ldquo;squeaky wheels&rdquo; - the minor alerts and problems that crop up which don&rsquo;t necessarily result in backlog tickets, or where such tickets never become high-priority enough to get selected during sprint planning.</p>
+<p>&ldquo;Squeaky wheels&rdquo; could include things like:</p>
+
+<ul>
+<li>Todo items reported by <a href="e.g.%20reviewing%20documentation%20pages,%20or%20(carefully)%20destroying%20orphaned%20AWS%20resources">How out of date are we?</a></li>
+<li>Intermittent alerts in the <code>#lower-priority-alarms</code> slack channel</li>
+<li>Improving our integration tests</li>
+</ul>
 <h2 id="documentation">Documentation</h2><p>Most of our user-facing documentation is in the <a href="https://user-guide.cloud-platform.service.justice.gov.uk">user guide</a>, and documentation for the team is in the <a href="https://runbooks.cloud-platform.service.justice.gov.uk">runbooks</a> site.</p>
 <p>There are also a lot of important <code>README.md</code> files like <a href="https://github.com/ministryofjustice/cloud-platform#ministry-of-justice-cloud-platform-master-repo">this one</a>, especially for our terraform modules. We also have code samples like <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/blob/main/example/rds.tf">this</a> for each of our terraform modules.</p>
 <p>It is important to keep all of this up to date as the underlying code changes, so please remember to factor this in when estimating and working on tickets.</p>
