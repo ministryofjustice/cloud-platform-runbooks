@@ -1492,7 +1492,7 @@ DONE
 </code></pre></div><p>Pick the kopeio/etcd-manager container you&rsquo;re interested in (&lsquo;main&rsquo; or &lsquo;events&rsquo;) and then docker exec onto it</p>
 <div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="o">[</span>container <span class="nb">id</span><span class="o">]</span> bash
 </code></pre></div><p>Now you can run etcdctl like this:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">cd</span> /opt/etcd-v3.3.10-linux-amd64/
+<div class="highlight"><pre class="highlight shell"><code><span class="nb">cd</span> /opt/etcd-v3.4.3-linux-amd64
 
 <span class="nv">ETCDCTL_API</span><span class="o">=</span>3 <span class="se">\</span>
   ./etcdctl <span class="nt">--key</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key <span class="se">\</span>
@@ -1500,19 +1500,13 @@ DONE
   <span class="nt">--cacert</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt  <span class="se">\</span>
   <span class="nt">--endpoints</span> <span class="s2">"https://etcd-a.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-b.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-c.internal.live-1.cloud-platform.service.justice.gov.uk:4001"</span> endpoint health
 </code></pre></div><h2 id="delete-a-quot-stuck-quot-resource">Delete a &ldquo;stuck&rdquo; resource</h2><p>kubectl can freeze with resources in status &ldquo;Terminating&rdquo;, these workarounds can force a cleanup:</p>
-<p>Identify what resources are still present in a namspace:
-<code>
-ns=my-app ; for api in `kubectl api-resources --verbs=list --namespaced -o name` ; do echo $api ;  kubectl get $api -n $ns ; done
-</code>
-If a regular <code>delete</code> does not remove the resource, try
-<code>
-kubectl delete &lt;resource&gt; --grace-period=0 --force
-</code>
-and/or
-<code>
-patch &lt;resource&gt; -p &#39;{&quot;metadata&quot;:{&quot;finalizers&quot;:[]}}&#39; --type=merge
-</code>
-Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
+<p>Identify what resources are still present in a namespace:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>ns=my-app ; for api in `kubectl api-resources --verbs=list --namespaced -o name` ; do echo $api ;  kubectl get $api -n $ns ; done
+</code></pre></div><p>If a regular <code>delete</code> does not remove the resource, try</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl delete &lt;resource&gt; --grace-period=0 --force
+</code></pre></div><p>and/or</p>
+<div class="highlight"><pre class="highlight plaintext"><code>patch &lt;resource&gt; -p '{"metadata":{"finalizers":[]}}' --type=merge
+</code></pre></div><p>Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
 <h2 id="filter-namespaces-by-specific-label-or-annotation">Filter namespaces by specific label or annotation</h2><p>For the label <code>cloud-platform.justice.gov.uk/is-production</code> with value <code>true</code></p>
 <div class="highlight"><pre class="highlight shell"><code>kubectl get ns <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span>
 </code></pre></div><p>You can use <code>awk</code> to output specific column</p>
@@ -1542,17 +1536,17 @@ apt-cache policy docker-ce
 <h2 id="find-files-which-don-39-t-contain-a-particular-string">Find files which <em>don&rsquo;t</em> contain a particular string</h2><div class="highlight"><pre class="highlight plaintext"><code>for file in $(find * -name '*.erb'); do grep -q last_reviewed_on $file || echo $file; done
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-09-30">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-05">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 30 June 2020.
+      This page was last reviewed on 5 October 2020.
 
-        It needs to be reviewed again on 30 September 2020
+        It needs to be reviewed again on 5 January 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 30 September 2020
+      This page was set to be reviewed before 5 January 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
