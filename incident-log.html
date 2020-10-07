@@ -181,6 +181,14 @@
     <a href="/incident-log.html#incident-log"><span>Incident Log</span></a>
     <ul>
       <li>
+        <a href="/incident-log.html#q4-2020-october-december"><span>Q4 2020 (October - December)</span></a>
+        <ul>
+          <li>
+            <a href="/incident-log.html#incident-on-2020-10-06-09-07-intermittent-quot-micro-downtimes-quot-on-various-services-using-dedicated-ingress-controllers"><span>Incident on 2020-10-06 09:07 - Intermittent “micro-downtimes” on various services using dedicated ingress controllers</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="/incident-log.html#q3-2020-july-september"><span>Q3 2020 (July - September)</span></a>
         <ul>
           <li>
@@ -230,6 +238,26 @@
       </li>
       <li>
         <a href="/incident-log.html#about-this-incident-log"><span>About this incident log</span></a>
+      </li>
+      <li>
+        <a href="/incident-log.html#template"><span>Template</span></a>
+        <ul>
+          <li>
+            <a href="/incident-log.html#incident-on-yyyy-mm-dd-hh-mm-brief-description"><span>Incident on YYYY-MM-DD HH:MM - [Brief description]</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/incident-log.html#key-events"><span>Key events</span></a>
+      </li>
+      <li>
+        <a href="/incident-log.html#impact"><span>Impact:</span></a>
+      </li>
+      <li>
+        <a href="/incident-log.html#context"><span>Context:</span></a>
+      </li>
+      <li>
+        <a href="/incident-log.html#resolution"><span>Resolution:</span></a>
       </li>
     </ul>
   </li>
@@ -574,7 +602,7 @@
         <a href="/disaster-recovery-scenarios.html#losing-a-namespace"><span>Losing a Namespace</span></a>
         <ul>
           <li>
-            <a href="/disaster-recovery-scenarios.html#impact"><span>Impact</span></a>
+            <a href="/disaster-recovery-scenarios.html#losing-a-namespace-impact"><span>Impact</span></a>
           </li>
           <li>
             <a href="/disaster-recovery-scenarios.html#possible-cause"><span>Possible Cause</span></a>
@@ -1484,7 +1512,44 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="incident-log">Incident Log</h1><h2 id="q3-2020-july-september">Q3 2020 (July - September)</h2>
+              <h1 id="incident-log">Incident Log</h1><h2 id="q4-2020-october-december">Q4 2020 (October - December)</h2>
+<ul>
+<li><p><strong>Mean Time to repair</strong>: 2h 8m</p></li>
+<li><p><strong>Mean Time to resolve</strong>: 8h 46m</p></li>
+</ul>
+<h3 id="incident-on-2020-10-06-09-07-intermittent-quot-micro-downtimes-quot-on-various-services-using-dedicated-ingress-controllers">Incident on 2020-10-06 09:07 - Intermittent &ldquo;micro-downtimes&rdquo; on various services using dedicated ingress controllers</h3>
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected 2020-10-06 08:33</li>
+<li>Incident declared 2020-10-06 09:07</li>
+<li>Repaired 2020-10-06 10:41</li>
+<li>Resolved 2020-10-06 17:19</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 2h 8m</p></li>
+<li><p><strong>Time to resolve</strong>: 8h 46m</p></li>
+<li><p><strong>Identified</strong>: User reported service problems in #ask-cloud-platform. Confirmed by checking Pingdom</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>Numerous brief and intermittent outages for multiple (but not all) services (production and non-production) which were using dedicated ingress controllers</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>Occurred immediately after upgrading live-1 to kubernetes 1.17</li>
+<li>1.17 creates 2 additional SecurityGroupRules per ingress-controller, this took us over a hard AWS limit</li>
+<li>Timeline: <a href="https://docs.google.com/document/d/108pSsVxt_YJFj2jrY86dIvuuP8g8j5aLFsMdlb1YMeI/edit#heading=h.z8h3a4mkgult">Timeline</a> for the incident.</li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1601971645475700">Slack thread</a> for the incident.</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:</p>
+
+<ul>
+<li>Migrate all ingresses back to the default ingress controller</li>
+</ul></li>
+</ul>
+<h2 id="q3-2020-july-september">Q3 2020 (July - September)</h2>
 <ul>
 <li><p><strong>Mean Time To Repair</strong>: 59m</p></li>
 <li><p><strong>Mean Time To Resolve</strong>: 7h 22m</p></li>
@@ -1557,10 +1622,10 @@
 <li><p><strong>Resolution</strong>:</p>
 
 <ul>
-<li>Team prioritised to restore default ingress controller, ingress-controller has a dependency of external-dns to update route53 records with<br>
+<li>Team prioritised to restore default ingress controller, ingress-controller has a dependency of external-dns to update route53 records with
 new NLB and kiam for providing AWSAssumeRole for external-dns, these components (ingress-controller, external-dns and kiam) got restored successfully. Services start to come back up.</li>
 <li>Formbuilder services are still pointing to the old NLB (network load balancer before ingress got replaced), reason for this is route53 TXT records was set incorrect owner field, so external-dns couldn&rsquo;t update the new NLB information in the A record. Team fixed the owner information in the TXT record, external DNS updated formbuilder route53 records to point to new NLB. Formbuilder services is up and running.</li>
-<li>Team did target apply to restore remaining components. </li>
+<li>Team did target apply to restore remaining components.</li>
 <li>Apply pipleine run to restore all the certificates, servicemonitors and prometheus-rules from the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environment repository</a>.</li>
 </ul></li>
 </ul>
@@ -1613,7 +1678,7 @@ The team manually removed the all the additional admission controllers created b
 
 <ul>
 <li>Two kubernetes nodes became unreachable</li>
-<li>No new node could be launched in eu-west-2a </li>
+<li>No new node could be launched in eu-west-2a</li>
 <li>Kubernetes had issues talking to some of these nodes, preventing some API calls to succeed (Pods were not terminating)</li>
 <li>New pods were not able to pull their Docker images.</li>
 </ul></li>
@@ -1864,6 +1929,20 @@ We suspect an intermittent &amp; external networking issue to be the cause of th
 </ul>
 <p>Source: <a href="https://www.atlassian.com/incident-management/kpis/common-metrics">Atlassian</a></p>
 <p>Datestamps: please use <code>YYYY-MM-DD HH:MM</code> (almost ISO 8601, but more readable), for the London timezone</p>
+<h2 id="template">Template</h2><h3 id="incident-on-yyyy-mm-dd-hh-mm-brief-description">Incident on YYYY-MM-DD HH:MM - [Brief description]</h3>
+<ul>
+<li><h2 id="key-events"><strong>Key events</strong></h2></li>
+<li><p><strong>Time to repair</strong>: 0h 0m</p></li>
+<li><p><strong>Time to resolve</strong>: 0h 0m</p></li>
+<li><p><strong>Identified</strong>:</p></li>
+<li><h2 id="impact"><strong>Impact</strong>:</h2></li>
+<li><h2 id="context"><strong>Context</strong>:</h2>
+<ul>
+<li>Timeline: <a href="url%20of%20google%20document">Timeline</a> for the incident</li>
+<li>Slack thread: <a href="url%20of%20primary%20incident%20thread">Slack thread</a> for the incident.</li>
+</ul></li>
+<li><h2 id="resolution"><strong>Resolution</strong>:</h2></li>
+</ul>
 
 
             
