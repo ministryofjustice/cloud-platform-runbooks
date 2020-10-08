@@ -924,6 +924,24 @@
 </ul>
 <ul>
   <li>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch"><span>Remove data from Elasticsearch</span></a>
     <ul>
       <li>
@@ -940,24 +958,6 @@
       </li>
       <li>
         <a href="/remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file"><span>Export data from Elasticsearch into a CSV file</span></a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -1440,6 +1440,19 @@
 </ul>
 <ul>
   <li>
+    <a href="/template-deploy-run-books.html#template-deploy-runbooks"><span>Template-deploy Runbooks</span></a>
+    <ul>
+      <li>
+        <a href="/template-deploy-run-books.html#general-incident-procedure"><span>General Incident Procedure</span></a>
+      </li>
+      <li>
+        <a href="/template-deploy-run-books.html#existing-runbooks"><span>Existing Runbooks</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/tips-and-tricks.html#tips-and-tricks"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1480,19 +1493,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/template-deploy-run-books.html#template-deploy-runbooks"><span>Template-deploy Runbooks</span></a>
-    <ul>
-      <li>
-        <a href="/template-deploy-run-books.html#general-incident-procedure"><span>General Incident Procedure</span></a>
-      </li>
-      <li>
-        <a href="/template-deploy-run-books.html#existing-runbooks"><span>Existing Runbooks</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/add-a-new-runbook.html#add-a-new-runbook"><span>Add a new runbook</span></a>
     <ul>
       <li>
@@ -1512,7 +1512,11 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="incident-log">Incident Log</h1><h2 id="q4-2020-october-december">Q4 2020 (October - December)</h2>
+              <h1 id="incident-log">Incident Log</h1>
+<blockquote>
+<p>Use the <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/bin/mean-time-to-repair.rb">mean-time-to-repair.rb</a> script to view performance metrics</p>
+</blockquote>
+<h2 id="q4-2020-october-december">Q4 2020 (October - December)</h2>
 <ul>
 <li><p><strong>Mean Time to repair</strong>: 2h 8m</p></li>
 <li><p><strong>Mean Time to resolve</strong>: 8h 46m</p></li>
@@ -1551,8 +1555,8 @@
 </ul>
 <h2 id="q3-2020-july-september">Q3 2020 (July - September)</h2>
 <ul>
-<li><p><strong>Mean Time To Repair</strong>: 59m</p></li>
-<li><p><strong>Mean Time To Resolve</strong>: 7h 22m</p></li>
+<li><p><strong>Mean Time To Repair</strong>: 1h 9m</p></li>
+<li><p><strong>Mean Time To Resolve</strong>: 7h 26m</p></li>
 </ul>
 <h3 id="incident-on-2020-09-28-13-10-termination-of-nodes-updating-kops-instance-group">Incident on 2020-09-28 13:10 - Termination of nodes updating kops Instance Group.</h3>
 <ul>
@@ -1564,9 +1568,9 @@
 <li>Repaired 2020-09-28 14:20</li>
 <li>Resolved 2020-09-28 14:44</li>
 </ul></li>
-<li><p><strong>Time to repair</strong>: 15m</p></li>
+<li><p><strong>Time to repair</strong>: 0h 15m</p></li>
 <li><p><strong>Time to resolve</strong>: 1h 30m</p></li>
-<li><p><strong>Incident</strong>: Periods of downtime while the cloud-platform team was applying per Availability Zone instance groups for worker nodes change in live-1. Failures caused mainly due to termination of a group of 9 nodes and letting kops to handle the cycling of pods, which took very long time for the new containers to be created in the new node group.</p></li>
+<li><p><strong>Identified</strong>: Periods of downtime while the cloud-platform team was applying per Availability Zone instance groups for worker nodes change in live-1. Failures caused mainly due to termination of a group of 9 nodes and letting kops to handle the cycling of pods, which took very long time for the new containers to be created in the new node group.</p></li>
 <li><p><strong>Impact</strong>:</p>
 
 <ul>
@@ -1599,9 +1603,9 @@
 <li>Repaired 2020-09-21 19:05</li>
 <li>Resolved 2020-09-21 21:41</li>
 </ul></li>
-<li><p><strong>Time to repair</strong>: 38m</p></li>
+<li><p><strong>Time to repair</strong>: 0h 38m</p></li>
 <li><p><strong>Time to resolve</strong>: 3h 14m</p></li>
-<li><p><strong>Incident</strong>: Some components of our production kubernetes cluster (live-1) were accidentally deleted, this caused some services running on cloud-platform gone down.</p></li>
+<li><p><strong>Identified</strong>: Some components of our production kubernetes cluster (live-1) were accidentally deleted, this caused some services running on cloud-platform gone down.</p></li>
 <li><p><strong>Impact</strong>:</p>
 
 <ul>
@@ -1631,7 +1635,7 @@ new NLB and kiam for providing AWSAssumeRole for external-dns, these components 
 </ul>
 <h3 id="incident-on-2020-09-07-12-54-all-users-are-unable-to-create-new-ingress-rules">Incident on 2020-09-07 12:54 - All users are unable to create new ingress rules</h3>
 <ul>
-<li><p><strong>Key times</strong></p>
+<li><p><strong>Key events</strong></p>
 
 <ul>
 <li>First detected 2020-09-07 12:39</li>
@@ -1640,7 +1644,7 @@ new NLB and kiam for providing AWSAssumeRole for external-dns, these components 
 </ul></li>
 <li><p><strong>Time to repair</strong>: 3h 02m</p></li>
 <li><p><strong>Time to resolve</strong>: 3h 17m</p></li>
-<li><p><strong>Incident</strong>: The Ingress API refused 100% of POST requests.</p></li>
+<li><p><strong>Identified</strong>: The Ingress API refused 100% of POST requests.</p></li>
 <li><p><strong>Impact</strong>:</p>
 
 <ul>
@@ -1671,9 +1675,9 @@ The team manually removed the all the additional admission controllers created b
 <li>Incident declared 2020-08-25 11:26</li>
 <li>Resolved 2020-08-25 12:11</li>
 </ul></li>
-<li><p><strong>Time to repair</strong>: 45m</p></li>
+<li><p><strong>Time to repair</strong>: 0h 45m</p></li>
 <li><p><strong>Time to resolve</strong>: 1h 10m</p></li>
-<li><p><strong>Incident</strong>: The AWS  Availability Zones <code>eu-west-2a</code>, which contain some of our kubernetes nodes had an outage. API latency was elevated, some EC2 became unreachable and overall connectivity was unstable.</p></li>
+<li><p><strong>Identified</strong>: The AWS  Availability Zones <code>eu-west-2a</code>, which contain some of our kubernetes nodes had an outage. API latency was elevated, some EC2 became unreachable and overall connectivity was unstable.</p></li>
 <li><p><strong>Impact</strong>:</p>
 
 <ul>
@@ -1701,9 +1705,9 @@ The incident was mitigated by deploying more 2-4 nodes in healthy Availability Z
 <li>Incident declared 2020-08-14 11:01</li>
 <li>Resolved 2020-08-14 11:38</li>
 </ul></li>
-<li><p><strong>Time to repair</strong>: 37m</p></li>
-<li><p><strong>Time to resolve</strong>: 55m</p></li>
-<li><p><strong>Incident</strong>: There are 6 replicas of the ingress-controller pod and 2 out of the 6 were crashlooping. A restart of the pods did not resolve the issue. As per a normal runbook process, a recycle of all pods was required. However after restarting pods 4 and 5, they also started to crashloop. The risk was when restarting pods 5 and 6 -  all 6 pods could be down and all ingresses down for the cluster.</p></li>
+<li><p><strong>Time to repair</strong>: 0h 37m</p></li>
+<li><p><strong>Time to resolve</strong>: 0h 55m</p></li>
+<li><p><strong>Identified</strong>: There are 6 replicas of the ingress-controller pod and 2 out of the 6 were crashlooping. A restart of the pods did not resolve the issue. As per a normal runbook process, a recycle of all pods was required. However after restarting pods 4 and 5, they also started to crashloop. The risk was when restarting pods 5 and 6 -  all 6 pods could be down and all ingresses down for the cluster.</p></li>
 <li><p><strong>Impact</strong>:</p>
 
 <ul>
@@ -1731,9 +1735,9 @@ A restart of the leader ingress-controller pod was required so the other pods in
 <li>Incident declared 2020-08-07 16:39</li>
 <li>Resolved 2020-08-14 10:06</li>
 </ul></li>
-<li><p><strong>Time to repair</strong>: 38m</p></li>
+<li><p><strong>Time to repair</strong>: 0h 38m</p></li>
 <li><p><strong>Time to resolve</strong>: 33h 15m (during support hours 10:00-17:00 M-F)</p></li>
-<li><p><strong>Incident</strong>: Routine replacement of a master node failed because AWS did not have any c4.4xlarge instances available in the relevant availability zone.</p></li>
+<li><p><strong>Identified</strong>: Routine replacement of a master node failed because AWS did not have any c4.4xlarge instances available in the relevant availability zone.</p></li>
 <li><p><strong>Impact</strong>:</p>
 
 <ul>
@@ -1758,8 +1762,8 @@ ttps://docs.google.com/document/d/1kxKwC1B_pnlPbysS0zotbXMKyZcUDmDtnGbEyIHGvgQ/e
 </ul>
 <h2 id="q2-2020-april-june">Q2 2020 (April - June)</h2>
 <ul>
-<li><p><strong>Mean Time To Repair</strong>: 2h 49m</p></li>
-<li><p><strong>Mean Time To Resolve</strong>: 7h 12m</p></li>
+<li><p><strong>Mean Time To Repair</strong>: 2h 5m</p></li>
+<li><p><strong>Mean Time To Resolve</strong>: 15h 53m</p></li>
 </ul>
 <h3 id="incident-on-2020-08-04-17-13">Incident on 2020-08-04 17:13</h3>
 <ul>
@@ -1773,7 +1777,7 @@ ttps://docs.google.com/document/d/1kxKwC1B_pnlPbysS0zotbXMKyZcUDmDtnGbEyIHGvgQ/e
 </ul></li>
 <li><p><strong>Time to repair</strong>: 5h 8m</p></li>
 <li><p><strong>Time to resolve</strong>: 9h 16m (during support hours 10:00-17:00)</p></li>
-<li><p><strong>Incident</strong>: Integration tests failed for cert-manager, apply pipeline failed showing it doesnot have permissions and
+<li><p><strong>Identified</strong>: Integration tests failed for cert-manager, apply pipeline failed showing it doesnot have permissions and
 divergence pipeline shows drift for live-1 components</p></li>
 <li><p><strong>Impact</strong>:</p>
 
@@ -1803,9 +1807,9 @@ Compare each resource configuration with the terraform state and applied the cor
 <li>Resolved 2020-04-15 15:09</li>
 </ul></li>
 <li><p><strong>Status</strong>: Resolved at 2020-04-15 15:09 UTC</p></li>
-<li><p><strong>Time to repair</strong>: 30m</p></li>
+<li><p><strong>Time to repair</strong>: 0h 30m</p></li>
 <li><p><strong>Time to resolve</strong>: 5h 09m (during support hours 10:00-17:00)</p></li>
-<li><p><strong>Incident</strong>: After an upgrade of the Nginx ingresses, support for legacy TLS was dropped.</p></li>
+<li><p><strong>Identified</strong>: After an upgrade of the Nginx ingresses, support for legacy TLS was dropped.</p></li>
 <li><p><strong>Impact</strong>:</p>
 
 <ul>
@@ -1829,8 +1833,8 @@ The Nginx configuration was modified to enable TLSv1, TLSv1.1 and TLSv1.2</p></l
 </ul>
 <h2 id="q1-2020-january-march">Q1 2020 (January - March)</h2>
 <ul>
-<li><p><strong>Mean Time To Repair</strong>: 1h 40m</p></li>
-<li><p><strong>Mean Time To Resolve</strong>: 2h 42m</p></li>
+<li><p><strong>Mean Time To Repair</strong>: 1h 22m</p></li>
+<li><p><strong>Mean Time To Resolve</strong>: 2h 36m</p></li>
 </ul>
 <h3 id="incident-on-2020-02-25-10-58">Incident on 2020-02-25 10:58</h3>
 <ul>
@@ -1844,7 +1848,7 @@ The Nginx configuration was modified to enable TLSv1, TLSv1.1 and TLSv1.2</p></l
 </ul></li>
 <li><p><strong>Time to repair</strong>: 4h 9m</p></li>
 <li><p><strong>Time to resolve</strong>: 7h (during support hours 10:00-17:00)</p></li>
-<li><p><strong>Incident</strong>: During an upgrade, new masters were not coming up correctly (missing calico networking and other pods)</p></li>
+<li><p><strong>Identified</strong>: During an upgrade, new masters were not coming up correctly (missing calico networking and other pods)</p></li>
 <li><p><strong>Impact</strong>:</p>
 
 <ul>
@@ -1871,9 +1875,9 @@ The <code>kube-system</code> namespace has a label, <code>openpolicyagent.org/we
 <li>Incident declared 2020-02-18 14:23</li>
 <li>Resolved 2020-02-18 14:59</li>
 </ul></li>
-<li><p><strong>Time to repair</strong>: 36m</p></li>
-<li><p><strong>Time to recovery</strong>: 46m</p></li>
-<li><p><strong>Incident</strong>: Pingdom reported that Prometheus was down (prometheus.cloud-platform.service.justice.gov.uk).</p></li>
+<li><p><strong>Time to repair</strong>: 0h 36m</p></li>
+<li><p><strong>Time to resolve</strong>: 0h 46m</p></li>
+<li><p><strong>Identified</strong>: Pingdom reported that Prometheus was down (prometheus.cloud-platform.service.justice.gov.uk).</p></li>
 <li><p><strong>Impact</strong>:</p>
 
 <ul>
@@ -1901,8 +1905,8 @@ We suspect an intermittent &amp; external networking issue to be the cause of th
 <li>Incident declared 2020-02-12 11:51</li>
 <li>Resolved 2020-02-12 12:07</li>
 </ul></li>
-<li><p><strong>Time to repair</strong>: 16m</p></li>
-<li><p><strong>Time to recovery</strong>: 22m</p></li>
+<li><p><strong>Time to repair</strong>: 0h 16m</p></li>
+<li><p><strong>Time to resolve</strong>: 0h 22m</p></li>
 <li><p><strong>Identified</strong>: Pingdom reported Concourse (concourse.cloud-platform.service.justice.gov.uk) down.</p></li>
 <li><p><strong>Context</strong>:</p>
 
@@ -1932,8 +1936,8 @@ We suspect an intermittent &amp; external networking issue to be the cause of th
 <h2 id="template">Template</h2><h3 id="incident-on-yyyy-mm-dd-hh-mm-brief-description">Incident on YYYY-MM-DD HH:MM - [Brief description]</h3>
 <ul>
 <li><h2 id="key-events"><strong>Key events</strong></h2></li>
-<li><p><strong>Time to repair</strong>: 0h 0m</p></li>
-<li><p><strong>Time to resolve</strong>: 0h 0m</p></li>
+<li><p><strong>Time to repair</strong>: Xh Xm</p></li>
+<li><p><strong>Time to resolve</strong>: Xh Xm</p></li>
 <li><p><strong>Identified</strong>:</p></li>
 <li><h2 id="impact"><strong>Impact</strong>:</h2></li>
 <li><h2 id="context"><strong>Context</strong>:</h2>
