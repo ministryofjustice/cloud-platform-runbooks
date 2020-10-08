@@ -1585,11 +1585,6 @@ kops update cluster --yes
 <p>New instances will be created, which you&rsquo;ll see with:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>watch kubectl get nodes
 </code></pre></div><p>We have multiple worker instance groups. Perform the same process on the other node instance groups.</p>
-
-<blockquote>
-<p>The &ldquo;main&rdquo; worker instancegroup (i.e. the one which contains the bulk of our worker nodes) is referenced in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/3b73b4616d22818fe297f1a1821e58c4c7aa1989/recycle-node.rb#L25">recycle-node.rb</a> script.
-Update that file with the new instancegroup name, so that the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/maintenance/jobs/recycle-node-live-1">recycle node pipeline job</a> continues to work after the upgrade.</p>
-</blockquote>
 <h3 id="cordon-old-workers">Cordon old workers</h3><p>Copy the file we created earlier:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>cp nodes cordon_nodes
 </code></pre></div><p>We need to insert the following before each line in this file:</p>
