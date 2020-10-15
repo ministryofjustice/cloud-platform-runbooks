@@ -1560,7 +1560,14 @@ $ aws eks --region eu-west-2 update-kubeconfig --name &lt;cluster-name&gt;
 $ terraform init
 $ terraform workspace select &lt;clusterName e.g. tools-cluster-eks&gt;
 $ terraform destroy
-$ terraform workspace select default
+</code></pre></div>
+<blockquote>
+<p>The destroy process often gets stuck on prometheus operator. If that happens, running this in a separate window usually works:
+<code>
+kubectl -n monitoring delete job prometheus-operator-operator-cleanup
+</code></p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>$ terraform workspace select default
 $ terraform workspace delete &lt;clusterName&gt;
 </code></pre></div><p>Change directories and perform the following to destroy the EKS cluster, and delete the terraform workspace.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ cd .. # working dir is now `cloud-platform-eks`
