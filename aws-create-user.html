@@ -1532,27 +1532,34 @@
 <p>Related repositories:</p>
 
 <ul>
+<li><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-account">cloud-platform-infrastructure (/terraform/cloud-platform-account)</a></p></li>
 <li><p><a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/blob/main/main.tf">cloud-platform-terraform-awsaccounts-iam</a></p></li>
 <li><p><a href="https://github.com/terraform-aws-modules/terraform-aws-iam">terraform-aws-iam module</a></p></li>
 </ul>
-<h2 id="steps-to-create-delete-users">Steps to create/delete users</h2><p>1) Create a git branch and add (or delete) the user as <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/blob/main/main.tf">terraform code</a>. Do not forget to link the user to a group.</p>
-<p>2) Using <code>terraform plan</code> in <code>cloud-platform-infrastructure/terraform/cloud-platform-account/</code> to verify you&rsquo;re happy with the terraform changes.</p>
-<p>3) Create the PR and ask the team to review it.</p>
-<p>4) Once PR gets merged you must proceed to execute <code>terraform apply</code> and verify the user (you can use AWS Console for this).</p>
+<h2 id="steps-to-create-delete-users">Steps to create/delete users</h2><p>1) Check the user is in the <a href="https://github.com/orgs/ministryofjustice/teams/webops/members">webops GitHub team</a>, which authorizes access to this AWS account.</p>
+<p>2) Create a git branch and add (or delete) the user as <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/blob/main/main.tf">terraform code</a>. Do not forget to link the user to a group.</p>
+<p>3) Using <code>terraform plan</code> in <code>cloud-platform-infrastructure/terraform/cloud-platform-account/</code> to verify you&rsquo;re happy with the terraform changes.</p>
+<p>4) Create the PR, ask the team to review it, and merge it.</p>
+<p>5) <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/releases">Create a release</a>.</p>
+<p>6) In the infrastructure repo, edit <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-account/main.tf">the terraform config that calls that module</a>, to use the new release - see <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/938/files">example</a></p>
+<p>7) Create the PR, ask the team to review it, and merge it.</p>
+<p>8) Execute <code>terraform apply</code> for <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-account">terraform/cloud-platform-account</a></p>
+<p>9) Verify the user is created. (You can use AWS Console for this.)</p>
+<p>10) Tell them they can login here: https://aws-login.cloud-platform.service.justice.gov.uk</p>
 <h2 id="activating-mfa-for-new-users">Activating MFA for new users</h2><p>Unfortunataly terraform can&rsquo;t activate MFA for users, this process must be done done manually either <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">thorugh AWS Console (UI)</a> or <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_cliapi.html">through the AWS CLI</a>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-11-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 August 2020.
+      This page was last reviewed on 19 October 2020.
 
-        It needs to be reviewed again on 18 November 2020
+        It needs to be reviewed again on 19 January 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 November 2020
+      This page was set to be reviewed before 19 January 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
