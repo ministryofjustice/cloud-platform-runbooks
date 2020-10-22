@@ -1535,33 +1535,53 @@ through this process for real.</p>
 particular ingress without incurring downtime due to traffic being sent to the
 (old, no-longer-existing) ingress because of cached DNS entries on the user&rsquo;s
 computer.</p>
-<h2 id="procedure">Procedure</h2>
-<ol>
-<li>Create a 2nd ingress-controller</li>
-<li>Use that ingress controller class and create a new ingress</li>
-<li>In route53 identify the A and txt record, update the txt record with the new ingress name</li>
-<li>external-dns will trigger and update the A record with the NLB belonging to the 2nd ingress-controller</li>
-<li>Traffic will be routed to the new NLB (but traffic arriving via the old NLB will still be handled correctly)</li>
-<li>Wait for however long the DNS TTL is (plus a bit, for safety). All traffic should now be routed through the new NLB</li>
-<li>Upgrade (or make other required changes to) the old ingress-controller</li>
-<li>Switch traffic back by updating the route53 txt record with the original ingress name</li>
-<li>external-dns will trigger and update the A record with the NLB belonging to the original ingress-controller</li>
-<li>Wait for however long the DNS TTL is (plus a bit, for safety). All traffic should now be routed through the original NLB</li>
-<li>Delete the new ingress you created</li>
-</ol>
+<p><a href="https://docs.google.com/document/d/1hZzBkXB7_K0_NfYHX6enXFwp79MdHk_zRPYR3j9gVGk">Procedure</a> followed, while migrating ingress to default controller</p>
+<h2 id="procedure">Procedure</h2><p>1) Create a 2nd ingress-controller
+We have a <a href="https://github.com/ministryofjustice/cloud-platform-terraform-k8s-ingress-controller">fallback ingress-controller module</a> to create this ingress-controller</p>
+<p>2) Use that ingress controller class and create a new ingress</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n my-namespace get ingresses ingress-main -o yaml --export &gt; ingress-second.yaml
+</code></pre></div><p>Edit &ldquo;ingress-second.yaml&rdquo; to update name and ingress.class annotation</p>
+<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-main to &lt;ingress-second&gt;
+  namespace: my-namespace
+  annotations:
+    kubernetes.io/ingress.class: "nginx" to &lt;new-ingress-controller-class&gt;
+</code></pre></div><p>Apply the ingress-second.yaml</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n my-namespace apply -f ingress-second.yaml
+</code></pre></div><p>3) In route53 identify the A and txt record, update the txt record with the new ingress name</p>
+<p><a href="../images/route53-txt-record.png" target="_blank" rel="noopener noreferrer"><img src="/images/route53-txt-record.png" alt="Route53 TXT Record" /></a></p>
+<div class="highlight"><pre class="highlight plaintext"><code>TXT record explination:
+external-dns/owner=vv-test-db (clustername)
+external-dns/resource=ingress/my-namespace/ingress-second(namespace/ingress name)
+</code></pre></div><p>4) external-dns will trigger and update the A record with the NLB belonging to the 2nd ingress-controller</p>
+<p>We can look at the logs in the external-dns</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n kube-system logs external-dns-xxxxxxx -f
+
+level=info msg="Desired change: UPSERT helloworld.apps.vv-test-db.cloud-platform.service.justice.gov.uk A [Id: /hostedzone/Z0644190RYO6REHLM1RP]"
+level=info msg="Desired change: UPSERT _external_dns.helloworld.apps.vv-test-db.cloud-platform.service.justice.gov.uk TXT [Id: /hostedzone/Z0644190RYO6REHLM1RP]"
+level=info msg="2 record(s) in zone vv-test-db.cloud-platform.service.justice.gov.uk. [Id: /hostedzone/Z0644190RYO6REHLM1RP] were successfully updated"
+</code></pre></div><p>5) Traffic will be routed to the new NLB (but traffic arriving via the old NLB will still be handled correctly)</p>
+<p>6) Wait for however long the DNS TTL is (plus a bit, for safety). All traffic should now be routed through the new NLB</p>
+<p>7) Upgrade (or make other required changes to) the old ingress-controller</p>
+<p>8) Switch traffic back by updating the route53 txt record with the original ingress name</p>
+<p>9) external-dns will trigger and update the A record with the NLB belonging to the original ingress-controller</p>
+<p>10) Wait for however long the DNS TTL is (plus a bit, for safety). All traffic should now be routed through the original NLB</p>
+<p>11) Delete the new ingress you created</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-12-21">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 September 2020.
+      This page was last reviewed on 22 October 2020.
 
-        It needs to be reviewed again on 21 December 2020
+        It needs to be reviewed again on 22 January 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 December 2020
+      This page was set to be reviewed before 22 January 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
