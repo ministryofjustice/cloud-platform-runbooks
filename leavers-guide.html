@@ -1533,7 +1533,9 @@
 
 <ul>
 <li><p>Note - it is worth reminding the service desk to transfer the leaver&rsquo;s Google Drive to someone in their team</p></li>
-<li><p>Note - for leavers from the cloud-platforms team - ask the service desk to transfer any slack webhook integrations to someone in the team</p></li>
+<li><p>Note - for leavers from the cloud-platforms team - ask the service desk to transfer any slack webhook integrations to someone in the team.<br>
+IT IS MOST IMPORTANT THAT YOU REQUEST THIS BEFORE THE PERSON LEAVES.<br> 
+This is because if the person has created a slack-webhook for alerting purposes, the loss of that slack-webhook can cause problems - when their profile is deleted (as the webhook link is referenced in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars">cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars</a>.</p></li>
 </ul>
 <h3 id="aws-accounts">AWS Accounts</h3><h4 id="1-purge-them-from-aws-accounts-as-at-04-05-2020-the-following">1/ Purge them from AWS accounts (as at 04/05/2020 the following):</h4>
 <ul>
@@ -1545,33 +1547,31 @@
 <ul>
 <li>As per <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/pull/2/files">this PR</a></li>
 </ul>
-<h4 id="3-remove-their-access-to">3/ Remove their access to:</h4>
+<h4 id="3-request-lastpass-removal">3/ Request <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">LastPass</a> removal</h4><h4 id="4-request-vpn-removal">4/ Request <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">vpn</a> removal</h4><h4 id="5-remove-their-access-to">5/ Remove their access to:</h4>
 <ul>
 <li><p><a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/users">Auth0 justice-cloud-platform</a></p></li>
 <li><p><a href="https://manage.auth0.com/dashboard/eu/moj-cloud-platforms-dev/users">Auth0 moj-cloud-platforms</a></p></li>
-<li><p><a href="https://my.pingdom.com/3/users">Pingdom</a></p></li>
 <li><p><a href="https://moj-digital-tools.pagerduty.com/users">Pagerduty</a></p></li>
 <li><p><a href="https://devcenter.heroku.com/articles/org-users-access">Heroku</a></p></li>
 <li><p><a href="https://sentry.service.dsd.io/organizations/mojds/members/">Sentry</a></p></li>
-<li><p><a href="https://ci.service.dsd.io/configureSecurity/">CI</a></p></li>
 <li><p><a href="https://cloud.docker.com/orgs/ministryofjustice/teams">MoJ teams on docker hub</a></p></li>
 <li><p>Email the administrator of our password management provider to remove the leaver&rsquo;s login access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
 <li><p>Email the VPN provider requesting removal of their VPN access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
 </ul>
-<h4 id="3-remove-them-from-the-support-rota-if-applicable-pagerduty">3/ Remove them from the support rota (if applicable). <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">Pagerduty</a></h4><h4 id="4-remove-them-from-platforms-digital-justice-gov-uk-google-group-if-applicable-link-here">4/ Remove them from platforms@digital.justice.gov.uk google group (if applicable). <a href="https://groups.google.com/a/digital.justice.gov.uk/forum/#!managemembers/platforms/members/active">Link here</a>  </h4><p>Reference <a href="mailto:platforms@digital.justice.gov.uk">platforms@digital.justice.gov.uk</a></p>
+<h4 id="6-remove-them-from-the-support-rota-if-applicable-pagerduty">6/ Remove them from the support rota (if applicable). <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">Pagerduty</a></h4><h4 id="7-remove-them-from-platforms-digital-justice-gov-uk-google-group-if-applicable-link-here">7/ Remove them from platforms@digital.justice.gov.uk google group (if applicable). <a href="https://groups.google.com/a/digital.justice.gov.uk/forum/#!managemembers/platforms/members/active">Link here</a>  </h4><p>Reference <a href="mailto:platforms@digital.justice.gov.uk">platforms@digital.justice.gov.uk</a></p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-12-29">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-26">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 29 September 2020.
+      This page was last reviewed on 26 October 2020.
 
-        It needs to be reviewed again on 29 December 2020
+        It needs to be reviewed again on 26 January 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 29 December 2020
+      This page was set to be reviewed before 26 January 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
