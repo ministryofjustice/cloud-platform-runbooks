@@ -1568,6 +1568,10 @@ AutoscalingGroup/nodes-1.17.12-eu-west-2a.live-1.cloud-platform.service.justice.
     MinSize                  9 -&gt; 10
 ...
 </code></pre></div><p><code>THESE SHOULD BE THE ONLY CHANGES THAT YOU SEE, IF YOU SEE ANYTHING MORE: ABORT</code></p>
+
+<blockquote>
+<p>If you need to abort, overwrite the kops state on S3 with the unchanged YAML file in the repo <a href="/running-kops-update-rollingupdate.html#updating-the-remote-kops-state">like this</a></p>
+</blockquote>
 <p>If happy with the information above, the changes can be applied with:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>% kops update cluster --yes
 </code></pre></div><p>Change progress can be monitored with:</p>
