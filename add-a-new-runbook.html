@@ -1534,7 +1534,7 @@
 <li><code>git pull</code> to get the latest changes</li>
 <li>Create a feature branch for your new runbook</li>
 <li><code>cd runbooks</code></li>
-<li>Run <code>bundle install</code>, <code>bundle exec middleman server</code> to start a development webserver to view your changes</li>
+<li>Run <code>make preview</code> to start a development webserver to view your changes</li>
 <li><p>Add your runbook as a new file in the [source] directory</p></li>
 <li><p>Your filename must match <code>*.html.md.erb</code></p></li>
 <li><p>Your file must have a header section like this</p></li>
@@ -1554,21 +1554,21 @@ review_in: 3 months
 </ul>
 <div class="highlight"><pre class="highlight plaintext"><code># Add a new runbook
 </code></pre></div><p>You can also use this to use the title as the heading</p>
-<div class="highlight"><pre class="highlight plaintext"><code># Add a new runbook
-</code></pre></div><h4 id="6-push-your-feature-branch-and-raise-a-pr">6. Push your feature branch and raise a PR</h4><h4 id="7-merge-your-pr-and-delete-your-feature-branch">7. Merge your PR and delete your feature branch</h4><p>CircleCI will compile and deploy a new version of the runbooks guide, with your changes.</p>
+<div class="highlight"><pre class="highlight plaintext"><code># &lt;%= current_page.data.title %&gt;
+</code></pre></div><h4 id="6-push-your-feature-branch-and-raise-a-pr">6. Push your feature branch and raise a PR</h4><h4 id="7-merge-your-pr-and-delete-your-feature-branch">7. Merge your PR and delete your feature branch</h4><p>A GitHub action will compile and deploy a new version of the runbooks guide, with your changes.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-10-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-29">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 July 2020.
+      This page was last reviewed on 29 October 2020.
 
-        It needs to be reviewed again on 28 October 2020
+        It needs to be reviewed again on 29 January 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 October 2020
+      This page was set to be reviewed before 29 January 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
