@@ -1537,7 +1537,7 @@ locking mechanism, i.e. they didn&rsquo;t pass this command-line argument during
 <code>terraform init</code>:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>-backend-config="dynamodb_table=${PIPELINE_TERRAFORM_STATE_LOCK_TABLE}" \
 </code></pre></div><p>In this case, the content of the terraform state file will not match the md5
-hash recorded in the corresponding dynamodb record.</p>
+hash recorded in the corresponding DynamoDB record.</p>
 <p>The full error will look something like this:</p>
 
 <blockquote>
@@ -1551,10 +1551,13 @@ DynamoDB table to the following value: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
 <p>Following the instructions above will enable you to proceed. You can also
 simply delete the dynamodb record for this terraform state file, which will
 have the same effect.</p>
-<p>NB: There seems to be a bug in the AWS console web interface for dynamodb, and
+
+<blockquote>
+<p>There seems to be a bug in the AWS console web interface for DynamoDB, and
 it sometimes happens that the record you want doesn&rsquo;t appear in the
 <a href="https://eu-west-1.console.aws.amazon.com/dynamodb/home?region=eu-west-1#tables:selected=cloud-platform-environments-terraform-lock;tab=items">alphabetical list of records</a>. If this happens, use the
 <code>query</code> function to search for the records LockID value, and you will find it.</p>
+</blockquote>
 <p>The value for an environment terraform state file will be:</p>
 <p><code>cloud-platform-terraform-state/cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/[NAMESPACE NAME]/terraform.tfstate-md5</code></p>
 <p>To query the table:</p>
@@ -1567,17 +1570,17 @@ it sometimes happens that the record you want doesn&rsquo;t appear in the
 <p><a href="../images/dynamodb-query.png" target="_blank" rel="noopener noreferrer"><img src="/images/dynamodb-query.png" alt="dynamodb query" /></a></p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-10-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-29">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 July 2020.
+      This page was last reviewed on 29 October 2020.
 
-        It needs to be reviewed again on 28 October 2020
+        It needs to be reviewed again on 29 January 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 October 2020
+      This page was set to be reviewed before 29 January 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
