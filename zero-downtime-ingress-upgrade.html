@@ -1548,9 +1548,16 @@ metadata:
   namespace: my-namespace
   annotations:
     kubernetes.io/ingress.class: "nginx" to &lt;new-ingress-controller-class&gt;
+</code></pre></div><p>Disable the <code>ingress-clash</code> OPA policy (so that you can create multiple ingresses with the same hostname)</p>
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n opa delete configmap policy-ingress-clash
 </code></pre></div><p>Apply the ingress-second.yaml</p>
 <div class="highlight"><pre class="highlight plaintext"><code>kubectl -n my-namespace apply -f ingress-second.yaml
-</code></pre></div><p>3) In route53 identify the A and txt record, update the txt record with the new ingress name</p>
+</code></pre></div><p>Reinstate the <code>ingress-clash</code> OPA policy.</p>
+
+<blockquote>
+<p>The easiest way to do this is to <code>terraform apply</code> from the <code>cloud-platform-infrastructure/terraform/cloud-platform-components</code> directory.</p>
+</blockquote>
+<p>3) In route53 identify the A and txt record, update the txt record with the new ingress name</p>
 <p><a href="../images/route53-txt-record.png" target="_blank" rel="noopener noreferrer"><img src="/images/route53-txt-record.png" alt="Route53 TXT Record" /></a></p>
 <div class="highlight"><pre class="highlight plaintext"><code>TXT record explination:
 external-dns/owner=vv-test-db (clustername)
