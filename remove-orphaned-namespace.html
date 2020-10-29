@@ -1531,24 +1531,25 @@
               <h1 id="remove-39-orphaned-39-namespaces-and-aws-resources">Remove &lsquo;orphaned&rsquo; namespaces and AWS resources</h1><p>Cluster namespaces, and the AWS resources associated with them, should be removed automatically by the build pipeline.</p>
 <p>Sometimes this process doesn&rsquo;t work correctly, and we end up with &lsquo;orphaned&rsquo; namespaces in the cluster. i.e. namespaces which exist in the kubernetes cluster but which have no associated source code in the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a>.</p>
 <p>You can remove these namespaces, and their AWS resources, using the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a>.</p>
-<h3 id="1-git-clone-the-environments-checker-repository">1. <code>git clone</code> the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a> repository</h3><h3 id="2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a <code>.env.live1</code> file, containing the environment variables the checker requires</h3><p>The repository contains an <code>example.env.live-1</code> file. Copy this to <code>.env.live1</code> and replace the placeholders with real AWS credentials.</p>
+<h3 id="1-git-clone-the-environments-checker-repository">1. <code>git clone</code> the <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker">environments checker</a> repository</h3><h3 id="2-create-a-env-live1-file-containing-the-environment-variables-the-checker-requires">2. Create a <code>.env.live1</code> file, containing the environment variables the checker requires</h3><p>The repository contains an <a href="https://github.com/ministryofjustice/cloud-platform-environments-checker/blob/main/example.env.live-1">example.env.live-1</a>
+file. Copy this to <code>.env.live1</code> and replace the placeholders with real AWS credentials.</p>
 <h3 id="3-do-a-dry-run-of-deleting-the-target-namespace">3. Do a dry run of deleting the target namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name]
 </code></pre></div><p>This will run a <code>terraform plan</code> showing the resources that the script is going to delete.</p>
 <h3 id="4-delete-the-aws-resources-and-the-cluster-namespace">4. Delete the AWS resources and the cluster namespace</h3><div class="highlight"><pre class="highlight shell"><code><span class="nb">.</span> .env.live1<span class="p">;</span> make delete-namespace <span class="nv">NAMESPACE</span><span class="o">=[</span>orphaned namespace name] <span class="nv">DESTROY</span><span class="o">=</span>destroy
 </code></pre></div><p>This will actually delete the AWS resources and the namespace itself.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-10-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-29">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 July 2020.
+      This page was last reviewed on 29 October 2020.
 
-        It needs to be reviewed again on 28 October 2020
+        It needs to be reviewed again on 29 January 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 October 2020
+      This page was set to be reviewed before 29 January 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
