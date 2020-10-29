@@ -1534,10 +1534,10 @@
 
 <ul>
 <li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code> (the script will run this for you, but you must be <em>able</em> to do it)</p></li>
-<li><p>You have <a href="https://aws.amazon.com/cli/">AWS CLI</a> profiles <code>moj-cp</code> and <code>moj-dsd</code> with suitable credentials</p></li>
+<li><p>You have an <a href="https://aws.amazon.com/cli/">AWS CLI</a> profile <code>moj-cp</code>, with suitable credentials</p></li>
 <li><p>You have <a href="https://www.docker.com/">docker</a> installed</p></li>
 </ul>
-<h2 id="environment-variables">Environment Variables</h2><p>See the file <code>example.env.create-cluster</code> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.rb</code> script to create a new cluster.</p>
+<h2 id="environment-variables">Environment Variables</h2><p>See the file <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/example.env.create-cluster">example.env.create-cluster</a> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.rb</code> script to create a new cluster.</p>
 <p>You can get the auth0 values from the <code>terraform-provider-auth0</code> application on <a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/applications">auth0</a>.</p>
 <h2 id="run-the-build-script-via-the-tools-image">Run the build script, via the tools image</h2><p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to run the build script and create a cluster.</p>
 <p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
@@ -1547,33 +1547,47 @@
 <div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> david-test1
 </code></pre></div><p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
 <p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
-<p>By default, the script will create a &lsquo;small&rsquo; cluster. This means the master and worker EC2 instances will be less powerful machine types than in our production cluster. To create a &lsquo;production&rsquo; size cluster you have to add your cluster name inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform/variables.tf#L37-L60">terraform map variables</a>:</p>
-<div class="highlight"><pre class="highlight shell"><code>variable <span class="s2">"worker_node_machine_type"</span> <span class="o">{</span>
-  description <span class="o">=</span> <span class="s2">"The AWS EC2 instance types to use for worker nodes"</span>
+<p>By default, the script will create a &lsquo;small&rsquo; cluster. This means the master and worker EC2 instances will be less powerful machine types than in our production cluster, and you&rsquo;ll get 3 worker nodes. To create a &lsquo;production&rsquo; size cluster you have to add your cluster name and values inside these <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform/variables.tf#L29-L67">terraform map variables</a>:</p>
+<div class="highlight"><pre class="highlight shell"><code>variable <span class="s2">"cluster_node_count_a"</span> <span class="o">{</span>
+  description <span class="o">=</span> <span class="s2">"The number of worker node in the cluster in Availability Zone eu-west-2a"</span>
   default <span class="o">=</span> <span class="o">{</span>
-    live-1       <span class="o">=</span> <span class="s2">"r5.xlarge"</span>
-    test_cluster <span class="o">=</span> <span class="s2">"r5.xlarge"</span>
-    default      <span class="o">=</span> <span class="s2">"r5.large"</span>
+    live-1  <span class="o">=</span> <span class="s2">"9"</span>
+    default <span class="o">=</span> <span class="s2">"1"</span>
   <span class="o">}</span>
+<span class="o">}</span>
+
+variable <span class="s2">"cluster_node_count_b"</span> <span class="o">{</span>
+  description <span class="o">=</span> <span class="s2">"The number of worker node in the cluster in Availability Zone eu-west-2b"</span>
+  default <span class="o">=</span> <span class="o">{</span>
+    live-1  <span class="o">=</span> <span class="s2">"9"</span>
+    default <span class="o">=</span> <span class="s2">"1"</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+variable <span class="s2">"cluster_node_count_c"</span> <span class="o">{</span>
+  description <span class="o">=</span> <span class="s2">"The number of worker node in the cluster in Availability Zone eu-west-2c"</span>
+  default <span class="o">=</span> <span class="o">{</span>
+    live-1  <span class="o">=</span> <span class="s2">"9"</span>
+    default <span class="o">=</span> <span class="s2">"1"</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 
 variable <span class="s2">"master_node_machine_type"</span> <span class="o">{</span>
   description <span class="o">=</span> <span class="s2">"The AWS EC2 instance types to use for master nodes"</span>
   default <span class="o">=</span> <span class="o">{</span>
-    live-1       <span class="o">=</span> <span class="s2">"c4.4xlarge"</span>
-    test_cluster <span class="o">=</span> <span class="s2">"c4.4xlarge"</span>
-    default      <span class="o">=</span> <span class="s2">"c4.large"</span>
+    live-1  <span class="o">=</span> <span class="s2">"c5.4xlarge"</span>
+    default <span class="o">=</span> <span class="s2">"c5.large"</span>
   <span class="o">}</span>
 <span class="o">}</span>
 
-variable <span class="s2">"cluster_node_count"</span> <span class="o">{</span>
-  description <span class="o">=</span> <span class="s2">"The number of worker node in the cluster"</span>
+variable <span class="s2">"worker_node_machine_type"</span> <span class="o">{</span>
+  description <span class="o">=</span> <span class="s2">"The AWS EC2 instance types to use for worker nodes"</span>
   default <span class="o">=</span> <span class="o">{</span>
-    live-1       <span class="o">=</span> <span class="s2">"21"</span>
-    test_cluster <span class="o">=</span> <span class="s2">"15"</span>
-    default      <span class="o">=</span> <span class="s2">"3"</span>
+    live-1  <span class="o">=</span> <span class="s2">"r5.xlarge"</span>
+    default <span class="o">=</span> <span class="s2">"r5.large"</span>
   <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div><p>In this terraform map you can specify different machine types (for masters and nodes) and also the number of worker nodes (<code>cluster_node_count</code>) for your cluster.</p>
+</code></pre></div><p>In this terraform map you can specify different machine types (for masters and nodes) and also the number of worker nodes (<code>cluster_node_count_a|b|c</code>) for your cluster.</p>
 
 <blockquote>
 <p>You do not need to commit/PR this change, if you are just specifying values for a single test cluster.</p>
@@ -1593,7 +1607,7 @@ KubeDNS is running at https://api.david-test1.cloud-platform.service.justice.gov
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 </code></pre></div><p>The section before <code>kubectl cluster-info</code> is the cluster integration tests, which run at the end of the build
-process. The number of tests will increase, so the output will vary from what is shown here.</p>
+process. The number of tests will change, so the output will vary from what is shown here.</p>
 <p>Each dot in the line represents a passing test. If any tests fail, you will see more output explaining
 the nature of the failure.</p>
 <p>Any test failures could indicate a problem with your test cluster, which will need to be resolved before you
@@ -1629,17 +1643,17 @@ in via auth0, rather than using <code>kops export kubecfg...</code>), the auth0 
 <div class="highlight"><pre class="highlight plaintext"><code>https://login.apps.david-test1.cloud-platform.service.justice.gov.uk
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-10-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-29">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 July 2020.
+      This page was last reviewed on 29 October 2020.
 
-        It needs to be reviewed again on 28 October 2020
+        It needs to be reviewed again on 29 January 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 October 2020
+      This page was set to be reviewed before 29 January 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
