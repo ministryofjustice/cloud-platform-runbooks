@@ -1241,7 +1241,7 @@
             <a href="/access-eks-cluster.html#create-kubeconfig-using-aws-command"><span>Create kubeconfig using aws command</span></a>
           </li>
           <li>
-            <a href="/access-eks-cluster.html#create-kubeconfig-manually-using-template"><span>Create kubeconfig manually using template</span></a>
+            <a href="/access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
           </li>
         </ul>
       </li>
@@ -1528,28 +1528,30 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="access-eks-cluster">Access EKS cluster</h1><p>In order for kubectl to find and access a EKS cluster, it needs a kubeconfig file. When you create a new EKS cluster, the kubeconfig file is created locally within the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-eks/files">cloud-platform-eks/files/</a> named as <code>files/kubeconfig_${WorkspaceName}</code> and only available for the user who created the cluster, other users who is authorized to access the cluster can create the kubeconfig file following the below process.</p>
+              <h1 id="access-eks-cluster">Access EKS cluster</h1><p>In order for kubectl to find and access an EKS cluster, it needs a kubeconfig file.</p>
+<p>When you create a new EKS cluster, the kubeconfig file is created locally within the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-eks">cloud-platform-eks/files/</a>, named: <code>files/kubeconfig_${WorkspaceName}</code> This file is only available for the user who created the cluster.</p>
+<p>Other authorized users can create their own kubeconfig file to access the cluster as follows:</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <ul>
-<li>Make sure you&rsquo;ve access to Cloud Platform AWS account</li>
-<li>Set your environment variables</li>
+<li>AWS cli tool</li>
+<li>An AWS Profile <code>moj-cp</code> with credential for the Cloud Platform AWS account</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>    export AWS_PROFILE=moj-cp
-</code></pre></div><h3 id="create-kubeconfig-using-aws-command">Create kubeconfig using aws command</h3><p>One way to create a kubeconfig file for the EKS cluster is by running the below aws command</p>
+<p>Set the AWS_PROFILE environment variable:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>export AWS_PROFILE=moj-cp
+</code></pre></div><h3 id="create-kubeconfig-using-aws-command">Create kubeconfig using aws command</h3><p>Run this command:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ export KUBECONFIG=~/.kube/config
 $ aws eks --region eu-west-2 update-kubeconfig --name &lt;cluster-name&gt;
-</code></pre></div><p>You should see the below message</p>
+</code></pre></div><p>You should see this message:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>Added new context arn:aws:eks:eu-west-2:754256621582:cluster/&lt;cluster-name&gt; to .kube/config
-
 </code></pre></div><p>Check that kubectl is properly configured by getting the cluster state</p>
 <div class="highlight"><pre class="highlight plaintext"><code>$ kubectl cluster-info
-
-</code></pre></div><p>If you see similar response as below, kubectl is correctly configured to access EKS cluster.</p>
+</code></pre></div><p>If kubectl is correctly configured to access the EKS cluster, you should see output similar to:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>Kubernetes master is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com
 CoreDNS is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-
-</code></pre></div><p>You should now be able to run kubectl commands, try running such as <code>kubectl get namespaces</code>.</p>
-<h3 id="create-kubeconfig-manually-using-template">Create kubeconfig manually using template</h3><p>Kubeconfig file can be created manually, using the below template. Login to AWS console, in the EKS service select the cluster you need to access. You will see all the information related to the EKS cluster, update <code>API server endpoint</code>, <code>Certificate authority</code> and <code>Cluster name</code> in the below kubeconfig template.</p>
+</code></pre></div><p>You should now be able to run kubectl commands, such as <code>kubectl get namespaces</code>.</p>
+<h3 id="create-kubeconfig-manually-using-a-template">Create kubeconfig manually using a template</h3><p>You can create a kubeconfig file manually, using the template below.</p>
+<p>Login to the AWS console. In the EKS service, select the cluster you need to access. You will see all the information related to the EKS cluster.</p>
+<p>Copy the values for <code>API server endpoint</code>, <code>Certificate authority</code> and <code>Cluster name</code> into this template:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>apiVersion: v1
 preferences: {}
 kind: Config
@@ -1578,20 +1580,20 @@ users:
         - "token"
         - "-i"
         - "&lt;Cluster name&gt;"
-</code></pre></div><p>Save the kubeconfig with a filename (eg.: ~/.kube/config_eks) and use the saved kubeconfig file to access the EKS cluster.</p>
+</code></pre></div><p>Save the kubeconfig with a filename (eg.: ~/.kube/config_eks) and use it to access the EKS cluster.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-10-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-01-29">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 July 2020.
+      This page was last reviewed on 29 October 2020.
 
-        It needs to be reviewed again on 28 October 2020
+        It needs to be reviewed again on 29 January 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 October 2020
+      This page was set to be reviewed before 29 January 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
