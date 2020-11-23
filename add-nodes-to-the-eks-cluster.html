@@ -1554,9 +1554,9 @@ variable "worker_node_machine_type" {
 </code></pre></div><h3 id="issue">Issue</h3><p>There is an issue that you cannot update the default &ldquo;cluster_node_count&rdquo; (in isolation) with terraform
  - unless you increase the default &ldquo;worker_node_machine_type&rdquo; too.<br>
 The issue is to do with auto-scaling complexities utilising Terrafom - please see <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/autoscaling.md#notes">here</a></p>
-<p>Therefore you either have to update default &ldquo;worker_node_machine_type&rdquo; to - in above example &ldquo;m4.xlarge&rdquo; and also the default &ldquo;cluster_node_count&rdquo; to in above example &ldquo;5&rdquo; or &ldquo;6&rdquo;</p>
+<p>Therefore you either have to update default &ldquo;worker_node_machine_type&rdquo; to - in above example &ldquo;m4.xlarge&rdquo; and also the default &ldquo;cluster_node_count&rdquo; to - in above example &ldquo;5&rdquo; or &ldquo;6&rdquo;</p>
 <p>Or you have to edit the &ldquo;Desired size&rdquo; in the &ldquo;AWS EKS dashboard Edit Node Group&rdquo; (once you have carried out the AWS dashboard change - update the terraform config, <code>terraform apply</code>  accordingly - so that it is in sync with the AWS dashboard):</p>
-<h4 id="aws-dashboard-eks-edit-node-group"><a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters/manager/nodegroups/manager-default_ng-able-koala/edit-nodegroup">AWS dashboard EKS - Edit Node Group:</a></h4><div class="highlight"><pre class="highlight plaintext"><code>Group size
+<h4 id="aws-dashboard-eks-edit-node-group"><a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters/manager/nodegroups/manager-default_ng-composed-sculpin/edit-nodegroup">AWS dashboard EKS - Edit Node Group:</a></h4><div class="highlight"><pre class="highlight plaintext"><code>Group size
 Minimum size
 Set the minimum number of nodes that the group can scale in to.
 1
@@ -1579,17 +1579,17 @@ nodes
 <p>Note that it will create the instances/nodes before it deletes the existing - so there should be no down time</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-11-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-02-23">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 August 2020.
+      This page was last reviewed on 23 November 2020.
 
-        It needs to be reviewed again on 20 November 2020
+        It needs to be reviewed again on 23 February 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 November 2020
+      This page was set to be reviewed before 23 February 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

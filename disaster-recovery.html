@@ -1516,7 +1516,7 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="cloud-platform-disaster-recovery">Cloud Platform Disaster Recovery</h1><p>Cloud Platform Kubernetes cluster deployed with kops use <a href="https://github.com/kopeio/etcd-manager">etcd-manager</a> to do backups periodically and before cluster modifications. Backups for both the main and events etcd clusters are stored in &lsquo;s3://cloud-platform-kops-state/${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk&rsquo; together with the cluster configuration.</p>
-<p>In case of a disaster situation (total failure, Kops delete cluster, lost data, cluster issues etc.) it&rsquo;s possible to do a restore from the backup using <a href="https://github.com/kopeio/etcd-manager">etcd-manager</a>. More details about the usage can be found <a href="https://github.com/kopeio/etcd-manager/blob/master/docs/backup-restore.md">here</a> and <a href="https://github.com/kubernetes/kops/blob/master/docs/operations/etcd_backup_restore_encryption.md">here</a>.</p>
+<p>In case of a disaster situation (total failure, Kops delete cluster, lost data, cluster issues etc.) it&rsquo;s possible to do a restore from the backup using <a href="https://github.com/kopeio/etcd-manager">etcd-manager</a>. Check <a href="https://github.com/kopeio/etcd-manager/blob/master/docs/backup-restore.md">etcd-manager backup restore</a> and <a href="https://github.com/kubernetes/kops/blob/master/docs/operations/etcd_backup_restore_encryption.md">kops backup restore</a> for more details.</p>
 <h2 id="restore-process">Restore process</h2><p>Depending on the current state of the cluster, different recovery strategies are appropriate.</p>
 
 <ul>
@@ -1881,17 +1881,17 @@ opa                   Active   20d
 <p>This issue is due to old master IPs being set as endpoints in the kubernetes service. Fix this by manually removing the old master IPs from etcd by doing<a href="/disaster-recovery.html#cleanup">cleanup</a>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-11-12">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-02-23">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 12 August 2020.
+      This page was last reviewed on 23 November 2020.
 
-        It needs to be reviewed again on 12 November 2020
+        It needs to be reviewed again on 23 February 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 12 November 2020
+      This page was set to be reviewed before 23 February 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
