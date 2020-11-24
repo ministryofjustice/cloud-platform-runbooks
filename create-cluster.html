@@ -286,6 +286,14 @@
       <li>
         <a href="/create-cluster.html#authenticating"><span>Authenticating</span></a>
       </li>
+      <li>
+        <a href="/create-cluster.html#docker-authentication"><span>Docker authentication</span></a>
+        <ul>
+          <li>
+            <a href="/create-cluster.html#adding-a-docker-config-file-to-your-cluster"><span>Adding a Docker config file to your cluster</span></a>
+          </li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ul>
@@ -1628,19 +1636,27 @@ in via auth0, rather than using <code>kops export kubecfg...</code>), the auth0 
 <div class="highlight"><pre class="highlight plaintext"><code>https://login.apps.[cluster name].cloud-platform.service.justice.gov.uk
 </code></pre></div><p>e.g. for a cluster called &ldquo;david-test1&rdquo;, the URL to authenticate and download a <code>~/.kube/config</code> file is:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>https://login.apps.david-test1.cloud-platform.service.justice.gov.uk
-</code></pre></div>
+</code></pre></div><h2 id="docker-authentication">Docker authentication</h2><p>Due to <a href="https://www.docker.com/increase-rate-limits">Docker Hub rate limiting</a>, it may be necessary to <a href="https://github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md">add authentication</a> to your Docker clients running in a Kops cluster.</p>
+<p>The following error message will appear if your cluster has been rate limited by Docker Hub:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>Failed to pull image \"docker.io/prometheus:1.0"
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-01-29">
+ERROR: toomanyrequests: Too Many Requests.
+</code></pre></div><h3 id="adding-a-docker-config-file-to-your-cluster">Adding a Docker config file to your cluster</h3><p>If you wish to authenticate to Docker Hub, you can use the argument <code>-d</code> and specify the target Docker config file to pass, i.e.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>./create-cluster.rb --name test-01 -d /path/to/local/docker/config.json
+</code></pre></div><p>To generate a local <code>docker/config.json</code> file you need to use <code>docker login</code> from the command line.</p>
+
+
+              <div data-module='page-expiry' data-last-reviewed-on="2021-02-24">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 29 October 2020.
+      This page was last reviewed on 24 November 2020.
 
-        It needs to be reviewed again on 29 January 2021
+        It needs to be reviewed again on 24 February 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 29 January 2021
+      This page was set to be reviewed before 24 February 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
