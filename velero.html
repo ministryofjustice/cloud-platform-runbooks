@@ -1531,7 +1531,7 @@
 <li>A command-line client that runs locally</li>
 </ul>
 <h4 id="velero-cli-install">Velero CLI Install:</h4><div class="highlight"><pre class="highlight plaintext"><code>brew install velero
-</code></pre></div><p>Velero is installed on all clusters as part of the cloud-platform-components install. Click <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/velero.tf">here</a> to view the velero.tf file.</p>
+</code></pre></div><p>Velero is installed on all clusters as part of the cloud-platform-components install. The module is installed by <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/058f7a0808f856413397f8752bc6297b8ad588b1/terraform/cloud-platform-components/components.tf#L144">this section</a> of the code.</p>
 <p>Velero is installed in <code>namespace:velero</code> using helm. The chart used can be found <a href="https://github.com/helm/charts/tree/master/stable/velero">here</a></p>
 <p>You can verify the Velero server pod is installed and running using the kubectl get pods command:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>kubectl get pods -n velero
@@ -1577,17 +1577,17 @@ velero restore create --from-backup velero-allnamespacebackup --include-resource
 </code></pre></div><p>Click <a href="https://velero.io/docs/v1.2.0/">here</a> for the official Velero documentation.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2020-11-13">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-03-01">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 13 August 2020.
+      This page was last reviewed on 1 December 2020.
 
-        It needs to be reviewed again on 13 November 2020
+        It needs to be reviewed again on 1 March 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 13 November 2020
+      This page was set to be reviewed before 1 March 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
