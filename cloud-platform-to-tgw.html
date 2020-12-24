@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
       <meta name="robots" content="noindex">
 
-    <title>Nginx failed allocate shared memory - Cloud Platform Runbooks</title>
+    <title>Adding a route to connect to a TGW - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/virtual-memory-nginx.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-to-tgw.html">
 
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Nginx failed allocate shared memory" />
+      <meta property="og:title" content="Adding a route to connect to a TGW" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/virtual-memory-nginx.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-to-tgw.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Nginx failed allocate shared memory - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/virtual-memory-nginx.html" />
+      <meta property="twitter:title" content="Adding a route to connect to a TGW - Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-to-tgw.html" />
 
     
   </head>
@@ -1504,29 +1504,46 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="failed-to-allocate-shared-memory">Failed to allocate shared memory</h1><p>Due to the amount of ingresses <code>live-1</code> is managining, we are facing shared memory issues with nginx ingress controller. Even though we <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/pull/3/files">applied some remediations</a>, every second week we still face the same problem</p>
-<div class="highlight"><pre class="highlight plaintext"><code>nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller 2020/06/18 13:11:18 [emerg] 2307#2307: "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg603175912:14532
-nginx-ingress-acme-controller-58997b668-p69lw nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller nginx: [emerg] "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg603175912:14532
-nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller 2020/06/18 13:11:18 [emerg] 2307#2307: "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg603175912:14532
-nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller nginx: [emerg] "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg603175912:14532
-nginx-ingress-acme-controller-58997b668-5p5kj nginx-ingress-controller 2020/06/18 13:11:22 [emerg] 2362#2362: "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg088279079:14532
-nginx: [emerg] "modsecurity_rules" directive Failed to allocate shared memory (1): No space left on device in /tmp/nginx-cfg088279079:14532
-</code></pre></div><p>Partial solution for this is to delete/recycle all pods within <code>ingress-controllers</code> namespace. You can do it in groups of 3 as below:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ kubectl -n ingress-controllers delete pod nginx-ingress-acme-controller-XXXXXXX nginx-ingress-acme-controller-YYYYY nginx-ingress-acme-controller-ZZZZZ
-</code></pre></div><p>Wait until the new ones get spin up and carry on with the other 3 pods remaining</p>
+              <h1 id="adding-a-route-to-connect-to-a-tgw">Adding a route to connect to a TGW</h1><p>This document is a description of the current Cloud Platform &amp; TGW setup. 
+It also explain how to modify the relevant route table</p>
+<p><em>The scope of this guide is limited on purpose, it only covers the Cloud Platform responsibilities</em></p>
+<h2 id="quick-introduction">Quick introduction</h2><p>AWS Transit Gateways allows VPCs, from different accounts or regions, to be connected securely.
+Transit Gateways have their own route-table. 
+Transit Gateways (TGW) also support connecting to VPNs, AWS Direct Connect and other Transit Gateway</p>
+<p>An important limitation: a TGW can only work with VPCs in the same region it is in. However, TGW from different regions can be peered.</p>
+<p>The MoJ current Transit Gateway infrastructure is managed here : <a href="https://github.com/ministryofjustice/transit-gateways/">github repository</a></p>
+<h2 id="transit-gateway">Transit Gateway</h2><p>The Cloud Platform VPC is attached to the eu-west-2 TGW located in the <code>moj-transit-gateway</code> account.
+However, the attachment alone doesn&rsquo;t allow traffic to flow: A new route need to be added to VPC&rsquo;s route-table for each target VPC.</p>
+<p>Example: The Analytical Platform(AP) wants to access the Cloud Platform (CP) VPC. 
+ - Both are attached the the TGW 
+ - The CP route-table should contain a route with the CP VPC&rsquo;s CIDR block as a destination, but with the TGW ID as a target.
+ - The same needs to be done on the AP VPC, to route back to CP.</p>
+<h2 id="making-the-change">Making the change</h2><p>Everything is managed in the github repository, in the route.tf file of the <a href="https://github.com/ministryofjustice/transit-gateways/blob/master/terraform/cloud-platform/routes.tf">cloud-platform folder</a>
+Only an admin of the cloud-platform (<code>moj-cp</code>) is able to run that code.</p>
+<p>Here is the snippet to add to the route.tf :
+<code>ruby
+resource &quot;aws_route&quot; &quot;my-new-route&quot; {
+        count = length(local.route_tables)
+        route_table_id            = local.route_tables[count.index]
+        destination_cidr_block    = &quot;100.X.X.X/22&quot;
+        transit_gateway_id        = &quot;my-eu-west-2-TGW&quot;
+}
+</code></p>
+<p>The TGW gateway ID can be found in the Readme of the repo.</p>
+<p>Note: Something similar need to be done on the &lsquo;other side&rsquo;, terraform or not.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-01-08">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-06-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 8 October 2020.
+      This page was last reviewed on 16 December 2020.
 
-        It needs to be reviewed again on 8 January 2021
+        It needs to be reviewed again on 16 June 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 8 January 2021
+      This page was set to be reviewed before 16 June 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1536,8 +1553,8 @@ nginx: [emerg] "modsecurity_rules" directive Failed to allocate shared memory (1
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/virtual-memory-nginx.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Nginx%20failed%20allocate%20shared%20memory'&amp;body=Problem%20with%20'Nginx%20failed%20allocate%20shared%20memory'%20(https://runbooks.cloud-platform.service.justice.gov.uk/virtual-memory-nginx.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/cloud-platform-to-tgw.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Adding%20a%20route%20to%20connect%20to%20a%20TGW'&amp;body=Problem%20with%20'Adding%20a%20route%20to%20connect%20to%20a%20TGW'%20(https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-to-tgw.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
