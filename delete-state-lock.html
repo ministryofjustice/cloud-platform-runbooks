@@ -969,6 +969,14 @@
 <ul>
   <li>
     <a href="/delete-state-lock.html#delete-terraform-state-lock"><span>Delete terraform state lock</span></a>
+    <ul>
+      <li>
+        <a href="/delete-state-lock.html#command-line-method"><span>Command-line method</span></a>
+      </li>
+      <li>
+        <a href="/delete-state-lock.html#aws-console-method"><span>AWS Console method</span></a>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1513,7 +1521,25 @@ Error: Error locking state: Error acquiring the state lock: ConditionalCheckFail
 it probably means the lock record has been left in place by mistake, because a
 previous run failed to release the lock when it should have.</p>
 <p>To fix this, you need to delete the lock record.</p>
+<h2 id="command-line-method">Command-line method</h2><p>Save this code as a script.</p>
+<p><code>delete-state-lock.sh</code></p>
+<div class="highlight"><pre class="highlight shell"><code><span class="c">#!/bin/bash</span>
 
+<span class="nb">set</span> <span class="nt">-euo</span> pipefail
+
+<span class="nv">NAMESPACE</span><span class="o">=</span><span class="nv">$1</span>
+
+<span class="k">for </span>suffix <span class="k">in </span>terraform.tfstate-md5 terraform.tfstate<span class="p">;</span> <span class="k">do
+  </span><span class="nv">json</span><span class="o">=</span><span class="s1">'{"LockID":{"S":"cloud-platform-terraform-state/cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/'</span><span class="k">${</span><span class="nv">NAMESPACE</span><span class="k">}</span>/<span class="k">${</span><span class="nv">suffix</span><span class="k">}</span><span class="s1">'"}}'</span>
+
+  aws dynamodb delete-item <span class="se">\</span>
+    <span class="nt">--region</span> eu-west-1 <span class="se">\</span>
+    <span class="nt">--table-name</span> cloud-platform-environments-terraform-lock <span class="se">\</span>
+    <span class="nt">--key</span> <span class="nv">$json</span>
+<span class="k">done</span>
+</code></pre></div><p>Invoke it like this:</p>
+<div class="highlight"><pre class="highlight shell"><code>./delete-state-lock.sh hmpps-book-video-link-prod
+</code></pre></div><h2 id="aws-console-method">AWS Console method</h2>
 <ol>
 <li>Go to the <a href="https://eu-west-1.console.aws.amazon.com/dynamodb/home?region=eu-west-1#tables:">dynamodb</a> page of the AWS web console (NB: the relevant table is in the <code>eu-west-1</code> region)</li>
 <li>Click on the <a href="https://eu-west-1.console.aws.amazon.com/dynamodb/home?region=eu-west-1#tables:selected=cloud-platform-environments-terraform-lock;tab=overview">cloud-platform-environments-terraform-lock</a> table, and then the <code>Items</code> tab</li>
