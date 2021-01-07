@@ -1538,7 +1538,7 @@ DONE
 </code></pre></div><p>If a regular <code>delete</code> does not remove the resource, try</p>
 <div class="highlight"><pre class="highlight plaintext"><code>kubectl delete &lt;resource&gt; --grace-period=0 --force
 </code></pre></div><p>and/or</p>
-<div class="highlight"><pre class="highlight plaintext"><code>patch &lt;resource&gt; -p '{"metadata":{"finalizers":[]}}' --type=merge
+<div class="highlight"><pre class="highlight plaintext"><code>kubectl patch &lt;resource&gt; -p '{"metadata":{"finalizers":[]}}' --type=merge
 </code></pre></div><p>Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
 <h2 id="filter-namespaces-by-specific-label-or-annotation">Filter namespaces by specific label or annotation</h2><p>For the label <code>cloud-platform.justice.gov.uk/is-production</code> with value <code>true</code></p>
 <div class="highlight"><pre class="highlight shell"><code>kubectl get ns <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span>
@@ -1570,17 +1570,17 @@ apt-cache policy docker-ce
 </code></pre></div><h2 id="get-aws-ec2-instance-information-for-a-node">Get AWS EC2 instance information for a node</h2><div class="highlight"><pre class="highlight plaintext"><code>aws ec2 describe-instances --filters 'Name=private-dns-name,Values=ip-172-20-127-140.eu-west-2.compute.internal'
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-01-05">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-04-07">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 5 October 2020.
+      This page was last reviewed on 7 January 2021.
 
-        It needs to be reviewed again on 5 January 2021
+        It needs to be reviewed again on 7 April 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 5 January 2021
+      This page was set to be reviewed before 7 April 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
