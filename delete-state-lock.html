@@ -1529,8 +1529,10 @@ previous run failed to release the lock when it should have.</p>
 
 <span class="nv">NAMESPACE</span><span class="o">=</span><span class="nv">$1</span>
 
-<span class="k">for </span>suffix <span class="k">in </span>terraform.tfstate-md5 terraform.tfstate<span class="p">;</span> <span class="k">do
-  </span><span class="nv">json</span><span class="o">=</span><span class="s1">'{"LockID":{"S":"cloud-platform-terraform-state/cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/'</span><span class="k">${</span><span class="nv">NAMESPACE</span><span class="k">}</span>/<span class="k">${</span><span class="nv">suffix</span><span class="k">}</span><span class="s1">'"}}'</span>
+<span class="nv">PREFIX</span><span class="o">=</span>cloud-platform-terraform-state/cloud-platform-environments
+
+<span class="k">for </span>key <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">PREFIX</span><span class="k">}</span><span class="s2">/live-1.cloud-platform.service.justice.gov.uk/</span><span class="k">${</span><span class="nv">NAMESPACE</span><span class="k">}</span><span class="s2">/terraform.tfstate-md5"</span> <span class="s2">"</span><span class="k">${</span><span class="nv">PREFIX</span><span class="k">}</span><span class="s2">/namespaces/live-1.cloud-platform.service.justice.gov.uk/</span><span class="k">${</span><span class="nv">NAMESPACE</span><span class="k">}</span><span class="s2">/terraform.tfstate"</span><span class="p">;</span> <span class="k">do
+  </span><span class="nv">json</span><span class="o">=</span><span class="s1">'{"LockID":{"S":"'</span><span class="k">${</span><span class="nv">key</span><span class="k">}</span><span class="s1">'"}}'</span>
 
   aws dynamodb delete-item <span class="se">\</span>
     <span class="nt">--region</span> eu-west-1 <span class="se">\</span>
