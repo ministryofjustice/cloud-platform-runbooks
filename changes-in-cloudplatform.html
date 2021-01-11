@@ -1519,10 +1519,9 @@
 .</p>
 <h2 id="making-changes-to-cloud-plarform-infrastructure">Making Changes to cloud-plarform-infrastructure</h2>
 <ol>
-<li>Create a PR which includes the change you want to make.</li>
+<li>Create a PR which includes the change you want to make. Make sure the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/cloud-platform-infrastructure/jobs/plan-cloud-platform-infrastructure">plan pipeline</a> is happy with the change. </li>
 <li>Chase the team to get your PR approved, if it involves downtime ensure you have communications in place.</li>
-<li>Apply changes from your branch without merging the PR.</li>
-<li>If the change is successful merge the PR inmediatly.</li>
+<li>Merge and wait until the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/cloud-platform-infrastructure/jobs/apply-cloud-platform-infrastructure/">apply pipeline</a> applies your change.</li>
 </ol>
 <h2 id="marking-changes-to-terraform-modules">Marking Changes to terraform modules</h2><p>Mostly all Cloud Platform infrastructure are compose in blocks of terraform modules. Updating a module is very simple and consist in the following steps:</p>
 
