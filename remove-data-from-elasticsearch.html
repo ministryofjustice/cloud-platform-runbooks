@@ -542,11 +542,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/virtual-memory-nginx.html#failed-to-allocate-shared-memory"><span>Failed to allocate shared memory</span></a>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/custom-domain.html#add-a-custom-domain"><span>Add a custom domain</span></a>
   </li>
 </ul>
@@ -800,45 +795,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/aws-guardduty.html#aws-guardduty-information-how-to-implement"><span>AWS GuardDuty Information / How to Implement</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/aws-guardduty.html#aws-guardduty-accounts"><span>AWS GuardDuty Accounts</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="/aws-guardduty.html#our-current-setup"><span>Our Current setup</span></a>
-        <ul>
-          <li>
-            <a href="/aws-guardduty.html#aws-guardduty-findings-for-live-1-aws-resources"><span>AWS GuardDuty Findings for live-1 AWS resources</span></a>
-          </li>
-          <li>
-            <a href="/aws-guardduty.html#aws-guardduty-findings-for-aws-member-account-resources"><span>AWS GuardDuty Findings for AWS member account resources</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="/aws-guardduty.html#table-of-contents"><span>Table of contents</span></a>
-        <ul>
-          <li>
-            <a href="/aws-guardduty.html#1-prerequisite-files"><span>1. Prerequisite files</span></a>
-          </li>
-          <li>
-            <a href="/aws-guardduty.html#2-adding-a-new-member-account"><span>2. Adding a new member account</span></a>
-          </li>
-          <li>
-            <a href="/aws-guardduty.html#3-applying-the-terraform-changes"><span>3. Applying the terraform changes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/public-s3-bucket.html#make-an-s3-bucket-public"><span>Make an S3 bucket public</span></a>
   </li>
 </ul>
@@ -1083,7 +1039,7 @@
     <a href="/post-migration.html#post-migration-cleanup"><span>Post migration cleanup</span></a>
     <ul>
       <li>
-        <a href="/post-migration.html#post-migration-cleanup-table-of-contents"><span>Table of contents</span></a>
+        <a href="/post-migration.html#table-of-contents"><span>Table of contents</span></a>
       </li>
       <li>
         <a href="/post-migration.html#when-to-use-this-document"><span>When to use this document?</span></a>
@@ -1520,7 +1476,7 @@ application, before spending time removing what&rsquo;s already there.</p>
 <h2 id="things-to-know">Things to know</h2><p>An important thing to understand is the difference between an index and a document. 
 An index contains documents. In our case, documents are log entries.</p>
 <p>The current logging strategy is to have one index per day, containing all the daily logs.
-All application logs are sent to that daily index, ex:  <code>logstash-2020.02.01</code>
+All application logs are sent to that daily index, ex:  <code>kubernetes_cluster-2021.01.19</code>
 If you want your query to cover all log data stored in the Elasticsearch cluster, you can use an expression like <code>logstash-2*</code></p>
 <p>Although it is possible to delete a whole index with a curator job, this guide will only cover the deletion of specific documents.</p>
 
@@ -1531,7 +1487,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <p>Therefore, if we narrow down a search query to exactly what we want to delete, we&rsquo;ve done most of the work.</p>
 <p>Kibana offers a <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/dev_tools/console">webconsole</a> to test queries.</p>
 <p>A standard query is :</p>
-<div class="highlight"><pre class="highlight plaintext"><code>GET /logstash-2020.02.01/_search
+<div class="highlight"><pre class="highlight plaintext"><code>GET /kubernetes_cluster-2021.01.19/_search
 {
   "query": {
     "match": {
@@ -1544,7 +1500,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <p>Important note: <code>.keyword</code> forces elasticsearch to only return exact matches. Without it, you may end up deleting more than you wish</p>
 </blockquote>
 <p>As a <code>curl</code> command, the query above would translate to:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>curl -XGET "https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/logstash-2020.02.01/_search" -H 'Content-Type: application/json' -d'
+<div class="highlight"><pre class="highlight plaintext"><code>curl -XGET "https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2021.01.19/_search" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "match": {
@@ -1556,7 +1512,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <h2 id="delete-by-query">Delete by query</h2><p>A <code>POST</code> request against the <code>_delete_by_query</code> endpoint will delete all documents matching the query in the request&rsquo;s body.</p>
 <p>If we want to delete all logs from the <code>my-namespace-production</code> from 01/02/2020:</p>
 <div class="highlight"><pre class="highlight plaintext"><code>    curl -XPOST \
-        https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/logstash-2020.02.01/_delete_by_query?pretty \
+        https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2021.01.19/_delete_by_query?pretty \
         -H 'Content-Type: application/json' \
         -d'{"query":{"match":{"kubernetes.namespace_name.keyword": "my-namespace-production"}}}'
 </code></pre></div><p>Here again, <code>.keyword</code> is essential.</p>
@@ -1641,17 +1597,17 @@ curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west
 </blockquote>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-01-15">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-04-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 October 2020.
+      This page was last reviewed on 19 January 2021.
 
-        It needs to be reviewed again on 15 January 2021
+        It needs to be reviewed again on 19 April 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 January 2021
+      This page was set to be reviewed before 19 April 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
