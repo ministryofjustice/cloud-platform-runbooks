@@ -1464,7 +1464,7 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="recycle-node">Recycle-node</h1><p>The <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/live-1/main/recycle-node.yaml">recycle-node pipeline</a> runs every 8 hours, and executes the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/recycle-node.rb">recycle-node.rb</a> script to replace the oldest worker node by:</p>
+              <h1 id="recycle-node">Recycle-node</h1><p>The <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/live-1/main/recycle-node.yaml">recycle-node pipeline</a> runs every two hours between midnight and 6am, it executes the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/recycle-node.rb">recycle-node.rb</a> script to replace the oldest worker node by:</p>
 
 <ul>
 <li>Cordoning the oldest node</li>
@@ -1498,17 +1498,17 @@ licences-dev/port-forward
 </code></pre></div><p>Once the pod causing the issue gets deleted, you can re-run the pipeline or just wait for the next scheduled run.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-01-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-05-01">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 October 2020.
+      This page was last reviewed on 1 February 2021.
 
-        It needs to be reviewed again on 28 January 2021
+        It needs to be reviewed again on 1 May 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 January 2021
+      This page was set to be reviewed before 1 May 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
