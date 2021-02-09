@@ -1440,6 +1440,9 @@
       <li>
         <a href="/tips-and-tricks.html#hijack-a-concourse-job-container"><span>Hijack a concourse job container</span></a>
       </li>
+      <li>
+        <a href="/tips-and-tricks.html#help-when-manually-deleting-aws-resources"><span>Help when manually deleting AWS resources</span></a>
+      </li>
     </ul>
   </li>
 </ul>
@@ -1523,6 +1526,15 @@ apt-cache policy docker-ce
 </code></pre></div><h2 id="create-a-one-off-job-to-repeat-a-cronjob">Create a one-off job to repeat a cronjob</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl -n concourse-main create job ds-update-orphaned-statefiles --from=cronjob/orphaned-terraform-statefiles
 </code></pre></div><h2 id="hijack-a-concourse-job-container">Hijack a concourse job container</h2><div class="highlight"><pre class="highlight plaintext"><code>fly -t manager hijack -j environments-terraform/apply-namespace-changes-live-1
 </code></pre></div><p>You&rsquo;ll be presented with a list of containers to choose from.</p>
+<h2 id="help-when-manually-deleting-aws-resources">Help when manually deleting AWS resources</h2><p>Occasionally you&rsquo;ll need to manually delete AWS components. A neat trick is to use the <a href="https://docs.aws.amazon.com/ARG/latest/userguide/tag-editor.html">AWS Tag Editor</a>.</p>
+
+<ul>
+<li>Open the <a href="https://eu-west-1.console.aws.amazon.com/resource-groups/tag-editor/find-resources?region=eu-west-1">Tag Editor</a>.</li>
+<li>Select &ldquo;All Supported Resources&rdquo; from the &ldquo;Resource type&rdquo; drop down.</li>
+<li>Click &ldquo;Search Resources&rdquo;.</li>
+<li>Use the filter to search for a tag, for example a cluster name: <code>cp-0909-1202</code>.</li>
+</ul>
+<p>You&rsquo;ll be presented with all resources with your tag associated, click the link to navigate to each resource and delete as appropriate.</p>
 
 
               <div data-module='page-expiry' data-last-reviewed-on="2021-04-07">
