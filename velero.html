@@ -1517,15 +1517,13 @@ velero restore create --from-backup velero-allnamespacebackup --include-resource
        --namespace velero \
        --type merge \
        --patch '{"spec":{"accessMode":"ReadWrite"}}'
-</code></pre></div><h4 id="point-cluster-b-to-to-backup-folder-of-cluster-a">Point Cluster B to to backup folder of Cluster A</h4><p>It is possible to restore resources from backups from antoher cluster. You need to add a new Backup Storage Location and Volume Snapshot Location within the primary cluster pointing it to the backup cluster forlder you want to restore from.</p>
+</code></pre></div><h4 id="point-cluster-b-to-to-backup-folder-of-cluster-a">Point Cluster B to to backup folder of Cluster A</h4><p>It is possible to restore resources from backups from another cluster. You need to add a new Backup Storage Location and Volume Snapshot Location within the primary cluster pointing it to the backup cluster folder you want to restore from.</p>
 <div class="highlight"><pre class="highlight plaintext"><code>velero backup-location create &lt;location-name&gt; --provider aws --bucket &lt;bucket-name&gt; --prefix &lt;clusterprefix&gt;  --access-mode=ReadOnly
 </code></pre></div><div class="highlight"><pre class="highlight plaintext"><code> velero snapshot-location create &lt;location-name&gt; --provider aws
 </code></pre></div><p>At this point, when you execute <code>velero backups get</code> you will see 2 different locations under the storage location column.</p>
-<p>If you want to create normal backups with 2 different storage locations configured, you either have to set one of the locatons as default. or add <code>--volume-snapshot-locations</code> to your backup command.<br>
-<code>
-velero backup create &lt;backup-name&gt; --volume-snapshot-locations &lt;location-name&gt;
-</code></p>
-<p>Click <a href="https://velero.io/docs/v1.5.0/">here</a> for the official Velero documentation.</p>
+<p>If you want to create normal backups with 2 different storage locations configured, you either have to set one of the locatons as default. or add <code>--volume-snapshot-locations</code> to your backup command.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>velero backup create &lt;backup-name&gt; --volume-snapshot-locations &lt;location-name&gt;
+</code></pre></div><p>Click <a href="https://velero.io/docs/v1.5.0/">here</a> for the official Velero documentation.</p>
 
 
               <div data-module='page-expiry' data-last-reviewed-on="2021-03-01">
