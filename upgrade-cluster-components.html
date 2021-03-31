@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
       <meta name="robots" content="noindex">
 
-    <title>Template-deploy Run-books - Cloud Platform Runbooks</title>
+    <title>Upgrade cluster components - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html">
 
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Template-deploy Run-books" />
+      <meta property="og:title" content="Upgrade cluster components" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Template-deploy Run-books - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html" />
+      <meta property="twitter:title" content="Upgrade cluster components - Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html" />
 
     
   </head>
@@ -337,22 +337,22 @@
     <a href="/upgrade-cluster.html#upgrade-a-cluster"><span>Upgrade a cluster</span></a>
     <ul>
       <li>
-        <a href="/upgrade-cluster.html#planning"><span>Planning</span></a>
+        <a href="/upgrade-cluster.html#upgrade-a-cluster-planning"><span>Planning</span></a>
       </li>
       <li>
         <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites"><span>Pre-requisites</span></a>
         <ul>
           <li>
-            <a href="/upgrade-cluster.html#setup-environment"><span>Setup environment</span></a>
+            <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites-setup-environment"><span>Setup environment</span></a>
           </li>
           <li>
-            <a href="/upgrade-cluster.html#run-the-integration-tests"><span>Run the integration tests</span></a>
+            <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites-run-the-integration-tests"><span>Run the integration tests</span></a>
           </li>
           <li>
             <a href="/upgrade-cluster.html#sanity-checks"><span>Sanity checks</span></a>
           </li>
           <li>
-            <a href="/upgrade-cluster.html#run-a-shell-in-the-tools-image"><span>Run a shell in the tools image</span></a>
+            <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites-run-a-shell-in-the-tools-image"><span>Run a shell in the tools image</span></a>
           </li>
         </ul>
       </li>
@@ -432,22 +432,22 @@
     <a href="/upgrade-cluster-components.html#upgrade-cluster-components"><span>Upgrade cluster components</span></a>
     <ul>
       <li>
-        <a href="/upgrade-cluster-components.html#upgrade-cluster-components-planning"><span>Planning</span></a>
+        <a href="/upgrade-cluster-components.html#planning"><span>Planning</span></a>
       </li>
       <li>
         <a href="/upgrade-cluster-components.html#testing-the-upgrade-in-a-test-cluster"><span>Testing the upgrade in a test cluster</span></a>
         <ul>
           <li>
-            <a href="/upgrade-cluster-components.html#testing-the-upgrade-in-a-test-cluster-setup-environment"><span>Setup environment</span></a>
+            <a href="/upgrade-cluster-components.html#setup-environment"><span>Setup environment</span></a>
           </li>
           <li>
-            <a href="/upgrade-cluster-components.html#testing-the-upgrade-in-a-test-cluster-run-a-shell-in-the-tools-image"><span>Run a shell in the tools image</span></a>
+            <a href="/upgrade-cluster-components.html#run-a-shell-in-the-tools-image"><span>Run a shell in the tools image</span></a>
           </li>
           <li>
             <a href="/upgrade-cluster-components.html#authenticate-to-the-test-cluster"><span>Authenticate to the test cluster</span></a>
           </li>
           <li>
-            <a href="/upgrade-cluster-components.html#testing-the-upgrade-in-a-test-cluster-run-the-integration-tests"><span>Run the integration tests</span></a>
+            <a href="/upgrade-cluster-components.html#run-the-integration-tests"><span>Run the integration tests</span></a>
           </li>
           <li>
             <a href="/upgrade-cluster-components.html#testing-the-upgrade"><span>Testing the upgrade</span></a>
@@ -1479,106 +1479,84 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="template-deploy-runbooks">Template-deploy Runbooks</h1>
-<blockquote>
-<p>A lot of this information is out of date, and not to be relied upon. However, it&rsquo;s probably not worth bringing it up to date, since the last Template Deploy service is (at the time of writing) in the process of migrating to the Cloud Platform. I&rsquo;m leaving this document as-is for now, but it should be removed at the next review.</p>
-</blockquote>
-<p>(to be de-commissioned as and when template-deploy support ceases)</p>
-<p>Various procedures for supporting our production template-deploy services. If something goes wrong and you are on call you should be able to find the relevant information via the confluence links below</p>
-<h2 id="general-incident-procedure">General Incident Procedure</h2><p>If there is a problem with one of these projects the general procedure is:</p>
+              <h1 id="upgrade-cluster-components">Upgrade cluster components</h1><p>Cluster components are application layer components that are installed in a cluster such as prometheus, external-dns, opa, kiam etc.</p>
+<p>Components are configured as terraform modules and are called from <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> with a release tag.</p>
+<h2 id="planning">Planning</h2><p>When you start working on upgrading any cloud-platform-components ticket:</p>
 
 <ul>
-<li><p>Look at the problem and determine if the outage is a short blip or likely to last.</p>
-
-<ul>
-<li>If it’s just a blip then most likely nothing needs to be done.</li>
-</ul></li>
-<li><p>Put the holding page up</p>
-
-<ul>
-<li>Each project should have a ‘sorry the service is currently unavailable’ holding page served from an alternative infrastructure for this case. Check the project&rsquo;s github repository for instructions on how to enable it for that project.</li>
-</ul></li>
-<li><p>Email and notify people</p></li>
+<li>Check which chart versions are available to upgrade to</li>
+<li>Check whether the component is upgradeable to that chart version from the current one (some major versions cannot be skipped)</li>
+<li>Check the release notes of the component for any breaking changes</li>
+<li>Check and add notes from the upgrading process mentioned in the original github repository related the component (if any)</li>
+<li>Check and add notes of every CHANGELOG.md of the component between the current chart version installed in your cluster to the chart version you want to upgrade to</li>
+<li>Review the CHANGELOG notes with another member of the team (check for breaking changes, deprecations, change to values file and suggested plan for upgrading the production clusters <code>live-1</code> and <code>eks-manager</code>)</li>
 </ul>
-<p>Keep people informed about the problem, let them know what sort of problem it is (i.e. hosting supplier problem, VM problem, app problem etc.) and if the holding page is up or not.</p>
+<h2 id="testing-the-upgrade-in-a-test-cluster">Testing the upgrade in a test cluster</h2><p>It is important to test the upgrade of the component in both kops and EKS cluster.</p>
 
 <ul>
-<li><p>Each project should have an incident email list with everyone who needs to know about service outages. Check the project&rsquo;s github repository for that address.</p></li>
-<li><p>Generally we should keep the project owner and delivery manager (if we have these details) informed about how long we think it will take to fix the problem and if it is something we can fix ourselves or if we need to log a call with a third-party. Check the relevant run-book and/or the project github pages for project owner/delivery manager details. Additional informational can also be found here <a href="https://docs.google.com/spreadsheets/d/1y4i5d4YYj8rnkGFLLCZcnj5_i_mwI1kQZz9rs0OgQDI/edit#gid=0">Products Hosted by Cloud Platform</a>, also <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/298778707/Other+Services">Other Services</a> and <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324273043/Contact+Service+Managers+template-deploy">Contact Service Managers (template-deploy)</a></p></li>
-<li><p>Notify the relevant team via their slack channel so that the team knows that something is wrong, and also the latest status of the problem.</p>
-
-<ul>
-<li>Diagnose the problem:</li>
-</ul></li>
-<li><p>Go to the alert URL. This may be found in different places depending on the alerting service and the nature of the alert. You might find it on the dashboard, in the <a href="https://moj-digital-tools.pagerduty.com/incidents">PagerDuty</a> or  <a href="https://mojdt.slack.com/messages/C8PF51AT0">Slack #high-priority-alarms messages</a>, or elsewhere. You may not find it at all.</p></li>
+<li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code></p></li>
+<li><p>You have the <a href="https://aws.amazon.com/cli/">AWS CLI</a> profile <code>moj-cp</code> with suitable credentials</p></li>
+<li><p>You have <a href="https://www.docker.com/">docker</a> installed</p></li>
 </ul>
-
-<blockquote>
-<p>NOTE: You may not get a correct URL. At the time of writing, preprod PVB only worked if called on /prisoner, but the alert shows the root URL.</p>
-</blockquote>
+<h3 id="setup-environment">Setup environment</h3><p>Setup the environment variables listed in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/example.env.create-cluster">example.env.create-cluster</a> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>.</p>
+<h3 id="run-a-shell-in-the-tools-image">Run a shell in the tools image</h3><p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to update a cluster.</p>
+<p>From a local copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>,  run the following command:</p>
+<div class="highlight"><pre class="highlight shell"><code>make tools-shell
+</code></pre></div><h3 id="authenticate-to-the-test-cluster">Authenticate to the test cluster</h3><p>Create the file <code>~/.kube/config</code> in your tools-image container by running:</p>
+<p>For Kops cluster</p>
+<div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
+</code></pre></div><p>For EKS cluster</p>
+<div class="highlight"><pre class="highlight shell"><code>aws eks <span class="nt">--region</span> eu-west-2 update-kubeconfig <span class="nt">--name</span> &lt;cluster-name&gt;
+</code></pre></div><h3 id="run-the-integration-tests">Run the integration tests</h3><p>This is the ensure the test cluster doesnot have any existing issues and ready to use</p>
+<div class="highlight"><pre class="highlight plaintext"><code>cd smoke-tests
+bundle binstubs bundler --force --path /usr/local/bin
+bundle binstubs rspec-core --path /usr/local/bin
+</code></pre></div><p>For kops cluster</p>
+<div class="highlight"><pre class="highlight shell"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~eks-manager <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
+</code></pre></div><p>For EKS cluster</p>
+<div class="highlight"><pre class="highlight shell"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~kops <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
+</code></pre></div><h3 id="testing-the-upgrade">Testing the upgrade</h3>
+<ol>
+<li><p>Make the changes required to the module. For example, for upgrading the cert-manager, change the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-certmanager">cert-manager terraform module</a>. This might include</p>
 
 <ul>
-<li><p>Resolve the alert on pagerduty. You can do this by following the instruction in the text message on the Incident Response phone, or directly on PagerDuty. If you don’t, it will continue to re-alert.</p></li>
-<li><p>Go to Pingdom &gt; Monitoring and filter on the Down status. Apply any other filters that help you find the issue.</p></li>
-<li><p>Click on the issue to open the full report.</p></li>
-<li><p>Go to the URL section, copy the URL and open it in a browser to check it.</p></li>
-<li><p>If the URL works as expected, click Test Check to retest and reset Pingdom.</p></li>
-<li><p>If the URL does not work, does not work as expected, or Pingdom will not reset, investigate and fix.</p>
-
-<ul>
-<li>Fix the problem and test the service is healthy again. Depending on the service, you may need to update your /etc/hosts file to gain access to the site (e.g. where you do not have access to the internal DNS, but the service is delivered via an Apache/Nginx vhost).</li>
-<li>Take down the holding page</li>
-<li>Send a ‘resolved’ email and notify people</li>
-<li>Send a final email to the project incident list to let everyone know that the service is back up.</li>
-<li>Notify the relevant team via their slack channel so that the team knows that the problem is resolved and the service is back up</li>
+<li>The helm chart version</li>
+<li>changes to the values file (in needed) </li>
 </ul></li>
-</ul>
-<h2 id="existing-runbooks">Existing Runbooks</h2>
+<li><p>Push changes to a branch(upgrade) of the module</p></li>
+<li><p>Update the local copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> with the branch reference.
+ For cert-manager module, the code would change to</p>
+<div class="highlight"><pre class="highlight hcl"><code><span class="nx">source</span> <span class="err">=</span> <span class="s2">"github.com/ministryofjustice/cloud-platform-terraform-certmanager?ref=upgrade"</span>
+</code></pre></div></li>
+<li><p>Do a <code>terraform plan</code> for the changes, verify whether the changes are correct and do <code>terraform apply</code> to apply the changes</p></li>
+<li><p>Check the <a href="http://localhost:4567/upgrade-cluster-components.html#things-to-observe-when-testing-the-upgrade]">things to observe</a> section for specific components</p></li>
+<li><p>Run the integration tests again</p></li>
+<li><p>Once the testing is complete and integration tests are passed, create a PR to be reviewed by the team and have the module unit tests passed. 
+ After the PR is approved, merge the changes to the main branch of the module and make a release.</p></li>
+<li><p>Change the module release tag in the kops/components and eks/components folder of <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> and raise a PR. 
+ Verify the terraform plan from the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/cloud-platform-infrastructure/jobs/plan-cloud-platform-infrastructure">cloud-platform-infrastructure plan pipeline</a> and get it reviewed by the team.</p></li>
+<li><p>Once approved, merge the PR and monitor the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/cloud-platform-infrastructure/jobs/apply-cloud-platform-infrastructure">cloud-platform-infrastructure apply pipeline</a> when applying the changes.</p></li>
+</ol>
+<h3 id="things-to-observe-when-testing-the-upgrade">Things to observe when testing the upgrade</h3><p>The below are some of the general things to check when during the upgrade and not a complete list.</p>
+<h4 id="cert-manager">Cert manager</h4>
 <ul>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305627228/Accelerated+Possession+HMCTS+Supported">Accelerated Possession (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305529230/CLA+Support+Docs">CLA Support Docs</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305430680/Claim+for+Crown+Court+Defence">Claim for Crown Court Defence</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/684261967/Correspondence+Tool+Public+-+Technical+Runbook">Correspondence Tool Public - Technical Runbook</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/630948000/Correspondence+Tool+Staff+-+Technical+Runbook">Correspondence Tool Staff - Technical Runbook</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305398124">Courtfinder (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305430820/Docker+Registry">Docker Registry</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305529326/Docker+Upgrade">Docker Upgrade</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305430833/ELK">ELK</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/305627462">Employment Tribunals (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043428/General+Incident+Procedure">General Incident Procedure</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/320668071/Graphite">Graphite</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239389">Help with Fees (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239551/Jenkins">Jenkins</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324075646/LAALAA+Support+Docs">LAALAA Support Docs</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324042897">Make-a-plea (HMCTS Supported)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272360">MOJ Sign On (Heroku)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324141273/Money+to+Prisoners">Money to Prisoners</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272622/Moving+People+Safely">Moving People Safely</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324174116">NOMIS API (Basic Support)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239762/Opsmanual">Opsmanual</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043218">Parliamentary Questions (Unofficial Support)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043234/People+Finder">People Finder</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324239849/PFLR+CAIT+Support+Docs">PFLR CAIT Support Docs</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324010630/Postcode+Info">Postcode Info</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324075878/Prison+Visits+Booking">Prison Visits Booking</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272772/Sensu">Sensu</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324272831/Status">Status</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324174549">Tax tribunals stacks (Unofficial Support)</a></p></li>
-<li><p><a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/324043410">Victims Information Service (HMCTS Supported)</a></p></li>
+<li>The CRDs for cert-manager doesnot get deleted</li>
+<li>The existing certificates doesnot change in any way. This can be done by checking the timestamps of certificate creation</li>
+<li>Able to create and validate new certificates</li>
 </ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-05-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-06-30">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 February 2021.
+      This page was last reviewed on 31 March 2021.
 
-        It needs to be reviewed again on 18 May 2021
+        It needs to be reviewed again on 30 June 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 May 2021
+      This page was set to be reviewed before 30 June 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1588,8 +1566,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/template-deploy-run-books.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Template-deploy%20Run-books'&amp;body=Problem%20with%20'Template-deploy%20Run-books'%20(https://runbooks.cloud-platform.service.justice.gov.uk/template-deploy-run-books.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/upgrade-cluster-components.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Upgrade%20cluster%20components'&amp;body=Problem%20with%20'Upgrade%20cluster%20components'%20(https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
