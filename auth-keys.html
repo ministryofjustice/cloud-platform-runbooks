@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
       <meta name="robots" content="noindex">
 
-    <title>Terraform state lock - Error refreshing state - Cloud Platform Runbooks</title>
+    <title>How to add authorized keys - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/error-refreshing-state.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/auth-keys.html">
 
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Terraform state lock - Error refreshing state" />
+      <meta property="og:title" content="How to add authorized keys" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/error-refreshing-state.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/auth-keys.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Terraform state lock - Error refreshing state - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/error-refreshing-state.html" />
+      <meta property="twitter:title" content="How to add authorized keys - Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/auth-keys.html" />
 
     
   </head>
@@ -1484,59 +1484,27 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="terraform-state-lock-error-refreshing-state">Terraform state lock - Error refreshing state</h1>
-<blockquote>
-<p>Error refreshing state: state data in S3 does not have the expected content.</p>
-</blockquote>
-<p>You may see this error if someone worked on terraform state without using the
-locking mechanism, i.e. they didn&rsquo;t pass this command-line argument during
-<code>terraform init</code>:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>-backend-config="dynamodb_table=${PIPELINE_TERRAFORM_STATE_LOCK_TABLE}" \
-</code></pre></div><p>In this case, the content of the terraform state file will not match the md5
-hash recorded in the corresponding DynamoDB record.</p>
-<p>The full error will look something like this:</p>
-
-<blockquote>
-<p>Error refreshing state: state data in S3 does not have the expected content.</p>
-<p>This may be caused by unusually long delays in S3 processing a previous state
-update.  Please wait for a minute or two and try again. If this problem
-persists, and neither S3 nor DynamoDB are experiencing an outage, you may need
-to manually verify the remote state and update the Digest value stored in the
-DynamoDB table to the following value: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-</blockquote>
-<p>Following the instructions above will enable you to proceed. You can also
-simply delete the dynamodb record for this terraform state file, which will
-have the same effect.</p>
-
-<blockquote>
-<p>There seems to be a bug in the AWS console web interface for DynamoDB, and
-it sometimes happens that the record you want doesn&rsquo;t appear in the
-<a href="https://eu-west-1.console.aws.amazon.com/dynamodb/home?region=eu-west-1#tables:selected=cloud-platform-environments-terraform-lock;tab=items">alphabetical list of records</a>. If this happens, use the
-<code>query</code> function to search for the records LockID value, and you will find it.</p>
-</blockquote>
-<p>The value for an environment terraform state file will be:</p>
-<p><code>cloud-platform-terraform-state/cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/[NAMESPACE NAME]/terraform.tfstate-md5</code></p>
-<p>To query the table:</p>
+              <h1 id="how-to-add-authorized-keys">How to add authorized keys</h1><p>We have a <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/maintenance.yaml">maintenance</a> pipeline that runs every hour and checks if a member of the ministryofjustice/webops GitHub team has a new public key. If so, the pipeline will fail and a triggered event will appear in the <code>lower-priority-alarms</code> slack channel. To action this event, simple perform the following:</p>
 
 <ul>
-<li>Change <code>Scan</code> to <code>Query</code> in the upper-left dropdown</li>
-<li>Paste the LockID string value in the text box</li>
-<li>Click <code>Start search</code></li>
+<li>The <a href="https://github.com/ministryofjustice/cloud-platform-terraform-bastion/blob/main/bin/update-authorized-keys.rb">script executed by the pipeline</a> will create a pull request. Open <a href="https://github.com/ministryofjustice/cloud-platform-terraform-bastion/pulls">this</a>.</li>
+<li>Review it carefully.</li>
+<li>When happy approve and merge it into main.</li>
 </ul>
-<p><a href="../images/dynamodb-query.png" target="_blank" rel="noopener noreferrer"><img src="/images/dynamodb-query.png" alt="dynamodb query" /></a></p>
+<p>You don&rsquo;t need to re-trigger the pipeline as this runs every hour.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-05-01">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-07-12">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 1 February 2021.
+      This page was last reviewed on 12 April 2021.
 
-        It needs to be reviewed again on 1 May 2021
+        It needs to be reviewed again on 12 July 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 1 May 2021
+      This page was set to be reviewed before 12 July 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1546,8 +1514,8 @@ it sometimes happens that the record you want doesn&rsquo;t appear in the
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/error-refreshing-state.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Terraform%20state%20lock%20-%20Error%20refreshing%20state'&amp;body=Problem%20with%20'Terraform%20state%20lock%20-%20Error%20refreshing%20state'%20(https://runbooks.cloud-platform.service.justice.gov.uk/error-refreshing-state.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/auth-keys.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'How%20to%20add%20authorized%20keys'&amp;body=Problem%20with%20'How%20to%20add%20authorized%20keys'%20(https://runbooks.cloud-platform.service.justice.gov.uk/auth-keys.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
