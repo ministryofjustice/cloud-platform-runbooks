@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
       <meta name="robots" content="noindex">
 
-    <title>Tips and Tricks - Cloud Platform Runbooks</title>
+    <title>Upgrade Terraform Version - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html">
 
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Tips and Tricks" />
+      <meta property="og:title" content="Upgrade Terraform Version" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
       <meta property="twitter:card" content="summary" />
       <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Tips and Tricks - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html" />
+      <meta property="twitter:title" content="Upgrade Terraform Version - Cloud Platform Runbooks" />
+      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
 
     
   </head>
@@ -1555,93 +1555,113 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="tips-and-tricks">Tips and Tricks</h1><p>A collection of useful one-liners and code snippets.</p>
-<h2 id="delete-an-rds-database-snapshot">Delete an RDS database snapshot</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>aws rds delete-db-snapshot <span class="nt">--db-snapshot-identifier</span> cloud-platform-2f8c3c1ceaf0a05d-finalsnapshot
-</code></pre></div><h2 id="check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">echo</span> | openssl s_client <span class="nt">-connect</span> google.com:443 | openssl x509 <span class="nt">-noout</span> <span class="nt">-enddate</span>
-<span class="nv">depth</span><span class="o">=</span>1 C <span class="o">=</span> US, O <span class="o">=</span> Google Trust Services, CN <span class="o">=</span> Google Internet Authority G3
-verify error:num<span class="o">=</span>20:unable to get <span class="nb">local </span>issuer certificate
-verify <span class="k">return</span>:0
-DONE
-<span class="nv">notAfter</span><span class="o">=</span>Oct 21 18:23:00 2019 GMT
-</code></pre></div><h2 id="run-etcdctl-on-a-master-node">Run <code>etcdctl</code> on a master node</h2><p>While SSHed onto a master:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker ps | <span class="nb">grep </span>etcd.manager
-</code></pre></div><p>Pick the kopeio/etcd-manager container you&rsquo;re interested in (&lsquo;main&rsquo; or &lsquo;events&rsquo;) and then docker exec onto it</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="o">[</span>container <span class="nb">id</span><span class="o">]</span> bash
-</code></pre></div><p>Now you can run etcdctl like this:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">cd</span> /opt/etcd-v3.4.3-linux-amd64
-
-<span class="nv">ETCDCTL_API</span><span class="o">=</span>3 <span class="se">\</span>
-  ./etcdctl <span class="nt">--key</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key <span class="se">\</span>
-  <span class="nt">--cert</span>  /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.crt <span class="se">\</span>
-  <span class="nt">--cacert</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt  <span class="se">\</span>
-  <span class="nt">--endpoints</span> <span class="s2">"https://etcd-a.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-b.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-c.internal.live-1.cloud-platform.service.justice.gov.uk:4001"</span> endpoint health
-</code></pre></div><h2 id="delete-a-quot-stuck-quot-resource">Delete a &ldquo;stuck&rdquo; resource</h2><p>kubectl can freeze with resources in status &ldquo;Terminating&rdquo;, these workarounds can force a cleanup:</p>
-<p>Identify what resources are still present in a namespace:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>ns=my-app ; for api in `kubectl api-resources --verbs=list --namespaced -o name` ; do echo $api ;  kubectl get $api -n $ns ; done
-</code></pre></div><p>If a regular <code>delete</code> does not remove the resource, try</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl delete &lt;resource&gt; --grace-period=0 --force
-</code></pre></div><p>and/or</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl patch &lt;resource&gt; -p '{"metadata":{"finalizers":[]}}' --type=merge
-</code></pre></div><p>Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
-<h2 id="filter-namespaces-by-specific-label-or-annotation">Filter namespaces by specific label or annotation</h2><p>For the label <code>cloud-platform.justice.gov.uk/is-production</code> with value <code>true</code></p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get ns <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span>
-</code></pre></div><p>You can use <code>awk</code> to output specific column</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> | <span class="nb">awk</span> <span class="s1">'{print $1,$2}'</span>
-</code></pre></div><p>To filter namespaces by label and annotation and display as namespace / annotation format</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> <span class="nt">-ojson</span> | jq <span class="nt">-r</span> <span class="s1">'.items[] | .metadata.name + " / " + .metadata.annotations["cloud-platform.justice.gov.uk/source-code"] '</span>
-</code></pre></div><p>If you need to install <code>jq</code>, do <code>brew install jq</code></p>
-<h2 id="find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-172-20-80-62.eu-west-2.compute.internal
-</code></pre></div><h2 id="count-pods-running-on-all-nodes">Count pods running on all nodes</h2><p>Paste this into the search field on <a href="https://prometheus.cloud-platform.service.justice.gov.uk">Prometheus</a>:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>max by(node) (max by(instance) (kubelet_running_pod_count{job="kubelet",metrics_path="/metrics"}) * on(instance) group_left(node) kubelet_node_name{job="kubelet",metrics_path="/metrics"})
-</code></pre></div><h2 id="install-tmux-and-docker-on-the-live-1-bastion-host">Install tmux and docker on the live-1 bastion host</h2><p>From <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9">here</a></p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>apt update
-<span class="nb">sudo </span>apt <span class="nb">install </span>tmux
-<span class="nb">sudo </span>apt <span class="nb">install </span>apt-transport-https ca-certificates curl gnupg2 software-properties-common
-curl <span class="nt">-fsSL</span> https://download.docker.com/linux/debian/gpg | <span class="nb">sudo </span>apt-key add -
-<span class="nb">sudo </span>add-apt-repository <span class="s2">"deb [arch=amd64] https://download.docker.com/linux/debian </span><span class="si">$(</span>lsb_release <span class="nt">-cs</span><span class="si">)</span><span class="s2"> stable"</span>
-<span class="nb">sudo </span>apt update
-apt-cache policy docker-ce
-<span class="nb">sudo </span>apt <span class="nb">install </span>docker-ce
-<span class="nb">sudo </span>systemctl status docker
-</code></pre></div><h2 id="output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</h2><p>Use <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/bin/route53-to-csv.rb">this script</a></p>
-<h2 id="add-more-rss-feeds-to-cloud-platform-rss-channel">Add more RSS feeds to <code>#cloud-platform-rss</code> channel</h2><p><code>/feed subscribe &lt;feed address&gt;</code></p>
-<p>There are more slash commands for rss feed which can be used to list, remove and help. Type <code>/feed help</code> in the #cloud-platform-rss` channel to get more details.</p>
-<p>To validate your feed url, test using the <a href="https://validator.w3.org/feed/">w3c validator</a></p>
-<p>To get the RSS feed url for github projects, use <code>&lt;github repo url&gt;/releases.atom</code></p>
-<p>To add your first feed to a new slack channel, follow steps provided by <a href="https://slack.com/intl/en-gb/help/articles/218688467-Add-RSS-feeds-to-Slac://slack.com/intl/en-gb/help/articles/218688467-Add-RSS-feeds-to-Slack">slack</a></p>
-<h2 id="find-files-which-don-39-t-contain-a-particular-string">Find files which <em>don&rsquo;t</em> contain a particular string</h2><div class="highlight"><pre class="highlight plaintext"><code>for file in $(find * -name '*.erb'); do grep -q last_reviewed_on $file || echo $file; done
-</code></pre></div><h2 id="get-aws-ec2-instance-information-for-a-node">Get AWS EC2 instance information for a node</h2><div class="highlight"><pre class="highlight plaintext"><code>aws ec2 describe-instances --filters 'Name=private-dns-name,Values=ip-172-20-127-140.eu-west-2.compute.internal'
-</code></pre></div><h2 id="create-a-one-off-job-to-repeat-a-cronjob">Create a one-off job to repeat a cronjob</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl -n concourse-main create job ds-update-orphaned-statefiles --from=cronjob/orphaned-terraform-statefiles
-</code></pre></div><h2 id="hijack-a-concourse-job-container">Hijack a concourse job container</h2><div class="highlight"><pre class="highlight plaintext"><code>fly -t manager hijack -j environments-terraform/apply-namespace-changes-live-1
-</code></pre></div><p>You&rsquo;ll be presented with a list of containers to choose from.</p>
-<h2 id="help-when-manually-deleting-aws-resources">Help when manually deleting AWS resources</h2><p>Occasionally you&rsquo;ll need to manually delete AWS components. A neat trick is to use the <a href="https://docs.aws.amazon.com/ARG/latest/userguide/tag-editor.html">AWS Tag Editor</a>.</p>
+              <h1 id="upgrade-terraform-version">Upgrade Terraform Version</h1><h2 id="introduction">Introduction</h2><p>The intention of this document is to provide you with a method to upgrade the Terraform version used in state across the MoJ Cloud Platform. This document won&rsquo;t go into minutiae detail on how to perform each task, as each upgrade will require different levels of attention.</p>
+<h2 id="recommendations">Recommendations</h2>
+<ul>
+<li>Install <a href="https://tfswitch.warrensbox.com/">TF Switch</a> to allow you to switch between Terraform versions.</li>
+</ul>
+<h2 id="caveats">Caveats</h2><p>This document was originally written following the Terraform 0.13 to 0.14 upgrade, it&rsquo;s worth noting this was the best course of action for that particular upgrade. Over time this document will evolve and the process of upgrading will improve.</p>
+<h2 id="how-to-perform-the-upgrade-divide-and-conquer">How to perform the upgrade - divide and conquer</h2><p>As the Cloud Platform team have decided to use a <a href="https://patrickleet.medium.com/mono-repo-or-multi-repo-why-choose-one-when-you-can-have-both-e9c77bd0c668">multi-repository</a> approach to Terraform modules it means we have a large distributed code base you&rsquo;ll be required to amend. This section of the guide will suggest an approach to break this work down and tackle it section by section. At a high level we have two Terraform state monoliths managed within the same state bucket:</p>
 
 <ul>
-<li>Open the <a href="https://eu-west-1.console.aws.amazon.com/resource-groups/tag-editor/find-resources?region=eu-west-1">Tag Editor</a>.</li>
-<li>Select &ldquo;All Supported Resources&rdquo; from the &ldquo;Resource type&rdquo; drop down.</li>
-<li>Click &ldquo;Search Resources&rdquo;.</li>
-<li>Use the filter to search for a tag, for example a cluster name: <code>cp-0909-1202</code>.</li>
+<li>Cloud Platform Environments (referred to as &ldquo;Environments&rdquo; throughout this document). This holds tenant (user) state, things like a Kubernetes namespace or RDS instance.</li>
+<li>Cloud Platform Infrastructure (referred to as &ldquo;Infrastructure&rdquo; throughout this document). This state represents everything required to build an MoJ Cloud Platform Kubernetes cluster, and it&rsquo;s accompanying components.</li>
 </ul>
-<p>You&rsquo;ll be presented with all resources with your tag associated, click the link to navigate to each resource and delete as appropriate.</p>
-<h2 id="find-out-why-your-namespace-isn-39-t-deleting">Find out why your namespace isn&rsquo;t deleting</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl api-resources --verbs=list --namespaced -o name \
-| xargs -n 1 kubectl get --show-kind --ignore-not-found -n &lt;namespace-name&gt;
-</code></pre></div><p>It should show you the reason the API doesn&rsquo;t want to delete. For example:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Error from server: conversion webhook for acme.cert-manager.io/v1alpha2, Kind=Order failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
-Error from server: conversion webhook for cert-manager.io/v1alpha2, Kind=CertificateRequest failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
-Error from server: conversion webhook for cert-manager.io/v1alpha2, Kind=Certificate failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
-</code></pre></div>
+<p>Each of the sections above require individual action, outlined below.</p>
+<p>Note - Not all Terraform upgrades require you to make a change to the code base.</p>
+<h3 id="before-the-upgrade">Before the upgrade</h3><p>There are three recommended tasks required before upgrading Terraform.</p>
+<h4 id="check-for-warnings-and-notices">Check for warnings and notices</h4><p>Terraform is good at warning end users of deprecations in future releases. Check the output of a Terraform init/validation/plan for messages of deprecations of resources that will disappear in future releases. For example, this message appeared in our Environments apply pipeline:</p>
+<div class="highlight"><pre class="highlight shell"><code>Warning: Interpolation-only expressions are deprecated
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-07-08">
+  on .terraform/modules/example_team_es/main.tf line 104, <span class="k">in </span>data <span class="s2">"aws_iam_policy_document"</span> <span class="s2">"elasticsearch_role_snapshot_policy"</span>:
+</code></pre></div><p>It is recommended to act on these messages and look for how and why it&rsquo;s being deprecated.</p>
+<h4 id="read-the-release-notes-carefully">Read the release notes carefully</h4><p>This sounds simple enough but it is vitally important you understand what <a href="https://github.com/hashicorp/terraform/blob/main/CHANGELOG.md">changes</a> are being made to your Terraform state.</p>
+<h4 id="remove-any-test-clusters">Remove any test clusters</h4><p>After upgrading to a new version of Terraform you don&rsquo;t want test clusters lying around using the old version. Remove any test clusters before upgrading the Infrastructure state.</p>
+<h3 id="environments-state-files">Environments state files</h3><p>The <a href="https://github.com/ministryofjustice/cloud-platform-environments">cloud-platform-environments</a> repository contains directories for every namespace in the MoJ Cloud Platform, for each namespace there is a single Terraform state file stored in an S3 bucket. As there are so many state files it is recommended to perform the following:</p>
+<h4 id="use-the-quot-apply-quot-pipeline">Use the &ldquo;apply&rdquo; pipeline</h4><p>We currently use a <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform/jobs/apply-live-1">concourse pipeline</a> to <code>terraform init/apply</code> everything in the cloud-platform-environments GitHub repository. This pipeline has a number of environment variables that allow it to communicate with the state bucket and amend the necessary state file. Use this pipeline to make amendments to any state in this repository.</p>
+<h4 id="upgrade-the-tools-image">Upgrade the tools image</h4><p>Add your new Terraform version to the <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">cloud-platform-tools</a> image along with the old version. This will allow you to run both versions simultaneously. You can see how this has been achieved <a href="https://github.com/ministryofjustice/cloud-platform-tools-image/commit/9d042e2fe2a5e15e992e9dbbd403fafd3098c10d">previously</a>.</p>
+<h4 id="add-conditional-logic">Add conditional logic</h4><p>Add an if statement to the apply library that checks the version outlined in each <code>versions.tf</code> file in a namespace. Previously, this was achieved by simply making the <code>terraform</code> command <a href="https://github.com/ministryofjustice/cloud-platform-environments/pull/4366/files">variable</a>. This conditional logic allows you to upgrade the state slowly, ensuring you don&rsquo;t have issues in non-production namespaces before you upgrade production.</p>
+<h4 id="upgrade-all-terraform-modules">Upgrade all Terraform modules</h4><p>Not all Terraform upgrades require this, but in 0.12 and 0.13 you were required to change some syntax in your code base. This can be a fairly tricky task as we maintain over 50 Terraform modules. Terraform does provide a <code>terraform upgrade</code> tool if a syntax change is required, but this will need to be executed against all modules and a new release created. This can be tedious if performed manually so there is some <a href="https://github.com/ministryofjustice/cloud-platform-terraform-upgrade">Go code</a> that does this on your behalf.</p>
+<p>Using the example of upgrading to Terraform 0.13, the following was executed:</p>
+<div class="highlight"><pre class="highlight shell"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
+go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span>
+</code></pre></div><p>The code will pull down every repository in the &ldquo;ministryofjustice&rdquo; organisation with the name that contains &ldquo;cloud-platform-terraform&rdquo; and run the command &ldquo;terraform 0.13upgrade&rdquo;. It will then commit and create a Pull Request against each repository using your GitHub credentials.</p>
+<p>This will result in a Pull Request output similar to the one outlined <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/pull/85/files">here</a>.</p>
+<p>Once all the Pull Requests have been reviewed, merge them into main and create a new release.</p>
+<p>Note: Terraform will release an <a href="https://www.terraform.io/docs/cli/commands/0.13upgrade.html">upgrade</a> command for each release that contains syntax changes, in the example above 0.13upgrade was used to create a more detailed <code>versions.tf</code>.</p>
+<h4 id="upgrade-a-test-namespace">Upgrade a test namespace</h4><p>It is difficult to test an upgrade on the Environments state, this is the best way to do so, with examples.</p>
+
+<ul>
+<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/ad452137912a667c67c6ed065209eb2a92b85a7e#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Create</a> a test namespace in the cloud-platform-environments repository called <code>abdundance-namespace-dev</code> (will probably be the first namespace applied).</li>
+<li>Add every resource available using the release before the Terraform upgrade work above, i.e. RDS, S3 (a full list can be found <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/README.md#our-core-repos">here</a>).</li>
+<li>Create a pull request and then merge to main.</li>
+</ul>
+<p>When the above resources are successfully built:</p>
+
+<ul>
+<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/2769a63f88117865440e60abe5ee0dc6e64e0761#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Bump</a> all of your resources to the latest, containing the Terraform upgrade.</li>
+<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/2298836af43290e0bdb8020ffd2033703260fc51#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Change</a> the version in versions.tf in the cloud-platform-environments to reflect the new version.</li>
+<li>Create a Pull Request against main.</li>
+<li>Monitor possible changes in the plan. It should require no changes.</li>
+<li>If you&rsquo;re happy with the output of the plan pipeline, merge it into main.</li>
+</ul>
+<h4 id="upgrade-all-non-production-namespaces">Upgrade all non-production namespaces</h4><p>When you&rsquo;re happy to begin upgrading users namespaces run the upgrade command against the cloud-platform-environments repository or upgrade all namespaces manually.</p>
+<p>If you decide to use the tool above then perform the following:</p>
+<div class="highlight"><pre class="highlight shell"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
+go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-environments"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span> <span class="nt">--no-commit</span>
+<span class="nb">cd </span>repositories
+</code></pre></div><p>The <code>no-commit</code> argument pulls down the required repository and stores it in a directory called &lsquo;repositories&rsquo;, it then runs the upgrade against all namespaces but doesn&rsquo;t commit the changes. You&rsquo;ll want to pick and choose which namespaces to commit to ensure you&rsquo;re happy. I&rsquo;d recommend creating a new branch and commiting the non-production namespaces only, i.e. any namespace that isn&rsquo;t &ldquo;-prod&rdquo;.</p>
+<p>Create a pull request against main and watch the plan pipeline once more. Again this should be clean.</p>
+<p>If the plan applies no changes and you&rsquo;re happy, merge this into main.</p>
+<h4 id="upgrade-all-production-namespaces">Upgrade all production namespaces</h4><p>Perform the above on all production namespaces.</p>
+<h4 id="tidying-up">Tidying up</h4><p>When all namespaces in the cloud-platform-environments repository are using the new version of Terraform you can begin to clean-up any changes you&rsquo;ve made.</p>
+
+<ul>
+<li><a href="https://github.com/ministryofjustice/cloud-platform-tools-image/commit/3827ea89a95cf78146812a0275b40f3c2d20ed21">Remove</a> the multiple Terraform binaries from the cloud-platform-tools image, leaving only the new version.</li>
+<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/b11b0372fe71289e51739395664355014df0e655">Remove</a> the conditional logic in the apply library.</li>
+</ul>
+<h3 id="infrastructure-state-files">Infrastructure state files</h3><p>The Infrastructure state we have in the Cloud Platform is structured in a tree related to its dependency, so for example, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-components">components</a> state (in the output below) relies heavily on the directory above and so on. Here is a snapshot of how our directory looks but this is likely to change:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>aws-accounts
+├── cloud-platform-aws
+│   ├── account                  # AWS Account specific configuration.
+│   └── vpc                  # VPC creation. Workspaces for individual clusters
+│       ├── eks                  # Holding EKS, workspaces for individual clusters.
+│       │   └── components       # EKS components. Workspaces for individual clusters
+│       └── kops                 # Holding KOPS, workspaces for individual clusters.
+│           └── components       # KOPS components. Workspaces for individual clusters
+├── cloud-platform-dsd
+│   └── main.tf
+├── cloud-platform-ephemeral-test
+│   ├── account
+│   └── vpc
+│       ├── eks
+│       │   └── components
+│       └── kops
+│           └── components
+└── README.md
+</code></pre></div><h4 id="where-to-start">Where to start</h4><p>Because of the structure outlined above, it&rsquo;s best to start at the components layer and work in.</p>
+<h4 id="run-terraform-init-validate">Run terraform init/validate</h4><p>Using a tool such as tf-switch, switch to your new version and perform the command <code>terraform init -backend=false</code>. The output of this command will give you a general idea of what needs to change before your perform the upgrade. the <code>-backend=false</code> ensures the state isn&rsquo;t touched.</p>
+<h4 id="infrastructure-state-files-upgrade-all-terraform-modules">Upgrade all Terraform modules</h4><p>Like the Environments, you need to ensure all Terraform modules will work with the new Terraform version. If there is a syntax change, it&rsquo;s recommended to run the <code>terraform upgrade</code> command on all repositories that contain &ldquo;cloud-platform-terraform&rdquo;. Either perform this manually or:</p>
+<div class="highlight"><pre class="highlight shell"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
+go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"&lt;insert upgrade command here&gt;"</span>
+</code></pre></div><p>Which will perform the upgrade command on each repository containing &ldquo;cloud-platform-terraform&rdquo; in the name and then create a Pull Request.</p>
+<h4 id="ensure-all-quot-third-party-quot-modules-conform">Ensure all &ldquo;third-party&rdquo; modules conform</h4><p>We use a number of third party Terraform modules (modules we don&rsquo;t control), these mainly belong to AWS, so it&rsquo;s important that you update the version of these modules and ensure it works with the Terraform version you&rsquo;re upgrading to. <a href="https://github.com/ministryofjustice/cloud-platform-terraform-monitoring/commit/ce9fb73249775c8efe09020d3db7c96ccb9ef251">Here&rsquo;s</a> an example of a change to a third party module.</p>
+<h4 id="perform-terraform-init-validate-manually">Perform terraform init/validate manually</h4><p>With all the leg work complete, you can now perform a Terraform upgrade. We do have a pipeline that can do this on your behalf but I&rsquo;d recommend manually performing a <code>terraform init &amp;&amp; terraform apply</code>.</p>
+<h4 id="work-inwards">Work inwards</h4><p>When you complete the upgrade on the directory/state you&rsquo;ve chosen, e.g. components, then you can work on the directory above and perform the same steps as outlined.</p>
+<h4 id="upgrade-the-cloud-platform-cli-image">Upgrade the cloud-platform-cli image</h4><p>Finally, following the successful upgrade to your new Terraform version, upgrade the version of Terraform used in the cloud-platform-cli docker image.</p>
+
+
+              <div data-module='page-expiry' data-last-reviewed-on="2021-06-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 8 April 2021.
+      This page was last reviewed on 22 March 2021.
 
-        It needs to be reviewed again on 8 July 2021
+        It needs to be reviewed again on 22 June 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 8 July 2021
+      This page was set to be reviewed before 22 June 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1651,8 +1671,8 @@ Error from server: conversion webhook for cert-manager.io/v1alpha2, Kind=Certifi
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/tips-and-tricks.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Tips%20and%20Tricks'&amp;body=Problem%20with%20'Tips%20and%20Tricks'%20(https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/upgrade-terraform-version.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Upgrade%20Terraform%20Version'&amp;body=Problem%20with%20'Upgrade%20Terraform%20Version'%20(https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
