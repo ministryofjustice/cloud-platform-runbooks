@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Tips and Tricks - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Tips and Tricks - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Tips and Tricks" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Tips and Tricks - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1556,19 +1562,19 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="tips-and-tricks">Tips and Tricks</h1><p>A collection of useful one-liners and code snippets.</p>
-<h2 id="delete-an-rds-database-snapshot">Delete an RDS database snapshot</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>aws rds delete-db-snapshot <span class="nt">--db-snapshot-identifier</span> cloud-platform-2f8c3c1ceaf0a05d-finalsnapshot
-</code></pre></div><h2 id="check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</h2><div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">echo</span> | openssl s_client <span class="nt">-connect</span> google.com:443 | openssl x509 <span class="nt">-noout</span> <span class="nt">-enddate</span>
+<h2 id="delete-an-rds-database-snapshot">Delete an RDS database snapshot</h2><div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span>aws rds delete-db-snapshot <span class="nt">--db-snapshot-identifier</span> cloud-platform-2f8c3c1ceaf0a05d-finalsnapshot
+</code></pre></div><h2 id="check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</h2><div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span><span class="nb">echo</span> | openssl s_client <span class="nt">-connect</span> google.com:443 | openssl x509 <span class="nt">-noout</span> <span class="nt">-enddate</span>
 <span class="nv">depth</span><span class="o">=</span>1 C <span class="o">=</span> US, O <span class="o">=</span> Google Trust Services, CN <span class="o">=</span> Google Internet Authority G3
 verify error:num<span class="o">=</span>20:unable to get <span class="nb">local </span>issuer certificate
 verify <span class="k">return</span>:0
 DONE
 <span class="nv">notAfter</span><span class="o">=</span>Oct 21 18:23:00 2019 GMT
 </code></pre></div><h2 id="run-etcdctl-on-a-master-node">Run <code>etcdctl</code> on a master node</h2><p>While SSHed onto a master:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker ps | <span class="nb">grep </span>etcd.manager
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span><span class="nb">sudo </span>docker ps | <span class="nb">grep </span>etcd.manager
 </code></pre></div><p>Pick the kopeio/etcd-manager container you&rsquo;re interested in (&lsquo;main&rsquo; or &lsquo;events&rsquo;) and then docker exec onto it</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">sudo </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="o">[</span>container <span class="nb">id</span><span class="o">]</span> bash
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span><span class="nb">sudo </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="o">[</span>container <span class="nb">id</span><span class="o">]</span> bash
 </code></pre></div><p>Now you can run etcdctl like this:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">cd</span> /opt/etcd-v3.4.3-linux-amd64
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">cd</span> /opt/etcd-v3.4.3-linux-amd64
 
 <span class="nv">ETCDCTL_API</span><span class="o">=</span>3 <span class="se">\</span>
   ./etcdctl <span class="nt">--key</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key <span class="se">\</span>
@@ -1577,24 +1583,24 @@ DONE
   <span class="nt">--endpoints</span> <span class="s2">"https://etcd-a.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-b.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-c.internal.live-1.cloud-platform.service.justice.gov.uk:4001"</span> endpoint health
 </code></pre></div><h2 id="delete-a-quot-stuck-quot-resource">Delete a &ldquo;stuck&rdquo; resource</h2><p>kubectl can freeze with resources in status &ldquo;Terminating&rdquo;, these workarounds can force a cleanup:</p>
 <p>Identify what resources are still present in a namespace:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>ns=my-app ; for api in `kubectl api-resources --verbs=list --namespaced -o name` ; do echo $api ;  kubectl get $api -n $ns ; done
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>ns=my-app ; for api in `kubectl api-resources --verbs=list --namespaced -o name` ; do echo $api ;  kubectl get $api -n $ns ; done
 </code></pre></div><p>If a regular <code>delete</code> does not remove the resource, try</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl delete &lt;resource&gt; --grace-period=0 --force
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl delete &lt;resource&gt; --grace-period=0 --force
 </code></pre></div><p>and/or</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl patch &lt;resource&gt; -p '{"metadata":{"finalizers":[]}}' --type=merge
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl patch &lt;resource&gt; -p '{"metadata":{"finalizers":[]}}' --type=merge
 </code></pre></div><p>Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
 <h2 id="filter-namespaces-by-specific-label-or-annotation">Filter namespaces by specific label or annotation</h2><p>For the label <code>cloud-platform.justice.gov.uk/is-production</code> with value <code>true</code></p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get ns <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get ns <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span>
 </code></pre></div><p>You can use <code>awk</code> to output specific column</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> | <span class="nb">awk</span> <span class="s1">'{print $1,$2}'</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> | <span class="nb">awk</span> <span class="s1">'{print $1,$2}'</span>
 </code></pre></div><p>To filter namespaces by label and annotation and display as namespace / annotation format</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> <span class="nt">-ojson</span> | jq <span class="nt">-r</span> <span class="s1">'.items[] | .metadata.name + " / " + .metadata.annotations["cloud-platform.justice.gov.uk/source-code"] '</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> <span class="nt">-ojson</span> | jq <span class="nt">-r</span> <span class="s1">'.items[] | .metadata.name + " / " + .metadata.annotations["cloud-platform.justice.gov.uk/source-code"] '</span>
 </code></pre></div><p>If you need to install <code>jq</code>, do <code>brew install jq</code></p>
-<h2 id="find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-172-20-80-62.eu-west-2.compute.internal
+<h2 id="find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-172-20-80-62.eu-west-2.compute.internal
 </code></pre></div><h2 id="count-pods-running-on-all-nodes">Count pods running on all nodes</h2><p>Paste this into the search field on <a href="https://prometheus.cloud-platform.service.justice.gov.uk">Prometheus</a>:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>max by(node) (max by(instance) (kubelet_running_pod_count{job="kubelet",metrics_path="/metrics"}) * on(instance) group_left(node) kubelet_node_name{job="kubelet",metrics_path="/metrics"})
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>max by(node) (max by(instance) (kubelet_running_pod_count{job="kubelet",metrics_path="/metrics"}) * on(instance) group_left(node) kubelet_node_name{job="kubelet",metrics_path="/metrics"})
 </code></pre></div><h2 id="install-tmux-and-docker-on-the-live-1-bastion-host">Install tmux and docker on the live-1 bastion host</h2><p>From <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9">here</a></p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">sudo </span>apt update
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">sudo </span>apt update
 <span class="nb">sudo </span>apt <span class="nb">install </span>tmux
 <span class="nb">sudo </span>apt <span class="nb">install </span>apt-transport-https ca-certificates curl gnupg2 software-properties-common
 curl <span class="nt">-fsSL</span> https://download.docker.com/linux/debian/gpg | <span class="nb">sudo </span>apt-key add -
@@ -1609,10 +1615,10 @@ apt-cache policy docker-ce
 <p>To validate your feed url, test using the <a href="https://validator.w3.org/feed/">w3c validator</a></p>
 <p>To get the RSS feed url for github projects, use <code>&lt;github repo url&gt;/releases.atom</code></p>
 <p>To add your first feed to a new slack channel, follow steps provided by <a href="https://slack.com/intl/en-gb/help/articles/218688467-Add-RSS-feeds-to-Slac://slack.com/intl/en-gb/help/articles/218688467-Add-RSS-feeds-to-Slack">slack</a></p>
-<h2 id="find-files-which-don-39-t-contain-a-particular-string">Find files which <em>don&rsquo;t</em> contain a particular string</h2><div class="highlight"><pre class="highlight plaintext"><code>for file in $(find * -name '*.erb'); do grep -q last_reviewed_on $file || echo $file; done
-</code></pre></div><h2 id="get-aws-ec2-instance-information-for-a-node">Get AWS EC2 instance information for a node</h2><div class="highlight"><pre class="highlight plaintext"><code>aws ec2 describe-instances --filters 'Name=private-dns-name,Values=ip-172-20-127-140.eu-west-2.compute.internal'
-</code></pre></div><h2 id="create-a-one-off-job-to-repeat-a-cronjob">Create a one-off job to repeat a cronjob</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl -n concourse-main create job ds-update-orphaned-statefiles --from=cronjob/orphaned-terraform-statefiles
-</code></pre></div><h2 id="hijack-a-concourse-job-container">Hijack a concourse job container</h2><div class="highlight"><pre class="highlight plaintext"><code>fly -t manager hijack -j environments-terraform/apply-namespace-changes-live-1
+<h2 id="find-files-which-don-39-t-contain-a-particular-string">Find files which <em>don&rsquo;t</em> contain a particular string</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>for file in $(find * -name '*.erb'); do grep -q last_reviewed_on $file || echo $file; done
+</code></pre></div><h2 id="get-aws-ec2-instance-information-for-a-node">Get AWS EC2 instance information for a node</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws ec2 describe-instances --filters 'Name=private-dns-name,Values=ip-172-20-127-140.eu-west-2.compute.internal'
+</code></pre></div><h2 id="create-a-one-off-job-to-repeat-a-cronjob">Create a one-off job to repeat a cronjob</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl -n concourse-main create job ds-update-orphaned-statefiles --from=cronjob/orphaned-terraform-statefiles
+</code></pre></div><h2 id="hijack-a-concourse-job-container">Hijack a concourse job container</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager hijack -j environments-terraform/apply-namespace-changes-live-1
 </code></pre></div><p>You&rsquo;ll be presented with a list of containers to choose from.</p>
 <h2 id="help-when-manually-deleting-aws-resources">Help when manually deleting AWS resources</h2><p>Occasionally you&rsquo;ll need to manually delete AWS components. A neat trick is to use the <a href="https://docs.aws.amazon.com/ARG/latest/userguide/tag-editor.html">AWS Tag Editor</a>.</p>
 
@@ -1623,10 +1629,10 @@ apt-cache policy docker-ce
 <li>Use the filter to search for a tag, for example a cluster name: <code>cp-0909-1202</code>.</li>
 </ul>
 <p>You&rsquo;ll be presented with all resources with your tag associated, click the link to navigate to each resource and delete as appropriate.</p>
-<h2 id="find-out-why-your-namespace-isn-39-t-deleting">Find out why your namespace isn&rsquo;t deleting</h2><div class="highlight"><pre class="highlight plaintext"><code>kubectl api-resources --verbs=list --namespaced -o name \
+<h2 id="find-out-why-your-namespace-isn-39-t-deleting">Find out why your namespace isn&rsquo;t deleting</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl api-resources --verbs=list --namespaced -o name \
 | xargs -n 1 kubectl get --show-kind --ignore-not-found -n &lt;namespace-name&gt;
 </code></pre></div><p>It should show you the reason the API doesn&rsquo;t want to delete. For example:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Error from server: conversion webhook for acme.cert-manager.io/v1alpha2, Kind=Order failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Error from server: conversion webhook for acme.cert-manager.io/v1alpha2, Kind=Order failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
 Error from server: conversion webhook for cert-manager.io/v1alpha2, Kind=CertificateRequest failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
 Error from server: conversion webhook for cert-manager.io/v1alpha2, Kind=Certificate failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
 </code></pre></div>

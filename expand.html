@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Expanding Persistent Volumes created using StatefulSets - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Expanding Persistent Volumes created using StatefulSets - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Expanding Persistent Volumes created using StatefulSets" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Expanding Persistent Volumes created using StatefulSets - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/expand.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1558,7 +1564,7 @@
               <h1 id="expanding-persistent-volumes-created-using-statefulsets">Expanding Persistent Volumes created using StatefulSets</h1><p>It is currently not possible to expand PVs created using a StatefulSet directly from the StatefulSet template.</p>
 <p>This is the current work around -</p>
 <p>Edit the &lsquo;storage&rsquo; value under spec:resources for PVC required to be expanded:</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl edit pvc www-web-0</span>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="s">kubectl edit pvc www-web-0</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">accessModes</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
@@ -1568,7 +1574,7 @@
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">gp2</span>
   <span class="na">volumeName</span><span class="pi">:</span> <span class="s">pvc-489b1857-91dd-11e9-b4c5-0a5b8815a91e</span>
 </code></pre></div><p>Once the edit has been applied, you should see <code>type: Resizing</code> under status:conditions:</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
 <span class="na">status</span><span class="pi">:</span>
   <span class="na">accessModes</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
@@ -1581,10 +1587,10 @@
     <span class="na">type</span><span class="pi">:</span> <span class="s">Resizing</span> <span class="c1"># You should see value</span>
   <span class="na">phase</span><span class="pi">:</span> <span class="s">Bound</span>
 </code></pre></div><p>Delete the corresponding pod associated to the pv:</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl delete pod web-0
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl delete pod web-0
 pod <span class="s2">"web-0"</span> deleted
 </code></pre></div><p>Once pod is recreated, you should see the new pv disc size in the pvc</p>
-<div class="highlight"><pre class="highlight yaml"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
+<div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="s">kubectl get pvc www-web-0 -o yaml</span>
 <span class="na">status</span><span class="pi">:</span>
   <span class="na">accessModes</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
@@ -1592,7 +1598,7 @@ pod <span class="s2">"web-0"</span> deleted
     <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span>
   <span class="na">phase</span><span class="pi">:</span> <span class="s">Bound</span>
 </code></pre></div><p>The following command will delete the StatefulSet without deleting the associated pods</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl delete statefulset <span class="nt">--cascade</span><span class="o">=</span><span class="nb">false </span>web <span class="c"># `web` is the name of the StatefulSet</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl delete statefulset <span class="nt">--cascade</span><span class="o">=</span><span class="nb">false </span>web <span class="c"># `web` is the name of the StatefulSet</span>
 </code></pre></div><p>Apply the StatefulSet template with new pvc size (with everything else exactly the same) to your namespace.</p>
 <p>There is an <a href="https://github.com/kubernetes/enhancements/issues/661">open issue</a> for expanding PVs using StatefulSet templates in github. Once this is implemented, the above workaround will no longer be required.</p>
 

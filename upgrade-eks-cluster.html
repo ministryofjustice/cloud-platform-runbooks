@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Upgrade EKS cluster - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-cluster.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Upgrade EKS cluster - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-cluster.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Upgrade EKS cluster" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-cluster.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Upgrade EKS cluster - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-cluster.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1571,16 +1577,16 @@
 </ul>
 <h2 id="run-the-upgrade">Run the upgrade</h2><h3 id="upgrade-control-plane">Upgrade Control Plane</h3><p>As we mentioned before: almost always new EKS version implies new <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks module version</a>. As an example, the following instructions were applied to upgrade from 1.14 to 1.15:</p>
 <p>1) Create a PR in Cloud Platform Infrastructure repo <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/cluster.tf">against EKS module</a> (file encrypted with git-crypt to protect users identity) which upgrade to the desired <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks version</a> that supports the EKS version you want to upgrade to</p>
-<div class="highlight"><pre class="highlight plaintext"><code> module "eks" {
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> module "eks" {
    source  = "terraform-aws-modules/eks/aws"
 -  version = "v8.1.0"
 +  version = "v10.0.0"
 </code></pre></div><p>2) Execute <code>terraform plan</code> to check what is going to happen and finally <code>terraform apply</code> to execute the change.
 3) Verify using <a href="https://aws.amazon.com/cli/">AWS CLI</a> or <a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters">AWS Console</a> the Control Plane has the right version.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ aws eks describe-cluster --query 'cluster.version' --name manager
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ aws eks describe-cluster --query 'cluster.version' --name manager
 "1.15"
 $
-</code></pre></div><p><a href="../images/aws-eks-upgrade.png" target="_blank" rel="noopener noreferrer"><img src="/images/aws-eks-upgrade.png" alt="AWS Console" /></a></p>
+</code></pre></div><p><a href="../images/aws-eks-upgrade.png" rel="noopener noreferrer"><img src="/images/aws-eks-upgrade.png" alt="AWS Console" /></a></p>
 <p>4) Most of the time new EKS version implies new versions for <code>kube-proxy</code>/<code>kube-dns</code>/<code>aws-node daemonset</code>. The upgrade process can be found directly in the official <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html">AWS Control Plane upgrade documentation</a> and <strong>MUST BE FOLLOWED, PLEASE DON&rsquo;T SKIP IT</strong>.</p>
 <h3 id="upgrade-node-groups">Upgrade Node Groups</h3><p>The best way to upgrade node groups are through AWS Console. We advise to follow the upgrade instructions from the <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html">official AWS Managed Node Group documentation</a>.</p>
 

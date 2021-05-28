@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Cloud Platform Communications Plan - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Cloud Platform Communications Plan - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Cloud Platform Communications Plan" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Cloud Platform Communications Plan - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1564,56 +1570,47 @@
 <th>Target Audience</th>
 <th>When</th>
 <th>Channel</th>
-</tr>
-<tr>
+</tr><tr>
 <td>New features</td>
 <td>Service Teams</td>
 <td>As features are shipped</td>
-<td>#cloud-platform-update</td>
-</tr>
-<tr>
+<th scope="row">cloud-platform-update</th>
+</tr><tr>
 <td>Things we have learned</td>
 <td>Justice Digital &amp; Technology</td>
 <td>Regularly when we have key things to show or promote</td>
 <td>Show the Thing</td>
-</tr>
-<tr>
+</tr><tr>
 <td>Service impacting incidents</td>
 <td>Service Teams</td>
 <td>When an incident has been declared, key updates during resolution, and at incident closure</td>
-<td>#cloud-platform-update</td>
-</tr>
-<tr>
+<th scope="row">cloud-platform-update</th>
+</tr><tr>
 <td>Sharing postmortems for service impacting incidents</td>
 <td>Service Teams</td>
 <td>When postmortem has been documented</td>
-<td>#cloud-platform-update</td>
-</tr>
-<tr>
+<th scope="row">cloud-platform-update</th>
+</tr><tr>
 <td>Service impacting upgrades/Maintence</td>
 <td>Service Teams</td>
 <td>As required</td>
-<td>#cloud-platform-update</td>
-</tr>
-<tr>
+<th scope="row">cloud-platform-update</th>
+</tr><tr>
 <td>Sharing successes</td>
 <td>Chief Technology Officer</td>
 <td>Weekly</td>
 <td>One to ones and team meetings</td>
-</tr>
-<tr>
+</tr><tr>
 <td>Sharing successes</td>
 <td>SMT</td>
 <td>Fortnightly</td>
 <td>Architecture &amp; Platforms weeknotes</td>
-</tr>
-<tr>
+</tr><tr>
 <td>Sharing successes</td>
 <td>Justice Digital &amp; Technology</td>
 <td>Regularly when we have key things to show or promote</td>
 <td>Post about them in #chat on Slack/Consider for a Show the Thing</td>
 </tr>
-
         </table>
       </div><h2 id="tips-on-format-of-communications">Tips on format of communications</h2><p>The #cloud-platform-update channel is used for a number of different types of communications so it is important that messages posted have a clear description so that users can understand the importance of the message. In the case of incidents or upgrades the message should have a <strong>bold</strong> title that clearly describes what the message will be about.</p>
 <h3 id="examples">Examples</h3>

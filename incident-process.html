@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Incident Process - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Incident Process - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Incident Process" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Incident Process - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1576,7 +1582,7 @@
 <p>If this event does not constitute an incident, the appropriate response is probably to <a href="http://goo.gl/msfGiS">raise a ticket</a> to fix whatever needs fixing.</p>
 <p>Once you are confident that you have an incident, declare it as such.</p>
 <h2 id="2-declare-the-incident">2. Declare the incident</h2><p>Post a message into the <code>#cloud-platform</code> slack channel, following this format:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>I am declaring an incident because [reason]. The impact is that [impact].
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>I am declaring an incident because [reason]. The impact is that [impact].
 </code></pre></div><p>This declaration, <strong>by any member of the cloud platform team</strong>, marks the official start of the incident.</p>
 
 <blockquote>
@@ -1584,7 +1590,7 @@
 </blockquote>
 <p>This message should be used as the start of a slack thread which will form a key source of information during and after the incident (the <strong>incident thread</strong>).</p>
 <p>At your discretion, you may also wish to notify users now via <code>#ask-cloud-platform</code> and/or <code>#cloud-platform-update</code>, however you may prefer to leave this until later in the process, when more information is available.</p>
-<h3 id="examples">Examples</h3><div class="highlight"><pre class="highlight plaintext"><code>I am declaring an incident because one of our master nodes is in a failed
+<h3 id="examples">Examples</h3><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>I am declaring an incident because one of our master nodes is in a failed
 state. The impact is that the cluster is at increased risk of failure.
 
 I am declaring an incident because Prometheus is down.
@@ -1616,7 +1622,7 @@ The impact is that all production and non-production services are down.
 <p>NB: The incident lead needs to ensure that things <strong>are being done</strong>, not try to do everything themselves</p>
 </blockquote>
 <p>Once appointed, the incident lead should post this message on the incident slack thread:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>I am the incident lead
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>I am the incident lead
 </code></pre></div><p>Again, if you use these words, it will make it easier to scrape data from the thread later.</p>
 <h3 id="3-2-scribe">3.2 Scribe</h3><p><strong>Responsibilities</strong>:</p>
 <p>The scribe is responsible for keeping a log of the incident, including:</p>
@@ -1633,7 +1639,7 @@ The impact is that all production and non-production services are down.
 <p>NB: this log is not intended to be a verbatim transcript of discussions. Rather, things like &ldquo;xxx suggested the disk might be full. yyy to investigate and report back&rdquo;</p>
 </blockquote>
 <p>Once appointed, the scribe should post this message on the incident slack thread:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>I am the scribe
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>I am the scribe
 </code></pre></div><p>The form of the log is at the scribe&rsquo;s discretion, provided key events are timestamped, and that it can easily be handed off to another member of the team if they take over as scribe.</p>
 <h3 id="3-3-communications-lead">3.3 Communications Lead</h3><p>Depending on the impact/duration/panic-level of an incident, it <em>may</em> be desirable to appoint a communications lead.</p>
 <p><strong>Responsibilities</strong>:</p>
@@ -1657,7 +1663,7 @@ The impact is that all production and non-production services are down.
 <p>Whoever assumes a role should announce it in the incident slack thread, so that the team is aware.</p>
 <h2 id="4-fix-the-problem">4. Fix the problem</h2><p>Please bear in mind that not every incident requires the whole team to be involved (even if they all <em>want</em> to join in).</p>
 <h2 id="5-end-the-incident">5. End the incident</h2><p>When work on the problem has ceased, either because the problem has been resolved or because resolution is blocked until a later date, the <strong>incident lead</strong> should post a message to the incident thread as follows:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>I am declaring this incident resolved because [resolution / plan]
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>I am declaring this incident resolved because [resolution / plan]
 </code></pre></div><p>This marks the official end of the incident. If users were notified of the incident, an appropriate message should go out via the same channels to tell them it&rsquo;s over.</p>
 <h2 id="6-post-incident-procedure">6. Post-incident procedure</h2><p>After the incident is resolved:</p>
 

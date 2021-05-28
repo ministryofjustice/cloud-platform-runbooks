@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Add a new Alertmanager receiver and a slack webhook - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Add a new Alertmanager receiver and a slack webhook - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Add a new Alertmanager receiver and a slack webhook" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Add a new Alertmanager receiver and a slack webhook - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-receiver-alert-manager.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1571,7 +1577,7 @@
 <li><p>Fill in the template with the details provided from development team and add the array to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars"><code>terraform.tfvars</code></a> file.
 The <code>terraform.tfvars</code> file is encrypted so you have to <code>git-crypt unlock</code> to view the contents of the file.
 Check <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/other-topics/git-crypt-setup.html#git-crypt">git-crypt documentation in user guide</a> for more information on how to setup git-crypt.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>{
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>{
     severity = "&lt;unique name based on team info provided"&gt;
     webhook  = "&lt;slack webhook url&gt;"
     channel  = "&lt;slack channel&gt;"
@@ -1583,12 +1589,12 @@ Check <a href="https://user-guide.cloud-platform.service.justice.gov.uk/document
 </ol>
 <p>Once the changes are applied, provide the <code>severity</code> to the development team requested. Development team have to use the value as severity label when creating all custom application alerts.</p>
 <p>An example receiver set and a prometheus rule will look as below</p>
-<div class="highlight"><pre class="highlight plaintext"><code>{
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>{
     severity = "cp-team"
     webhook  = "https://hooks.slack.com/services/HGJKHJKSH/DFJKHKIUO/DJFHKDUJFKSUHUGIDHKUDGD"
     channel  = "#cloud-platform-alerts"
 }
-</code></pre></div><div class="highlight"><pre class="highlight yaml"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">monitoring.coreos.com/v1</span>
+</code></pre></div><div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">monitoring.coreos.com/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">PrometheusRule</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
@@ -1617,12 +1623,12 @@ Check <a href="https://user-guide.cloud-platform.service.justice.gov.uk/document
 <p>All alerts are routed using the severity label set from the prometheus rule. If the severity label matches the keyword <code>info-</code><severity> then it is routed to information type receivers.
 Hence, to receive information alert, prepend <code>info-</code> when setting the <code>severity</code> label of the prometheus rule.</p>
 <p>An example receiver set and a prometheus rule will look as below</p>
-<div class="highlight"><pre class="highlight plaintext"><code>{
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>{
     severity = "cp-team"
     webhook  = "https://hooks.slack.com/services/HGJKHJKSH/DFJKHKIUO/DJFHKDUJFKSUHUGIDHKUDGD"
     channel  = "#cloud-platform-alerts"
 }
-</code></pre></div><div class="highlight"><pre class="highlight yaml"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">monitoring.coreos.com/v1</span>
+</code></pre></div><div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">monitoring.coreos.com/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">PrometheusRule</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitoring</span>

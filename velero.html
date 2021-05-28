@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Velero - Cluster backups and disaster recovery - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/velero.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Velero - Cluster backups and disaster recovery - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/velero.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Velero - Cluster backups and disaster recovery" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/velero.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Velero - Cluster backups and disaster recovery - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/velero.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1562,13 +1568,13 @@
 <li>A server that runs on your cluster</li>
 <li>A command-line client that runs locally</li>
 </ul>
-<h4 id="velero-cli-install">Velero CLI Install:</h4><div class="highlight"><pre class="highlight plaintext"><code>brew install velero
+<h4 id="velero-cli-install">Velero CLI Install:</h4><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>brew install velero
 </code></pre></div><p>Velero is installed on all clusters as part of the cloud-platform-components install. The module is installed by <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/058f7a0808f856413397f8752bc6297b8ad588b1/terraform/cloud-platform-components/components.tf#L144">this section</a> of the code.</p>
 <p>Velero is installed in <code>namespace:velero</code> using helm. The chart used can be found <a href="https://github.com/helm/charts/tree/master/stable/velero">here</a></p>
 <p>You can verify the Velero server pod is installed and running using the kubectl get pods command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl get pods -n velero
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get pods -n velero
 </code></pre></div><p>All backups are are stored in a S3 bucket for 30 days. To view the backup location run the following command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero get backup-locations
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero get backup-locations
 </code></pre></div><p>The output will show the bucket name and corresponding prefix.</p>
 <h2 id="backups">Backups</h2><h3 id="why">Why?</h3><p>There are hundreds of reasons why you need to backup parts and/or your full cluster, a few high level reasons are:</p>
 
@@ -1581,37 +1587,37 @@
 <p>StatefulSets including corresponding persistent volumes are backed up together, as unlike stateless applications, it is not possible to easily get an application restored when it has persistent data.</p>
 <p>Velero <strong>does not</strong> backup the Kubernetes state stored in etcd. It is highly recommenced that a specific backup solution is used for etcd and its relevant certificates in addition to Velero.</p>
 <h3 id="how">How?</h3><p>It is possible to create manual backups as well as schedules ones.</p>
-<h4 id="manual-backups">Manual backups</h4><div class="highlight"><pre class="highlight plaintext"><code>velero backup create my-app-backup01 --include-namespaces home
+<h4 id="manual-backups">Manual backups</h4><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup create my-app-backup01 --include-namespaces home
 </code></pre></div><p>The above command will create a backup called <code>my-app-backup01</code> and will backup all resources within the <code>home</code> namespace.</p>
 <p>If you accidentally deleted <code>namespace:home</code>, you can recover the namespace and all resources by running the following command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create --from-backup my-app-backup01
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create --from-backup my-app-backup01
 </code></pre></div><h4 id="scheduled-backups">Scheduled backups</h4><p>Currently there is one scheduled backup created as part of the default install.
 This schedule is called <code>velero-allnamespacebackup</code>. This backup includes all namespaces, resources and persistent volumes (EBS) associated with StatefulSets.
 The Schedule is set to run every 3 hours.</p>
 <p>To view all stored backups within the cluster, run the following command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero get backups
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero get backups
 </code></pre></div><p>It is also possible to restore (and exclude) specific namespaces and resources from a velero-allnamespace backup. Below are examples of restoring a specific namespace and resource.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create --from-backup velero-allnamespacebackup --include-namespaces monitoring
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create --from-backup velero-allnamespacebackup --include-namespaces monitoring
 velero restore create --from-backup velero-allnamespacebackup --include-resource prometheusrules
 
 </code></pre></div><p>In a disaster recovery scenario, scheduled backups continue to backup, this may create backups with incorrect config. Instead of stopping individual scheduled jobs, it is recommended to change the storage location access mode to <code>ReadOnly</code>. To do this you require the storage location name. the following command will give you the storage location name and current access mode:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero get backup-locations
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero get backup-locations
 </code></pre></div><p>Then running the below:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl patch backupstoragelocation &lt;STORAGE LOCATION NAME&gt; \
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl patch backupstoragelocation &lt;STORAGE LOCATION NAME&gt; \
     --namespace velero \
     --type merge \
     --patch '{"spec":{"accessMode":"ReadOnly"}}'
 </code></pre></div><p>Once the disaster recovery scenario is resolved, you can set storage location mode back to <code>ReadWrite</code> using the following command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl patch backupstoragelocation &lt;STORAGE LOCATION NAME&gt; \
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl patch backupstoragelocation &lt;STORAGE LOCATION NAME&gt; \
        --namespace velero \
        --type merge \
        --patch '{"spec":{"accessMode":"ReadWrite"}}'
 </code></pre></div><h4 id="point-cluster-b-to-to-backup-folder-of-cluster-a">Point Cluster B to to backup folder of Cluster A</h4><p>It is possible to restore resources from backups from another cluster. You need to add a new Backup Storage Location and Volume Snapshot Location within the primary cluster pointing it to the backup cluster folder you want to restore from.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero backup-location create &lt;location-name&gt; --provider aws --bucket &lt;bucket-name&gt; --prefix &lt;clusterprefix&gt;  --access-mode=ReadOnly
-</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code> velero snapshot-location create &lt;location-name&gt; --provider aws
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup-location create &lt;location-name&gt; --provider aws --bucket &lt;bucket-name&gt; --prefix &lt;clusterprefix&gt;  --access-mode=ReadOnly
+</code></pre></div><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> velero snapshot-location create &lt;location-name&gt; --provider aws
 </code></pre></div><p>At this point, when you execute <code>velero backups get</code> you will see 2 different locations under the storage location column.</p>
 <p>If you want to create normal backups with 2 different storage locations configured, you either have to set one of the locatons as default. or add <code>--volume-snapshot-locations</code> to your backup command.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero backup create &lt;backup-name&gt; --volume-snapshot-locations &lt;location-name&gt;
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup create &lt;backup-name&gt; --volume-snapshot-locations &lt;location-name&gt;
 </code></pre></div><p>Click <a href="https://velero.io/docs/v1.5.0/">here</a> for the official Velero documentation.</p>
 
 

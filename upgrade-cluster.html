@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Upgrade a cluster - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Upgrade a cluster - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Upgrade a cluster" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Upgrade a cluster - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1583,9 +1589,9 @@
 <h3 id="run-a-shell-in-the-tools-image">Run a shell in the tools image</h3><p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to update a cluster.</p>
 <p>The image will need updates for new client tool versions, see <a href="https://github.com/ministryofjustice/cloud-platform-tools-image/pull/34">this PR</a> for an example. Make the required changes and create a new release (which will use a github action to push the new image to DockerHub).</p>
 <p>From a local copy of the <code>cloud-platform-infrastructure repository</code>, run the following command (after editing the <code>makefile</code> to ensure that you&rsquo;re using the new version of the tools image):</p>
-<div class="highlight"><pre class="highlight shell"><code>make tools-shell
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
 </code></pre></div><h2 id="run-the-upgrade">Run the upgrade</h2><h3 id="authenticate-to-the-cluster">Authenticate to the cluster</h3><p>Create the file <code>~/.kube/config</code> in your tools-image container by running:</p>
-<div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
 </code></pre></div><h3 id="update-the-live-cluster-manifest">Update the live cluster manifest</h3><p>Open the cloud-platform-infrastructure repository and make the following changes to the <code>kops/live-1.yaml</code> manifest:</p>
 
 <ul>
@@ -1606,7 +1612,7 @@
 <p><code>kops rolling-update cluster --instance-group &lt;master-instance-group&gt; (--yes)</code></p>
 <p>Kops will safely eject the instance from the cluster and bring back a new one.</p>
 <p>Once the first new master is in a <code>ready</code> state, run the fast integration tests with:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-infrastructure/smoke-tests
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd cloud-platform-infrastructure/smoke-tests
 make test-fast
 </code></pre></div><p>This will take around 30 seconds, and all the tests should pass.</p>
 
@@ -1615,9 +1621,9 @@ make test-fast
 </blockquote>
 <p>Perform the same process on the other two masters.</p>
 <h3 id="take-stock-of-current-running-worker-nodes">Take stock of current running worker nodes</h3><p>Create a <code>nodes</code> file listing all the current worker nodes:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl get nodes | grep node | sed 's/ .*//' &gt; nodes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get nodes | grep node | sed 's/ .*//' &gt; nodes
 </code></pre></div><h3 id="create-new-worker-instance-groups">Create new worker instance groups</h3><p>To ensure minimal application downtime, we&rsquo;re going to create new worker instance groups with the changes we applied to the live manifest above:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops create instancegroup nodes-&lt;kubernetes-version&gt;-eu-west-2a
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops create instancegroup nodes-&lt;kubernetes-version&gt;-eu-west-2a
 kops create instancegroup nodes-&lt;kubernetes-version&gt;-eu-west-2b
 kops create instancegroup nodes-&lt;kubernetes-version&gt;-eu-west-2c
 kops create instancegroup 2xlarge-nodes-&lt;kubernetes-version&gt;     # &lt;--- Monitoring/Prometheus nodes
@@ -1628,31 +1634,31 @@ kops update cluster --yes
 <p>We use the kubernetes-version to identify the new node group.</p>
 </blockquote>
 <p>New instances will be created, which you&rsquo;ll see with:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>watch kubectl get nodes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>watch kubectl get nodes
 </code></pre></div><h3 id="cordon-old-workers">Cordon old workers</h3><p>Create a script to cordon the old nodes, using the file we created earlier:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>cat nodes | sed 's/^/kubectl cordon /' &gt; cordon_nodes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cat nodes | sed 's/^/kubectl cordon /' &gt; cordon_nodes
 </code></pre></div><p>Execute the new file:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>bash cordon_nodes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>bash cordon_nodes
 </code></pre></div><h3 id="scale-the-number-of-ingress-controllers">Scale the number of ingress controllers</h3><p>To ensure ingress controllers are running on the new nodes run:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n ingress-controllers edit deployment nginx-ingress-acme-ingress-nginx-controller
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl -n ingress-controllers edit deployment nginx-ingress-acme-ingress-nginx-controller
 </code></pre></div><p>&hellip;and double the number of replicas.</p>
 <h3 id="drain-the-old-worker-nodes">Drain the old worker nodes</h3><p>Create a script to drain the old nodes, using the file we created earlier:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>cat nodes | sed 's/^/kubectl drain /' | sed 's/$/ --ignore-daemonsets --delete-local-data/' &gt; drain_nodes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cat nodes | sed 's/^/kubectl drain /' | sed 's/$/ --ignore-daemonsets --delete-local-data/' &gt; drain_nodes
 </code></pre></div><p>Execute the new file:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>bash drain_nodes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>bash drain_nodes
 </code></pre></div><p>Each node will drain all pods, moving them onto the new workers.</p>
 <h3 id="validate-the-cluster">Validate the cluster</h3><p>Ensure all nodes have joined the cluster:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops validate cluster
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops validate cluster
 </code></pre></div><h3 id="run-the-integration-tests-again">Run the integration tests again</h3><p>Run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/integration-tests/jobs/apply-tests-live-1">integration test pipeline</a> and wait for the tests to pass. This will ensure the live cluster is functioning as expected.</p>
 <h3 id="delete-the-old-instance-groups">Delete the old instance groups</h3><p>When complete and all pods have migrated onto the new workers. Delete the old instance groups:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops delete instancegroup nodes-&lt;old-kubernetes-version&gt;-eu-west-2a
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops delete instancegroup nodes-&lt;old-kubernetes-version&gt;-eu-west-2a
 kops delete instancegroup nodes-&lt;old-kubernetes-version&gt;-eu-west-2b
 kops delete instancegroup nodes-&lt;old-kubernetes-version&gt;-eu-west-2c
 kops delete instancegroup 2xlarge-nodes-&lt;kubernetes-version&gt;
 kops update cluster
 kops update cluster --yes
 </code></pre></div><h3 id="scale-the-ingress-controllers-down">Scale the ingress-controllers down</h3><p>We can now scale the ingress-controllers back down.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n ingress-controllers edit deployment nginx-ingress-acme-controller
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl -n ingress-controllers edit deployment nginx-ingress-acme-controller
 </code></pre></div><p>&hellip;and reduce the number of replicas.</p>
 <h2 id="commit-changes-back-to-main-branch">Commit changes back to main branch</h2><p>Any changes made to the cloud-platform-infrastructure repository should be PRd for review. This includes manifest changes and image tag changes.</p>
 

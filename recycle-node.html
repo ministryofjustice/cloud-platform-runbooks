@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Guidance when recycle-node pipeline job fails - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/recycle-node.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Guidance when recycle-node pipeline job fails - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/recycle-node.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Guidance when recycle-node pipeline job fails" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/recycle-node.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Guidance when recycle-node pipeline job fails - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/recycle-node.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1570,18 +1576,18 @@
 </ul>
 <p>The pipeline may fail if pods exist without being part of a replicaset. These are usually port-forward pods, used by developers to connect to an RDS instance from their development environment.</p>
 <p>The error will be similar to this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>There are pending nodes to be drained:
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>There are pending nodes to be drained:
  ip-172-20-123-244.eu-west-2.compute.internal
 error: pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet (use --force to override): port-forward
 </code></pre></div><p>We&rsquo;re running the process in a relatively &ldquo;gentle&rdquo; way, so it just fails the pipeline, rather than force-draining the node (which would have destroyed these pods). However, there is a separate concourse pipeline job to delete any such pods after 24 hours, so it is generally safe to ignore these pipeline failures for a day or two. Or, you can manually delete the pod(s) as follows:</p>
 <p>If the <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/af90d767e674a38127af34021bce3bac2749bb61/pipelines/manager/main/maintenance.yaml#L53">pipeline logs</a> are not showing which pods are causing the issue, you can use the node name from above, to run;</p>
-<div class="highlight"><pre class="highlight plaintext"><code> kubectl --ignore-daemonsets --delete-local-data drain ip-172-20-123-244.eu-west-2.compute.internal
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> kubectl --ignore-daemonsets --delete-local-data drain ip-172-20-123-244.eu-west-2.compute.internal
 </code></pre></div><p>It will show a similar message to the one in the pipeline logs, but will also give the list of pods which are causing the error.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>There are pending nodes to be drained:
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>There are pending nodes to be drained:
  ip-172-20-123-244.eu-west-2.compute.internal
 error: cannot delete Pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet (use --force to override): licences-dev/port-forward
 </code></pre></div><p>Then you can track down the namespace owner and ask them to clear up their pods by sending a message in the #ask-cloud-platform, something like:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>The recycle-node job failed because of some manually-created pods.
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>The recycle-node job failed because of some manually-created pods.
 
 If any of these pods are yours, and you're not using them anymore, please could you delete them so that the next time the recycle-node job runs, it is able to replace the node?
 

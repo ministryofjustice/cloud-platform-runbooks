@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Manually Plan/Apply Namespace Resources - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/manually-apply-namespace.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Manually Plan/Apply Namespace Resources - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/manually-apply-namespace.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Manually Plan/Apply Namespace Resources" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/manually-apply-namespace.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Manually Plan/Apply Namespace Resources - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/manually-apply-namespace.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1556,33 +1562,33 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</h1><p>These steps are more or less what the <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/live-1/main/plan-environments.yaml">concourse pipeline</a> does.</p>
-<h2 id="start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</h2><div class="highlight"><pre class="highlight plaintext"><code>cd cloud-platform-environments
+<h2 id="start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd cloud-platform-environments
 git checkout main
 git pull
 git checkout -b [BRANCH-NAME] origin/[BRANCH-NAME]
 </code></pre></div><h2 id="set-pingdom-environment-variables-optional">Set pingdom environment variables(Optional)</h2><p>If the changes involve applying &ldquo;pingdom_check&rdquo;, set the environment variables for pingdom.
 The values are stored as secrets in <code>manager</code> cluster - <code>concourse-main</code> namespace.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>export PINGDOM_USER="XXXXXXXXXXX"
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export PINGDOM_USER="XXXXXXXXXXX"
 export PINGDOM_PASSWORD="XXXXXXXXXXXX"
 export PINGDOM_API_KEY="XXXXXXXXXXXXX"
-</code></pre></div><h2 id="target-the-live-1-cluster">Target the live-1 cluster</h2><div class="highlight"><pre class="highlight plaintext"><code>export AWS_PROFILE=moj-cp
+</code></pre></div><h2 id="target-the-live-1-cluster">Target the live-1 cluster</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export AWS_PROFILE=moj-cp
 export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 kops export kubecfg live-1.cloud-platform.service.justice.gov.uk
-</code></pre></div><h2 id="set-some-environment-variables">Set some environment variables</h2><div class="highlight"><pre class="highlight plaintext"><code>export TF_VAR_cluster_name="live-1"
+</code></pre></div><h2 id="set-some-environment-variables">Set some environment variables</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export TF_VAR_cluster_name="live-1"
 export TF_VAR_cluster_state_bucket=cloud-platform-terraform-state
 export TF_VAR_cluster_state_key="cloud-platform/live-1/terraform.tfstate"
 #needed by tf k8s provider
 export KUBE_CONFIG_PATH=${HOME}/.kube/config
 </code></pre></div><h2 id="set-the-namespace-name">Set the namespace name</h2><p>I&rsquo;m using <code>offender-events-dev</code> for this example. Use whatever is relevant for your case.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>export NAMESPACE=offender-events-dev
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export NAMESPACE=offender-events-dev
 
 cd namespaces/live-1.cloud-platform.service.justice.gov.uk/${NAMESPACE}/resources
-</code></pre></div><h2 id="terraform-init">Terraform Init</h2><div class="highlight"><pre class="highlight plaintext"><code>terraform init \
+</code></pre></div><h2 id="terraform-init">Terraform Init</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init \
   -backend-config="bucket=cloud-platform-terraform-state" \
   -backend-config="key=cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/${NAMESPACE}/terraform.tfstate" \
   -backend-config="region=eu-west-1" \
   -backend-config="dynamodb_table=cloud-platform-environments-terraform-lock"
-</code></pre></div><h2 id="terraform-plan-apply">Terraform Plan/Apply</h2><div class="highlight"><pre class="highlight plaintext"><code>terraform plan
+</code></pre></div><h2 id="terraform-plan-apply">Terraform Plan/Apply</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan
 </code></pre></div>
 
               <div data-module='page-expiry' data-last-reviewed-on="2021-10-07">

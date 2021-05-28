@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Access EKS Cluster - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Access EKS Cluster - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Access EKS Cluster" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Access EKS Cluster - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1564,22 +1570,22 @@
 <li>An AWS Profile <code>moj-cp</code> with credential for the Cloud Platform AWS account</li>
 </ul>
 <p>Set the AWS_PROFILE environment variable:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>export AWS_PROFILE=moj-cp
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export AWS_PROFILE=moj-cp
 </code></pre></div><h3 id="create-kubeconfig-using-aws-command">Create kubeconfig using aws command</h3><p>Run this command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ export KUBECONFIG=~/.kube/config
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ export KUBECONFIG=~/.kube/config
 $ aws eks --region eu-west-2 update-kubeconfig --name &lt;cluster-name&gt;
 </code></pre></div><p>You should see this message:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Added new context arn:aws:eks:eu-west-2:754256621582:cluster/&lt;cluster-name&gt; to .kube/config
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Added new context arn:aws:eks:eu-west-2:754256621582:cluster/&lt;cluster-name&gt; to .kube/config
 </code></pre></div><p>Check that kubectl is properly configured by getting the cluster state</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ kubectl cluster-info
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kubectl cluster-info
 </code></pre></div><p>If kubectl is correctly configured to access the EKS cluster, you should see output similar to:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Kubernetes master is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Kubernetes master is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com
 CoreDNS is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 </code></pre></div><p>You should now be able to run kubectl commands, such as <code>kubectl get namespaces</code>.</p>
 <h3 id="create-kubeconfig-manually-using-a-template">Create kubeconfig manually using a template</h3><p>You can create a kubeconfig file manually, using the template below.</p>
 <p>Login to the AWS console. In the EKS service, select the cluster you need to access. You will see all the information related to the EKS cluster.</p>
 <p>Copy the values for <code>API server endpoint</code>, <code>Certificate authority</code> and <code>Cluster name</code> into this template:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: v1
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: v1
 preferences: {}
 kind: Config
 

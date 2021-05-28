@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Upgrade cluster components - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Upgrade cluster components - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Upgrade cluster components" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Upgrade cluster components - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1577,20 +1583,20 @@
 <h3 id="setup-environment">Setup environment</h3><p>Setup the environment variables listed in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/example.env.create-cluster">example.env.create-cluster</a> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>.</p>
 <h3 id="run-a-shell-in-the-tools-image">Run a shell in the tools image</h3><p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to update a cluster.</p>
 <p>From a local copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>,  run the following command:</p>
-<div class="highlight"><pre class="highlight shell"><code>make tools-shell
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
 </code></pre></div><h3 id="authenticate-to-the-test-cluster">Authenticate to the test cluster</h3><p>Create the file <code>~/.kube/config</code> in your tools-image container by running:</p>
 <p>For Kops cluster</p>
-<div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>For EKS cluster</p>
-<div class="highlight"><pre class="highlight shell"><code>aws eks <span class="nt">--region</span> eu-west-2 update-kubeconfig <span class="nt">--name</span> &lt;cluster-name&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws eks <span class="nt">--region</span> eu-west-2 update-kubeconfig <span class="nt">--name</span> &lt;cluster-name&gt;
 </code></pre></div><h3 id="run-the-integration-tests">Run the integration tests</h3><p>This is the ensure the test cluster doesnot have any existing issues and ready to use</p>
-<div class="highlight"><pre class="highlight plaintext"><code>cd smoke-tests
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd smoke-tests
 bundle binstubs bundler --force --path /usr/local/bin
 bundle binstubs rspec-core --path /usr/local/bin
 </code></pre></div><p>For kops cluster</p>
-<div class="highlight"><pre class="highlight shell"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~eks-manager <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~eks-manager <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
 </code></pre></div><p>For EKS cluster</p>
-<div class="highlight"><pre class="highlight shell"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~kops <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~kops <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
 </code></pre></div><h3 id="testing-the-upgrade">Testing the upgrade</h3>
 <ol>
 <li><p>Make the changes required to the module. For example, for upgrading the cert-manager, change the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-certmanager">cert-manager terraform module</a>. This might include</p>
@@ -1602,7 +1608,7 @@ bundle binstubs rspec-core --path /usr/local/bin
 <li><p>Push changes to a branch(upgrade) of the module</p></li>
 <li><p>Update the local copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> with the branch reference.
  For cert-manager module, the code would change to</p>
-<div class="highlight"><pre class="highlight hcl"><code><span class="nx">source</span> <span class="err">=</span> <span class="s2">"github.com/ministryofjustice/cloud-platform-terraform-certmanager?ref=upgrade"</span>
+<div class="highlight"><pre class="highlight hcl" tabindex="0"><code><span class="nx">source</span> <span class="err">=</span> <span class="s2">"github.com/ministryofjustice/cloud-platform-terraform-certmanager?ref=upgrade"</span>
 </code></pre></div></li>
 <li><p>Do a <code>terraform plan</code> for the changes, verify whether the changes are correct and do <code>terraform apply</code> to apply the changes</p></li>
 <li><p>Check the <a href="http://localhost:4567/upgrade-cluster-components.html#things-to-observe-when-testing-the-upgrade]">things to observe</a> section for specific components</p></li>

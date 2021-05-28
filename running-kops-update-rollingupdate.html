@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Running Kops Update and Rollingupdate - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Running Kops Update and Rollingupdate - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Running Kops Update and Rollingupdate" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Running Kops Update and Rollingupdate - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1575,22 +1581,22 @@ have been properly recorded and reviewed as pull requests.</p>
 <ul>
 <li>You are on the right cluster to run the Kops update.</li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kubectl config current-context
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span>kubectl config current-context
 </code></pre></div>
 <ul>
 <li>Your are on the right AWS_PROFILE where the k8s cluster is created.</li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">AWS_PROFILE</span><span class="o">=</span>xxxx
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">AWS_PROFILE</span><span class="o">=</span>xxxx
 </code></pre></div>
 <ul>
 <li>Set the &ndash;state flag or export KOPS_STATE_STORE</li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">KOPS_STATE_STORE</span><span class="o">=</span>s3://&lt;bucket&gt;
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span><span class="nb">export </span><span class="nv">KOPS_STATE_STORE</span><span class="o">=</span>s3://&lt;bucket&gt;
 </code></pre></div>
 <ul>
 <li>Launch a shell using the tools image</li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span><span class="nb">cd </span>cloud-platform-infrastructure<span class="p">;</span> make tools-shell
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span><span class="nb">cd </span>cloud-platform-infrastructure<span class="p">;</span> make tools-shell
 </code></pre></div><p>This will ensure you have the correct versions of all required software.</p>
 <p>for live-1 KOPS_STATE_STORE=s3://cloud-platform-kops-state</p>
 <h2 id="updating-the-kops-state">Updating the kops state</h2><p>The kops state file is generated from a template by the terraform code in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform">this directory</a>. The key files are:</p>
@@ -1602,7 +1608,7 @@ have been properly recorded and reviewed as pull requests.</p>
 </ul>
 <h3 id="generating-an-updated-kops-config-file">Generating an updated kops config file</h3><p>After changing the files above, you need to generate a new <code>kops/[cluster name].yaml</code> file.</p>
 <p>From your shell on the tools image:</p>
-<div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg <span class="o">[</span>cluster name].cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops <span class="nb">export </span>kubecfg <span class="o">[</span>cluster name].cloud-platform.service.justice.gov.uk
 <span class="nb">cd </span>terraform/cloud-platform
 terraform workspace <span class="k">select</span> <span class="o">[</span>cluster name]
 terraform init
@@ -1610,20 +1616,20 @@ terraform apply
 </code></pre></div><p>At this point, you should have an updated <code>kops/[cluster name].yaml</code> file in your working copy of the infrastructure repository.
 Commit and push your changes, including those in the terraform source and template files.</p>
 <h3 id="applying-local-changes-to-the-kops-state-store">Applying local changes to the kops state store</h3><h4 id="backup-the-remote-kops-state">Backup the remote kops state</h4><p>If you want to preserve a backup of the current kops state on S3, you can do so like this:</p>
-<div class="highlight"><pre class="highlight shell"><code>aws s3 <span class="nb">cp</span> <span class="nt">--recursive</span> <span class="nv">$KOPS_STATE_STORE</span>/live-1.cloud-platform.service.justice.gov.uk <span class="nv">$KOPS_STATE_STORE</span>/live-1-backup
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws s3 <span class="nb">cp</span> <span class="nt">--recursive</span> <span class="nv">$KOPS_STATE_STORE</span>/live-1.cloud-platform.service.justice.gov.uk <span class="nv">$KOPS_STATE_STORE</span>/live-1-backup
 </code></pre></div><p>This takes a couple of minutes. At time of writing, this was around 10G of data (mostly etcd backup tarballs).</p>
 
 <blockquote>
 <p>While the backup exists, <code>kops get clusters</code> will report &ldquo;live-1&rdquo; <em>twice</em>. This doesn&rsquo;t do any harm, but you do need to delete the backup in order to resolve this, either via the <code>aws</code> CLI too, or using the AWS web interface for S3.</p>
 </blockquote>
 <h4 id="updating-the-remote-kops-state">Updating the remote kops state</h4><p>To apply your local changes to the kops state stored on S3:</p>
-<div class="highlight"><pre class="highlight shell"><code>kops replace <span class="nt">-f</span> kops/[cluster name].yaml
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops replace <span class="nt">-f</span> kops/[cluster name].yaml
 </code></pre></div><p>WARNING: You will not receive any confirmation of this step.</p>
 <p>After this, you should be able to do a <code>kops update cluster...</code> and <code>kops rolling-update cluster...</code> as described below, to apply your changes to the cluster.</p>
 <h2 id="running-kops-update">Running Kops update</h2><p>Run kops update cluster Without <code>--yes</code> to check the configuration changes for the cluster, it will show you a preview of what it is going to do, this is handy to check what the changes are before applying the changes. Sometimes you will also have to kops rolling-update cluster to roll out the configuration immediately.</p>
-<div class="highlight"><pre class="highlight shell"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>Once you are happy, kops update cluster <code>--yes</code> to apply the changes.</p>
-<div class="highlight"><pre class="highlight shell"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk <span class="nt">--yes</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk <span class="nt">--yes</span>
 </code></pre></div><p>It should report</p>
 
 <blockquote>
@@ -1634,9 +1640,9 @@ Commit and push your changes, including those in the terraform source and templa
 <p>If rolling-update does not report that the cluster needs to be rolled, you can force the cluster to be rolled with the force flag.</p>
 <p>Rolling update drains and validates the cluster by default. A cluster is deemed validated when all required nodes are running and all pods in the kube-system namespace are operational. When a node is deleted, rolling-update sleeps the interval for the node type, and then tries for the same period of time for the cluster to be validated.</p>
 <p>For instance, setting &ndash;master-interval=4m causes rolling-update to wait for 4 minutes after a master is rolled, and another 4 minutes for the cluster to stabilize and pass validation.</p>
-<div class="highlight"><pre class="highlight shell"><code>kops rolling-update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk <span class="nt">--yes</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops rolling-update cluster <span class="k">${</span><span class="nv">CLUSTER_NAME</span><span class="k">}</span>.cloud-platform.service.justice.gov.uk <span class="nt">--yes</span>
 </code></pre></div><p>It should report below steps for all the nodes in the cluster.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Draining the node: “${node}”.
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Draining the node: “${node}”.
 node/${node} cordoned
 WARNING: Deleting pods with local storage: ${pod names}
 pod/${pod1 name} evicted
@@ -1651,21 +1657,21 @@ Validating the cluster.
 Cluster did not pass validation, will try again in "30s" until duration "5m0s" expires: machine “${aws-instance}” has not yet joined cluster.
 Cluster validated.
 </code></pre></div><p>Open new tab and watch the status of the rolling-update</p>
-<div class="highlight"><pre class="highlight shell"><code>watch <span class="nt">-n10</span> kubectl get nodes <span class="nt">--sort-by</span> .metadata.creationTimestamp
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>watch <span class="nt">-n10</span> kubectl get nodes <span class="nt">--sort-by</span> .metadata.creationTimestamp
 </code></pre></div><p>Once the rolling-update is completed it should report</p>
 
 <blockquote>
 <p>Rolling update completed for cluster ${CLUSTER_NAME}!</p>
 </blockquote>
 <p>Check the cluster status with:</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kops validate cluster
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span>kops validate cluster
 </code></pre></div><p>It should report</p>
 
 <blockquote>
 <p>Your cluster <code>${CLUSTER_NAME}.cloud-platform.service.justice.gov.uk is ready</code></p>
 </blockquote>
 <h2 id="possible-errors">Possible Errors</h2><p>While draining a node there is a chance that rolling update might be stuck at evicting a pod, then get the node it is stuck on and identify the pods running on there and delete the pod manually.</p>
-<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>kubectl get pods <span class="nt">-owide</span> <span class="nt">--all-namespaces</span> | <span class="nb">grep</span> <span class="k">${</span><span class="nv">node_name</span><span class="k">}</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span>kubectl get pods <span class="nt">-owide</span> <span class="nt">--all-namespaces</span> | <span class="nb">grep</span> <span class="k">${</span><span class="nv">node_name</span><span class="k">}</span>
 </code></pre></div>
 
               <div data-module='page-expiry' data-last-reviewed-on="2021-06-16">

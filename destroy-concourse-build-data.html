@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Destroy Concourse Build Data - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-build-data.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Destroy Concourse Build Data - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-build-data.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Destroy Concourse Build Data" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-build-data.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Destroy Concourse Build Data - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-build-data.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1569,38 +1575,38 @@
 <li>Ensure you&rsquo;re authenticated to the correct cluster.</li>
 <li>Destroy the Concourse Helm release with (this assumes you have the infrastructure repository cloned):</li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code><span class="nb">cd </span>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">cd </span>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks
 terraform destroy <span class="nt">-target</span><span class="o">=</span>module.concourse.helm_release.concourse
 </code></pre></div>
 <ul>
 <li>Identify the persistent volume (PV) in question: </li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get pv
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get pv
 </code></pre></div><p>You&rsquo;ll see a claim by the name of <code>concourse/data-concourse-postgres-0</code>. Copy the <code>Name</code> to your clipboard i.e. <code>pvc-1234</code></p>
 <p>Please note - This name is due to change in the future.</p>
 
 <ul>
 <li>Delete the PV with:</li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code>kubectl delete pv pvc-1234 <span class="nt">--grace-period</span><span class="o">=</span>0 <span class="nt">--force</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl delete pv pvc-1234 <span class="nt">--grace-period</span><span class="o">=</span>0 <span class="nt">--force</span>
 </code></pre></div><p>This will get stuck in a <code>Terminating</code> state.</p>
 
 <ul>
 <li>Patch the PV with:</li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code>kubectl patch pv pvc-1234 <span class="nt">-p</span> <span class="s1">'{"metadata":{"finalizers": []}}'</span> <span class="nt">--type</span><span class="o">=</span>merge
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl patch pv pvc-1234 <span class="nt">-p</span> <span class="s1">'{"metadata":{"finalizers": []}}'</span> <span class="nt">--type</span><span class="o">=</span>merge
 </code></pre></div><p>Which should instantly delete the volume.</p>
 
 <ul>
 <li>Identify the persistent volume claim (PVC):</li>
 </ul>
-<div class="highlight"><pre class="highlight shell"><code>kubectl get pvc <span class="nt">-n</span> concourse
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get pvc <span class="nt">-n</span> concourse
 </code></pre></div><p>Copy the <code>Name</code> to your clipboard i.e. <code>data-concourse-postgres-0</code>
 - Delete the PVC with:</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl <span class="nt">-n</span> concourse delete pvc data-concourse-postgresql-0 <span class="nt">--grace-period</span><span class="o">=</span>0 <span class="nt">--force</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nt">-n</span> concourse delete pvc data-concourse-postgresql-0 <span class="nt">--grace-period</span><span class="o">=</span>0 <span class="nt">--force</span>
 </code></pre></div><p>This shouldn&rsquo;t get stuck and will be removed instantly.
 - Re-apply the Concourse Helm chart with:</p>
-<div class="highlight"><pre class="highlight shell"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>module.concourse.helm_release.concourse
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>module.concourse.helm_release.concourse
 </code></pre></div><p>You should start to see pods returning and the creation of a new PV.</p>
 
 

@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Credentials rotation for auth0 apps - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/auth0-rotation.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Credentials rotation for auth0 apps - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/auth0-rotation.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Credentials rotation for auth0 apps" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/auth0-rotation.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Credentials rotation for auth0 apps - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/auth0-rotation.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1563,17 +1569,17 @@
 <li>It will be handy to have auth0 management console already opened in a browser tab, so you can verify and monitor the changes.</li>
 </ul>
 <h2 id="1-taint-resources-terraform">1) Taint resources (terraform)</h2><p>Tainting auth0 resource will force new credentials generation. Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform"><code>cloud-platform-infrastructure/terraform/cloud-platform</code> directory</a> and run</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ terraform workspace select live-1
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform workspace select live-1
 $ terraform taint module.auth0.auth0_client.components
 </code></pre></div><p>Make sure with <code>terraform plan</code> that auth0 resource is going to be recreated as well as kops template file (it&rsquo;s going to be needed in the next step).</p>
 <p>Apply changes if you are happy with them:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ terraform apply
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform apply
 </code></pre></div><h2 id="2-rolling-update-of-cluster-kops">2) Rolling update of cluster (kops)</h2><p>From the previous step a new <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/kops/live-1.yaml">cloud-platform-infrastructure/kops/live-1.yaml</a> file should have been generated. To apply this file we <a href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html#updating-the-remote-kops-state">already have a runbook to follow</a>.</p>
 <p><strong>NOTE</strong>: The change will require rolling replacement of the master nodes</p>
 <h2 id="3-apply-changes-within-components-terraform">3) Apply changes within components (terraform)</h2><p>Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-components"><code>cloud-platform-infrastructure/terraform/cloud-platform-components</code> directory</a> and to ensure changes match resources below, if they do, apply them:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ terraform apply -target=module.prometheus.kubernetes_secret.grafana_secret -target=module.prometheus.helm_release.prometheus_proxy -target=module.prometheus.helm_release.alertmanager_proxy  -target=helm_release.kuberos
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform apply -target=module.prometheus.kubernetes_secret.grafana_secret -target=module.prometheus.helm_release.prometheus_proxy -target=module.prometheus.helm_release.alertmanager_proxy  -target=helm_release.kuberos
 </code></pre></div><p>Unfortunately, grafana pod will not pick up the secret change, so it needs to be recyled (just delete it and it will automatically get redeployed):</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ GrafanaPodName=$(kubectl -n monitoring get pods -o name | grep grafana)
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ GrafanaPodName=$(kubectl -n monitoring get pods -o name | grep grafana)
 $ kubectl -n monitoring delete pod $GrafanaPodName
 </code></pre></div><h2 id="4-update-environment-repo">4) Update environment repo</h2><p>We already have a <a href="https://github.com/ministryofjustice/cloud-platform/issues/2006">ticket</a> to get rid of this step. Meanwhile we get it done, we should update <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/main/namespaces/live-1.cloud-platform.service.justice.gov.uk/monitoring/oidc-components-secret.yaml"><code>oidc-components-secret.yaml</code> file</a> with the new auth0 credentials.</p>
 <h2 id="5-verifiying-changes">5) Verifiying changes</h2><p>In order to verify that the changes were successfully applied, follow the checklist below (order doesn&rsquo;t matter):</p>

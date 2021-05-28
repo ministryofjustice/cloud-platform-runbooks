@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Remove data from Elasticsearch - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Remove data from Elasticsearch - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Remove data from Elasticsearch" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Remove data from Elasticsearch - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1574,7 +1580,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <p>Therefore, if we narrow down a search query to exactly what we want to delete, we&rsquo;ve done most of the work.</p>
 <p>Kibana offers a <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/dev_tools/console">webconsole</a> to test queries.</p>
 <p>A standard query is :</p>
-<div class="highlight"><pre class="highlight plaintext"><code>GET /kubernetes_cluster-2021.02.01/_search
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>GET /kubernetes_cluster-2021.02.01/_search
 {
   "query": {
     "match": {
@@ -1587,7 +1593,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <p>Important note: <code>.keyword</code> forces elasticsearch to only return exact matches. Without it, you may end up deleting more than you wish</p>
 </blockquote>
 <p>As a <code>curl</code> command, the query above would translate to:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>curl -XGET "https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2021.02.01/_search" -H 'Content-Type: application/json' -d'
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XGET "https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2021.02.01/_search" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "match": {
@@ -1598,7 +1604,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 </code></pre></div><p>Once the result of the search query exactly fits what you want to delete, carry on to the next step.</p>
 <h2 id="delete-by-query">Delete by query</h2><p>A <code>POST</code> request against the <code>_delete_by_query</code> endpoint will delete all documents matching the query in the request&rsquo;s body.</p>
 <p>If we want to delete all logs from the <code>my-namespace-production</code> from 01/02/2021:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>    curl -XPOST \
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    curl -XPOST \
         https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2021.02.01/_delete_by_query?pretty \
         -H 'Content-Type: application/json' \
         -d'{"query":{"match":{"kubernetes.namespace_name.keyword": "my-namespace-production"}}}'
@@ -1611,7 +1617,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 you have queried using <code>curl</code>. A fluentd pod will be recreated automatically.</p>
 <h2 id="removing-specific-logs-filtered-by-phrase">Removing specific logs filtered by phrase</h2><p>If you want to delete log entries which contain a certain phrase, you can use the queries below.</p>
 <p>Searching for the phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>
 curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2*/_search?pretty \
 -H 'Content-Type: application/json' -d'
 {
@@ -1643,7 +1649,7 @@ curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west
 }'
 
 </code></pre></div><p>Deleting the log entries which have the phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>curl -XPOST https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2*/_delete_by_query?pretty \
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XPOST https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2*/_delete_by_query?pretty \
 -H 'Content-Type: application/json' -d'
 {
   "query": {

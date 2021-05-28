@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Delete a cluster - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/delete-cluster.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Delete a cluster - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-cluster.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Delete a cluster" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-cluster.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Delete a cluster - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-cluster.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1556,7 +1562,7 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="delete-a-cluster">Delete a cluster</h1><p>To delete a cluster you must first export the following:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ export AWS_PROFILE=moj-cp
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ export AWS_PROFILE=moj-cp
 $ export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 </code></pre></div><p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
 <h2 id="delete-the-cluster-using-the-script">Delete the cluster using the script</h2><p>There is a <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/destroy-cluster.rb">destroy-cluster.rb</a> script which you can use to delete your cluster.</p>
@@ -1567,10 +1573,10 @@ $ export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 <p>The delete cluster script must <em>always</em> be run in a container. This ensures that the environment of the script is fully controlled, and you don&rsquo;t run into problems such as the kubernetes context being changed in another window, or extra environment variables causing unwanted effects.</p>
 </blockquote>
 <p>Then invoke the script like this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>./destroy-cluster.rb --name [short cluster name] --yes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./destroy-cluster.rb --name [short cluster name] --yes
 </code></pre></div><p>Run without <code>--yes</code> to do a dry run, and see what commands would be executed.</p>
 <p>You can get more information using:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>./destroy-cluster.rb --help
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./destroy-cluster.rb --help
 </code></pre></div><p>If any steps fail:</p>
 
 <ul>
@@ -1590,21 +1596,21 @@ params:
 We will specify the CLUSTER_NAME value using &ndash;var NAME=VALUE in the later step, when we run the fly command to set_pipeline.</p></li>
 <li><p>Comment out this line <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/create-test-destroy.yaml#L140">here</a> in destroy-cluster job.</p></li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>  args:
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  args:
     # export $(cat keyval/keyval.properties | grep CLUSTER_NAME )
 </code></pre></div><p>commenting out this will not set the CLUSTER_NAME provided by the create-cluster-run-tests job.</p>
 <p>Run the below commands updating the <code>&lt;cluster-name-to-be-deleted&gt;</code>. The first fly command will apply the changes made for the <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/create-test-destroy.yaml">create-test-destroy.yaml</a> file and set the CLUSTER_NAME <a href="https://concourse-ci.org/vars.html#static-vars">static var</a>, the second command will trigger the destroy-cluster job using the CLUSTER_NAME provided.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>fly -t manager sp -p create-test-destroy -c create-test-destroy.yaml -v CLUSTER_NAME=&lt;cluster-name-to-be-deleted&gt;
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager sp -p create-test-destroy -c create-test-destroy.yaml -v CLUSTER_NAME=&lt;cluster-name-to-be-deleted&gt;
 fly -t manager trigger-job -j create-test-destroy/destroy-cluster
 </code></pre></div><p>Note: After the destroy-cluster job completed sucessfully, run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/bootstrap">bootstrap pipleine</a> to discard the changes made to <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/create-test-destroy.yaml">create-test-destroy.yaml</a> file.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>fly -t manager trigger-job -j bootstrap/bootstrap-pipelines
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager trigger-job -j bootstrap/bootstrap-pipelines
 </code></pre></div><h2 id="delete-the-cluster-manually">Delete the cluster manually</h2><p>In case you prefer not to use the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/destroy-cluster.rb">destroy-cluster.rb</a> script, these are the individual steps to follow, to delete the cluster &ldquo;by hand&rdquo;</p>
 <p>First, set the kubectl context for the cluster you are deleting. The easiest way to do this is with kops. e.g:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ kops export kubecfg david-test1.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kops export kubecfg david-test1.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>You should see this output:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops has set your kubectl context to david-test1.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops has set your kubectl context to david-test1.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>Then, from the components directory, run these commands to destroy all cluster components, and delete the terraform workspace.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ cd terraform/cloud-platform-components
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ cd terraform/cloud-platform-components
 $ terraform init
 $ terraform workspace select &lt;clusterName e.g. cloud-platform-test-3&gt;
 $ terraform destroy -target helm_release.prometheus_operator # delete first, to avoid conflicts later
@@ -1613,16 +1619,16 @@ $ terraform workspace select default
 $ terraform workspace delete &lt;clusterName&gt;
 </code></pre></div><p>Then run the following <code>kops</code> command (this will not delete the cluster).</p>
 <p>Append it with <code>--yes</code> to confirm deletion.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ kops delete cluster --name &lt;clusterName&gt;.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kops delete cluster --name &lt;clusterName&gt;.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>Change directories and perform the following to destroy the cluster essentials, and delete the terraform workspace.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ cd ../cloud-platform
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ cd ../cloud-platform
 $ terraform init
 $ terraform workspace select &lt;clusterName e.g. cloud-platform-test-3&gt;
 $ terraform destroy
 $ terraform workspace select default
 $ terraform workspace delete &lt;clusterName&gt;
 </code></pre></div><p>Change directories and perform the following to destroy the cluster VPC, and delete the terraform workspace.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>$ cd ../cloud-platform-network
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ cd ../cloud-platform-network
 $ terraform init
 $ terraform workspace select &lt;clusterName e.g. cloud-platform-test-3&gt;
 $ terraform destroy

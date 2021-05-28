@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Cloud Platform Disaster Recovery Scenarios - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery-scenarios.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Cloud Platform Disaster Recovery Scenarios - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery-scenarios.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Cloud Platform Disaster Recovery Scenarios" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery-scenarios.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Cloud Platform Disaster Recovery Scenarios - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/disaster-recovery-scenarios.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1558,21 +1564,21 @@
               <h1 id="cloud-platform-disaster-recovery-scenarios">Cloud Platform Disaster Recovery Scenarios</h1><p>This section will document various scenarios that will create an incident. Each scenario will have an impact and restore process.</p>
 <h2 id="losing-a-namespace">Losing a Namespace</h2><h3 id="impact">Impact</h3><p>A loss of a namespace will result in losing all resources within the namespace including ingress.</p>
 <h3 id="possible-cause">Possible Cause</h3><p>User error - Executing <code>kubectl delete ns my-namespace-dev</code></p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl get all -n my-namespace-dev
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get all -n my-namespace-dev
 No resources found in my-namespace-dev namespace.
 </code></pre></div><h3 id="restore-process">Restore process</h3><p>As long as the namespace is over 3 hours old, it can be recovered using Velero.</p>
 <p>First step is to find the name of the most recent backup of the <code>allnamespacebackup</code> schedule:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero backup get
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup get
 
 NAME                                       STATUS      CREATED                         EXPIRES   STORAGE LOCATION   SELECTOR
 velero-allnamespacebackup-00000000000000   Completed   2020-03-30 12:00:37 +0100 BST   29d       default            &lt;none&gt;
 </code></pre></div><p>Using the backup name, you can now run a <code>Velero restore</code> command to restore the deleted namespace.</p>
 <p>Restore command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --include-namespaces &lt;namespace&gt; --wait
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --include-namespaces &lt;namespace&gt; --wait
 </code></pre></div><p>Example:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create my-namespace-dev-restore --from-backup velero-allnamespacebackup-00000000000000 --include-namespaces my-namespace-dev --wait
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create my-namespace-dev-restore --from-backup velero-allnamespacebackup-00000000000000 --include-namespaces my-namespace-dev --wait
 </code></pre></div><p>Once completed, you should be able to see the namespace and all resources recovered:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl get all -n my-namespace-dev
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get all -n my-namespace-dev
 
 NAME                       READY   STATUS      RESTARTS   AGE
 pod/pod1                   2/2     Running     0          1m
@@ -1587,21 +1593,21 @@ NAME                                 DESIRED   CURRENT   READY   AGE
 replicaset.apps/replicaset1          1         1         1       1m
 </code></pre></div><h2 id="losing-a-kubernetes-component-or-object">Losing a Kubernetes Component or Object</h2><h3 id="losing-a-kubernetes-component-or-object-impact">Impact</h3><p>A loss of a kubernetes object such as a deployment, secret and Namespace can result in an application not working correctly. A loss of a Kubernetes component such as kube-scheduler or kube-control-manager can result in the cluster not working correctly.</p>
 <h3 id="losing-a-kubernetes-component-or-object-possible-cause">Possible Cause</h3><p>User error - Executing <code>kubectl delete deployment/my-deployment-name ns my-namespace-dev</code></p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl get deployment/my-deployment-name -n my-namespace-dev
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get deployment/my-deployment-name -n my-namespace-dev
 Error from server (NotFound): deployments.extensions "my-deployment-name" not found.
 </code></pre></div><h3 id="losing-a-kubernetes-component-or-object-restore-process">Restore process</h3><p>As long as the namespace is over 3 hours old, it can be recovered using Velero.</p>
 <p>First step is to find the name of the most recent backup of the schedule:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero backup get
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup get
 
 NAME                                       STATUS      CREATED                         EXPIRES   STORAGE   LOCATION   SELECTOR
 velero-backup-00000000000000              Completed   2020-03-30 12:00:37 +0100 BST     29d       default             &lt;none&gt;
 </code></pre></div><p>Using the backup name, you can now run a <code>Velero restore</code> command to restore the deleted resource.</p>
 <p>Restore command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --include-namespaces &lt;namespace&gt; --wait
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --include-namespaces &lt;namespace&gt; --wait
 </code></pre></div><p>Example:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create my-namespace-dev-restore --from-backup velero-backup-00000000000000 --include-namespaces my-namespace-dev --wait
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create my-namespace-dev-restore --from-backup velero-backup-00000000000000 --include-namespaces my-namespace-dev --wait
 </code></pre></div><p>Once completed, you should be able to see the resources recovered:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl get deployment/my-deployment-name -n my-namespace-dev
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get deployment/my-deployment-name -n my-namespace-dev
 
 NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/my-deployment-name        1/1       1            1         1m
@@ -1635,20 +1641,20 @@ resources within all namespaces, networking, monitoring and logging systems.</p>
 <p>Create the cluster with the <strong>same</strong> name from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/create-cluster.rb">source code</a>
 and provide the exisiting <code>vpc-name</code>. This will link the velero backup locations to the lost cluster.</p>
 <p>Find the name of the most recent backup of the <code>allnamespacebackup</code> schedule:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero backup get
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup get
 
 NAME                                       STATUS      CREATED                         EXPIRES   STORAGE LOCATION   SELECTOR
 velero-allnamespacebackup-00000000000000   Completed   2020-03-30 12:00:37 +0100 BST   29d       default            &lt;none&gt;
 </code></pre></div><p>Using the backup name, you can now run a <code>velero restore</code> command to restore the deleted namespace.</p>
 <p>Restore command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --wait
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --wait
 </code></pre></div><p>Example:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create my-namespace-dev-restore --from-backup velero-allnamespacebackup-00000000000000 --wait
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create my-namespace-dev-restore --from-backup velero-allnamespacebackup-00000000000000 --wait
 </code></pre></div><p>Once completed, you should be able to see resources in all namespaces recovered.</p>
 <p>Check the status of the restore and look for errors and warnings:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore describe velero-allnamespacebackup-00000000000000-00000000000000
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore describe velero-allnamespacebackup-00000000000000-00000000000000
 </code></pre></div><p>Check the logs of the restore:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore logs velero-allnamespacebackup-00000000000000-00000000000000
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore logs velero-allnamespacebackup-00000000000000-00000000000000
 
 </code></pre></div><h2 id="deleted-corrupted-the-kops-state">Deleted/corrupted the kops state</h2><h3 id="deleted-corrupted-the-kops-state-impact">Impact</h3><p>Severity : LOW</p>
 <p>Likelihood: LOW/MEDIUM</p>
@@ -1669,7 +1675,7 @@ to deploy applications or schedule any jobs.</p>
 <p>The sign of this happening can be seen when doing <code>kops validate cluster &lt;cluster name&gt;</code></p>
 <p>If the kops state is corrupted, some of the worker nodes or masters machines will not join the cluster.</p>
 <p>The above command will show something similar to</p>
-<div class="highlight"><pre class="highlight plaintext"><code>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>
 VALIDATION ERRORS
 KIND    NAME            MESSAGE
 Machine i-04195929decb7a43b             machine "i-04195929decb7a43b" has not yet joined cluster
@@ -1678,7 +1684,7 @@ Pod kube-system/calico-node-kp6m7           kube-system pod "calico-node-kp6m7" 
 
 Validation Failed
 </code></pre></div><p>If the s3 bucket is deleted where the kops state is stored, then <code>kops validate ...</code> show as</p>
-<div class="highlight"><pre class="highlight plaintext"><code>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>
 error reading cluster configuration: Cluster.kops.k8s.io "&lt;cluster name&gt;.cloud-platform.service.justice.gov.uk" not found
 </code></pre></div><h3 id="restore-process-for-corrupted-kops-state">Restore process for corrupted kops state</h3><p>The cluster kops state is stored in the generated yaml file inside the folder kops/<code>&lt;CLUSTER_NAME&gt;</code>.yaml.</p>
 <p>For <code>live-1</code> the generated kops yaml file is stored in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/kops/live-1.yaml">github</a>.
@@ -1687,14 +1693,14 @@ So, checkout the previous working commit and update the remote kops state with t
 <p>Below are the steps to update and restore the kops state</p>
 <p>** Revert the kops yaml file kops/<code>&lt;CLUSTER_NAME&gt;</code>.yaml to previous working version.</p>
 <p><strong>Authenticate to the cluster</strong></p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops export kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops export kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
 </code></pre></div><p><strong>Update the remote state with the reverted changes</strong></p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops replace -f kops/&lt;CLUSTER_NAME&gt;.yaml
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops replace -f kops/&lt;CLUSTER_NAME&gt;.yaml
 kops update cluster
 </code></pre></div><p><strong>Update the cluster with &ndash;yes to apply the changes</strong></p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops update cluster --yes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops update cluster --yes
 </code></pre></div><p><strong>If the above command reports that the cluster needs to be rolled, do the rolling-update and with <code>--yes</code> option</strong></p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops rolling-update cluster --yes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops rolling-update cluster --yes
 </code></pre></div><p>For more information on kops update, rolling-update and debugging instructions, refer
 <a href="/running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">runbook for kops update</a></p>
 <p>If the restore process require creating new instancegroup for worker nodes, follow the procedure mentioned
@@ -1707,9 +1713,9 @@ in <a href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-clust
 </ul>
 <h3 id="restore-process-for-deleted-s3-bucket-where-kops-state-is-stored">Restore process for deleted S3 bucket where kops state is stored</h3><p>Kops state of all clusters are backed up in a different s3 bucket <code>kops-backup-replication</code> in the region <code>eu-west-2</code>.</p>
 <p>If the entire folder where the cluster state is stored is lost/corrupted, copy the folder from the backup bucket by running below</p>
-<div class="highlight"><pre class="highlight plaintext"><code>aws s3 cp s3://kops-backup-replication/&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk/ s3://cloud-platform-kops-state/ --recursive
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws s3 cp s3://kops-backup-replication/&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk/ s3://cloud-platform-kops-state/ --recursive
 </code></pre></div><p>Validate the cluster</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kops validate cluster &lt;cluster name&gt;
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops validate cluster &lt;cluster name&gt;
 </code></pre></div><p>The validation should be success and should say</p>
 <p><strong>&ldquo;Your cluster <code>&lt;cluster name&gt;</code>.cloud-platform.service.justice.gov.uk is ready&rdquo;</strong></p>
 <h2 id="deleted-terraform-state">Deleted terraform state</h2><p>Severity : low</p>
@@ -1717,14 +1723,14 @@ in <a href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-clust
 <h3 id="deleted-terraform-state-impact">Impact</h3><p>Items removed from the terraform state are not physically destroyed but no longer managed by terraform. This means infrastructure is orphaned with no state.</p>
 <p>For example, if you remove an AWS instance from the state, the AWS instance will continue running, but terraform plan will no longer see that instance.</p>
 <h3 id="deleted-terraform-state-possible-cause">Possible Cause</h3><p>User error - Executing <code>terraform state rm module.starter_pack.kubernetes_namespace.starter_pack</code>  will remove kubernetes starter_pack namespace from terraform state. When state is removed, running &ldquo;terraform apply&rdquo; will raise error, as terraform cannot track about existing resource and try to create new one.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform apply -target=module.starter_pack.kubernetes_namespace.starter_pack
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform apply -target=module.starter_pack.kubernetes_namespace.starter_pack
 
 Error: namespaces "starter-pack" already exists
 </code></pre></div><h3 id="deleted-terraform-state-restore-process">Restore process</h3><p>In order to regain control of resource removed from terraform state, we will use the <a href="https://www.terraform.io/docs/import/index.html">import command</a> to recover the metadata for this resource. Import requires a resource address and the resource ID. The resource address is a combination of the resource type and resource name.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform import module.starter_pack.kubernetes_namespace.starter_pack starter-pack
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform import module.starter_pack.kubernetes_namespace.starter_pack starter-pack
 
 </code></pre></div><p>The import command creates a new state file pulling in information about the specified kubernetes_namespace.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>module.starter_pack.kubernetes_namespace.starter_pack: Importing from ID "starter-pack"...
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>module.starter_pack.kubernetes_namespace.starter_pack: Importing from ID "starter-pack"...
 module.starter_pack.kubernetes_namespace.starter_pack: Refreshing state... [id=starter-pack]
 
 Import successful!
@@ -1732,19 +1738,19 @@ Import successful!
 The resources that were imported are shown above. These resources are now in
 your Terraform state and will henceforth be managed by Terraform.
 </code></pre></div><p>Now running terraform apply after import, will not raise any error.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform apply -target=module.starter_pack.kubernetes_namespace.starter_pack
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform apply -target=module.starter_pack.kubernetes_namespace.starter_pack
 
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 </code></pre></div><h3 id="recovering-more-complex-scenarios">Recovering more complex scenarios</h3><p>There are scenarios, where terraform state is corrupted or terraform state is removed for the whole module.
 Executing <code>terraform state rm module.starter_pack</code>, will remove all resources in &ldquo;starter_pack&rdquo; module from terraform state.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform plan -target=module.starter_pack
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan -target=module.starter_pack
 
 Plan: 7 to add, 0 to change, 0 to destroy.
 </code></pre></div><p>In this scenario, terraform state can be restored from the remote_state stored in the terraform backend S3 bucket.</p>
 <p>For example <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-components">cloud-platform-components</a> state is stored in &ldquo;cloud-platform-terraform-state/cloud-platform-components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/main.tf#L1-L9">here</a>.</p>
 <p>Access the S3 bucket where the effected terraform state is stored. From the list of terraform.tfstate file versions, identify the file before the state got removed and download as terraform.tfstate. Upload the file again, this will set uploaded file as latest version.</p>
 <p>Now running terraform plan will show, infrastructure is up-to-date.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>terraform plan -target=module.starter_pack
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan -target=module.starter_pack
 
 No changes. Infrastructure is up-to-date.
 </code></pre></div><h2 id="lost-or-corrupt-etcd-volume">Lost or corrupt etcd volume</h2><p>Severity : low</p>
@@ -1757,13 +1763,13 @@ No changes. Infrastructure is up-to-date.
 <li>Corrupt volume: Accidentally restoring etcd volume from a wrong snapshot and attach it to the working master node.</li>
 </ul>
 <p>We will see warnings like this in this master log file:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl -n kube-system logs etcd-manager-main-ip-xxx-xx-xx-xxx.eu-west-2.compute.internal
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl -n kube-system logs etcd-manager-main-ip-xxx-xx-xx-xxx.eu-west-2.compute.internal
 
 etcdserver: failed to reach the peerURL(https://etcd-x.internal.&lt;cluster-name&gt;.cloud-platform.service.justice.gov.uk:2380) of member &lt;member-id&gt; 
 rafthttp: health check for peer &lt;member-id&gt; connect: connection refused (prober "ROUND_TRIPPER_SNAPSHOT")
 rafthttp: health check for peer &lt;member-id&gt; connect: connection refused (prober "ROUND_TRIPPER_RAFT_MESSAGE")
 
-</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>kops validate cluster
+</code></pre></div><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops validate cluster
 
 VALIDATION ERRORS
 KIND    NAME            MESSAGE
@@ -1779,7 +1785,7 @@ A number of components will have specific annotations applied to them that are o
 For these resources a Velero restore will have to be executed.</p>
 <h3 id="reproducing-incident-steps">Reproducing Incident Steps</h3><p>To test the recovery of the CRD resources, first ensure that they exist so that when recovering we can verify they are restored by Velero. Below are templates for each of the CRDs used.</p>
 <p>Service Monitor</p>
-<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: monitoring.coreos.com/v1
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: dr-test-service
@@ -1792,7 +1798,7 @@ spec:
     interval: 15s
 </code></pre></div><p>Save the above yaml and execute into the desired namespace e.g <code>kubectl create -f &lt;FILE_NAME&gt;.yaml -n &lt;NAMESPACE&gt;</code></p>
 <p>Prometheus Rule</p>
-<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: monitoring.coreos.com/v1
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
@@ -1849,7 +1855,7 @@ spec:
 </code></pre></div><p>Replace the placeholder <code>&lt;NAMESPACE&gt;</code> with the namespace where this will will created.</p>
 <p>Save the above yaml and execute into the desired namespace e.g <code>kubectl create -f &lt;FILE_NAME&gt;.yaml -n &lt;NAMESPACE&gt;</code></p>
 <p>Certificate</p>
-<div class="highlight"><pre class="highlight plaintext"><code>apiVersion: cert-manager.io/v1alpha3
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: cert-manager.io/v1alpha3
 kind: Certificate
 metadata:
   name: cert-dr-test
@@ -1881,10 +1887,10 @@ spec:
 <p>Cert-manager</p>
 <p>(1)</p>
 <p>The following annotation is applied to the deployment:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>iam.amazonaws.com/permitted : aws_iam_role.cert_manager.0.name
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>iam.amazonaws.com/permitted : aws_iam_role.cert_manager.0.name
 </code></pre></div><p>(2)</p>
 <p>In ClusterIssuer resource the iam role is applied to the route53 within the solvers block:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>    solvers:
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    solvers:
     - selector: {}
       dns01:
         cnameStrategy: "Follow"
@@ -1895,27 +1901,27 @@ spec:
 </code></pre></div><p>External DNS</p>
 <p>(1)</p>
 <p>Following annotations are applied to the external dns pods</p>
-<div class="highlight"><pre class="highlight plaintext"><code>podAnnotations:
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>podAnnotations:
   iam.amazonaws.com/role: "${iam_role}"
 </code></pre></div><p>The following annotations are added to external dns deployment</p>
-<div class="highlight"><pre class="highlight plaintext"><code>  annotations:
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  annotations:
     eks.amazonaws.com/role-arn: "${eks_service_account}"  
 </code></pre></div><h3 id="destroy-the-eks-components">Destroy the EKS components</h3><p>The first step for recovery is to destroy what was applied from the same directory.</p>
 <p>Ensure you in the <code>cloud-platform-infrastructure/terraform/cloud-platform-eks/components</code> directory.</p>
 <p>Execute <code>terraform destroy -auto-approve</code></p>
 <h3 id="re-apply-the-kops-components">Re-apply the KOPS components</h3><p>Re-create the components but this time run <code>terraform apply -auto-approve</code> from the <code>...terraform/cloud-platform-components</code> directory</p>
 <p>After re-creating the components you may notice that the CRD resources and ingress certificates are still missing. To restore these run <code>velero restore...</code> as follows:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero backup get
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup get
 
 NAME                                       STATUS      CREATED                         EXPIRES   STORAGE   LOCATION   SELECTOR
 velero-backup-00000000000000              Completed   2020-03-30 12:00:37 +0100 BST     29d       default             &lt;none&gt;
 </code></pre></div><p>Using the backup name, you can now run a <code>velero restore...</code> command to restore the deleted resource.</p>
 <p>Restore command:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; 
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; 
 </code></pre></div><p>Example:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>velero restore create my-namespace-dev-restore --from-backup velero-backup-00000000000000
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create my-namespace-dev-restore --from-backup velero-backup-00000000000000
 </code></pre></div><p>Once completed, you should be able to see the CRD resources that were created earlier, above before the incident.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>kubectl get prometheusrules -n &lt;NAMESPACE&gt;
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get prometheusrules -n &lt;NAMESPACE&gt;
 kubectl get servicemonitors -n &lt;NAMESPACE&gt;
 kubectl get certificates -n &lt;NAMESPACE&gt;
 

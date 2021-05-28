@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Upgrade Terraform Version - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Upgrade Terraform Version - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Upgrade Terraform Version" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Upgrade Terraform Version - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1571,7 +1577,7 @@
 <p>Note - Not all Terraform upgrades require you to make a change to the code base.</p>
 <h3 id="before-the-upgrade">Before the upgrade</h3><p>There are three recommended tasks required before upgrading Terraform.</p>
 <h4 id="check-for-warnings-and-notices">Check for warnings and notices</h4><p>Terraform is good at warning end users of deprecations in future releases. Check the output of a Terraform init/validation/plan for messages of deprecations of resources that will disappear in future releases. For example, this message appeared in our Environments apply pipeline:</p>
-<div class="highlight"><pre class="highlight shell"><code>Warning: Interpolation-only expressions are deprecated
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>Warning: Interpolation-only expressions are deprecated
 
   on .terraform/modules/example_team_es/main.tf line 104, <span class="k">in </span>data <span class="s2">"aws_iam_policy_document"</span> <span class="s2">"elasticsearch_role_snapshot_policy"</span>:
 </code></pre></div><p>It is recommended to act on these messages and look for how and why it&rsquo;s being deprecated.</p>
@@ -1583,7 +1589,7 @@
 <h4 id="add-conditional-logic">Add conditional logic</h4><p>Add an if statement to the apply library that checks the version outlined in each <code>versions.tf</code> file in a namespace. Previously, this was achieved by simply making the <code>terraform</code> command <a href="https://github.com/ministryofjustice/cloud-platform-environments/pull/4366/files">variable</a>. This conditional logic allows you to upgrade the state slowly, ensuring you don&rsquo;t have issues in non-production namespaces before you upgrade production.</p>
 <h4 id="upgrade-all-terraform-modules">Upgrade all Terraform modules</h4><p>Not all Terraform upgrades require this, but in 0.12 and 0.13 you were required to change some syntax in your code base. This can be a fairly tricky task as we maintain over 50 Terraform modules. Terraform does provide a <code>terraform upgrade</code> tool if a syntax change is required, but this will need to be executed against all modules and a new release created. This can be tedious if performed manually so there is some <a href="https://github.com/ministryofjustice/cloud-platform-terraform-upgrade">Go code</a> that does this on your behalf.</p>
 <p>Using the example of upgrading to Terraform 0.13, the following was executed:</p>
-<div class="highlight"><pre class="highlight shell"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
 go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span>
 </code></pre></div><p>The code will pull down every repository in the &ldquo;ministryofjustice&rdquo; organisation with the name that contains &ldquo;cloud-platform-terraform&rdquo; and run the command &ldquo;terraform 0.13upgrade&rdquo;. It will then commit and create a Pull Request against each repository using your GitHub credentials.</p>
 <p>This will result in a Pull Request output similar to the one outlined <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/pull/85/files">here</a>.</p>
@@ -1607,7 +1613,7 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 </ul>
 <h4 id="upgrade-all-non-production-namespaces">Upgrade all non-production namespaces</h4><p>When you&rsquo;re happy to begin upgrading users namespaces run the upgrade command against the cloud-platform-environments repository or upgrade all namespaces manually.</p>
 <p>If you decide to use the tool above then perform the following:</p>
-<div class="highlight"><pre class="highlight shell"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
 go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-environments"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span> <span class="nt">--no-commit</span>
 <span class="nb">cd </span>repositories
 </code></pre></div><p>The <code>no-commit</code> argument pulls down the required repository and stores it in a directory called &lsquo;repositories&rsquo;, it then runs the upgrade against all namespaces but doesn&rsquo;t commit the changes. You&rsquo;ll want to pick and choose which namespaces to commit to ensure you&rsquo;re happy. I&rsquo;d recommend creating a new branch and commiting the non-production namespaces only, i.e. any namespace that isn&rsquo;t &ldquo;-prod&rdquo;.</p>
@@ -1621,7 +1627,7 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 <li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/b11b0372fe71289e51739395664355014df0e655">Remove</a> the conditional logic in the apply library.</li>
 </ul>
 <h3 id="infrastructure-state-files">Infrastructure state files</h3><p>The Infrastructure state we have in the Cloud Platform is structured in a tree related to its dependency, so for example, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-components">components</a> state (in the output below) relies heavily on the directory above and so on. Here is a snapshot of how our directory looks but this is likely to change:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>aws-accounts
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws-accounts
 ├── cloud-platform-aws
 │   ├── account                  # AWS Account specific configuration.
 │   └── vpc                  # VPC creation. Workspaces for individual clusters
@@ -1642,7 +1648,7 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 </code></pre></div><h4 id="where-to-start">Where to start</h4><p>Because of the structure outlined above, it&rsquo;s best to start at the components layer and work in.</p>
 <h4 id="run-terraform-init-validate">Run terraform init/validate</h4><p>Using a tool such as tf-switch, switch to your new version and perform the command <code>terraform init -backend=false</code>. The output of this command will give you a general idea of what needs to change before your perform the upgrade. the <code>-backend=false</code> ensures the state isn&rsquo;t touched.</p>
 <h4 id="infrastructure-state-files-upgrade-all-terraform-modules">Upgrade all Terraform modules</h4><p>Like the Environments, you need to ensure all Terraform modules will work with the new Terraform version. If there is a syntax change, it&rsquo;s recommended to run the <code>terraform upgrade</code> command on all repositories that contain &ldquo;cloud-platform-terraform&rdquo;. Either perform this manually or:</p>
-<div class="highlight"><pre class="highlight shell"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
 go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"&lt;insert upgrade command here&gt;"</span>
 </code></pre></div><p>Which will perform the upgrade command on each repository containing &ldquo;cloud-platform-terraform&rdquo; in the name and then create a Pull Request.</p>
 <h4 id="ensure-all-quot-third-party-quot-modules-conform">Ensure all &ldquo;third-party&rdquo; modules conform</h4><p>We use a number of third party Terraform modules (modules we don&rsquo;t control), these mainly belong to AWS, so it&rsquo;s important that you update the version of these modules and ensure it works with the Terraform version you&rsquo;re upgrading to. <a href="https://github.com/ministryofjustice/cloud-platform-terraform-monitoring/commit/ce9fb73249775c8efe09020d3db7c96ccb9ef251">Here&rsquo;s</a> an example of a change to a third party module.</p>

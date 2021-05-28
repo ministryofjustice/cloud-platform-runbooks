@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Create a new cluster - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Create a new cluster - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Create a new cluster" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Create a new cluster - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1569,13 +1575,13 @@
 <h2 id="run-the-build-script-via-the-tools-image">Run the build script, via the tools image</h2><p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to run the build script and create a cluster.</p>
 <p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
 <p>With your environment variables set, launch a bash shell on the tools image:</p>
-<div class="highlight"><pre class="highlight shell"><code>make tools-shell
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
 </code></pre></div><p>Execute the script, supplying the desired name of your new cluster. e.g.:</p>
-<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--name</span> david-test1
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>./create-cluster.rb <span class="nt">--name</span> david-test1
 </code></pre></div><p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
 <p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
 <p>By default, the script will create a &lsquo;small&rsquo; cluster. This means the master and worker EC2 instances will be less powerful machine types than in our production cluster, and you&rsquo;ll get 3 worker nodes. To create a &lsquo;production&rsquo; size cluster you have to add your cluster name and values inside these <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform/variables.tf#L29-L67">terraform map variables</a>:</p>
-<div class="highlight"><pre class="highlight shell"><code>variable <span class="s2">"cluster_node_count_a"</span> <span class="o">{</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>variable <span class="s2">"cluster_node_count_a"</span> <span class="o">{</span>
   description <span class="o">=</span> <span class="s2">"The number of worker node in the cluster in Availability Zone eu-west-2a"</span>
   default <span class="o">=</span> <span class="o">{</span>
     live-1  <span class="o">=</span> <span class="s2">"9"</span>
@@ -1620,9 +1626,9 @@ variable <span class="s2">"worker_node_machine_type"</span> <span class="o">{</s
 <p>You do not need to commit/PR this change, if you are just specifying values for a single test cluster.</p>
 </blockquote>
 <p>You can see more options to use when creating the cluster by running:</p>
-<div class="highlight"><pre class="highlight shell"><code>./create-cluster.rb <span class="nt">--help</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>./create-cluster.rb <span class="nt">--help</span>
 </code></pre></div><p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Run options: exclude {:cluster=&gt;"live-1"}
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Run options: exclude {:cluster=&gt;"live-1"}
 ..........................
 
 Finished in 4 minutes 53.4 seconds (files took 4.54 seconds to load)
@@ -1648,33 +1654,33 @@ alerts from test clusters from showing up in the team slack channels.</p>
 <li>lower priority alerts: <code>terraform/cloud-platform-components/terraform.tfvars</code> (look for <code>alertmanager_slack_receivers</code>)</li>
 </ul>
 <h3 id="apply-the-changes">Apply the changes</h3><p>Use terraform to apply the changes to the prometheus operator in your test cluster.</p>
-<h4 id="ensure-your-terraform-workspace-and-kubernetes-context-are-pointing-at-your-test-cluster">Ensure your terraform workspace and kubernetes context are pointing at your test cluster</h4><div class="highlight"><pre class="highlight shell"><code><span class="nb">cd </span>terraform/cloud-platform-components
+<h4 id="ensure-your-terraform-workspace-and-kubernetes-context-are-pointing-at-your-test-cluster">Ensure your terraform workspace and kubernetes context are pointing at your test cluster</h4><div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">cd </span>terraform/cloud-platform-components
 terraform workspace list
 </code></pre></div><p>If you are not targeting your test cluster workspace, run</p>
-<div class="highlight"><pre class="highlight shell"><code>terraform workspace <span class="k">select</span> <span class="o">[</span>your cluster]
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>terraform workspace <span class="k">select</span> <span class="o">[</span>your cluster]
 </code></pre></div><p>Check your kubernetes context by running</p>
-<div class="highlight"><pre class="highlight shell"><code>kubectl cluster-info
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl cluster-info
 </code></pre></div><p>The output should be</p>
-<div class="highlight"><pre class="highlight shell"><code>Kubernetes master is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>Kubernetes master is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk
 KubeDNS is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 </code></pre></div><p>&hellip;where <code>XXXXXXX</code> is the name of your test cluster.</p>
 <p>If your context is pointing at live-1, switch to your test cluster by running</p>
-<div class="highlight"><pre class="highlight shell"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>When you are confident that both your terraform workspace and kubernetes context are set to your test cluster, apply the change to set the pagerduty config value:</p>
-<div class="highlight"><pre class="highlight shell"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>helm_release.prometheus_operator
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>helm_release.prometheus_operator
 </code></pre></div><p>Answer <code>yes</code> if the planned changes look correct.</p>
 <h2 id="authenticating">Authenticating</h2><p>If you want to authenticate to your new cluster in the same way as a regular user would (i.e. logging
 in via auth0, rather than using <code>kops export kubecfg...</code>), the auth0 login URL is:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>https://login.apps.[cluster name].cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>https://login.apps.[cluster name].cloud-platform.service.justice.gov.uk
 </code></pre></div><p>e.g. for a cluster called &ldquo;david-test1&rdquo;, the URL to authenticate and download a <code>~/.kube/config</code> file is:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>https://login.apps.david-test1.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>https://login.apps.david-test1.cloud-platform.service.justice.gov.uk
 </code></pre></div><h2 id="docker-authentication">Docker authentication</h2><p>Due to <a href="https://www.docker.com/increase-rate-limits">Docker Hub rate limiting</a>, it may be necessary to <a href="https://github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md">add authentication</a> to your Docker clients running in a Kops cluster.</p>
 <p>The following error message will appear if your cluster has been rate limited by Docker Hub:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>Failed to pull image \"docker.io/prometheus:1.0"
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Failed to pull image \"docker.io/prometheus:1.0"
 
 ERROR: toomanyrequests: Too Many Requests.
 </code></pre></div><h3 id="adding-a-docker-config-file-to-your-cluster">Adding a Docker config file to your cluster</h3><p>If you wish to authenticate to Docker Hub, you can use the argument <code>-d</code> and specify the target Docker config file to pass, i.e.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>./create-cluster.rb --name test-01 -d /path/to/local/docker/config.json
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./create-cluster.rb --name test-01 -d /path/to/local/docker/config.json
 </code></pre></div><p>To generate a local <code>docker/config.json</code> file you need to use <code>docker login</code> from the command line.</p>
 
 

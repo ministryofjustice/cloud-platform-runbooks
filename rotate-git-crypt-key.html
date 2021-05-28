@@ -4,7 +4,6 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-      <meta name="robots" content="noindex">
 
     <title>Git-crypt - Cloud Platform Runbooks</title>
 
@@ -12,17 +11,18 @@
 
     <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html">
 
+      <meta name="robots" content="noindex" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
+      <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
+      <meta name="twitter:title" content="Git-crypt - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="Git-crypt" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
-      <meta property="twitter:card" content="summary" />
-      <meta property="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
-      <meta property="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta property="twitter:title" content="Git-crypt - Cloud Platform Runbooks" />
-      <meta property="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-git-crypt-key.html" />
 
     
   </head>
@@ -65,32 +65,38 @@
       </div>
 
         <div id="toc-heading" class="toc-show fixedsticky">
-          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+          <button type="button" class="toc-show__label js-toc-show" aria-controls="toc">
             Table of contents <span class="toc-show__icon"></span>
-          </a>
+          </button>
         </div>
 
       <div class="app-pane__body" data-module="in-page-navigation">
           <div class="app-pane__toc">
-            <div class="toc" data-module="table-of-contents">
+            <div class="toc" data-module="table-of-contents" tabindex="-1" aria-label="Table of contents" role="dialog">
               <div class="search" data-module="search">
-  <form action="https://www.google.co.uk/search" method="get" role="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search" class="search__form govuk-!-margin-bottom-4">
     <input type="hidden" name="as_sitesearch" value="https://runbooks.cloud-platform.service.justice.gov.uk"/>
-    <label class="govuk-label search__label" for="search">
+    <label class="govuk-label search__label" for="search" aria-hidden="true">
       Search (via Google)
     </label>
-    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+    <input
+      type="text"
+      id="search" name="q"
+      class="govuk-input govuk-!-margin-bottom-0 search__input"
+      aria-controls="search-results"
+      placeholder="Search">
+    <button type="submit" class="search__button">Search</button>
   </form>
   <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
     <div class="search-results__inner">
       <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
-      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <h2 id="search-results-title" class="search-results__title" aria-live="assertive" role="alert">Results</h2>
       <div class="search-results__content"></div>
     </div>
   </div>
 </div>
 
-              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <button type="button" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></button>
               <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading" data-module="collapsible-navigation">
                       <ul>
   <li>
@@ -1559,7 +1565,7 @@
 <h2 id="adding-new-user-to-the-keyring">Adding new user to the keyring</h2>
 <ol>
 <li><p>Ask the user (Slack, email, keyserver, etc) for their public key and import it into your keyring:</p>
-<div class="highlight"><pre class="highlight plaintext"><code>gpg --import &lt;&lt;EOF
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>gpg --import &lt;&lt;EOF
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQGiBEN5tJ0RBADwLLzmO1AR10KILHRJMMq+MtnscrVsOawA4vUhC8oTZHPUXRgE
@@ -1577,57 +1583,57 @@ EOF
 </code></pre></div></li>
 <li><p>Using KeyID/email trust the key as <em>&ldquo;5 = I trust ultimately&rdquo;</em>:</p></li>
 </ol>
-<div class="highlight"><pre class="highlight plaintext"><code>gpg --edit-key "alejandro.garrido@digital.justice.gov.uk" trust quit
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>gpg --edit-key "alejandro.garrido@digital.justice.gov.uk" trust quit
 </code></pre></div>
 <ol>
 <li>Create a new branch inside the git repository where user is going to be added:</li>
 </ol>
-<div class="highlight"><pre class="highlight plaintext"><code>git checkout -b add-alejandro-gpg
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git checkout -b add-alejandro-gpg
 </code></pre></div>
 <ol>
 <li>Use git-crypt CLI to add the user:</li>
 </ol>
-<div class="highlight"><pre class="highlight plaintext"><code>git-crypt add-gpg-user alejandro.garrido@digital.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git-crypt add-gpg-user alejandro.garrido@digital.justice.gov.uk
 </code></pre></div>
 <ol>
 <li>Push the branch and create a PR:</li>
 </ol>
-<div class="highlight"><pre class="highlight plaintext"><code>git push origin add-alejandro-gpg
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git push origin add-alejandro-gpg
 </code></pre></div><h2 id="rotating-the-git-crypt-key">Rotating the git-crypt key</h2><p>When rotating the <code>git-crypt</code> symmetric key, you should follow the steps below:</p>
-<h4 id="1-ensure-you-have-unlocked-the-repository">1. Ensure you have unlocked the repository:</h4><div class="highlight"><pre class="highlight plaintext"><code>git-crypt unlock
+<h4 id="1-ensure-you-have-unlocked-the-repository">1. Ensure you have unlocked the repository:</h4><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git-crypt unlock
 </code></pre></div><h4 id="2-make-a-list-of-the-current-users">2. Make a list of the current users:</h4>
 <ul>
 <li>for every file found, extract its filename minus the suffix, which corresponds to the user&rsquo;s key id</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>ls .git-crypt/keys/default/0/*.gpg | xargs -I{} -- basename {} .gpg &gt; git-crypt-users
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>ls .git-crypt/keys/default/0/*.gpg | xargs -I{} -- basename {} .gpg &gt; git-crypt-users
 </code></pre></div><h4 id="3-make-a-list-of-the-encrypted-files">3.  Make a list of the encrypted files:</h4>
 <ul>
 <li>for every currently encrypted file, extract its path, relative to the root of the repository</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>git-crypt status -e | awk '{ print $2; }' &gt; git-crypt-files
-</code></pre></div><h4 id="4-remove-git-crypt-configuration">4.  Remove <code>git-crypt</code> configuration:</h4><div class="highlight"><pre class="highlight plaintext"><code>rm -rf .git-crypt .git/git-crypt
-</code></pre></div><h4 id="5-re-initialise-git-crypt">5.  Re-initialise <code>git-crypt</code>,</h4><div class="highlight"><pre class="highlight plaintext"><code>git-crypt init
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git-crypt status -e | awk '{ print $2; }' &gt; git-crypt-files
+</code></pre></div><h4 id="4-remove-git-crypt-configuration">4.  Remove <code>git-crypt</code> configuration:</h4><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>rm -rf .git-crypt .git/git-crypt
+</code></pre></div><h4 id="5-re-initialise-git-crypt">5.  Re-initialise <code>git-crypt</code>,</h4><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git-crypt init
 </code></pre></div>
 <ul>
 <li>make sure you have all the users&rsquo; keys,</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>cat git-crypt-users | xargs -I{} gpg --recv-key {}
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cat git-crypt-users | xargs -I{} gpg --recv-key {}
 </code></pre></div>
 <ul>
 <li>and add all the users back,</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>cat git-crypt-users | xargs -I{} git-crypt add-gpg-user -n --trusted {}
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cat git-crypt-users | xargs -I{} git-crypt add-gpg-user -n --trusted {}
 </code></pre></div>
 <ul>
 <li>At this point, your git index will have a number of pending changes, do not commit them yet.</li>
 </ul>
-<h4 id="6-re-encrypt-all-the-secrets-the-list-of-secrets-was-extracted-in-git-crypt-files-see-step-2-above-since-the-master-encryption-key-is-being-rotated-all-of-the-secrets-that-have-been-encrypted-with-it-must-be-rotated-once-finished-you-can-add-the-files-to-the-index">6.  Re-encrypt all the secrets: the list of secrets was extracted in <code>git-crypt-files</code> (see step 2. above). Since the master encryption key is being rotated, all of the secrets that have been encrypted with it <em>must</em> be rotated. Once finished, you can add the files to the index</h4><div class="highlight"><pre class="highlight plaintext"><code>cat git-crypt-files | xargs git add
-</code></pre></div><h4 id="7-commit-your-changes-one-way-to-check-that-the-files-in-the-git-index-are-properly-encrypted-before-you-commit-your-changes-is-like-so">7. Commit your changes. One way to check that the files in the git index are properly encrypted before you commit your changes is like so:</h4><div class="highlight"><pre class="highlight plaintext"><code>git show :&lt;path-to-file&gt;
+<h4 id="6-re-encrypt-all-the-secrets-the-list-of-secrets-was-extracted-in-git-crypt-files-see-step-2-above-since-the-master-encryption-key-is-being-rotated-all-of-the-secrets-that-have-been-encrypted-with-it-must-be-rotated-once-finished-you-can-add-the-files-to-the-index">6.  Re-encrypt all the secrets: the list of secrets was extracted in <code>git-crypt-files</code> (see step 2. above). Since the master encryption key is being rotated, all of the secrets that have been encrypted with it <em>must</em> be rotated. Once finished, you can add the files to the index</h4><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cat git-crypt-files | xargs git add
+</code></pre></div><h4 id="7-commit-your-changes-one-way-to-check-that-the-files-in-the-git-index-are-properly-encrypted-before-you-commit-your-changes-is-like-so">7. Commit your changes. One way to check that the files in the git index are properly encrypted before you commit your changes is like so:</h4><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git show :&lt;path-to-file&gt;
 </code></pre></div>
 <ul>
 <li>or after committing (and before you&rsquo;ve pushed):</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext"><code>git show HEAD:&lt;path-to-file&gt;
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git show HEAD:&lt;path-to-file&gt;
 </code></pre></div>
 <ul>
 <li><p>where <code>&lt;path-to-file&gt;</code> is either absolute from the base of the git repo or relative (eg.: <code>git show:./my-secret-file.yaml</code>)</p></li>
@@ -1636,17 +1642,17 @@ EOF
 <p>Note: If you need to <code>checkout</code> an older commit, branch, tag etc., make sure to <code>git-crypt lock</code> your repository beforehand in order to avoid a broken local working directory. Once you&rsquo;ve locked and checked out the desired revision, you can <code>git-crypt unlock</code>.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-05-24">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-08-27">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 24 February 2021.
+      This page was last reviewed on 27 May 2021.
 
-        It needs to be reviewed again on 24 May 2021
+        It needs to be reviewed again on 27 August 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 24 May 2021
+      This page was set to be reviewed before 27 August 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
