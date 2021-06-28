@@ -1589,7 +1589,7 @@
 <h4 id="add-conditional-logic">Add conditional logic</h4><p>Add an if statement to the apply library that checks the version outlined in each <code>versions.tf</code> file in a namespace. Previously, this was achieved by simply making the <code>terraform</code> command <a href="https://github.com/ministryofjustice/cloud-platform-environments/pull/4366/files">variable</a>. This conditional logic allows you to upgrade the state slowly, ensuring you don&rsquo;t have issues in non-production namespaces before you upgrade production.</p>
 <h4 id="upgrade-all-terraform-modules">Upgrade all Terraform modules</h4><p>Not all Terraform upgrades require this, but in 0.12 and 0.13 you were required to change some syntax in your code base. This can be a fairly tricky task as we maintain over 50 Terraform modules. Terraform does provide a <code>terraform upgrade</code> tool if a syntax change is required, but this will need to be executed against all modules and a new release created. This can be tedious if performed manually so there is some <a href="https://github.com/ministryofjustice/cloud-platform-terraform-upgrade">Go code</a> that does this on your behalf.</p>
 <p>Using the example of upgrading to Terraform 0.13, the following was executed:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-git-xargs
 go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span>
 </code></pre></div><p>The code will pull down every repository in the &ldquo;ministryofjustice&rdquo; organisation with the name that contains &ldquo;cloud-platform-terraform&rdquo; and run the command &ldquo;terraform 0.13upgrade&rdquo;. It will then commit and create a Pull Request against each repository using your GitHub credentials.</p>
 <p>This will result in a Pull Request output similar to the one outlined <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/pull/85/files">here</a>.</p>
@@ -1657,17 +1657,17 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 <h4 id="upgrade-the-cloud-platform-cli-image">Upgrade the cloud-platform-cli image</h4><p>Finally, following the successful upgrade to your new Terraform version, upgrade the version of Terraform used in the cloud-platform-cli docker image.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-06-22">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-09-28">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 22 March 2021.
+      This page was last reviewed on 28 June 2021.
 
-        It needs to be reviewed again on 22 June 2021
+        It needs to be reviewed again on 28 September 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 22 June 2021
+      This page was set to be reviewed before 28 September 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
