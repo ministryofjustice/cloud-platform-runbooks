@@ -187,6 +187,17 @@
     <a href="/incident-log.html#incident-log"><span>Incident Log</span></a>
     <ul>
       <li>
+        <a href="/incident-log.html#q2-2021-apr-may"><span>Q2 2021 (Apr-May)</span></a>
+        <ul>
+          <li>
+            <a href="/incident-log.html#incident-on-2021-06-09-12-47-all-users-are-unable-to-create-new-ingress-rules-following-bad-modsec-ingress-controller-upgrade"><span>Incident on 2021-06-09 12:47 - All users are unable to create new ingress rules, following bad ModSec Ingress-controller upgrade</span></a>
+          </li>
+          <li>
+            <a href="/incident-log.html#incident-on-2021-05-10-12-15-apply-pipeline-downtime-due-to-accidental-destroy-of-manager-cluster"><span>Incident on 2021-05-10 12:15 - Apply Pipeline downtime due to accidental destroy of Manager cluster</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="/incident-log.html#q1-2021-january-march"><span>Q1 2021 (January - March)</span></a>
         <ul>
           <li>
@@ -260,9 +271,6 @@
             <a href="/incident-log.html#incident-on-yyyy-mm-dd-hh-mm-brief-description"><span>Incident on YYYY-MM-DD HH:MM - [Brief description]</span></a>
           </li>
         </ul>
-      </li>
-      <li>
-        <a href="/incident-log.html#key-events"><span>Key events</span></a>
       </li>
       <li>
         <a href="/incident-log.html#impact"><span>Impact:</span></a>
@@ -1565,15 +1573,93 @@
 <blockquote>
 <p>Use the <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/bin/mean-time-to-repair.rb">mean-time-to-repair.rb</a> script to view performance metrics</p>
 </blockquote>
+<h2 id="q2-2021-apr-may">Q2 2021 (Apr-May)</h2>
+<ul>
+<li><p><strong>Mean Time to Repair</strong>: 2h 32m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 2h 44m</p></li>
+</ul>
+<h3 id="incident-on-2021-06-09-12-47-all-users-are-unable-to-create-new-ingress-rules-following-bad-modsec-ingress-controller-upgrade">Incident on 2021-06-09 12:47 - All users are unable to create new ingress rules, following bad ModSec Ingress-controller upgrade</h3>
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected 2021-06-09 13:15</li>
+<li>Repaired 2021-06-09 13:46</li>
+<li>Incident declared 2020-06-09 13:54</li>
+<li>Resolved 2021-06-09 13:58</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 0h 31m</p></li>
+<li><p><strong>Time to resolve</strong>: 0h 43m</p></li>
+<li><p><strong>Identified</strong>: User reported in #ask-cloud-platform an error when deploying UAT application:
+<code>kind Ingress: Internal error occurred: failed calling webhook &quot;validate.nginx.ingress.kubernetes.io&quot;: Post https://modsec01-nx-modsec-admission.ingress-controllers.svc:443/networking/v1beta1/ingresses?timeout=10s: x509: certificate is valid for modsec01-nx-controller-admission, modsec01-nx-controller-admission.ingress-controllers.svc, not modsec01-nx-modsec-admission.ingress-controllers.svc</code></p></li>
+<li><p><strong>Impact</strong>: It blocked all ingress API calls, so no new ingresses could be created, nor changes to current ingresses could be deployed, which included all user application deployments.</p></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>Occurred immediately following an upgrade to the ModSec Ingress-controller module v3.33.0, which apparently successfully deployed</li>
+<li>It caused any new ingress or changes to current ingresses to be blocked by the ModSec Validation webhook</li>
+<li>Timeline: <a href="https://docs.google.com/document/d/1s5pos29Gcq0ssVnpf0biqG2aE-Kt2PtyxEcpjG88rdc/edit#">Timeline</a> for the incident.</li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/C57UPMZLY/p1623240948285500">#ask-cloud-platform</a> for the incident, <a href="https://mojdt.slack.com/archives/C514ETYJX/p1623242510212300">#cloud-platform</a> for the recovery.</li>
+</ul></li>
+<li><p><strong>Resolution</strong>: Rollback to ModSec Ingress-controller module v0.0.7</p></li>
+<li><p><strong>Review actions</strong>:</p>
+
+<ul>
+<li>Find out why this issue didn’t get flagged in the test cluster - try to reproduce the issue - maybe need another test? Ticket <a href="https://github.com/ministryofjustice/cloud-platform/issues/2972">#2972</a></li>
+<li>Add test that checks the alerts in alertmanager in smoke tests. Ticket <a href="https://github.com/ministryofjustice/cloud-platform/issues/2973">#2973</a></li>
+<li>Add helloworld app that uses modsec controller, for the smoke tests to check traffic works. Ticket <a href="https://github.com/ministryofjustice/cloud-platform/issues/2974">#2974</a></li>
+<li>Modsec module, new version, needs to be working on EKS for live-1 and live (neither old or new version work on live). Ticket <a href="https://github.com/ministryofjustice/cloud-platform/issues/2975">#2975</a></li>
+</ul></li>
+</ul>
+<h3 id="incident-on-2021-05-10-12-15-apply-pipeline-downtime-due-to-accidental-destroy-of-manager-cluster">Incident on 2021-05-10 12:15 - Apply Pipeline downtime due to accidental destroy of Manager cluster</h3>
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected 2021-05-10 12:15</li>
+<li>Incident not declared, but later agreed it was one</li>
+<li>Repaired 2021-05-10 16:48</li>
+<li>Resolved 2021-05-11 10:00</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 4h 33m</p></li>
+<li><p><strong>Time to resolve</strong>: 4h 45m</p></li>
+<li><p><strong>Identified</strong>: CP team member did &lsquo;terraform destroy components&rsquo;, intending it to destroy a test cluster, but it was on Manager cluster by mistake. Was immediately aware of the error.</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>Users couldn&rsquo;t create or change their namespace definitions or AWS resources, due to Concourse being down</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>Timeline: <a href="https://docs.google.com/document/d/1rrROMuq5D6wajAPZGy3sq_P98ZmvMmaHygWKUgLyTCM/edit#">Timeline</a> for the incident</li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1620645898320200">Slack thread</a> for the incident.</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:</p>
+
+<ul>
+<li>Manager cluster was recreated.</li>
+<li>During this we encountered a certificate issue with Concourse, so it was restored manually. The terraform had got out of date for the Manager cluster.</li>
+<li>Route53 zones were hard-coded and had to be <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/1162/files">changed manually</a>.</li>
+</ul></li>
+<li><p><strong>Actions following review</strong>:</p>
+
+<ul>
+<li>Spike ways to avoid applying to wrong cluster - see 3 options above. Ticket <a href="https://github.com/ministryofjustice/cloud-platform/issues/3016">#3016</a></li>
+<li>Try ‘Prevent destroy’ setting on R53 zone - Ticket <a href="https://github.com/ministryofjustice/cloud-platform/issues/2899">#2899</a></li>
+<li>Disband the cloud-platform-concourse repository. This includes Service accounts, and pipelines. We should split this repository up and move it to the infra/terraform-concourse repos. Ticket <a href="https://github.com/ministryofjustice/cloud-platform/issues/3017">#3017</a></li>
+<li>Manager needs to use our PSPs instead of eks-privilege - this has already been done.</li>
+</ul></li>
+</ul>
 <h2 id="q1-2021-january-march">Q1 2021 (January - March)</h2>
 <ul>
-<li><p><strong>Mean Time to repair</strong>: N/A</p></li>
-<li><p><strong>Mean Time to resolve</strong>: N/A</p></li>
+<li><p><strong>Mean Time to Repair</strong>: N/A</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: N/A</p></li>
 </ul>
 <h3 id="no-incidents-declared">No incidents declared</h3><h2 id="q4-2020-october-december">Q4 2020 (October - December)</h2>
 <ul>
-<li><p><strong>Mean Time to repair</strong>: 2h 8m</p></li>
-<li><p><strong>Mean Time to resolve</strong>: 8h 46m</p></li>
+<li><p><strong>Mean Time to Repair</strong>: 2h 8m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 8h 46m</p></li>
 </ul>
 <h3 id="incident-on-2020-10-06-09-07-intermittent-quot-micro-downtimes-quot-on-various-services-using-dedicated-ingress-controllers">Incident on 2020-10-06 09:07 - Intermittent &ldquo;micro-downtimes&rdquo; on various services using dedicated ingress controllers</h3>
 <ul>
@@ -1982,14 +2068,21 @@ We suspect an intermittent &amp; external networking issue to be the cause of th
 <ul>
 <li>The words used in the timeline of an incident: fault occurs, team becomes aware (of something bad), incident declared (the team acknowledges and has an idea of the impact), repaired (system is fully functional), resolved (fully functional and future failures are prevented)</li>
 <li><em>Incident time</em> - The start of the failure (Before March 2020 it was the time the incident was declared)</li>
-<li><em>Time to Repair</em> - The time between the incident being declared and when service is fully restored. Only includes <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/reference/operational-processes.html#hours-of-support">Hours of Support</a>.</li>
+<li><em>Time to Repair</em> - The time between the incident being declared (or when the team became aware of the fault) and when service is fully restored. Only includes <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/reference/operational-processes.html#hours-of-support">Hours of Support</a>.</li>
 <li><em>Time to Resolve</em> - The time between when the fault occurs and when system is fully functional (and include any immediate work done to prevent future failures). Only includes <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/reference/operational-processes.html#hours-of-support">Hours of Support</a>. This is a broader metric of incident response performance, compared to Time to Repair.</li>
 </ul>
 <p>Source: <a href="https://www.atlassian.com/incident-management/kpis/common-metrics">Atlassian</a></p>
 <p>Datestamps: please use <code>YYYY-MM-DD HH:MM</code> (almost ISO 8601, but more readable), for the London timezone</p>
 <h2 id="template">Template</h2><h3 id="incident-on-yyyy-mm-dd-hh-mm-brief-description">Incident on YYYY-MM-DD HH:MM - [Brief description]</h3>
 <ul>
-<li><h2 id="key-events"><strong>Key events</strong></h2></li>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected YYYY-MM-DD HH:MM</li>
+<li>Incident declared YYYY-MM-DD HH:MM</li>
+<li>Repaired YYYY-MM-DD HH:MM</li>
+<li>Resolved YYYY-MM-DD HH:MM</li>
+</ul></li>
 <li><p><strong>Time to repair</strong>: Xh Xm</p></li>
 <li><p><strong>Time to resolve</strong>: Xh Xm</p></li>
 <li><p><strong>Identified</strong>:</p></li>
