@@ -1579,7 +1579,7 @@
 <li>Check the release notes of the component for any breaking changes</li>
 <li>Check and add notes from the upgrading process mentioned in the original github repository related the component (if any)</li>
 <li>Check and add notes of every CHANGELOG.md of the component between the current chart version installed in your cluster to the chart version you want to upgrade to</li>
-<li>Review the CHANGELOG notes with another member of the team (check for breaking changes, deprecations, change to values file and suggested plan for upgrading the production clusters <code>live-1</code> and <code>eks-manager</code>)</li>
+<li>Review the CHANGELOG notes with another member of the team (check for breaking changes, deprecations, change to values file and suggested plan for upgrading the production clusters <code>live-1</code>, <code>eks-manager</code> and <code>live</code>)</li>
 </ul>
 <h2 id="testing-the-upgrade-in-a-test-cluster">Testing the upgrade in a test cluster</h2><p>It is important to test the upgrade of the component in both kops and EKS cluster.</p>
 
@@ -1619,7 +1619,7 @@ bundle binstubs rspec-core --path /usr/local/bin
 <div class="highlight"><pre class="highlight hcl" tabindex="0"><code><span class="nx">source</span> <span class="err">=</span> <span class="s2">"github.com/ministryofjustice/cloud-platform-terraform-certmanager?ref=upgrade"</span>
 </code></pre></div></li>
 <li><p>Do a <code>terraform plan</code> for the changes, verify whether the changes are correct and do <code>terraform apply</code> to apply the changes</p></li>
-<li><p>Check the <a href="http://localhost:4567/upgrade-cluster-components.html#things-to-observe-when-testing-the-upgrade]">things to observe</a> section for specific components</p></li>
+<li><p>Check the <a href="/upgrade-cluster-components.html#things-to-observe-when-testing-the-upgrade">things to observe</a> section for specific components</p></li>
 <li><p>Run the integration tests again</p></li>
 <li><p>Once the testing is complete and integration tests are passed, create a PR to be reviewed by the team and have the module unit tests passed. 
  After the PR is approved, merge the changes to the main branch of the module and make a release.</p></li>
@@ -1636,17 +1636,17 @@ bundle binstubs rspec-core --path /usr/local/bin
 </ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-06-30">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-10-05">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 31 March 2021.
+      This page was last reviewed on 5 July 2021.
 
-        It needs to be reviewed again on 30 June 2021
+        It needs to be reviewed again on 5 October 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 30 June 2021
+      This page was set to be reviewed before 5 October 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
