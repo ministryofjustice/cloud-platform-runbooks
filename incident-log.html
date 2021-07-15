@@ -187,11 +187,16 @@
     <a href="/incident-log.html#incident-log"><span>Incident Log</span></a>
     <ul>
       <li>
-        <a href="/incident-log.html#q2-2021-apr-may"><span>Q2 2021 (Apr-May)</span></a>
+        <a href="/incident-log.html#q3-2021-july-september"><span>Q3 2021 (July-September)</span></a>
         <ul>
           <li>
             <a href="/incident-log.html#incident-on-2021-07-12-15-24-all-ingress-resources-using-apps-live-1-domain-names-stop-working"><span>Incident on 2021-07-12 15:24 - All ingress resources using *apps.live-1 domain names stop working</span></a>
           </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/incident-log.html#q2-2021-april-june"><span>Q2 2021 (April-June)</span></a>
+        <ul>
           <li>
             <a href="/incident-log.html#incident-on-2021-06-09-12-47-all-users-are-unable-to-create-new-ingress-rules-following-bad-modsec-ingress-controller-upgrade"><span>Incident on 2021-06-09 12:47 - All users are unable to create new ingress rules, following bad ModSec Ingress-controller upgrade</span></a>
           </li>
@@ -1576,10 +1581,10 @@
 <blockquote>
 <p>Use the <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/bin/mean-time-to-repair.rb">mean-time-to-repair.rb</a> script to view performance metrics</p>
 </blockquote>
-<h2 id="q2-2021-apr-may">Q2 2021 (Apr-May)</h2>
+<h2 id="q3-2021-july-september">Q3 2021 (July-September)</h2>
 <ul>
-<li><p><strong>Mean Time to Repair</strong>: 2h 32m</p></li>
-<li><p><strong>Mean Time to Resolve</strong>: 2h 44m</p></li>
+<li><p><strong>Mean Time to Repair</strong>: 0h 07m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 20h 03m</p></li>
 </ul>
 <h3 id="incident-on-2021-07-12-15-24-all-ingress-resources-using-apps-live-1-domain-names-stop-working">Incident on 2021-07-12 15:24 - All ingress resources using *apps.live-1 domain names stop working</h3>
 <ul>
@@ -1617,6 +1622,11 @@
 <li>In the <a href="https://github.com/ministryofjustice/cloud-platform-cli">cloud-platform-cli</a>, create an assertion to ensure the cluster name is equal to the terraform workspace name.</li>
 <li>Before the creation of Terraform resources, add a function in the cli to perform a <code>kubectl context</code> switch to the correct cluster.</li>
 </ul></li>
+</ul>
+<h2 id="q2-2021-april-june">Q2 2021 (April-June)</h2>
+<ul>
+<li><p><strong>Mean Time to Repair</strong>: 2h 32m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 2h 44m</p></li>
 </ul>
 <h3 id="incident-on-2021-06-09-12-47-all-users-are-unable-to-create-new-ingress-rules-following-bad-modsec-ingress-controller-upgrade">Incident on 2021-06-09 12:47 - All users are unable to create new ingress rules, following bad ModSec Ingress-controller upgrade</h3>
 <ul>
