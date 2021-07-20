@@ -1,0 +1,13 @@
+<h1 id="how-to-update-gem-files-in-technical-documentation">How to update gem files in technical documentation</h1><p>This page describes the task of updating the gem files in the <a href="https://github.com/ministryofjustice/cloud-platform-user-guide">user-guide</a> and <a href="https://github.com/ministryofjustice/cloud-platform">runbooks</a> used by the Cloud Platform team.</p>
+<h2 id="when-to-update">When to update</h2><p>We have <a href="https://dependabot.com/">dependabot</a> turned on for both the <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/security/dependabot">user-guide</a> and <a href="https://github.com/ministryofjustice/cloud-platform/security/dependabot">runbook</a> repositories. This will flag security advisories and out of date gem files via the means of a <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/pull/728">pull request</a>.</p>
+<h2 id="how-to-update">How to update</h2><p>First review the changes, do we actually need to make the change and is the advisory severe enough to take action?</p>
+<p>If so, perform the following:</p>
+
+<ul>
+<li><p>Open the <a href="https://github.com/ministryofjustice/cloud-platform">runbooks repository</a> and approve/merge the dependabot pull request.</p></li>
+<li><p>Open the <a href="https://github.com/ministryofjustice/cloud-platform-user-guide">user-guide repository</a> and approve/merge the dependabot pull request.</p></li>
+<li><p>Create a new release in the user-guide repository using one minor bump from the current i.e. <code>1.5 to 1.6</code>.</p></li>
+<li><p>Watch the GitHub Action to ensure the <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/blob/main/.github/workflows/docker-hub.yml">build and push to dockerhub</a> job completes successfully.</p></li>
+<li><p>Bump the images in the user-guide repository GitHub Actions <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/blob/main/.github/workflows/publish.yml">publish</a> and <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/blob/main/.github/workflows/check.yml">check</a> to reflect the new image tag.</p></li>
+<li><p>Bump the images in the runbooks repository GitHub Action <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/workflows/publish.yml">publish</a> to reflect the new image tag.</p></li>
+</ul>
