@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Rotate User AWS Credentials - Cloud Platform Runbooks</title>
+    <title>How to update gem files in technical documentation - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-user-aws-credentials.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/how-to-update-gems.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Rotate User AWS Credentials - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-user-aws-credentials.html" />
+      <meta name="twitter:title" content="How to update gem files in technical documentation - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/how-to-update-gems.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Rotate User AWS Credentials" />
+      <meta property="og:title" content="How to update gem files in technical documentation" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rotate-user-aws-credentials.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/how-to-update-gems.html" />
 
     
   </head>
@@ -1590,109 +1590,32 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="rotate-user-aws-credentials">Rotate User AWS Credentials</h1><p>Use this runbook if a user&rsquo;s AWS credentials have been exposed. In this case, &lsquo;AWS credentials&rsquo; refers to credentials created by terraform, for resources in the user&rsquo;s namespace.</p>
-<p>We will make terraform destroy the compromised credentials, and then recreate them. For this example, we will use the case where an AWS credential for an ECR in a namespace was exposed.</p>
-<p><strong>Please amend the code snippets below to match your actual circumstance.</strong></p>
-<h4 id="1-prepare-terraform-to-manipulate-the-user-39-s-aws-resources">1. Prepare terraform to manipulate the user&rsquo;s AWS resources</h4><p>You need a working copy of the environments <a href="https://github.com/ministryofjustice/cloud-platform-environments">github repo</a>.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">cd </span>cloud-platform-environments
-git checkout main
-git pull
-</code></pre></div><p>Launch the tools-shell. This will have all the binary with correct versions needs for performing terraform operations</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
-</code></pre></div><h2 id="set-pingdom-environment-variables-optional">Set pingdom environment variables(Optional)</h2><p>If the changes involve applying &ldquo;pingdom_check&rdquo;, set the environment variables for pingdom.
-The values are stored as secrets in <code>manager</code> cluster - <code>concourse-main</code> namespace.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export PINGDOM_USER="XXXXXXXXXXX"
-export PINGDOM_PASSWORD="XXXXXXXXXXXX"
-export PINGDOM_API_KEY="XXXXXXXXXXXXX"
-</code></pre></div><h2 id="target-the-live-1-cluster">Target the live-1 cluster</h2><div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops <span class="nb">export </span>kubecfg live-1.cloud-platform.service.justice.gov.uk
-</code></pre></div><h2 id="set-cluster-related-environment-variables">Set cluster related environment variables</h2><div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">export </span><span class="nv">TF_VAR_cluster_name</span><span class="o">=</span><span class="s2">"live-1"</span>
-<span class="nb">export </span><span class="nv">TF_VAR_cluster_state_bucket</span><span class="o">=</span>cloud-platform-terraform-state
-<span class="nb">export </span><span class="nv">TF_VAR_cluster_state_key</span><span class="o">=</span><span class="s2">"cloud-platform/live-1/terraform.tfstate"</span>
-<span class="c">#needed by tf k8s provider</span>
-<span class="nb">export </span><span class="nv">KUBE_CONFIG_PATH</span><span class="o">=</span><span class="k">${</span><span class="nv">HOME</span><span class="k">}</span>/.kube/config
-</code></pre></div><h2 id="set-the-namespace-name">Set the namespace name</h2><p>I&rsquo;m using <code>offender-events-dev</code> for this example. Use whatever is relevant for your case.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export NAMESPACE=offender-events-dev
+              <h1 id="how-to-update-gem-files-in-technical-documentation">How to update gem files in technical documentation</h1><p>This page describes the task of updating the gem files in the <a href="https://github.com/ministryofjustice/cloud-platform-user-guide">user-guide</a> and <a href="https://github.com/ministryofjustice/cloud-platform">runbooks</a> used by the Cloud Platform team.</p>
+<h2 id="when-to-update">When to update</h2><p>We have <a href="https://dependabot.com/">dependabot</a> turned on for both the <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/security/dependabot">user-guide</a> and <a href="https://github.com/ministryofjustice/cloud-platform/security/dependabot">runbook</a> repositories. This will flag security advisories and out of date gem files via the means of a <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/pull/728">pull request</a>.</p>
+<h2 id="how-to-update">How to update</h2><p>First review the changes, do we actually need to make the change and is the advisory severe enough to take action?</p>
+<p>If so, perform the following:</p>
 
-cd namespaces/live-1.cloud-platform.service.justice.gov.uk/${NAMESPACE}/resources
-</code></pre></div><h2 id="terraform-init">Terraform Init</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init \
-  -backend-config="bucket=cloud-platform-terraform-state" \
-  -backend-config="key=cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/${NAMESPACE}/terraform.tfstate" \
-  -backend-config="region=eu-west-1" \
-  -backend-config="dynamodb_table=cloud-platform-environments-terraform-lock"
-</code></pre></div><h2 id="terraform-plan-apply">Terraform Plan/Apply</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan
-</code></pre></div><p>The <code>terraform plan</code> should output <code>No changes. Infrastructure is up-to-date.</code></p>
-<h3 id="2-identify-the-compromised-terraform-object">2. Identify the compromised terraform object</h3><div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span>terraform show | less
-</code></pre></div><p>Look for the compromised access key. In this case, the access key was AKIAXXXXXXXXXXXXXXXX, and it occurs in two places in the output.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>...
-kubernetes_secret.ecr-repo-my-repo:
-  id = my-namespace/ecr-repo-my-repo
-  data.% = 3
-  data.access_key_id = AKIAXXXXXXXXXXXXXXXX
-  data.repo_url = ...
-  data.secret_access_key = ...
-...
-module.ecr-repo-my-repo.aws_iam_access_key.key:
-  id = AKIAXXXXXXXXXXXXXXXX
-  secret = ...
-  ses_smtp_password = ...
-...
-</code></pre></div><p>The first occurence is when terraform stores the credentials in a kubernetes secret.</p>
-<p>The second occurence is the one we want, where terraform creates the credentials (the <code>aws_iam_access_key.key</code> resource, for the ECR repo).</p>
-<h3 id="3-destroy-the-compromised-key">3. Destroy the compromised key</h3><div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span>terraform destroy <span class="nt">--target</span><span class="o">=</span>module.ecr-repo-my-repo.aws_iam_access_key.key
-</code></pre></div><p>If this looks like it&rsquo;s going to do the right thing, enter &lsquo;yes&rsquo; to confirm.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  - destroy
-
-Terraform will perform the following actions:
-
-  - module.ecr-repo-my-repo.aws_iam_access_key.key
+<ul>
+<li><p>Open the <a href="https://github.com/ministryofjustice/cloud-platform">runbooks repository</a> and approve/merge the dependabot pull request.</p></li>
+<li><p>Open the <a href="https://github.com/ministryofjustice/cloud-platform-user-guide">user-guide repository</a> and approve/merge the dependabot pull request.</p></li>
+<li><p>Create a new release in the user-guide repository using one minor bump from the current i.e. <code>1.5 to 1.6</code>.</p></li>
+<li><p>Watch the GitHub Action to ensure the <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/blob/main/.github/workflows/docker-hub.yml">build and push to dockerhub</a> job completes successfully.</p></li>
+<li><p>Bump the images in the user-guide repository GitHub Actions <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/blob/main/.github/workflows/publish.yml">publish</a> and <a href="https://github.com/ministryofjustice/cloud-platform-user-guide/blob/main/.github/workflows/check.yml">check</a> to reflect the new image tag.</p></li>
+<li><p>Bump the images in the runbooks repository GitHub Action <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/workflows/publish.yml">publish</a> to reflect the new image tag.</p></li>
+</ul>
 
 
-Plan: 0 to add, 0 to change, 1 to destroy.
-</code></pre></div><h3 id="4-let-terraform-create-a-new-key">4. Let terraform create a new key</h3><div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span>terraform plan
-</code></pre></div><p>This should report that it will <strong>create</strong> a new <code>aws_iam_access_key.key</code> resource and <strong>modify</strong> the corresponding <code>kubernetes_secret</code> resource.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  + create
-  ~ update in-place
-
-Terraform will perform the following actions:
-
-  ~ kubernetes_secret.ecr-repo-my-repo
-      data.%:                 "" =&gt; &lt;computed&gt;
-      data.access_key_id:     "AKIAXXXXXXXXXXXXXXXX" =&gt; ""
-      data.repo_url:          "..." =&gt; ""
-      data.secret_access_key: "..." =&gt; ""
-
-  + module.ecr-repo-my-repo.aws_iam_access_key.key
-      id:                     &lt;computed&gt;
-      encrypted_secret:       &lt;computed&gt;
-      key_fingerprint:        &lt;computed&gt;
-      secret:                 &lt;computed&gt;
-      ses_smtp_password:      &lt;computed&gt;
-      status:                 &lt;computed&gt;
-      user:                   "ecr-user-0000000000000000"
-
-
-Plan: 1 to add, 1 to change, 0 to destroy.
-</code></pre></div><p>If all is well:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span>terraform apply
-</code></pre></div><p>If this looks like it&rsquo;s going to do the right thing, enter &lsquo;yes&rsquo; to confirm.</p>
-<p>At this point, a new set of AWS credentials should have been created for the existing IAM user, and the kubernetes secret should contain the new access key and secret.</p>
-
-
-              <div data-module='page-expiry' data-last-reviewed-on="2021-07-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-10-20">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 April 2021.
+      This page was last reviewed on 20 July 2021.
 
-        It needs to be reviewed again on 19 July 2021
+        It needs to be reviewed again on 20 October 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 July 2021
+      This page was set to be reviewed before 20 October 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1702,8 +1625,8 @@ Plan: 1 to add, 1 to change, 0 to destroy.
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/rotate-user-aws-credentials.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Rotate%20User%20AWS%20Credentials'&amp;body=Problem%20with%20'Rotate%20User%20AWS%20Credentials'%20(https://runbooks.cloud-platform.service.justice.gov.uk/rotate-user-aws-credentials.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/how-to-update-gems.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'How%20to%20update%20gem%20files%20in%20technical%20documentation'&amp;body=Problem%20with%20'How%20to%20update%20gem%20files%20in%20technical%20documentation'%20(https://runbooks.cloud-platform.service.justice.gov.uk/how-to-update-gems.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
