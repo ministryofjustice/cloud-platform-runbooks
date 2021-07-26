@@ -1619,6 +1619,7 @@
 <ul>
 <li>Occurred immediately following an upgrade to the default certificate of &ldquo;live&rdquo; clusters (PR here: https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/pull/20)</li>
 <li>The change amended the default certificate in the <code>live-1</code> cluster to <code>*.apps.manager.cloud-platform.service.justice.gov.uk</code>.</li>
+<li>Timeline: <a href="https://docs.google.com/document/d/1QCMej6jPupB5XokqkJgUpiljafxRbwCNMFEB11rJy9A/edit#heading=h.jqt487wstjrf">timeline</a></li>
 <li>Slack thread: <a href="https://mojdt.slack.com/archives/C57UPMZLY/p1626101058045600">#ask-cloud-platform</a> for the incident, <a href="https://mojdt.slack.com/archives/C514ETYJX/p1626173354336900?thread_ts=1626101869.307700&amp;cid=C514ETYJX">#cloud-platform</a> for the recovery.</li>
 </ul></li>
 <li><p><strong>Resolution</strong>:</p>
@@ -1632,8 +1633,13 @@
 <li><p><strong>Review actions</strong>:</p>
 
 <ul>
-<li>In the <a href="https://github.com/ministryofjustice/cloud-platform-cli">cloud-platform-cli</a>, create an assertion to ensure the cluster name is equal to the terraform workspace name.</li>
-<li>Before the creation of Terraform resources, add a function in the cli to perform a <code>kubectl context</code> switch to the correct cluster.</li>
+<li>Provide guidance on namespace to namespace traffic - using network policy not ingress (and advertise it to users) Ticker <a href="https://github.com/ministryofjustice/cloud-platform/issues/3082">#3082</a></li>
+<li>Monitoring the cert - Kubehealthy monitor key things including cert. Could replace several of the integration tests that take longer. Ticket <a href="https://github.com/ministryofjustice/cloud-platform/issues/3044">#3044</a></li>
+<li>Canary app should have #high-priority-alerts after 2 minutes if it goes down. DONE in <a href="https://github.com/ministryofjustice/cloud-platform-environments/pull/5126">PR #5126</a></li>
+<li>Fix the pipeline: in the <a href="https://github.com/ministryofjustice/cloud-platform-cli">cloud-platform-cli</a>, create an assertion to ensure the cluster name is equal to the terraform workspace name. To prevent the null-resources acting on the wrong cluster. PR exists</li>
+<li>Created a <a href="https://github.com/ministryofjustice/cloud-platform/issues/3084">ticket</a> to migrate all terraform null_resources within our modules to <a href="https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs">terraform kubectl provider</a></li>
+<li>Created a <a href="https://github.com/ministryofjustice/cloud-platform/issues/3083">ticket</a> to set terraform kubernetes credentials dynamically (at executing time)<br></li>
+<li>Fix the pipeline: Before the creation of Terraform resources, add a function in the cli to perform a <code>kubectl context</code> switch to the correct cluster. PR exists</li>
 </ul></li>
 </ul>
 <h2 id="q2-2021-april-june">Q2 2021 (April-June)</h2>
