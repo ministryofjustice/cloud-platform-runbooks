@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>How We Work - Cloud Platform Runbooks</title>
+    <title>Get an audit log from modsec - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/how-we-work.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/get-audit-log-from-modsec.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="How We Work - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/how-we-work.html" />
+      <meta name="twitter:title" content="Get an audit log from modsec - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/get-audit-log-from-modsec.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="How We Work" />
+      <meta property="og:title" content="Get an audit log from modsec" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/how-we-work.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/get-audit-log-from-modsec.html" />
 
     
   </head>
@@ -1573,74 +1573,50 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="how-we-work">How We Work</h1><p>This page describes the tasks and duties of members of the Cloud Platform (CP) team, and explains some of our working practices.</p>
-<h2 id="getting-help">Getting Help</h2><p>If you need help at any point, don&rsquo;t hesitate to ask the team. Among other things, you can:</p>
+              <h1 id="get-an-audit-log-from-modsec">Get an audit log from modsec</h1><p>On occasion users may need you to provide them with audit log information on an modsec event from our ingress-controllers. This information may be sensitive so it can&rsquo;t be placed in our org-wide Elasticsearch cluster. You&rsquo;ll need to fetch this information from the pod that generated the log.</p>
+<h2 id="how-do-i-check-the-audit-log">How do I check the audit log</h2><p>As mentioned above, the audit log cannot be placed into Elasticsearch so you&rsquo;ll need the following:</p>
 
 <ul>
-<li>Post in #cloud-platform explaining the problem</li>
-<li>Post in #cloud-platform to ask for someone to pair-program with you</li>
-<li>Mention the issue during the daily standup</li>
+<li>A Kibana event from the user. A request will come into the ask-cloud-platform channel asking something like:</li>
 </ul>
-<h2 id="the-board-tickets">The Board / Tickets</h2><p>We use a kanban process to manage our backlog of work on this <a href="https://app.zenhub.com/workspaces/cloud-platform-team-5ccb0b8a81f66118c983c189/board">zenhub board</a>, which aggregates GitHub Issues from the various CP team repositories.</p>
-<p>We work in two-week sprints, and the process of getting work done should look like this:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Good afternoon, could I ask for the detailed logs for this block from ModSecurity, please?
+https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/doc/fb2e6550-0186-11ec-a2cf-6b21[…]lue:0),time:(from:now-3h,to:now))
+(I need to find out which rules triggered the block, it has 2 critical fails)
 
+example: https://mojdt.slack.com/archives/C57UPMZLY/p1630936971082200
+</code></pre></div>
 <ul>
-<li>Assign the topmost ticket (i.e. github issue) of the &ldquo;This Sprint&rdquo; column to yourself, and move it to the &ldquo;In Progress&rdquo; column</li>
-<li>Let the team know what you&rsquo;re working on by posting in the <code>#cloud-platform</code> slack channel</li>
-<li>Create a new branch in each affected github repository and make whatever changes are necessary</li>
-<li>Raise a pull request (PR), and get at least one other CP team member to review your changes (two reviews are required for infrastructure PRs).</li>
-<li>After your PR has been approved, merge it and, if necessary, apply your changes using terraform or whatever else is required to apply your change to our infrastructure</li>
-<li>Close the github issue, and move on to the next ticket</li>
+<li>The Kibana event above should provide you with the following key information</li>
 </ul>
-<h3 id="adding-tickets">Adding tickets</h3><p>Anyone in the team is encouraged to add new tickets at any time. So if you think of something we ought to do, please <a href="https://github.com/ministryofjustice/cloud-platform/issues/new/choose">raise a ticket</a> for it.</p>
-<h3 id="making-changes-to-code">Making changes to code</h3><p>Please read these <a href="https://ministryofjustice.github.io/technical-guidance/documentation/guides/using-git.html">technical guidelines</a> for how we prefer to work on code.</p>
-<h3 id="reviewing-merging-prs">Reviewing/Merging PRs</h3>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> modsec pod name: This will allow you to hone in on the correct pod.
+ unique-id: This is a hash of the event in question, e.g. 5266c62ecf75109ee3083dcc6e13489u
+</code></pre></div>
 <ul>
-<li>Whoever raises a PR is responsible for getting someone to review it, and for merging it after it has been approved</li>
-<li>Please be pro-active about reviewing other team members&rsquo; PRs</li>
-<li>When reviewing a PR, please add a &ldquo;reaction&rdquo; emoji to the corresponding slack message, so that other team members know you&rsquo;re doing so. This avoids duplicated effort. We tend to use 👀 to show we&rsquo;re reviewing a PR, and/or ✔ when we&rsquo;ve approved it.</li>
+<li>Kubectl access to the live cluster and access to the <code>ingress-controllers</code> namespace.</li>
 </ul>
-<h2 id="the-hammer-of-justice">The 🔨 Hammer of Justice</h2><p>The origin of the name is lost, but it sounds a lot more fun than &ldquo;support manager&rdquo; 😏</p>
-<p>We designate one member of the team to be the Hammer on each working day. Please volunteer when you feel comfortable, so that we all take a turn.</p>
-<p>The Hammer is responsible for:</p>
-
-<ul>
-<li>Ensuring questions/problems in the <code>#ask-cloud-platform</code> slack channel are being worked on, and that users receive frequent updates until a problem is resolved</li>
-<li>Ensuring that users&rsquo; PRs raised against the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a> are reviewed in a timely fashion</li>
-<li>Ensuring that Cloud Platform team members&rsquo; PRs are reviewed in a timely fashion</li>
-</ul>
-<p>It is <strong>not</strong> the Hammer&rsquo;s job to <strong>answer</strong> every query in the channel, and <strong>review</strong> every PR</p>
-<p>It <strong>is</strong> the Hammer&rsquo;s job to ensure that all queries are handled, and that PRs are reviewed. This may involve asking other team members for help with particular queries where they have relevant expertise, or if there are more queries coming in than you can handle.</p>
-
-<blockquote>
-<p>Anyone can (and should) respond to queries in <code>#ask-cloud-platform</code>, and review PRs. You don&rsquo;t have to be the Hammer to help.</p>
-</blockquote>
-<h3 id="backlog-tickets">Backlog Tickets</h3><p>Working on tickets in the backlog when you&rsquo;re the Hammer is not advised. The constant context switching makes it hard to get significant work done, and there is also the risk that questions go unanswered and PRs get blocked waiting for review because you&rsquo;re head down in a problem and don&rsquo;t notice them.</p>
-<p>Instead, when not answering queries and reviewing PRs, the Hammer should work on fixing &ldquo;squeaky wheels&rdquo; - the minor alerts and problems that crop up which don&rsquo;t necessarily result in backlog tickets, or where such tickets never become high-priority enough to get selected during sprint planning.</p>
-<p>&ldquo;Squeaky wheels&rdquo; could include things like:</p>
-
-<ul>
-<li>Todo items reported by <a href="e.g.%20reviewing%20documentation%20pages,%20or%20(carefully)%20destroying%20orphaned%20AWS%20resources">How out of date are we?</a></li>
-<li>Intermittent alerts in the <code>#lower-priority-alarms</code> slack channel</li>
-<li>Improving our integration tests</li>
-</ul>
-<h2 id="documentation">Documentation</h2><p>Most of our user-facing documentation is in the <a href="https://user-guide.cloud-platform.service.justice.gov.uk">user guide</a>, and documentation for the team is in the <a href="https://runbooks.cloud-platform.service.justice.gov.uk">runbooks</a> site.</p>
-<p>There are also a lot of important <code>README.md</code> files like <a href="https://github.com/ministryofjustice/cloud-platform#ministry-of-justice-cloud-platform-master-repo">this one</a>, especially for our terraform modules. We also have code samples like <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/blob/main/example/rds.tf">this</a> for each of our terraform modules.</p>
-<p>It is important to keep all of this up to date as the underlying code changes, so please remember to factor this in when estimating and working on tickets.</p>
-<p><a href="https://how-out-of-date-are-we.apps.live-1.cloud-platform.service.justice.gov.uk/documentation">This page</a> hosts a list of documents which are overdue for review. Please feel free to review any of the documents listed, and raise a PR making any updates (including updating the <code>last_reviewed_on</code> date).</p>
+<h2 id="exec-into-the-pod">Exec into the pod</h2><p>From the Kibana event you should now know the modsec pod name, exec into that pod:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nt">-n</span> ingress-controllers <span class="nb">exec</span> <span class="nt">-it</span> &lt;insert-modsec-podname-here&gt; sh
+</code></pre></div><h2 id="perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry">Perform a search for the unique-id (obtained from the Kibana entry)</h2><p>The audit log structure is extrememly convoluted. Use the following commands to identify the log file name:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c"># An example</span>
+<span class="nb">export </span><span class="nv">UNIQUEID</span><span class="o">=</span>5266c62ecf75109ee3083dcc6easda234
+<span class="nb">cd</span> /var/log/audit
+find <span class="nb">.</span> <span class="nt">-name</span> <span class="s2">"*"</span> | xargs <span class="nb">grep</span> <span class="nt">-iEl</span> <span class="k">${</span><span class="nv">UNIQUEID</span><span class="k">}</span> | xargs <span class="nb">ls</span> <span class="nt">-lrt</span>
+</code></pre></div><p>This should return a filepath leading to the filename containing your event. We can take the output of this command and perform a grep for the log entry.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">grep</span> <span class="k">${</span><span class="nv">UNIQUEID</span><span class="k">}</span> ./20210906-1125/20210906-112550-5266c62ecf75109ee3083dcc6easda234
+</code></pre></div><p>Which should return the event.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-09-21">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-12-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 June 2021.
+      This page was last reviewed on 6 September 2021.
 
-        It needs to be reviewed again on 21 September 2021
+        It needs to be reviewed again on 6 December 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 September 2021
+      This page was set to be reviewed before 6 December 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1650,8 +1626,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/how-we-work.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'How%20We%20Work'&amp;body=Problem%20with%20'How%20We%20Work'%20(https://runbooks.cloud-platform.service.justice.gov.uk/how-we-work.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/get-audit-log-from-modsec.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Get%20an%20audit%20log%20from%20modsec'&amp;body=Problem%20with%20'Get%20an%20audit%20log%20from%20modsec'%20(https://runbooks.cloud-platform.service.justice.gov.uk/get-audit-log-from-modsec.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
