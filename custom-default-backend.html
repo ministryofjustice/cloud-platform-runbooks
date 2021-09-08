@@ -1593,13 +1593,15 @@ service/nginx-errors   ClusterIP   10.0.0.12   &lt;none&gt;        80/TCP    10s
 <p>If custom-http-errors is also specified globally, the custom-http-error values specified in this annotation along with custom default backend will override the global value for the given ingress hostname and path.</p>
 <p>In the example below, custom error pages from <code>custom-default-backend: nginx-errors</code> service will be served for <code>&quot;404,415&quot;</code> errors which is set as <code>custom-http-errors</code> annotation.</p>
 <p>Example Ingress with default-backend and custom-http-errors annotations:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: extensions/v1beta1
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: helloworld-rubyapp-ingress
   annotations:
     nginx.ingress.kubernetes.io/default-backend: nginx-errors
     nginx.ingress.kubernetes.io/custom-http-errors: "404,415"
+    external-dns.alpha.kubernetes.io/set-identifier: &lt;ingress-name&gt;-&lt;environment-name&gt;-&lt;colour&gt;
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   tls:
   - hosts:
@@ -1613,14 +1615,17 @@ spec:
         backend:
           serviceName: rubyapp-service
           servicePort: 4567
-</code></pre></div><h3 id="use-platform-level-error-page">Use platform-level error page</h3><p>Some teams want application&rsquo;s serve their own error&rsquo;s <code>example 404&#39;s</code>, but want to serve cloud platforms custom error page from ingress controller default backend for other error codes like 502,503 and 504, this can be done by using <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation in your ingress for error codes teams want to serve the cloud platforms custom error page.</p>
+</code></pre></div><p>(Note - Please change the <code>ingress-name</code> and <code>environment-name</code> values in the above example, you can get the <code>environment-name</code> value from your namespace label &ldquo;cloud-platform.justice.gov.uk/environment-name&rdquo;. The <code>colour</code> should be <code>blue</code> for ingress in live-1 and <code>green</code> for ingress in EKS <code>live</code> cluster)</p>
+<h3 id="use-platform-level-error-page">Use platform-level error page</h3><p>Some teams want application&rsquo;s serve their own error&rsquo;s <code>example 404&#39;s</code>, but want to serve cloud platforms custom error page from ingress controller default backend for other error codes like 502,503 and 504, this can be done by using <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation in your ingress for error codes teams want to serve the cloud platforms custom error page.</p>
 <p>Example Ingress file to use platform-level error page for custom-http-errors: &ldquo;502,503,504&rdquo;. All other errors except <code>502,503,504</code> will be served from the application error page.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: extensions/v1beta1
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: helloworld-rubyapp-ingress
   annotations:
     nginx.ingress.kubernetes.io/custom-http-errors: "502,503,504"
+    external-dns.alpha.kubernetes.io/set-identifier: &lt;ingress-name&gt;-&lt;environment-name&gt;-&lt;colour&gt;
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   tls:
   - hosts:
@@ -1637,12 +1642,14 @@ spec:
 </code></pre></div><h3 id="not-use-platform-level-error-page">Not use platform-level error page</h3><p>Some teams want application&rsquo;s to serve all errors. It is possible as there is a <a href="https://github.com/kubernetes/ingress-nginx/pull/3344">fix</a> from Nginx-Ingress to cancel out the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a> set to serve cloud platforms custom error page from default backend at ingress controller, by adding the Ingress annotation and setting an error not used in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>.</p>
 <p>If you have <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> set up in your namespace, adding the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation along with <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation with unused error code in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>, will serve custom error page from namespace default-backend service, when the service in the Ingress rule does not have active endpoints.</p>
 <p>Example Ingress file to set <code>custom-http-errors: &quot;418&quot;</code> as annotation, which is not used at <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: extensions/v1beta1
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: helloworld-rubyapp-ingress
   annotations:
     nginx.ingress.kubernetes.io/custom-http-errors: "418"
+    external-dns.alpha.kubernetes.io/set-identifier: &lt;ingress-name&gt;-&lt;environment-name&gt;-&lt;colour&gt;
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   tls:
   - hosts:
