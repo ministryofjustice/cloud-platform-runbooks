@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Export data from AWS Elasticsearch into a CSV file - Cloud Platform Runbooks</title>
+    <title>Terminal access to EKS managed nodes - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/export-elasticsearch-to-csv.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/eks-node-terminal-access.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Export data from AWS Elasticsearch into a CSV file - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/export-elasticsearch-to-csv.html" />
+      <meta name="twitter:title" content="Terminal access to EKS managed nodes - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/eks-node-terminal-access.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Export data from AWS Elasticsearch into a CSV file" />
+      <meta property="og:title" content="Terminal access to EKS managed nodes" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/export-elasticsearch-to-csv.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/eks-node-terminal-access.html" />
 
     
   </head>
@@ -310,7 +310,7 @@
     <a href="/create-cluster.html#create-a-new-cluster"><span>Create a new cluster</span></a>
     <ul>
       <li>
-        <a href="/create-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
         <a href="/create-cluster.html#environment-variables"><span>Environment Variables</span></a>
@@ -1311,7 +1311,7 @@
         <a href="/eks-node-terminal-access.html#overview"><span>Overview</span></a>
       </li>
       <li>
-        <a href="/eks-node-terminal-access.html#terminal-access-to-eks-managed-nodes-pre-requisites"><span>Pre-requisites</span></a>
+        <a href="/eks-node-terminal-access.html#pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
         <a href="/eks-node-terminal-access.html#steps-to-get-terminal-access-via-console"><span>Steps to get terminal access via Console</span></a>
@@ -1595,40 +1595,54 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="export-data-from-elasticsearch-into-a-csv-file">Export data from Elasticsearch into a CSV file</h1><p>This runbook aims to guide you through exporting data from Elasticsearch into a CSV file.</p>
-<p>The CSV Export feature in Kibana is a proprietary feature of Elasticsearch that requires X-Pack to be configured and installed in our Elasticsearch cluster which is not provided and supported in the Elasticsearch that is offered by AWS.</p>
-<h2 id="workaround">Workaround</h2><p>The workaround, is using <a href="https://github.com/gboddin/es2csv">es2csv</a>, which is a third party tool that saves the search result to a CSV file. Please refer this <a href="https://www.skedler.com/blog/the-best-tools-for-exporting-elasticsearch-data-to-csv/">blog page</a> for more information.</p>
-<p>Cloud-platform-live Elasticsearch endpoint (https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com) is accessible within the cluster.</p>
-<h3 id="install-es2csv">Install es2csv</h3><p>kubectl exec in to any of the fluentd pod in logging namespace and install es2csv</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  kubectl -n logging exec -ti fluentd-es-xxxxx -- /bin/bash
-</code></pre></div><p>You also need Python 2.7.x and pip</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  apt update
-  apt install python-pip
-  apt install git
-  python -m pip install git+https://github.com/gboddin/es2csv.git
-</code></pre></div><h3 id="usage">Usage</h3><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>es2csv -q 'kubernetes.namespace_name:starter-pack' -u https://&lt;ES_endpoint&gt;:443   -i logstash-* -f kubernetes_cluster -o kibanatest.csv --verify-certs
+              <h1 id="terminal-access-to-eks-managed-nodes">Terminal access to EKS managed nodes</h1><h2 id="overview">Overview</h2><p>AWS System Session Manager is used to configure and manage a terminal access to EKS worker nodes.</p>
+<p>All EKS clusters are created with needed permissions for
+AWS System Session Manager to start sessions to the worker nodes.</p>
+<p>On the AWS Console, <strong>Services -&gt; AWS System Manager -&gt; Quick Setup for Host Management</strong> is configured to detect the <code>live</code> EKS cluster worker nodes(default &amp; monitoring) 
+by tag <code>Cluster</code> with value <code>live</code>.</p>
+<h2 id="pre-requisites">Pre-requisites</h2>
+<ul>
+<li>AWS Console access </li>
+<li><p>Session Manager plugin (if using AWS Cli). To install Session Manager plugin on macOS,</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>brew install --cask session-manager-plugin
+</code></pre></div></li>
+</ul>
+<h2 id="steps-to-get-terminal-access-via-console">Steps to get terminal access via Console</h2>
+<ul>
+<li><p>Get the Instance Name of the node you want to login using kubectl</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get nodes
+</code></pre></div></li>
+<li><p>Login to AWS Console, <strong>Services -&gt; EC2</strong> and search by giving the <code>Instance Name</code></p></li>
+<li><p>Select the instance and then click <strong>Connect</strong></p></li>
+<li><p>Select the <strong>Connection method -&gt; Session Manager</strong></p></li>
+</ul>
+<h2 id="steps-to-get-terminal-access-via-aws-cli">Steps to get terminal access via AWS cli</h2>
+<ul>
+<li><p>Get the <strong>Instance ID</strong> of the node you want to login using kubectl</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code># To get the list of nodes and their names
+kubectl get nodes 
 
-    Here, the parameters are :
-        -q Query
-        -u URL
-        -i Indices
-        -f Fields to be preserved
-        -o Output file name
-</code></pre></div><p>For more usage examples please refer <a href="https://github.com/taraslayshchuk/es2csv/blob/master/docs/EXAMPLES.rst">this</a></p>
-<p>Note: Once the export is completed, delete the fluentd pod you installed es2csv</p>
+# To get the node ID of the node for given node name
+kubectl describe node &lt;node name you want to shell into&gt; | grep 'ProviderID' | awk -F '/' '{print $NF}'` 
+
+</code></pre></div></li>
+<li><p>Start the session with cli command</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws ssm start-session --target &lt;Instance ID&gt;
+</code></pre></div></li>
+</ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-10-26">
+              <div data-module='page-expiry' data-last-reviewed-on="2021-12-13">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 26 July 2021.
+      This page was last reviewed on 13 September 2021.
 
-        It needs to be reviewed again on 26 October 2021
+        It needs to be reviewed again on 13 December 2021
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 26 October 2021
+      This page was set to be reviewed before 13 December 2021
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1638,8 +1652,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/export-elasticsearch-to-csv.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Export%20data%20from%20AWS%20Elasticsearch%20into%20a%20CSV%20file'&amp;body=Problem%20with%20'Export%20data%20from%20AWS%20Elasticsearch%20into%20a%20CSV%20file'%20(https://runbooks.cloud-platform.service.justice.gov.uk/export-elasticsearch-to-csv.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/eks-node-terminal-access.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Terminal%20access%20to%20EKS%20managed%20nodes'&amp;body=Problem%20with%20'Terminal%20access%20to%20EKS%20managed%20nodes'%20(https://runbooks.cloud-platform.service.justice.gov.uk/eks-node-terminal-access.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
