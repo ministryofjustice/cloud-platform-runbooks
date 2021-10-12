@@ -203,6 +203,9 @@
         <a href="/incident-log.html#q3-2021-july-september"><span>Q3 2021 (July-September)</span></a>
         <ul>
           <li>
+            <a href="/incident-log.html#incident-on-2021-09-30-ssl-certificate-issue-in-browsers"><span>Incident on 2021-09-30 - SSL Certificate Issue in browsers</span></a>
+          </li>
+          <li>
             <a href="/incident-log.html#incident-on-2021-09-04-22-05-pingdom-check-prometheus-cloud-platform-healthcheck-is-down"><span>Incident on 2021-09-04 22:05 - Pingdom check Prometheus Cloud-Platform - Healthcheck is DOWN</span></a>
           </li>
           <li>
@@ -1604,8 +1607,47 @@
 </blockquote>
 <h2 id="q3-2021-july-september">Q3 2021 (July-September)</h2>
 <ul>
-<li><p><strong>Mean Time to Repair</strong>: 2h 41m</p></li>
-<li><p><strong>Mean Time to Resolve</strong>: 12h 45m</p></li>
+<li><p><strong>Mean Time to Repair</strong>: 3h 28m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 11h 4m</p></li>
+</ul>
+<h3 id="incident-on-2021-09-30-ssl-certificate-issue-in-browsers">Incident on 2021-09-30 - SSL Certificate Issue in browsers</h3>
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected 2021-09-30 15:31</li>
+<li>Repaired 2021-10-01 10:29</li>
+<li>Incident declared 2021-09-30 17:26</li>
+<li>Resolved 2021-10-01 13:09</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 5h 3m</p></li>
+<li><p><strong>Time to resolve</strong>: 7h 43m</p></li>
+<li><p><strong>Identified</strong>: User reported that they are getting SSL certificate errors when browsing sites which are hosted on Cloud Platform</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li> 300 LAA caseworkers and thousands of DOM1 users using CP-based digital services if it was during office hours. They had Firefox as a fallback and no actual reports.</li>
+<li>Public users - No reports.</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>Timeline: <a href="https://docs.google.com/document/d/1KHCVyDuhEeTSKqbJfrnR9nYWBcwiRi4aLIiP0tT_QCA/edit#heading=h.rmnhbxiesd7b">Timeline</a> for the incident</li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1633019189383100">Slack thread</a> for the incident.</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:</p>
+
+<ul>
+<li>The new certificate was pushed to DOM1 and Quantum machines by the engineers who have been contracted to manage these devices</li>
+</ul></li>
+<li><p><strong>Review actions</strong>:</p>
+
+<ul>
+<li>How to get latest announcements/ releases of components used in CP stack? Ticket raised (#3262)[https://github.com/ministryofjustice/cloud-platform/issues/3262]</li>
+<li>Can we use AWS Certificate Manager instead of Letsencrypt? Ticket raised (#3263)[https://github.com/ministryofjustice/cloud-platform/issues/3263]</li>
+<li>How would the team escalate a major incident e.g. CP goes down. Runbook page (here)[https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html#3-3-communications-lead]</li>
+<li>How we can get visibility of ServiceNow service issues for CP-hosted services. Ticket raised (3264)[https://github.com/ministryofjustice/cloud-platform/issues/3264]</li>
+</ul></li>
 </ul>
 <h3 id="incident-on-2021-09-04-22-05-pingdom-check-prometheus-cloud-platform-healthcheck-is-down">Incident on 2021-09-04 22:05 - Pingdom check Prometheus Cloud-Platform - Healthcheck is DOWN</h3>
 <ul>
