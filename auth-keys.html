@@ -1601,7 +1601,7 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="how-to-add-authorized-keys">How to add authorized keys</h1><p>We have a <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/maintenance.yaml">maintenance</a> pipeline that runs every hour and checks if a member of the ministryofjustice/webops GitHub team has a new public key. If so, the pipeline will fail and a triggered event will appear in the <code>lower-priority-alarms</code> slack channel. To action this event, simple perform the following:</p>
+              <h1 id="how-to-add-authorized-keys">How to add authorized keys</h1><p>We have a <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/maintenance.yaml">maintenance</a> pipeline that runs every hour and checks if a member of the ministryofjustice/webops GitHub team has a new public key. If so, the pipeline will fail and a triggered event will appear in the <code>lower-priority-alarms</code> slack channel. To action this event, simple perform the following:</p>
 
 <ul>
 <li>The <a href="https://github.com/ministryofjustice/cloud-platform-terraform-bastion/blob/main/bin/update-authorized-keys.rb">script executed by the pipeline</a> will create a pull request. Open <a href="https://github.com/ministryofjustice/cloud-platform-terraform-bastion/pulls">this</a>.</li>
@@ -1611,17 +1611,17 @@
 <p>You don&rsquo;t need to re-trigger the pipeline as this runs every hour.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-10-13">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-01-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 13 July 2021.
+      This page was last reviewed on 15 October 2021.
 
-        It needs to be reviewed again on 13 October 2021
+        It needs to be reviewed again on 15 January 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 13 October 2021
+      This page was set to be reviewed before 15 January 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
