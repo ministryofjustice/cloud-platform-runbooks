@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Custom default-backend - Cloud Platform Runbooks</title>
+    <title>Delete namespace migrated to `live` - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/custom-default-backend.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/delete-migrated-namespaces.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Custom default-backend - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/custom-default-backend.html" />
+      <meta name="twitter:title" content="Delete namespace migrated to `live` - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-migrated-namespaces.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Custom default-backend" />
+      <meta property="og:title" content="Delete namespace migrated to `live`" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/custom-default-backend.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/delete-migrated-namespaces.html" />
 
     
   </head>
@@ -1606,109 +1606,39 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="custom-default-backend">Custom default-backend</h1><h3 id="background">Background</h3><p>Cloud-Platform created <a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">custom error pages</a> to be used by the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/default-backend">default backend</a> for Nginx ingress-controller. The default backend is the default service that Nginx falls back to if it cannot route a request successfully. When the service in the Ingress rule does not have active endpoints, this ingress controller default-backend service will handle the response by serving the cloud-platform custom default error page.</p>
-<p>However, some applications don’t want to use the cloud-platform custom default error pages from the Nginx ingress controller but need to be served their own custom error pages. This can be achieved by implementing own <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom default backend</a> in a namespace.</p>
-<h4 id="create-custom-error-page">Create custom error page</h4><p>First create a docker image containing custom HTTP error pages using the <a href="https://github.com/kubernetes/ingress-nginx/tree/master/images/custom-error-pages#custom-error-pages">example</a> from the ingress-nginx, or <a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">simplified version</a> of that created by the cloud platform team.</p>
-<h4 id="customised-default-backend">Customised default backend</h4><p>Using this <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> example from ingress-nginx, create a service and deployment of the error pages container in your namespace.</p>
-<p>To create Deployment and Service manually use this below command:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kubectl -n ${namespace} create -f custom-default-backend.yaml
-service "nginx-errors" created
-deployment.apps "nginx-errors" created
-</code></pre></div><p>This should have created a Deployment and a Service with the name nginx-errors.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kubectl -n ${namespace} get deploy,svc
-NAME                           DESIRED   CURRENT   READY     AGE
-deployment.apps/nginx-errors   1         1         1         10s
+              <h1 id="delete-namespace-migrated-to-live">Delete namespace migrated to <code>live</code></h1><p>This runbook is for namespaces which are migrated to <code>live</code> EKS cluster from <code>live-1</code> cluster.</p>
+<p>Check the below list before proceeding with the deletion</p>
 
-NAME                   TYPE        CLUSTER-IP  EXTERNAL-IP   PORT(S)   AGE
-service/nginx-errors   ClusterIP   10.0.0.12   &lt;none&gt;        80/TCP    10s
-</code></pre></div><h4 id="defining-annotations-in-ingress-file">Defining annotations in Ingress file.</h4><p>Final step is to use an <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">Default Backend</a> annotation in your Ingress. This annotation is of the form <code>nginx.ingress.kubernetes.io/default-backend: &lt;svc name&gt;</code> to specify a custom default backend. This <code>&lt;svc name&gt;</code> is a reference to a service inside of the same namespace in which you are applying this annotation. This annotation overrides the global default backend.</p>
-<p>Default-backend service in the namespace will handle the error responses when both <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation and the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation is set. <code>Custom-http-errors</code> annotation configure which HTTP status codes Nginx should be forwarding to the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a>.</p>
-<p>If custom-http-errors is also specified globally, the custom-http-error values specified in this annotation along with custom default backend will override the global value for the given ingress hostname and path.</p>
-<p>In the example below, custom error pages from <code>custom-default-backend: nginx-errors</code> service will be served for <code>&quot;404,415&quot;</code> errors which is set as <code>custom-http-errors</code> annotation.</p>
-<p>Example Ingress with default-backend and custom-http-errors annotations:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: helloworld-rubyapp-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/default-backend: nginx-errors
-    nginx.ingress.kubernetes.io/custom-http-errors: "404,415"
-    external-dns.alpha.kubernetes.io/set-identifier: &lt;ingress-name&gt;-&lt;environment-name&gt;-&lt;colour&gt;
-    external-dns.alpha.kubernetes.io/aws-weight: "100"
-spec:
-  tls:
-  - hosts:
-    - helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    secretName: secret-cert
-  rules:
-  - host: helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: rubyapp-service
-          servicePort: 4567
-</code></pre></div><p>(Note - Please change the <code>ingress-name</code> and <code>environment-name</code> values in the above example, you can get the <code>environment-name</code> value from your namespace label &ldquo;cloud-platform.justice.gov.uk/environment-name&rdquo;. The <code>colour</code> should be <code>blue</code> for ingress in live-1 and <code>green</code> for ingress in EKS <code>live</code> cluster)</p>
-<h3 id="use-platform-level-error-page">Use platform-level error page</h3><p>Some teams want application&rsquo;s serve their own error&rsquo;s <code>example 404&#39;s</code>, but want to serve cloud platforms custom error page from ingress controller default backend for other error codes like 502,503 and 504, this can be done by using <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation in your ingress for error codes teams want to serve the cloud platforms custom error page.</p>
-<p>Example Ingress file to use platform-level error page for custom-http-errors: &ldquo;502,503,504&rdquo;. All other errors except <code>502,503,504</code> will be served from the application error page.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: helloworld-rubyapp-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/custom-http-errors: "502,503,504"
-    external-dns.alpha.kubernetes.io/set-identifier: &lt;ingress-name&gt;-&lt;environment-name&gt;-&lt;colour&gt;
-    external-dns.alpha.kubernetes.io/aws-weight: "100"
-spec:
-  tls:
-  - hosts:
-    - helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    secretName: secret-cert
-  rules:
-  - host: helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: rubyapp-service
-          servicePort: 4567
-</code></pre></div><h3 id="not-use-platform-level-error-page">Not use platform-level error page</h3><p>Some teams want application&rsquo;s to serve all errors. It is possible as there is a <a href="https://github.com/kubernetes/ingress-nginx/pull/3344">fix</a> from Nginx-Ingress to cancel out the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a> set to serve cloud platforms custom error page from default backend at ingress controller, by adding the Ingress annotation and setting an error not used in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>.</p>
-<p>If you have <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> set up in your namespace, adding the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation along with <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation with unused error code in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>, will serve custom error page from namespace default-backend service, when the service in the Ingress rule does not have active endpoints.</p>
-<p>Example Ingress file to set <code>custom-http-errors: &quot;418&quot;</code> as annotation, which is not used at <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: helloworld-rubyapp-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/custom-http-errors: "418"
-    external-dns.alpha.kubernetes.io/set-identifier: &lt;ingress-name&gt;-&lt;environment-name&gt;-&lt;colour&gt;
-    external-dns.alpha.kubernetes.io/aws-weight: "100"
-spec:
-  tls:
-  - hosts:
-    - helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    secretName: secret-cert
-  rules:
-  - host: helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: rubyapp-service
-          servicePort: 4567
-</code></pre></div>
+<ul>
+<li>namespace folder exists in <code>live.cloud-platform...</code> folder in [env][https://github.com/ministryofjustice/cloud-platform-environments/tree/main/namespaces/live.cloud-platform.service.justice.gov.uk] repository</li>
+<li><code>apply-live</code> pipeline is applying the namespace and no changes needed</li>
+<li>namespace exists in <code>live</code> cluster</li>
+<li>all ingresses in that namespace in <code>live</code> has <code>aws-weight</code> annotation with value &ldquo;100&rdquo;</li>
+<li>all ingresses in that namespace  in <code>live-1</code> has <code>aws-weight</code> annotation with value &ldquo;0&rdquo;</li>
+<li>kibana logs for that namespace doesnot have any traffic flow for <code>live-1</code></li>
+<li>Check for any cronjobs/tzcronjobs or batch jobs running in <code>live-1</code> and compare with the one in <code>live</code>.
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-11-23">
+<ul>
+<li>If any queries, check with the team who owns the namespace.</li>
+</ul></li>
+</ul>
+<p>To delete the namespace, target the <code>live-1</code> cluster</p>
+<p>run the command</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl delete ns &lt;namespace&gt;
+</code></pre></div><p>For deleting a namespace from a cluster including terraform resources because it is not used anymore, follow <a href="/manually-delete-namespace-resources.html">Manually Delete Namespace Resources</a> runbook.</p>
+
+
+              <div data-module='page-expiry' data-last-reviewed-on="2022-01-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 23 August 2021.
+      This page was last reviewed on 22 October 2021.
 
-        It needs to be reviewed again on 23 November 2021
+        It needs to be reviewed again on 22 January 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 23 November 2021
+      This page was set to be reviewed before 22 January 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1718,8 +1648,8 @@ spec:
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/custom-default-backend.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Custom%20default-backend'&amp;body=Problem%20with%20'Custom%20default-backend'%20(https://runbooks.cloud-platform.service.justice.gov.uk/custom-default-backend.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/delete-migrated-namespaces.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Delete%20namespace%20migrated%20to%20`live`'&amp;body=Problem%20with%20'Delete%20namespace%20migrated%20to%20`live`'%20(https://runbooks.cloud-platform.service.justice.gov.uk/delete-migrated-namespaces.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
