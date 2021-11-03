@@ -1277,7 +1277,20 @@
 </ul>
 <ul>
   <li>
-    <a href="/auth-keys.html#how-to-add-authorized-keys"><span>How to add authorized keys</span></a>
+    <a href="/access-eks-cluster.html#access-eks-cluster"><span>Access EKS cluster</span></a>
+    <ul>
+      <li>
+        <a href="/access-eks-cluster.html#access-eks-cluster-pre-requisites"><span>Pre-requisites</span></a>
+        <ul>
+          <li>
+            <a href="/access-eks-cluster.html#create-kubeconfig-using-aws-command"><span>Create kubeconfig using aws command</span></a>
+          </li>
+          <li>
+            <a href="/access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
 </ul>
 <ul>
@@ -1298,20 +1311,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/access-eks-cluster.html#access-eks-cluster"><span>Access EKS cluster</span></a>
-    <ul>
-      <li>
-        <a href="/access-eks-cluster.html#access-eks-cluster-pre-requisites"><span>Pre-requisites</span></a>
-        <ul>
-          <li>
-            <a href="/access-eks-cluster.html#create-kubeconfig-using-aws-command"><span>Create kubeconfig using aws command</span></a>
-          </li>
-          <li>
-            <a href="/access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <a href="/auth-keys.html#how-to-add-authorized-keys"><span>How to add authorized keys</span></a>
   </li>
 </ul>
 <ul>
@@ -1342,6 +1342,42 @@
       </li>
       <li>
         <a href="/destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/cloud-platform-to-tgw.html#adding-a-route-to-connect-to-a-tgw"><span>Adding a route to connect to a TGW</span></a>
+    <ul>
+      <li>
+        <a href="/cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+      </li>
+      <li>
+        <a href="/cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="/cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/custom-default-backend.html#custom-default-backend"><span>Custom default-backend</span></a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/custom-default-backend.html#background"><span>Background</span></a>
+          </li>
+          <li>
+            <a href="/custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
+          </li>
+          <li>
+            <a href="/custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1380,42 +1416,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access"><span>ACCESS</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/custom-default-backend.html#custom-default-backend"><span>Custom default-backend</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/custom-default-backend.html#background"><span>Background</span></a>
-          </li>
-          <li>
-            <a href="/custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
-          </li>
-          <li>
-            <a href="/custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/cloud-platform-to-tgw.html#adding-a-route-to-connect-to-a-tgw"><span>Adding a route to connect to a TGW</span></a>
-    <ul>
-      <li>
-        <a href="/cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
-      </li>
-      <li>
-        <a href="/cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="/cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
       </li>
     </ul>
   </li>
@@ -1623,7 +1623,7 @@
 <li><p>You have <a href="https://www.docker.com/">docker</a> installed</p></li>
 </ul>
 <h3 id="setup-environment">Setup environment</h3><p>Setup the environment variables listed in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/example.env.create-cluster">example.env.create-cluster</a> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
-<h3 id="run-the-integration-tests">Run the integration tests</h3><p>Run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/integration-tests/jobs/apply-tests-live-1">integration test pipeline</a> and wait for the tests to pass. This will ensure the live cluster is functioning as expected.</p>
+<h3 id="run-the-integration-tests">Run the integration tests</h3><p>Run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/reporting/jobs/integration-tests/">integration test pipeline</a> and wait for the tests to pass. This will ensure the live cluster is functioning as expected.</p>
 <h3 id="sanity-checks">Sanity checks</h3><p>Ensure Concourse pipelines are green, and pause all of them.</p>
 <p>Take a snapshot of</p>
 
@@ -1694,7 +1694,7 @@ kops update cluster --yes
 </code></pre></div><p>Each node will drain all pods, moving them onto the new workers.</p>
 <h3 id="validate-the-cluster">Validate the cluster</h3><p>Ensure all nodes have joined the cluster:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops validate cluster
-</code></pre></div><h3 id="run-the-integration-tests-again">Run the integration tests again</h3><p>Run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/integration-tests/jobs/apply-tests-live-1">integration test pipeline</a> and wait for the tests to pass. This will ensure the live cluster is functioning as expected.</p>
+</code></pre></div><h3 id="run-the-integration-tests-again">Run the integration tests again</h3><p>Run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/reporting/jobs/integration-tests/">integration test pipeline</a> and wait for the tests to pass. This will ensure the live cluster is functioning as expected.</p>
 <h3 id="delete-the-old-instance-groups">Delete the old instance groups</h3><p>When complete and all pods have migrated onto the new workers. Delete the old instance groups:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops delete instancegroup nodes-&lt;old-kubernetes-version&gt;-eu-west-2a
 kops delete instancegroup nodes-&lt;old-kubernetes-version&gt;-eu-west-2b
@@ -1708,17 +1708,17 @@ kops update cluster --yes
 <h2 id="commit-changes-back-to-main-branch">Commit changes back to main branch</h2><p>Any changes made to the cloud-platform-infrastructure repository should be PRd for review. This includes manifest changes and image tag changes.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-11-02">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-02-02">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 2 August 2021.
+      This page was last reviewed on 2 November 2021.
 
-        It needs to be reviewed again on 2 November 2021
+        It needs to be reviewed again on 2 February 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 2 November 2021
+      This page was set to be reviewed before 2 February 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
