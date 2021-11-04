@@ -1551,11 +1551,11 @@
 <h3 id="install-es2csv">Install es2csv</h3><p>kubectl exec in to any of the fluentd pod in logging namespace and install es2csv</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  kubectl -n logging exec -ti fluentd-es-xxxxx -- /bin/bash
 </code></pre></div><p>You also need Python 2.7.x and pip</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  apt update
-  apt install python-pip
-  apt install git
-  python -m pip install git+https://github.com/gboddin/es2csv.git
-</code></pre></div><h3 id="usage">Usage</h3><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>es2csv -q 'kubernetes.namespace_name:starter-pack' -u https://&lt;ES_endpoint&gt;:443   -i logstash-* -f kubernetes_cluster -o kibanatest.csv --verify-certs
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  apt update
+  apt <span class="nb">install </span>python-pip
+  pip <span class="nb">install </span>es2csv
+</code></pre></div><p>You can view the installation instructions <a href="https://github.com/gboddin/es2csv#installation">here</a></p>
+<h3 id="usage">Usage</h3><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>es2csv -q 'kubernetes.namespace_name:starter-pack' -u https://&lt;ES_endpoint&gt;:443   -i logstash-* -f kubernetes_cluster -o kibanatest.csv --verify-certs
 
     Here, the parameters are :
         -q Query

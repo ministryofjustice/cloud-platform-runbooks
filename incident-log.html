@@ -1900,7 +1900,7 @@ new NLB and kiam for providing AWSAssumeRole for external-dns, these components 
 <li>A new 0.1.0 ingress controller failed to create in the &ldquo;live-1&rdquo; cluster due to AWS resource limits.</li>
 <li>Validation webhook stopped new rules from creating, with the error:
 <code>
-Error from server (InternalError): error when creating &quot;ingress.yaml&quot;: Internal error occurred: failed calling webhook &quot;validate.nginx.ingress.kubernetes.io&quot;: Post https://offender-categorisation-prod-nx-controller-admission.ingress-controllers.svc:443/extensions/v1beta1/ingresses?timeout=30s: x509: certificate signed by unknown authority
+Error from server (InternalError): error when creating &quot;ingress.yaml&quot;: Internal error occurred: failed calling webhook &quot;validate.nginx.ingress.kubernetes.io&quot;: Post offender-categorisation-prod-nx-controller-admission.ingress-controllers.svc:443/extensions/v1beta1/ingresses?timeout=30s: x509: certificate signed by unknown authority
 </code></li>
 <li>Initial investigation thread: https://mojdt.slack.com/archives/C514ETYJX/p1599478794246900</li>
 <li>Incident declared: https://mojdt.slack.com/archives/C514ETYJX/p1599479640251900</li>
