@@ -1566,7 +1566,7 @@ EOF
 </code></pre></div></li>
 <li><p>Using KeyID/email trust the key as <em>&ldquo;5 = I trust ultimately&rdquo;</em>:</p></li>
 </ol>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>gpg --edit-key "alejandro.garrido@digital.justice.gov.uk" trust quit
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>gpg --edit-key "my-name@digital.justice.gov.uk" trust quit
 </code></pre></div>
 <ol>
 <li>Create a new branch inside the git repository where user is going to be added:</li>
@@ -1576,7 +1576,7 @@ EOF
 <ol>
 <li>Use git-crypt CLI to add the user:</li>
 </ol>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git-crypt add-gpg-user alejandro.garrido@digital.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>git-crypt add-gpg-user my-name@digital.justice.gov.uk
 </code></pre></div>
 <ol>
 <li>Push the branch and create a PR:</li>

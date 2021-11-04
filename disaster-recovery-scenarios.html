@@ -1742,13 +1742,13 @@ No changes. Infrastructure is up-to-date.
 <p>Lost or corrupt etcd volume results in unhealthy <a href="https://github.com/kubernetes/kops/blob/master/docs/cluster_spec.md#etcdclusters">etcd cluster</a>. This means master node associated with the corrupt or Lost etcd volume will become not ready status and fail to join the cluster.</p>
 <h3 id="lost-or-corrupt-etcd-volume-possible-cause">Possible Cause</h3>
 <ul>
-<li>Lost volume: Deleting one of the etcd volume associated with the master node from aws console by accident </li>
+<li>Lost volume: Deleting one of the etcd volume associated with the master node from aws console by accident</li>
 <li>Corrupt volume: Accidentally restoring etcd volume from a wrong snapshot and attach it to the working master node.</li>
 </ul>
 <p>We will see warnings like this in this master log file:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl -n kube-system logs etcd-manager-main-ip-xxx-xx-xx-xxx.eu-west-2.compute.internal
 
-etcdserver: failed to reach the peerURL(https://etcd-x.internal.&lt;cluster-name&gt;.cloud-platform.service.justice.gov.uk:2380) of member &lt;member-id&gt; 
+etcdserver: failed to reach the peerURL(https://etcd-x.internal.&lt;cluster-name&gt;.cloud-platform.service.justice.gov.uk:2380) of member &lt;member-id&gt;
 rafthttp: health check for peer &lt;member-id&gt; connect: connection refused (prober "ROUND_TRIPPER_SNAPSHOT")
 rafthttp: health check for peer &lt;member-id&gt; connect: connection refused (prober "ROUND_TRIPPER_RAFT_MESSAGE")
 
@@ -1760,7 +1760,7 @@ Node    &lt;node-name&gt;     master "&lt;node-name&gt;" is not ready
 
 Validation Failed
 </code></pre></div><h3 id="lost-or-corrupt-etcd-volume-restore-process">Restore process</h3><p>Restoring corrupt or lost etcd involves two steps: remove the unhealthy etcd member and replace the effected master node via kops. Covering both steps, we already have a <a href="https://runbooks.cloud-platform.service.justice.gov.uk/replacing-failed-master-node.html#replacing-a-failed-master-node">runbook</a>, follow it step by step to restore unhealthy etcd.</p>
-<h2 id="overwriting-kops-cluster-39-s-components-with-eks-components">Overwriting KOPS cluster&rsquo;s components with EKS components</h2><h3 id="overwriting-kops-cluster-39-s-components-with-eks-components-impact">Impact</h3><p>Certain components that are unique to EKS such as concourse will be introduced to the KOPS cluster. 
+<h2 id="overwriting-kops-cluster-39-s-components-with-eks-components">Overwriting KOPS cluster&rsquo;s components with EKS components</h2><h3 id="overwriting-kops-cluster-39-s-components-with-eks-components-impact">Impact</h3><p>Certain components that are unique to EKS such as concourse will be introduced to the KOPS cluster.
 A number of components will have specific annotations applied to them that are only applicable for an EKS cluster.</p>
 <h3 id="overwriting-kops-cluster-39-s-components-with-eks-components-possible-cause">Possible Cause</h3><p>The EKS components are applied whilst the <code>kubectl context</code> is set to a kops cluster.</p>
 <h3 id="overwriting-kops-cluster-39-s-components-with-eks-components-restore-process">Restore process</h3><p>Use <code>terraform destroy</code> to delete all existing components from the <code>cloud-platform-eks/components</code> folder and re-apply using <code>terraform apply</code> from the <code>cloud-platform-components</code> folder.</p>
@@ -1798,11 +1798,11 @@ spec:
         severity: cica-dev-dev
       annotations:
         message: Namespace {{ $labels.namespace }} is using {{ printf "%0.0f" $value}}% of its {{ $labels.resource }} quota.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/
     - alert: cica--KubeJobFailed--dev
       annotations:
         message: Job {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobfailed
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/runbook.md#alert-name-kubejobfailed
       expr: kube_job_status_failed{job="kube-state-metrics",namespace="&lt;NAMESPACE&gt;"}  &gt; 0
       for: 1m
       labels:
@@ -1816,7 +1816,7 @@ spec:
       annotations:
         message: Kubelet {{ $labels.instance }} is running {{ $value }} Pods, close to the
           limit of 1 Test.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/runbook.md#alert-name-kubelettoomanypods
     - alert: cica-dev-Node-Disk-Space-Low
       annotations:
         message: A node is reporting low disk space below 10%. Action is required on a node.
@@ -1828,7 +1828,7 @@ spec:
     - alert: cica--KubeDeploymentReplicasMismatch--dev
       annotations:
        message: Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not matched the expected number of replicas for longer than an hour.
-       runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedeploymentreplicasmismatch
+       runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/runbook.md#alert-name-kubedeploymentreplicasmismatch
       expr: kube_deployment_spec_replicas{job="kube-state-metrics",namespace="&lt;NAMESPACE&gt;"}
         != kube_deployment_status_replicas_available{job="kube-state-metrics",namespace="&lt;NAMESPACE&gt;"}
       for: 1h
@@ -1888,7 +1888,7 @@ spec:
   iam.amazonaws.com/role: "${iam_role}"
 </code></pre></div><p>The following annotations are added to external dns deployment</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  annotations:
-    eks.amazonaws.com/role-arn: "${eks_service_account}"  
+    eks.amazonaws.com/role-arn: "${eks_service_account}"
 </code></pre></div><h3 id="destroy-the-eks-components">Destroy the EKS components</h3><p>The first step for recovery is to destroy what was applied from the same directory.</p>
 <p>Ensure you in the <code>cloud-platform-infrastructure/terraform/cloud-platform-eks/components</code> directory.</p>
 <p>Execute <code>terraform destroy -auto-approve</code></p>
@@ -1900,7 +1900,7 @@ NAME                                       STATUS      CREATED                  
 velero-backup-00000000000000              Completed   2020-03-30 12:00:37 +0100 BST     29d       default             &lt;none&gt;
 </code></pre></div><p>Using the backup name, you can now run a <code>velero restore...</code> command to restore the deleted resource.</p>
 <p>Restore command:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; 
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt;
 </code></pre></div><p>Example:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create my-namespace-dev-restore --from-backup velero-backup-00000000000000
 </code></pre></div><p>Once completed, you should be able to see the CRD resources that were created earlier, above before the incident.</p>
