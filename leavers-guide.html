@@ -1390,8 +1390,12 @@
           <li>
             <a href="/leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
           </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
+        <ul>
           <li>
-            <a href="/leavers-guide.html#line-manager"><span>Line manager</span></a>
           </li>
         </ul>
       </li>
@@ -1566,21 +1570,23 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="leavers-guide">Leavers Guide</h1><h2 id="revoking-access">Revoking Access</h2><h3 id="digital-services">Digital Services</h3><p>The central Digital Services team will be able to remove and revoke access from a number of different accounts outside of the technical team.</p>
-<p>You will need to raise an Account Deletion request via <a href="https://mojprod.service-now.com/moj_sp">MoJ Technology Portal/ServiceNow</a>. A request also needs to be raised for return of any devices.</p>
+              <h1 id="leavers-guide">Leavers Guide</h1><p>When CP team members leave, follow this guide, and log completion in a ticket.</p>
+<h2 id="revoking-access">Revoking Access</h2><h3 id="digital-services">Digital Services</h3><p>The Service Desk will be able to remove and revoke access from a number of different accounts outside of Cloud Platform.</p>
+<h4 id="1-google-account-closure-ordered-in-advance-of-them-leaving-by-creating-a-servicenow-order-return-device-for-digital-mac-amp-wtp-users">1/ Google account closure, ordered in advance of them leaving, by creating a ServiceNow order <a href="https://mojprod.service-now.com/moj_sp?id=sc_cat_item&amp;sys_id=a1f163211bb1a8507b10ca286e4bcb7a">Return device for Digital Mac &amp; WTP users</a></h4><p>This is not just about returning their Mac - it will do the important step of closing their Google account.</p>
 
 <ul>
 <li><p>Note - Include details in the ServiceNow request to transfer the leaver&rsquo;s Google Drive to someone in their team.</p></li>
-<li><p>Note - for leavers from the cloud-platforms team - ask the service desk to transfer any slack webhook integrations to someone in the team.<br>
-IT IS MOST IMPORTANT THAT YOU REQUEST THIS BEFORE THE PERSON LEAVES.<br> 
+<li><p>Note - for leavers from the cloud-platforms team - ask the service desk to transfer any slack webhook integrations to someone in the team. <br>IT IS MOST IMPORTANT THAT YOU REQUEST THIS BEFORE THE PERSON LEAVES<br>
 This is because if the person has created a slack-webhook for alerting purposes, the loss of that slack-webhook can cause problems - when their profile is deleted (as the webhook link is referenced in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars">cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars</a>.</p></li>
 </ul>
-<h3 id="aws-accounts">AWS Accounts</h3><h4 id="1-purge-them-from-aws-accounts-as-at-04-05-2020-the-following">1/ Purge them from AWS accounts (as at 04/05/2020 the following):</h4>
+<h4 id="2-moj-digital-vpn-removal-by-creating-a-servicenow-order-digital-vpn-add-remove">2/ MOJ Digital VPN removal by creating a ServiceNow order: <a href="https://mojprod.service-now.com/moj_sp?id=sc_cat_item&amp;sys_id=6860adc01b8b6818f58d206fe54bcbe3">Digital VPN add/remove</a></h4><h3 id="aws-accounts">AWS Accounts</h3><h4 id="1-purge-them-from-aws-accounts">1/ Purge them from AWS accounts:</h4>
 <ul>
 <li><a href="https://justice-cloud-platform.eu.auth0.com/samlp/bnqndz9kxf7wDge8ndCWyVwIX1OEElYf">moj-cp</a></li>
-<li>mojdsd</li>
+<li><a href="https://moj.awsapps.com/start#/">mojdsd</a></li>
+<li>Cloud Platform Ephemeral Test</li>
+<li>Cloud Platform Transit Gateways</li>
 </ul>
-<p>Use the link above to login to the moj-cp account. For the others, you will need to login via the <a href="https://console.aws.amazon.com/">AWS console</a></p>
+<p>To login, use the SSO links above, or use the <a href="https://console.aws.amazon.com/">AWS console</a></p>
 <h4 id="2-remove-them-from-cloud-platform-terraform-awsaccounts-iam">2/ Remove them from <code>cloud-platform-terraform-awsaccounts-iam</code></h4>
 <ul>
 <li>As per <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/pull/2/files">this PR</a></li>
@@ -1589,32 +1595,29 @@ This is because if the person has created a slack-webhook for alerting purposes,
 <ul>
 <li>As per <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/cluster.tf">this File</a></li>
 </ul>
-<h4 id="4-request-lastpass-removal">4/ Request <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">LastPass</a> removal</h4><h4 id="5-request-vpn-removal">5/ Request <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">vpn</a> removal</h4><h4 id="6-remove-their-access-to">6  / Remove their access to:</h4>
+<h4 id="4-request-password-management-removal-contact-details-here-removal">4/ Request Password Management removal - <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a> removal</h4><h4 id="5-remove-their-access-to">5/ Remove their access to:</h4>
 <ul>
 <li><p><a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/users">Auth0 justice-cloud-platform</a></p></li>
 <li><p><a href="https://manage.auth0.com/dashboard/eu/moj-cloud-platforms-dev/users">Auth0 moj-cloud-platforms</a></p></li>
 <li><p><a href="https://moj-digital-tools.pagerduty.com/users">Pagerduty</a></p></li>
 <li><p><a href="https://devcenter.heroku.com/articles/org-users-access">Heroku</a></p></li>
-<li><p><a href="https://cloud.docker.com/orgs/ministryofjustice/teams">MoJ teams on docker hub</a></p></li>
+<li><p><a href="https://cloud.docker.com/orgs/ministryofjustice/teams">DockerHub MoJ teams</a></p></li>
 <li><p><a href="https://www.pingdom.com">Pingdom</a></p></li>
 <li><p><a href="https://github.com/ministryofjustice">MoJ Github Organisation</a></p></li>
-<li><p>Email the administrator of our password management provider to remove the leaver&rsquo;s login access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
-<li><p>Email the VPN provider requesting removal of their VPN access <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a></p></li>
 </ul>
-<h4 id="6-remove-them-from-the-support-rota-if-applicable-pagerduty">6/ Remove them from the support rota (if applicable). <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">Pagerduty</a></h4><h4 id="7-remove-them-from-platforms-digital-justice-gov-uk-google-group-if-applicable-link-here">7/ Remove them from platforms@digital.justice.gov.uk google group (if applicable). <a href="https://groups.google.com/a/digital.justice.gov.uk/forum/#!managemembers/platforms/members/active">Link here</a></h4><h3 id="line-manager">Line manager</h3><h4 id="1-fill-in-leavers-form">1/ Fill in <a href="https://leavers.form.service.justice.gov.uk/">leavers form</a></h4><p>Reference <a href="mailto:platforms@digital.justice.gov.uk">platforms@digital.justice.gov.uk</a></p>
+<h4 id="6-remove-them-from-the-pagerduty-support-rota-if-applicable">6/ Remove them from the <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">PagerDuty support rota</a> (if applicable)</h4><h4 id="7-remove-them-from-platforms-digital-justice-gov-uk-google-group">7/ Remove them from <a href="https://groups.google.com/a/digital.justice.gov.uk/g/platforms/members">platforms@digital.justice.gov.uk Google Group</a></h4><h2 id="line-manager-actions">Line manager actions</h2><h4 id="1-fill-in-the-moj-digital-leavers-form">1/ Fill in the MOJ Digital <a href="https://leavers.form.service.justice.gov.uk/">Leavers Form</a></h4><h4 id="2-complete-the-leavers-checklist-for-managers">2/ Complete the <a href="https://intranet.justice.gov.uk/documents/2015/04/leavers-checklist-for-managers.docx">Leavers Checklist for Managers</a></h4>
 
-
-              <div data-module='page-expiry' data-last-reviewed-on="2022-02-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-02-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 November 2021.
+      This page was last reviewed on 17 November 2021.
 
-        It needs to be reviewed again on 16 February 2022
+        It needs to be reviewed again on 17 February 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 February 2022
+      This page was set to be reviewed before 17 February 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
