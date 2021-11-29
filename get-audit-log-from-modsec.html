@@ -1601,6 +1601,20 @@ find <span class="nb">.</span> <span class="nt">-name</span> <span class="s2">"*
 </code></pre></div><p>This should return a filepath leading to the filename containing your event. We can take the output of this command and perform a grep for the log entry.</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">grep</span> <span class="k">${</span><span class="nv">UNIQUEID</span><span class="k">}</span> ./20210906-1125/20210906-112550-5266c62ecf75109ee3083dcc6easda234
 </code></pre></div><p>Which should return the event.</p>
+<p>If you want to copy the filtered events of a particilar date e.g.24/11/2021 to a folder and download to the local machine to extract the data, use the commands in bash
+ <code>bash
+ cd /var/log/audit/20211124
+ find . -name &quot;*&quot; | xargs grep -iEl &quot;String or hostname to search&quot; &gt; list.txt
+ mkdir copy
+ for file in $(&lt;list.txt); do cp &quot;$file&quot; ./copy; done
+</code></p>
+<p>This should copy the filtered folders and files into the <code>copy</code> folder</p>
+<p>Exit the modsec pod and from your machine, enter the below command
+<code>bash
+ kubectl -n ingress-controllers cp &lt;modsec-pod-name&gt;:/var/log/audit/20211124/copy .                     
+</code></p>
+<p>If you want to send the log data to a user, make sure you filter the data specific to that application and encrypt the file.
+From mac, you can use gpgkeychain to encrypt the file using the receiver&rsquo;s public key before sending it to the user.</p>
 
 
               <div data-module='page-expiry' data-last-reviewed-on="2021-12-06">
