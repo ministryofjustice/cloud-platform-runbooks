@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Sonarqube - Code quality and security scanning - Cloud Platform Runbooks</title>
+    <title>Destroy Concourse Worker Volumes - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/sonarqube-scan.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-worker-pv.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Sonarqube - Code quality and security scanning - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/sonarqube-scan.html" />
+      <meta name="twitter:title" content="Destroy Concourse Worker Volumes - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-worker-pv.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Sonarqube - Code quality and security scanning" />
+      <meta property="og:title" content="Destroy Concourse Worker Volumes" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/sonarqube-scan.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-worker-pv.html" />
 
     
   </head>
@@ -316,7 +316,7 @@
     <a href="/create-cluster.html#create-a-new-cluster"><span>Create a new cluster</span></a>
     <ul>
       <li>
-        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites"><span>Pre-requisites</span></a>
+        <a href="/create-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
         <a href="/create-cluster.html#environment-variables"><span>Environment Variables</span></a>
@@ -1583,68 +1583,29 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="sonarqube-code-quality-and-security-scanning">Sonarqube - Code quality and security scanning</h1><h2 id="sonarqube-scanning">Sonarqube scanning</h2><p><a href="https://www.sonarqube.org/">SonarQube</a> is a code analyzer used for major programming languages. <a href="https://sonarqube.cloud-platform.service.justice.gov.uk">sonarqube</a> run in our EKS &ldquo;manager&rdquo; looking for problems in source repositories, such as duplicated code, non-compliance with coding standards, lack of unit tests, over-complex code, and other issues.</p>
-<h3 id="sonarqube-scan-all-repositories">Sonarqube scan all repositories</h3><p>Sonarqube runs via a <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/scanning">concourse job</a>, and scans the github repositories mentioned in the &ldquo;cloud-platform.justice.gov.uk/source-code&rdquo; namespace annotations.</p>
-<h3 id="sonarqube-github-action">Sonarqube Github Action</h3><p>We have implemented a Github Action for some of cloud-platform repositories to initiate an automated scan of any branch, where a PR is created. 
-If this scan fails, it will block the PR from being able to merge into Main.</p>
-<h4 id="pre-requisites">Pre-requisites</h4><p>Two Github secrets are required to be added to each repo using the GHA:</p>
-
-<ul>
-<li><code>SONAR_URL</code> - The sonarqube URL</li>
-<li><code>SONAR_TOKEN</code> - A token created using the admin account for access. </li>
-</ul>
-<h4 id="github-action">Github Action</h4><div class="highlight"><pre class="highlight yaml" tabindex="0"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Run sonar scanner</span>
-
-<span class="na">on</span><span class="pi">:</span>
-  <span class="na">pull_request</span><span class="pi">:</span>
-    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">opened</span><span class="pi">,</span> <span class="nv">edited</span><span class="pi">,</span> <span class="nv">reopened</span><span class="pi">,</span> <span class="nv">synchronize</span><span class="pi">]</span>
-
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">run-scan</span><span class="pi">:</span>
-    <span class="na">name</span><span class="pi">:</span> <span class="s">Sonarqube Scan</span> 
-    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
-
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Setup sonarqube</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">warchant/setup-sonar-scanner@v3</span>
-
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout Code</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
-
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run sonar scanner</span>
-        <span class="na">env</span><span class="pi">:</span>
-          <span class="na">GITHUB_TOKEN</span><span class="pi">:</span> <span class="s">${{ secrets.GITHUB_TOKEN }}</span>
-          <span class="c1"># to get access to secrets.SONAR_TOKEN, provide GITHUB_TOKEN</span>
-        <span class="na">run</span><span class="pi">:</span> <span class="s">sonar-scanner</span>
-          <span class="s">-Dsonar.host.url=${{ secrets.SONAR_URL }}</span>
-          <span class="s">-Dsonar.login=${{ secrets.SONAR_TOKEN }}</span>
-          <span class="s">-Dsonar.projectKey=${{ github.repository }}:${{ github.head_ref }}</span>
+              <h1 id="destroy-concourse-worker-pv-39-s">Destroy Concourse Worker PV&rsquo;s</h1><h2 id="when-should-you-use-this-document">When should you use this document</h2><p>We&rsquo;ve had a number of incidents regarding the filling of concourse worker persistent volumes. While this document is a temporary solution, it should be used to solve the following high or low priority alarm:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>[FIRING:1] KubePersistentVolumeFillingUp kubelet (manager https-metrics [REDACTED]:10250 /metrics concourse ip-172-20-36-113.eu-west-2.co…
+</code></pre></div><p>or</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>[FIRING:1] :warning: KubePersistentVolumeFullInFourDays-Low
+Alert: Based on recent sampling, the PersistentVolume claimed by concourse-work-dir-concourse-worker-3 in Namespace concourse is expected to fill up within four days. Currently 3.46 is available.
+</code></pre></div><h2 id="how-to-fix-the-issue">How to fix the issue</h2><p>As mentioned previously, this is a short term fix. The volume will eventually re-fill but it&rsquo;s important to document the short-term fix as well as plan a proper solution.</p>
+<p>Authenticate onto the <code>manager</code> cluster:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws eks update-kubeconfig <span class="nt">--name</span> manager
+</code></pre></div><p>Ensure no long running jobs are running in concourse, then run:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nt">-n</span> concourse scale sts concourse-worker <span class="nt">--replicas</span> 0 <span class="p">;</span> <span class="k">for </span>c <span class="k">in</span> <span class="o">{</span>0..3<span class="o">}</span> <span class="p">;</span> <span class="k">do </span>kubectl <span class="nt">-n</span> concourse delete pvc concourse-work-dir-concourse-worker-<span class="nv">$c</span> <span class="p">;</span> <span class="k">done</span> <span class="p">;</span> kubectl <span class="nt">-n</span> concourse scale sts concourse-worker <span class="nt">--replicas</span> 4
 </code></pre></div>
-<ul>
-<li>The GHA pulls the branch where the PR is created from</li>
-<li>Creates a project within sonarqube</li>
-<li>Runs a scan of the branch from within the project</li>
-<li>Feeds back the result to Github with a pass or fail.</li>
-</ul>
-<p><code>-Dsonar.host.url=${{ secrets.SONAR_URL }}</code> <br />
-This is the Sonarqube URL - https://sonarqube.thistheurl.com</p>
-<p><code>-Dsonar.login=${{ secrets.SONAR_TOKEN }}</code><br />
-Token required for access to Sonarqube.</p>
-<p><code>-Dsonar.projectKey=${{ github.repository }}:${{ github.head_ref }}</code><br />
-A unique project key is required for Sonarqube to create a project for each branch - ministryofjustice/reponame:branch</p>
 
-
-              <div data-module='page-expiry' data-last-reviewed-on="2021-12-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-03-02">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 September 2021.
+      This page was last reviewed on 2 December 2021.
 
-        It needs to be reviewed again on 20 December 2021
+        It needs to be reviewed again on 2 March 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 December 2021
+      This page was set to be reviewed before 2 March 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1654,8 +1615,8 @@ A unique project key is required for Sonarqube to create a project for each bran
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/sonarqube-scan.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Sonarqube%20-%20Code%20quality%20and%20security%20scanning'&amp;body=Problem%20with%20'Sonarqube%20-%20Code%20quality%20and%20security%20scanning'%20(https://runbooks.cloud-platform.service.justice.gov.uk/sonarqube-scan.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/destroy-concourse-worker-pv.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Destroy%20Concourse%20Worker%20Volumes'&amp;body=Problem%20with%20'Destroy%20Concourse%20Worker%20Volumes'%20(https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-worker-pv.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
