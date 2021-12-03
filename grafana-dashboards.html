@@ -1439,6 +1439,9 @@
           <li>
             <a href="/grafana-dashboards.html#dashboard-layout"><span>Dashboard Layout</span></a>
           </li>
+          <li>
+            <a href="/grafana-dashboards.html#troubleshooting"><span>Troubleshooting</span></a>
+          </li>
         </ul>
       </li>
     </ul>
@@ -1597,7 +1600,12 @@
 <p>As the dashboard is set in descending order, the last two boxes are normally from the 2xlarge Nodes group (2 instances), the next 3 boxes are normally the masters, and the rest are from the Nodes group.</p>
 <p>You can run the following command to confirm this and get more information about a node:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl describe node &lt;node_name&gt;
-</code></pre></div>
+</code></pre></div><h3 id="troubleshooting">Troubleshooting</h3><p>If a customer is reporting their dashboards are failing to load, this is usually due to a duplicate entry. You can see errors from the Grafana pod by running:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> monitoring prometheus-operator-grafana-&lt;pod-id&gt; <span class="nt">-f</span> <span class="nt">-c</span> grafana
+</code></pre></div><p>You&rsquo;ll see an error similar to:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">t</span><span class="o">=</span>2021-12-03T13:37:35+0000 <span class="nv">lvl</span><span class="o">=</span>eror <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to load dashboard from "</span> <span class="nv">logger</span><span class="o">=</span>provisioning.dashboard <span class="nb">type</span><span class="o">=</span>file <span class="nv">name</span><span class="o">=</span>sidecarProvider <span class="nv">file</span><span class="o">=</span>/tmp/dashboards/&lt;MY-DASHBOARD&gt;.json <span class="nv">error</span><span class="o">=</span><span class="s2">"invalid character 'c' looking for beginning of value"</span>
+</code></pre></div><p>Identify that dashboard and fix the error in question.</p>
+
 
               <div data-module='page-expiry' data-last-reviewed-on="2021-12-28">
     <div class='page-expiry--not-expired'>
