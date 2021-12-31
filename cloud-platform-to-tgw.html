@@ -1588,7 +1588,8 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="adding-a-route-to-connect-to-a-tgw">Adding a route to connect to a TGW</h1><p>This document is a description of the current Cloud Platform &amp; TGW setup. 
 It also explain how to modify the relevant route table</p>
-<p><em>The scope of this guide is limited on purpose, it only covers the Cloud Platform responsibilities</em></p>
+<p><em>The scope of this guide is limited on purpose, it only covers the Cloud Platform responsibilities.
+The techops/cloud-ops team is able to share the Transit Gateways with other AWS accounts.</em></p>
 <h2 id="quick-introduction">Quick introduction</h2><p>AWS Transit Gateways allows VPCs, from different accounts or regions, to be connected securely.
 Transit Gateways have their own route-table. 
 Transit Gateways (TGW) also support connecting to VPNs, AWS Direct Connect and other Transit Gateway</p>
@@ -1603,7 +1604,7 @@ However, the attachment alone doesn&rsquo;t allow traffic to flow: A new route n
 <h2 id="making-the-change">Making the change</h2><p>Everything is managed in the github repository, in the route.tf file of the <a href="https://github.com/ministryofjustice/transit-gateways/tree/master/terraform/cloud-platform">cloud-platform folder</a>
 Only an admin of the cloud-platform (<code>moj-cp</code>) is able to run that code.</p>
 <p>Here is the snippet to add to the route.tf :
-<code>ruby
+<code>
 resource &quot;aws_route&quot; &quot;my-new-route&quot; {
         count = length(local.route_tables)
         route_table_id            = local.route_tables[count.index]
@@ -1615,17 +1616,17 @@ resource &quot;aws_route&quot; &quot;my-new-route&quot; {
 <p>Note: Something similar need to be done on the &lsquo;other side&rsquo;, terraform or not.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-12-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-06-30">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 June 2021.
+      This page was last reviewed on 31 December 2021.
 
-        It needs to be reviewed again on 28 December 2021
+        It needs to be reviewed again on 30 June 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 December 2021
+      This page was set to be reviewed before 30 June 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
