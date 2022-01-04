@@ -1648,7 +1648,7 @@ resources within all namespaces, networking, monitoring and logging systems.</p>
 
 <ol>
 <li>Create cluster using the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/create-cluster.rb">script</a></li>
-<li>Deploy <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/starter-pack.tf">starter pack</a> to replicate user namespaces</li>
+<li>Deploy <a href="https://github.com/ministryofjustice/cloud-platform-terraform-starter-pack">starter pack</a> to replicate user namespaces</li>
 <li>Take backup of the whole cluster using <a href="/velero.html#velero-cluster-backups-and-disaster-recovery">velero</a></li>
 <li>Destroy the cluster excluding the VPC using the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/destroy-cluster.rb">script</a></li>
 <li>Create a cluster with the same name. That way velero can match the backup storage location</li>
@@ -1772,7 +1772,8 @@ Executing <code>terraform state rm module.starter_pack</code>, will remove all r
 
 Plan: 7 to add, 0 to change, 0 to destroy.
 </code></pre></div><p>In this scenario, terraform state can be restored from the remote_state stored in the terraform backend S3 bucket.</p>
-<p>For example <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-components">cloud-platform-components</a> state is stored in &ldquo;cloud-platform-terraform-state/cloud-platform-components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/main.tf#L1-L9">here</a>.</p>
+<p>For example <a href="cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components">eks-components</a> state is stored in &ldquo;aws-accounts/cloud-platform-aws/vpc/eks/components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/main.tf/#L5-L14">here-eks</a>.</p>
+<p>or <a href="cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/kops/components">kops-components</a> state is stored in &ldquo;aws-accounts/cloud-platform-aws/vpc/kops/components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/kops/components/main.tf/#L1-L11">here-kops</a>.</p>
 <p>Access the S3 bucket where the effected terraform state is stored. From the list of terraform.tfstate file versions, identify the file before the state got removed and download as terraform.tfstate. Upload the file again, this will set uploaded file as latest version.</p>
 <p>Now running terraform plan will show, infrastructure is up-to-date.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan -target=module.starter_pack
@@ -1952,17 +1953,17 @@ kubectl get certificates -n &lt;NAMESPACE&gt;
 
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2021-12-23">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 23 September 2021.
+      This page was last reviewed on 4 January 2022.
 
-        It needs to be reviewed again on 23 December 2021
+        It needs to be reviewed again on 4 April 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 23 December 2021
+      This page was set to be reviewed before 4 April 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
