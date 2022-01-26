@@ -200,6 +200,14 @@
     <a href="/incident-log.html#incident-log"><span>Incident Log</span></a>
     <ul>
       <li>
+        <a href="/incident-log.html#q1-2022-january-to-march"><span>Q1 2022 (January to March)</span></a>
+        <ul>
+          <li>
+            <a href="/incident-log.html#incident-on-2022-01-22-11-57-some-dns-records-got-deleted-at-the-weekend"><span>Incident on 2022-01-22 11:57 - some DNS records got deleted at the weekend</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="/incident-log.html#q4-2021-october-to-december"><span>Q4 2021 (October to December)</span></a>
         <ul>
           <li>
@@ -315,6 +323,9 @@
       </li>
       <li>
         <a href="/incident-log.html#resolution"><span>Resolution:</span></a>
+      </li>
+      <li>
+        <a href="/incident-log.html#review-actions"><span>Review actions:</span></a>
       </li>
     </ul>
   </li>
@@ -1598,6 +1609,60 @@
 <blockquote>
 <p>Use the <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/bin/mean-time-to-repair.rb">mean-time-to-repair.rb</a> script to view performance metrics</p>
 </blockquote>
+<h2 id="q1-2022-january-to-march">Q1 2022 (January to March)</h2>
+<ul>
+<li><p><strong>Mean Time to Repair</strong>: 2h 2m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 2h 41m</p></li>
+</ul>
+<h3 id="incident-on-2022-01-22-11-57-some-dns-records-got-deleted-at-the-weekend">Incident on 2022-01-22 11:57 - some DNS records got deleted at the weekend</h3>
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected 2022-01-22 11:57</li>
+<li>Incident declared 2022-01-22 14:41</li>
+<li>Repaired 2022-01-22 13:59</li>
+<li>Resolved 2022-01-22 14:38</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 2h 2m</p></li>
+<li><p><strong>Time to resolve</strong>: 2h 41m</p></li>
+<li><p><strong>Identified</strong>: Pingdom alerted an LAA developer to some of their sites becoming unavailable. They reported this to CP team via Slack #ask-cloud-platform, and the messages were spotted by on-call engineers</p></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>Sites affected:</li>
+<li>2 production sites were unavailable:
+
+<ul>
+<li>laa-fee-calculator-production.apps.live-1.cloud-platform.service.justice.gov.uk</li>
+<li>legal-framework-api.apps.live-1.cloud-platform.service.justice.gov.uk</li>
+</ul></li>
+<li>3 production sites had minor issues - unavailable on domains that only MOJ staff use</li>
+<li>46 non-production sites were unavailable on domains that only MOJ staff use</li>
+<li>Impact on users was negligible. The 2 sites that external users would have experienced the unavailability are typically used by office staff, for generally non-urgent work, whereas this incident occurred during the weekend.</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>Timeline: <a href="https://docs.google.com/document/d/1TXxdb1iOqfW_Vo2HhiGC3LFE-0jEP_hDgQn2nuP1VdM/edit#">Timeline</a> for the incident</li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/C57UPMZLY/p1642855796441900">Slack thread</a> for the incident.</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:</p>
+
+<ul>
+<li>external-dns was trying to restore the DNS records, but it was receiving errors when writing, due to <a href="external-dns.alpha.kubernetes.io/aws-weight">missing annotations</a> in an unrelated ingress. Manually adding the annotations restored the DNS.</li>
+</ul></li>
+<li><p><strong>Review actions</strong>:</p>
+
+<ul>
+<li>Create guidance about internal traffic and domain names, and advertise to users in slack <a href="https://github.com/ministryofjustice/cloud-platform/issues/3497">#3497</a></li>
+<li>Create pingdom alerts for test helloworld apps <a href="https://github.com/ministryofjustice/cloud-platform/issues/3498">#3498</a></li>
+<li>Investigate if external-dns sync functionality is enough for the DNS cleanup <a href="https://github.com/ministryofjustice/cloud-platform/issues/3499">#3499</a></li>
+<li>Change the ErrorsInExternalDNS alarm to high priority <a href="https://github.com/ministryofjustice/cloud-platform/issues/3500">#3500</a></li>
+<li>Create a runbook to handle ErrorsInExternalDNS alarm <a href="https://github.com/ministryofjustice/cloud-platform/issues/3501">#3501</a></li>
+<li>Assign someone to be the &lsquo;hammer&rsquo; on Fridays</li>
+</ul></li>
+</ul>
 <h2 id="q4-2021-october-to-december">Q4 2021 (October to December)</h2>
 <ul>
 <li><p><strong>Mean Time to Repair</strong>: 1h 17m</p></li>
@@ -2284,6 +2349,7 @@ We suspect an intermittent &amp; external networking issue to be the cause of th
 <li>Slack thread: <a href="url%20of%20primary%20incident%20thread">Slack thread</a> for the incident.</li>
 </ul></li>
 <li><h2 id="resolution"><strong>Resolution</strong>:</h2></li>
+<li><h2 id="review-actions"><strong>Review actions</strong>:</h2></li>
 </ul>
 
 
