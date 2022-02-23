@@ -1623,15 +1623,15 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="upgrade-eks-cluster">Upgrade EKS cluster</h1><p>Our EKS clusters are created using the official <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks</a> module. When a new EKS major version is released,  it is usually followed by a new terraform module release.</p>
-<p>Our EKS cluster upgrade consists of three parts:</p>
+              <h1 id="upgrade-eks-cluster">Upgrade EKS cluster</h1><p>The Cloud Platform EKS cluster upgrade consists of three distinct parts:</p>
 
 <ul>
 <li>Upgrade EKS Terraform Module</li>
-<li>Upgrade Control Plane</li>
-<li>Upgrade Node Group(s)</li>
+<li>Upgrade EKS version (Control Plane and Node Groups)</li>
 <li>Upgrade addon(s)</li>
 </ul>
+<p>The Cloud Platform EKS clusters are created using the official <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks</a> module. The EKS version and addons are currently independent of the version of the terraform-aws-eks module.
+Therefore, it will not always require an upgrade of the terraform-aws-eks module and/or the addons whenever there is an upgrade of the EKS version. Please check the changelogs for the terraform-aws-eks module, the EKS version and the addons when planning an upgrade.</p>
 <h2 id="run-the-upgrade-via-the-tools-image">Run the upgrade, via the tools image</h2><p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to run the upgrade.</p>
 <p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
 <p>With your environment variables set, launch a bash shell on the tools image:</p>
