@@ -1635,17 +1635,17 @@ Alert: Based on recent sampling, the PersistentVolume claimed by concourse-work-
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nt">-n</span> concourse scale sts concourse-worker <span class="nt">--replicas</span> 0 <span class="p">;</span> <span class="k">for </span>c <span class="k">in</span> <span class="o">{</span>0..3<span class="o">}</span> <span class="p">;</span> <span class="k">do </span>kubectl <span class="nt">-n</span> concourse delete pvc concourse-work-dir-concourse-worker-<span class="nv">$c</span> <span class="p">;</span> <span class="k">done</span> <span class="p">;</span> kubectl <span class="nt">-n</span> concourse scale sts concourse-worker <span class="nt">--replicas</span> 4
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-03-02">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-06-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 2 December 2021.
+      This page was last reviewed on 11 March 2022.
 
-        It needs to be reviewed again on 2 March 2022
+        It needs to be reviewed again on 11 June 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 2 March 2022
+      This page was set to be reviewed before 11 June 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
