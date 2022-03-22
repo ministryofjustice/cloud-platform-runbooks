@@ -1627,7 +1627,7 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="remove-data-from-elasticsearch">Remove data from Elasticsearch</h1><p>This runbook aims to guide you through purging specific logs/data from Elasticsearch.</p>
-<p>Let&rsquo;s assume in this guide that we are trying to delete all logs of the  <code>my-namespace-production</code> namespace, from the 01/02/2021</p>
+<p>Let&rsquo;s assume in this guide that we are trying to delete all logs of the  <code>my-namespace-production</code> namespace, from the 01/02/2022</p>
 <h2 id="stop-the-breach-first">Stop the breach first</h2><p>If you&rsquo;re removing data from Elasticsearch, this is presumably because sensitive information has been logged by mistake.
 Please ensure that the underlying problem has been fixed, and no more sensitive data is going to be logged by the same
 application, before spending time removing what&rsquo;s already there.</p>
@@ -1645,7 +1645,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <p>Therefore, if we narrow down a search query to exactly what we want to delete, we&rsquo;ve done most of the work.</p>
 <p>Kibana offers a <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/dev_tools/console">webconsole</a> to test queries.</p>
 <p>A standard query is :</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>GET /kubernetes_cluster-2021.02.01/_search
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>GET /live_kubernetes_cluster-2022.02.01/_search
 {
   "query": {
     "match": {
@@ -1658,7 +1658,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <p>Important note: <code>.keyword</code> forces elasticsearch to only return exact matches. Without it, you may end up deleting more than you wish</p>
 </blockquote>
 <p>As a <code>curl</code> command, the query above would translate to:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XGET "https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2021.02.01/_search" -H 'Content-Type: application/json' -d'
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XGET "https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2022.02.01/_search" -H 'Content-Type: application/json' -d'
 {
   "query": {
     "match": {
@@ -1670,7 +1670,7 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <h2 id="delete-by-query">Delete by query</h2><p>A <code>POST</code> request against the <code>_delete_by_query</code> endpoint will delete all documents matching the query in the request&rsquo;s body.</p>
 <p>If we want to delete all logs from the <code>my-namespace-production</code> from 01/02/2021:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    curl -XPOST \
-        https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2021.02.01/_delete_by_query?pretty \
+        https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2022.02.01/_delete_by_query?pretty \
         -H 'Content-Type: application/json' \
         -d'{"query":{"match":{"kubernetes.namespace_name.keyword": "my-namespace-production"}}}'
 </code></pre></div><p>Here again, <code>.keyword</code> is essential.</p>
@@ -1683,7 +1683,7 @@ you have queried using <code>curl</code>. A fluentd pod will be recreated automa
 <h2 id="removing-specific-logs-filtered-by-phrase">Removing specific logs filtered by phrase</h2><p>If you want to delete log entries which contain a certain phrase, you can use the queries below.</p>
 <p>Searching for the phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>
-curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2*/_search?pretty \
+curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2*/_search?pretty \
 -H 'Content-Type: application/json' -d'
 {
   "query": {
@@ -1714,7 +1714,7 @@ curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west
 }'
 
 </code></pre></div><p>Deleting the log entries which have the phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like this:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XPOST https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/kubernetes_cluster-2*/_delete_by_query?pretty \
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XPOST https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2*/_delete_by_query?pretty \
 -H 'Content-Type: application/json' -d'
 {
   "query": {
@@ -1755,17 +1755,17 @@ curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west
 </blockquote>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-03-01">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-06-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 1 December 2021.
+      This page was last reviewed on 11 March 2022.
 
-        It needs to be reviewed again on 1 March 2022
+        It needs to be reviewed again on 11 June 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 1 March 2022
+      This page was set to be reviewed before 11 June 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
