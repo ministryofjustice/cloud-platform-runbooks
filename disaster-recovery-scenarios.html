@@ -1791,7 +1791,7 @@ in <a href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-clust
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform apply -target=module.starter_pack.kubernetes_namespace.starter_pack
 
 Error: namespaces "starter-pack" already exists
-</code></pre></div><h3 id="deleted-terraform-state-restore-process">Restore process</h3><p>In order to regain control of resource removed from terraform state, we will use the <a href="https://www.terraform.io/docs/import/index.html">import command</a> to recover the metadata for this resource. Import requires a resource address and the resource ID. The resource address is a combination of the resource type and resource name.</p>
+</code></pre></div><h3 id="deleted-terraform-state-restore-process">Restore process</h3><p>In order to regain control of resource removed from terraform state, we will use the <a href="https://www.terraform.io/cli/import">import command</a> to recover the metadata for this resource. Import requires a resource address and the resource ID. The resource address is a combination of the resource type and resource name.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform import module.starter_pack.kubernetes_namespace.starter_pack starter-pack
 
 </code></pre></div><p>The import command creates a new state file pulling in information about the specified kubernetes_namespace.</p>
@@ -1993,17 +1993,17 @@ kubectl get certificates -n &lt;NAMESPACE&gt;
 
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-04">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-07-05">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 4 January 2022.
+      This page was last reviewed on 5 April 2022.
 
-        It needs to be reviewed again on 4 April 2022
+        It needs to be reviewed again on 5 July 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 4 April 2022
+      This page was set to be reviewed before 5 July 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
