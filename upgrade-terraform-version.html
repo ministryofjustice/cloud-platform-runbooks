@@ -1659,7 +1659,7 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 </code></pre></div><p>The code will pull down every repository in the &ldquo;ministryofjustice&rdquo; organisation with the name that contains &ldquo;cloud-platform-terraform&rdquo; and run the command &ldquo;terraform 0.13upgrade&rdquo;. It will then commit and create a Pull Request against each repository using your GitHub credentials.</p>
 <p>This will result in a Pull Request output similar to the one outlined <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/pull/85/files">here</a>.</p>
 <p>Once all the Pull Requests have been reviewed, merge them into main and create a new release.</p>
-<p>Note: Terraform will release an <a href="https://www.terraform.io/docs/cli/commands/0.13upgrade.html">upgrade</a> command for each release that contains syntax changes, in the example above 0.13upgrade was used to create a more detailed <code>versions.tf</code>.</p>
+<p>Note: Terraform will release an <a href="https://www.terraform.io/docs/cli/commands/0.13upgrade">upgrade</a> command for each release that contains syntax changes, in the example above 0.13upgrade was used to create a more detailed <code>versions.tf</code>.</p>
 <h4 id="upgrade-a-test-namespace">Upgrade a test namespace</h4><p>It is difficult to test an upgrade on the Environments state, this is the best way to do so, with examples.</p>
 
 <ul>
@@ -1722,17 +1722,17 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 <h4 id="upgrade-the-cloud-platform-cli-image">Upgrade the cloud-platform-cli image</h4><p>Finally, following the successful upgrade to your new Terraform version, upgrade the version of Terraform used in the cloud-platform-cli docker image.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-03-30">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-07-05">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 30 December 2021.
+      This page was last reviewed on 5 April 2022.
 
-        It needs to be reviewed again on 30 March 2022
+        It needs to be reviewed again on 5 July 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 30 March 2022
+      This page was set to be reviewed before 5 July 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
