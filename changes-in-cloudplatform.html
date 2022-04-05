@@ -1576,7 +1576,7 @@
         <a href="/tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
       </li>
       <li>
-        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-1-bastion-host"><span>Install tmux and docker on the live-1 bastion host</span></a>
+        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-bastion-host"><span>Install tmux and docker on the live bastion host</span></a>
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
@@ -1662,7 +1662,7 @@ low similar process:</p>
 r approval.</li>
 <li>Merge PR</li>
 </ol>
-<p>Within environment repository we have end to end process fully automated with pipelines. Once the change is merged it is going to be automatically applied the apply pipeline (<a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform/jobs/apply-live-1/builds/151">apply-live-1</a> and <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform/jobs/apply-namespace-changes-live-1/builds/90">apply-namespace-changes-live-1</a>) and if the change is destroying a namespace it will be done by <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform/jobs/destroy-deleted-namespaces/builds/85">destroy-deleeted-namespace</a> pipeline</p>
+<p>Within environment repository we have end to end process fully automated with pipelines. Once the change is merged it is going to be automatically applied the apply pipeline (<a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/apply-live/builds/1">apply-live</a> and <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/apply-namespace-changes-live/builds/1">apply-namespace-changes-live</a> and if the change is destroying a namespace it will be detected by <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/detect-deleted-namespaces/builds/1">detect-deleted-namespace</a> pipeline</p>
 <h2 id="communications">Communications</h2><p>If changes involve downtime we must inform teams about it via slack (#cloud-platform-update). It is important to include <strong>which services</strong> are going to be down and <strong>for how long</strong>.</p>
 <p>Sometimes teams misunderstand downtimes of Cloud Platform services also involve downtime of <strong>their services</strong>, so it is very handy being  precise about the change.</p>
 

@@ -1576,7 +1576,7 @@
         <a href="/tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
       </li>
       <li>
-        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-1-bastion-host"><span>Install tmux and docker on the live-1 bastion host</span></a>
+        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-bastion-host"><span>Install tmux and docker on the live bastion host</span></a>
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
@@ -1649,7 +1649,7 @@
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>variable <span class="s2">"cluster_node_count_a"</span> <span class="o">{</span>
   description <span class="o">=</span> <span class="s2">"The number of worker node in the cluster in Availability Zone eu-west-2a"</span>
   default <span class="o">=</span> <span class="o">{</span>
-    live-1  <span class="o">=</span> <span class="s2">"9"</span>
+    live  <span class="o">=</span> <span class="s2">"9"</span>
     default <span class="o">=</span> <span class="s2">"1"</span>
   <span class="o">}</span>
 <span class="o">}</span>
@@ -1657,7 +1657,7 @@
 variable <span class="s2">"cluster_node_count_b"</span> <span class="o">{</span>
   description <span class="o">=</span> <span class="s2">"The number of worker node in the cluster in Availability Zone eu-west-2b"</span>
   default <span class="o">=</span> <span class="o">{</span>
-    live-1  <span class="o">=</span> <span class="s2">"9"</span>
+    live  <span class="o">=</span> <span class="s2">"9"</span>
     default <span class="o">=</span> <span class="s2">"1"</span>
   <span class="o">}</span>
 <span class="o">}</span>
@@ -1665,7 +1665,7 @@ variable <span class="s2">"cluster_node_count_b"</span> <span class="o">{</span>
 variable <span class="s2">"cluster_node_count_c"</span> <span class="o">{</span>
   description <span class="o">=</span> <span class="s2">"The number of worker node in the cluster in Availability Zone eu-west-2c"</span>
   default <span class="o">=</span> <span class="o">{</span>
-    live-1  <span class="o">=</span> <span class="s2">"9"</span>
+    live  <span class="o">=</span> <span class="s2">"9"</span>
     default <span class="o">=</span> <span class="s2">"1"</span>
   <span class="o">}</span>
 <span class="o">}</span>
@@ -1673,7 +1673,7 @@ variable <span class="s2">"cluster_node_count_c"</span> <span class="o">{</span>
 variable <span class="s2">"master_node_machine_type"</span> <span class="o">{</span>
   description <span class="o">=</span> <span class="s2">"The AWS EC2 instance types to use for master nodes"</span>
   default <span class="o">=</span> <span class="o">{</span>
-    live-1  <span class="o">=</span> <span class="s2">"c5.4xlarge"</span>
+    live  <span class="o">=</span> <span class="s2">"c5.4xlarge"</span>
     default <span class="o">=</span> <span class="s2">"c5.large"</span>
   <span class="o">}</span>
 <span class="o">}</span>
@@ -1681,7 +1681,7 @@ variable <span class="s2">"master_node_machine_type"</span> <span class="o">{</s
 variable <span class="s2">"worker_node_machine_type"</span> <span class="o">{</span>
   description <span class="o">=</span> <span class="s2">"The AWS EC2 instance types to use for worker nodes"</span>
   default <span class="o">=</span> <span class="o">{</span>
-    live-1  <span class="o">=</span> <span class="s2">"r5.xlarge"</span>
+    live  <span class="o">=</span> <span class="s2">"r5.xlarge"</span>
     default <span class="o">=</span> <span class="s2">"r5.large"</span>
   <span class="o">}</span>
 <span class="o">}</span>
@@ -1693,7 +1693,7 @@ variable <span class="s2">"worker_node_machine_type"</span> <span class="o">{</s
 <p>You can see more options to use when creating the cluster by running:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>./create-cluster.rb <span class="nt">--help</span>
 </code></pre></div><p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Run options: exclude {:cluster=&gt;"live-1"}
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Run options: exclude {:cluster=&gt;"live"}
 ..........................
 
 Finished in 4 minutes 53.4 seconds (files took 4.54 seconds to load)
@@ -1729,7 +1729,7 @@ terraform workspace list
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>Kubernetes master is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk
 KubeDNS is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 </code></pre></div><p>&hellip;where <code>XXXXXXX</code> is the name of your test cluster.</p>
-<p>If your context is pointing at live-1, switch to your test cluster by running</p>
+<p>If your context is pointing at live, switch to your test cluster by running</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
 </code></pre></div><p>When you are confident that both your terraform workspace and kubernetes context are set to your test cluster, apply the change to set the pagerduty config value:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>helm_release.prometheus_operator

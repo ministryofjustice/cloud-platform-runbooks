@@ -1576,7 +1576,7 @@
         <a href="/tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
       </li>
       <li>
-        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-1-bastion-host"><span>Install tmux and docker on the live-1 bastion host</span></a>
+        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-bastion-host"><span>Install tmux and docker on the live bastion host</span></a>
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
@@ -1664,7 +1664,7 @@ DONE
 <h2 id="find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-172-20-80-62.eu-west-2.compute.internal
 </code></pre></div><h2 id="count-pods-running-on-all-nodes">Count pods running on all nodes</h2><p>Paste this into the search field on <a href="https://prometheus.cloud-platform.service.justice.gov.uk">Prometheus</a>:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>max by(node) (max by(instance) (kubelet_running_pod_count{job="kubelet",metrics_path="/metrics"}) * on(instance) group_left(node) kubelet_node_name{job="kubelet",metrics_path="/metrics"})
-</code></pre></div><h2 id="install-tmux-and-docker-on-the-live-1-bastion-host">Install tmux and docker on the live-1 bastion host</h2><p>From <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9">here</a></p>
+</code></pre></div><h2 id="install-tmux-and-docker-on-the-live-bastion-host">Install tmux and docker on the live bastion host</h2><p>From <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9">here</a></p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">sudo </span>apt update
 <span class="nb">sudo </span>apt <span class="nb">install </span>tmux
 <span class="nb">sudo </span>apt <span class="nb">install </span>apt-transport-https ca-certificates curl gnupg2 software-properties-common
@@ -1683,7 +1683,7 @@ apt-cache policy docker-ce
 <h2 id="find-files-which-don-39-t-contain-a-particular-string">Find files which <em>don&rsquo;t</em> contain a particular string</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>for file in $(find * -name '*.erb'); do grep -q last_reviewed_on $file || echo $file; done
 </code></pre></div><h2 id="get-aws-ec2-instance-information-for-a-node">Get AWS EC2 instance information for a node</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws ec2 describe-instances --filters 'Name=private-dns-name,Values=ip-172-20-127-140.eu-west-2.compute.internal'
 </code></pre></div><h2 id="create-a-one-off-job-to-repeat-a-cronjob">Create a one-off job to repeat a cronjob</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl -n concourse-main create job ds-update-orphaned-statefiles --from=cronjob/orphaned-terraform-statefiles
-</code></pre></div><h2 id="hijack-a-concourse-job-container">Hijack a concourse job container</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager hijack -j environments-terraform/apply-namespace-changes-live-1
+</code></pre></div><h2 id="hijack-a-concourse-job-container">Hijack a concourse job container</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager hijack -j environments-live/apply-namespace-changes-live
 </code></pre></div><p>You&rsquo;ll be presented with a list of containers to choose from.</p>
 <h2 id="help-when-manually-deleting-aws-resources">Help when manually deleting AWS resources</h2><p>Occasionally you&rsquo;ll need to manually delete AWS components. A neat trick is to use the <a href="https://docs.aws.amazon.com/ARG/latest/userguide/tag-editor.html">AWS Tag Editor</a>.</p>
 

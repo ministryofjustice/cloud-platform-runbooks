@@ -1576,7 +1576,7 @@
         <a href="/tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
       </li>
       <li>
-        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-1-bastion-host"><span>Install tmux and docker on the live-1 bastion host</span></a>
+        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-bastion-host"><span>Install tmux and docker on the live bastion host</span></a>
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
@@ -1626,7 +1626,7 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="recycle-node">Recycle-node</h1><p>The <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/live-1/main/recycle-node.yaml">recycle-node pipeline</a> runs every two hours between midnight and 6am, it executes the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/recycle-node.rb">recycle-node.rb</a> script to replace the oldest worker node by:</p>
+              <h1 id="recycle-node">Recycle-node</h1><p>The <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/ee263de5a54156e1e2839468e8cb221aebba1f2f/pipelines/manager/main/maintenance.yaml#L126">recycle-node pipeline</a> runs every two hours between midnight and 6am, it executes the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/recycle-node.rb">recycle-node.rb</a> script to replace the oldest worker node by:</p>
 
 <ul>
 <li>Cordoning the oldest node</li>

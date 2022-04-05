@@ -1576,7 +1576,7 @@
         <a href="/tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
       </li>
       <li>
-        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-1-bastion-host"><span>Install tmux and docker on the live-1 bastion host</span></a>
+        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-bastion-host"><span>Install tmux and docker on the live bastion host</span></a>
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
@@ -1634,7 +1634,7 @@
 <li>It will be handy to have auth0 management console already opened in a browser tab, so you can verify and monitor the changes.</li>
 </ul>
 <h2 id="1-taint-resources-terraform">1) Taint resources (terraform)</h2><p>Tainting auth0 resource will force new credentials generation. Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform"><code>cloud-platform-infrastructure/terraform/cloud-platform</code> directory</a> and run</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform workspace select live-1
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform workspace select live
 $ terraform taint module.auth0.auth0_client.components
 </code></pre></div><p>Make sure with <code>terraform plan</code> that auth0 resource is going to be recreated as well as kops template file (it&rsquo;s going to be needed in the next step).</p>
 <p>Apply changes if you are happy with them:</p>
