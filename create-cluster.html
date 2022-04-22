@@ -1695,9 +1695,9 @@ KubeDNS is running at https://api.XXXXXXX.cloud-platform.service.justice.gov.uk/
 </code></pre></div><p>Answer <code>yes</code> if the planned changes look correct.</p>
 <h2 id="authenticating">Authenticating</h2><p>If you want to authenticate to your new cluster in the same way as a regular user would (i.e. logging
 in via auth0, rather than using <code>kops export kubecfg...</code>), the auth0 login URL is:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>https://login.apps.[cluster name].cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>https://login.[cluster name].cloud-platform.service.justice.gov.uk
 </code></pre></div><p>e.g. for a cluster called &ldquo;david-test1&rdquo;, the URL to authenticate and download a <code>~/.kube/config</code> file is:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>https://login.apps.david-test1.cloud-platform.service.justice.gov.uk
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>https://login.david-test1.cloud-platform.service.justice.gov.uk
 </code></pre></div><h2 id="docker-authentication">Docker authentication</h2><p>Due to <a href="https://www.docker.com/increase-rate-limits">Docker Hub rate limiting</a>, it may be necessary to <a href="https://github.com/kubernetes/kops/blob/master/docs/cli/kops_create_secret_dockerconfig.md">add authentication</a> to your Docker clients running in a Kops cluster.</p>
 <p>The following error message will appear if your cluster has been rate limited by Docker Hub:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Failed to pull image \"docker.io/prometheus:1.0"
