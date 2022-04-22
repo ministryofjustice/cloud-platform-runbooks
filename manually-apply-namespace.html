@@ -908,7 +908,7 @@
         <a href="/rotate-user-aws-credentials.html#rotate-user-aws-credentials-set-pingdom-environment-variables-optional"><span>Set pingdom environment variables(Optional)</span></a>
       </li>
       <li>
-        <a href="/rotate-user-aws-credentials.html#target-the-live-cluster"><span>Target the live cluster</span></a>
+        <a href="/rotate-user-aws-credentials.html#rotate-user-aws-credentials-target-the-live-cluster"><span>Target the live cluster</span></a>
       </li>
       <li>
         <a href="/rotate-user-aws-credentials.html#set-cluster-related-environment-variables"><span>Set cluster related environment variables</span></a>
@@ -1021,7 +1021,7 @@
         <a href="/manually-apply-namespace.html#set-pingdom-environment-variables-optional"><span>Set pingdom environment variables(Optional)</span></a>
       </li>
       <li>
-        <a href="/manually-apply-namespace.html#target-the-live-1-cluster"><span>Target the live-1 cluster</span></a>
+        <a href="/manually-apply-namespace.html#target-the-live-cluster"><span>Target the live cluster</span></a>
       </li>
       <li>
         <a href="/manually-apply-namespace.html#set-some-environment-variables"><span>Set some environment variables</span></a>
@@ -1595,18 +1595,18 @@ The values are stored as secrets in <code>manager</code> cluster - <code>concour
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export PINGDOM_USER="XXXXXXXXXXX"
 export PINGDOM_PASSWORD="XXXXXXXXXXXX"
 export PINGDOM_API_KEY="XXXXXXXXXXXXX"
-</code></pre></div><h2 id="target-the-live-1-cluster">Target the live-1 cluster</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export AWS_PROFILE=moj-cp
-export KOPS_STATE_STORE=s3://cloud-platform-kops-state
-kops export kubecfg live-1.cloud-platform.service.justice.gov.uk
+</code></pre></div><h2 id="target-the-live-cluster">Target the live cluster</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export AWS_PROFILE=moj-cp
+export KUBECONFIG=${HOME}/.kube/config
+aws eks --region eu-west-2 update-kubeconfig --name live
 </code></pre></div><h2 id="set-some-environment-variables">Set some environment variables</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export TF_VAR_cluster_name="live-1"
 export TF_VAR_cluster_state_bucket=cloud-platform-terraform-state
-export TF_VAR_cluster_state_key="cloud-platform/live-1/terraform.tfstate"
+export TF_VAR_cluster_state_key="cloud-platform/live/terraform.tfstate"
 #needed by tf k8s provider
 export KUBE_CONFIG_PATH=${HOME}/.kube/config
 </code></pre></div><h2 id="set-the-namespace-name">Set the namespace name</h2><p>I&rsquo;m using <code>offender-events-dev</code> for this example. Use whatever is relevant for your case.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export NAMESPACE=offender-events-dev
 
-cd namespaces/live-1.cloud-platform.service.justice.gov.uk/${NAMESPACE}/resources
+cd namespaces/live.cloud-platform.service.justice.gov.uk/${NAMESPACE}/resources
 </code></pre></div><h2 id="terraform-init">Terraform Init</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init \
   -backend-config="bucket=cloud-platform-terraform-state" \
   -backend-config="key=cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/${NAMESPACE}/terraform.tfstate" \
@@ -1615,17 +1615,17 @@ cd namespaces/live-1.cloud-platform.service.justice.gov.uk/${NAMESPACE}/resource
 </code></pre></div><h2 id="terraform-plan-apply">Terraform Plan/Apply</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-07-20">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 January 2022.
+      This page was last reviewed on 20 April 2022.
 
-        It needs to be reviewed again on 18 April 2022
+        It needs to be reviewed again on 20 July 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 April 2022
+      This page was set to be reviewed before 20 July 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
