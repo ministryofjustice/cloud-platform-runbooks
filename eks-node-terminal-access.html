@@ -1286,6 +1286,9 @@
       <li>
         <a href="/eks-node-terminal-access.html#steps-to-get-terminal-access-via-aws-cli"><span>Steps to get terminal access via AWS cli</span></a>
       </li>
+      <li>
+        <a href="/eks-node-terminal-access.html#access-via-ssh-scp"><span>Access via SSH /SCP</span></a>
+      </li>
     </ul>
   </li>
 </ul>
@@ -1620,19 +1623,26 @@ kubectl describe node &lt;node name you want to shell into&gt; | grep 'ProviderI
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws ssm start-session --target &lt;Instance ID&gt;
 </code></pre></div></li>
 </ul>
+<h2 id="access-via-ssh-scp">Access via SSH /SCP</h2><p>It can be more convenient to access the nodes using the standard ssh client, esp when copying files.</p>
+<p>To set up, add the following in <code>~/.ssh/config</code>:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Host i-*
+  User ssm-user
+  ProxyCommand bash -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
+</code></pre></div><p>Connect and append your <code>~/.ssh/id_rsa.pub</code> key to the <code>/home/ssm-user/.ssh/authorized_keys</code> file on the node.</p>
+<p>Now you can <code>ssh i-0abcdef</code> or <code>scp 1-0abcdef:file</code></p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-06-22">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-07-21">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 22 March 2022.
+      This page was last reviewed on 21 April 2022.
 
-        It needs to be reviewed again on 22 June 2022
+        It needs to be reviewed again on 21 July 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 22 June 2022
+      This page was set to be reviewed before 21 July 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
