@@ -792,23 +792,6 @@
         </ul>
       </li>
       <li>
-        <a href="/disaster-recovery-scenarios.html#deleted-corrupted-the-kops-state"><span>Deleted/corrupted the kops state</span></a>
-        <ul>
-          <li>
-            <a href="/disaster-recovery-scenarios.html#deleted-corrupted-the-kops-state-impact"><span>Impact</span></a>
-          </li>
-          <li>
-            <a href="/disaster-recovery-scenarios.html#deleted-corrupted-the-kops-state-possible-cause"><span>Possible Cause</span></a>
-          </li>
-          <li>
-            <a href="/disaster-recovery-scenarios.html#restore-process-for-corrupted-kops-state"><span>Restore process for corrupted kops state</span></a>
-          </li>
-          <li>
-            <a href="/disaster-recovery-scenarios.html#restore-process-for-deleted-s3-bucket-where-kops-state-is-stored"><span>Restore process for deleted S3 bucket where kops state is stored</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
         <a href="/disaster-recovery-scenarios.html#deleted-terraform-state"><span>Deleted terraform state</span></a>
         <ul>
           <li>
@@ -1640,69 +1623,7 @@ velero-allnamespacebackup-00000000000000   Completed   2020-03-30 12:00:37 +0100
 </code></pre></div><p>Check the logs of the restore:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore logs velero-allnamespacebackup-00000000000000-00000000000000
 
-</code></pre></div><h2 id="deleted-corrupted-the-kops-state">Deleted/corrupted the kops state</h2><h3 id="deleted-corrupted-the-kops-state-impact">Impact</h3><p>Severity : LOW</p>
-<p>Likelihood: LOW/MEDIUM</p>
-<p>When the kops state is corrupted, in most cases the kubernetes cluster will still be operational.</p>
-<p>This means the services will not have any impact, if the issue is resolved in a shorter amount of time.</p>
-<p>Leaving the cluster in the corrupted kops state for a prolonged period will reduce the cluster being highly available
-and not handle any failover in case one or more masters has gone down.</p>
-<p>Hence, Cloud platform team will not be able to perform any infrastructure changes. Also, teams will not able to communicate with the cluster
-to deploy applications or schedule any jobs.</p>
-<h3 id="deleted-corrupted-the-kops-state-possible-cause">Possible Cause</h3><p>Kops state may get corruputed when the kops template is changed for</p>
-
-<ul>
-<li>upgrading kubernetes</li>
-<li>changing an instancegroup</li>
-<li>any other config changes</li>
-</ul>
-<p>It could also be corrupted/lost if a user deleted the s3 bucket by accident where the kops state is stored</p>
-<p>The sign of this happening can be seen when doing <code>kops validate cluster &lt;cluster name&gt;</code></p>
-<p>If the kops state is corrupted, some of the worker nodes or masters machines will not join the cluster.</p>
-<p>The above command will show something similar to</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>
-VALIDATION ERRORS
-KIND    NAME            MESSAGE
-Machine i-04195929decb7a43b             machine "i-04195929decb7a43b" has not yet joined cluster
-Node    ip-172-20-74-189.eu-west-2.compute.internal node "ip-172-20-74-189.eu-west-2.compute.internal" is not ready
-Pod kube-system/calico-node-kp6m7           kube-system pod "calico-node-kp6m7" is pending
-
-Validation Failed
-</code></pre></div><p>If the s3 bucket is deleted where the kops state is stored, then <code>kops validate ...</code> show as</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>
-error reading cluster configuration: Cluster.kops.k8s.io "&lt;cluster name&gt;.cloud-platform.service.justice.gov.uk" not found
-</code></pre></div><h3 id="restore-process-for-corrupted-kops-state">Restore process for corrupted kops state</h3><p>The cluster kops state is stored in the generated yaml file inside the folder kops/<code>&lt;CLUSTER_NAME&gt;</code>.yaml.</p>
-<p>For <code>live-1</code> the generated kops yaml file is stored in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/kops/live-1.yaml">github</a>.
-So, checkout the previous working commit and update the remote kops state with that file.</p>
-<p>If the cluster state is corrupted due to the latest changes to the yaml file, revert back the changes and update the remote kops state.</p>
-<p>Below are the steps to update and restore the kops state</p>
-<p>** Revert the kops yaml file kops/<code>&lt;CLUSTER_NAME&gt;</code>.yaml to previous working version.</p>
-<p><strong>Authenticate to the cluster</strong></p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops export kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
-</code></pre></div><p><strong>Update the remote state with the reverted changes</strong></p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops replace -f kops/&lt;CLUSTER_NAME&gt;.yaml
-kops update cluster
-</code></pre></div><p><strong>Update the cluster with &ndash;yes to apply the changes</strong></p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops update cluster --yes
-</code></pre></div><p><strong>If the above command reports that the cluster needs to be rolled, do the rolling-update and with <code>--yes</code> option</strong></p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops rolling-update cluster --yes
-</code></pre></div><p>For more information on kops update, rolling-update and debugging instructions, refer
-<a href="running-kops-update-rollingupdate.html#running-kops-update-and-rollingupdate">runbook for kops update</a></p>
-<p>If the restore process require creating new instancegroup for worker nodes, follow the procedure mentioned
-in <a href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster.html#upgrade-a-cluster">Upgrade a cluster</a>.</p>
-<p>The difference to the upgrading procedure would be</p>
-
-<ul>
-<li><p>reverting the kops yaml file to old working version of kubernetes and</p></li>
-<li><p>if new instancegroup for worker nodes is needed, then to create one with working kubernetes version and move workload back to that worker nodes.</p></li>
-</ul>
-<h3 id="restore-process-for-deleted-s3-bucket-where-kops-state-is-stored">Restore process for deleted S3 bucket where kops state is stored</h3><p>Kops state of all clusters are backed up in a different s3 bucket <code>kops-backup-replication</code> in the region <code>eu-west-2</code>.</p>
-<p>If the entire folder where the cluster state is stored is lost/corrupted, copy the folder from the backup bucket by running below</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws s3 cp s3://kops-backup-replication/&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk/ s3://cloud-platform-kops-state/ --recursive
-</code></pre></div><p>Validate the cluster</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops validate cluster &lt;cluster name&gt;
-</code></pre></div><p>The validation should be success and should say</p>
-<p><strong>&ldquo;Your cluster <code>&lt;cluster name&gt;</code>.cloud-platform.service.justice.gov.uk is ready&rdquo;</strong></p>
-<h2 id="deleted-terraform-state">Deleted terraform state</h2><p>Severity : low</p>
+</code></pre></div><h2 id="deleted-terraform-state">Deleted terraform state</h2><p>Severity : low</p>
 <p>Likelihood: medium</p>
 <h3 id="deleted-terraform-state-impact">Impact</h3><p>Items removed from the terraform state are not physically destroyed but no longer managed by terraform. This means infrastructure is orphaned with no state.</p>
 <p>For example, if you remove an AWS instance from the state, the AWS instance will continue running, but terraform plan will no longer see that instance.</p>
