@@ -1528,7 +1528,7 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="upgrade-cluster-components">Upgrade cluster components</h1><p>Cluster components are application layer components that are installed in a cluster such as prometheus, external-dns, opa, kiam etc.</p>
+              <h1 id="upgrade-cluster-components">Upgrade cluster components</h1><p>Cluster components are application layer components that are installed in a cluster such as prometheus, external-dns, opa, certmanager etc.</p>
 <p>Components are configured as terraform modules and are called from <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> with a release tag.</p>
 <h2 id="planning">Planning</h2><p>When you start working on upgrading any cloud-platform-components ticket:</p>
 
@@ -1552,18 +1552,22 @@
 <p>From a local copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>,  run the following command:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
 </code></pre></div><h3 id="authenticate-to-the-test-cluster">Authenticate to the test cluster</h3><p>Create the file <code>~/.kube/config</code> in your tools-image container by running:</p>
-<p>For Kops cluster</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kops <span class="nb">export </span>kubecfg XXXXXXX.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>For EKS cluster</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws eks <span class="nt">--region</span> eu-west-2 update-kubeconfig <span class="nt">--name</span> &lt;cluster-name&gt;
 </code></pre></div><h3 id="run-the-integration-tests">Run the integration tests</h3><p>This is the ensure the test cluster doesnot have any existing issues and ready to use</p>
+<p>To run ruby tests:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd smoke-tests
 bundle binstubs bundler --force --path /usr/local/bin
 bundle binstubs rspec-core --path /usr/local/bin
-</code></pre></div><p>For kops cluster</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~eks-manager <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
-</code></pre></div><p>For EKS cluster</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~kops <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
+</code></pre></div><div class="highlight"><pre class="highlight shell" tabindex="0"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~kops <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
+</code></pre></div><p>To run golang tests:</p>
+
+<ul>
+<li>Update the golang config to use test cluster name</li>
+</ul>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> <span class="nb">export </span><span class="nv">CLUSTER_NAME</span><span class="o">=</span>&lt;test-cluster-name&gt;
+<span class="nb">cat</span> ./tests/config/live.yaml |  <span class="nb">sed</span> <span class="nt">-e</span> <span class="s2">"s/clusterName: 'live.cloud-platform.service.justice.gov.uk'/clusterName: '</span><span class="nv">$CLUSTER_NAME</span><span class="s2">.cloud-platform.service.justice.gov.uk'/g"</span> <span class="o">&gt;</span> /tmp/<span class="nv">$CLUSTER_NAME</span>.yaml
+<span class="nb">cd</span> ./tests/e2e<span class="p">;</span>
+go <span class="nb">test</span> <span class="nt">-v</span> <span class="nt">-ginkgo</span>.slowSpecThreshold<span class="o">=</span>120 <span class="nt">-config</span> /tmp/<span class="nv">$CLUSTER_NAME</span>.yaml
 </code></pre></div><h3 id="testing-the-upgrade">Testing the upgrade</h3>
 <ol>
 <li><p>Make the changes required to the module. For example, for upgrading the cert-manager, change the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-certmanager">cert-manager terraform module</a>. This might include</p>
@@ -1590,7 +1594,7 @@ bundle binstubs rspec-core --path /usr/local/bin
 <h3 id="performing-the-upgrade">Performing the upgrade</h3><p>There is a cli command to perform the upgrade. First navigate to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> and run the following command:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environments bump-module <span class="nt">--module</span> &lt;module-name&gt; <span class="nt">--module-version</span> &lt;version&gt;
 </code></pre></div><p>The <code>module-name</code> flag must contain a word in the module source. For example, if you were to upgrade the cert-manager module to 0.5.0, you would run the following command:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environments bump-module <span class="nt">--module</span> cert-manager <span class="nt">--module-version</span> 0.5.0
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environment bump-module <span class="nt">--module</span> certmanager <span class="nt">--module-version</span> 0.5.0
 </code></pre></div><h4 id="cert-manager">Cert manager</h4>
 <ul>
 <li>The CRDs for cert-manager doesnot get deleted</li>
@@ -1599,17 +1603,17 @@ bundle binstubs rspec-core --path /usr/local/bin
 </ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-04-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-08-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 January 2022.
+      This page was last reviewed on 6 May 2022.
 
-        It needs to be reviewed again on 18 April 2022
+        It needs to be reviewed again on 6 August 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 April 2022
+      This page was set to be reviewed before 6 August 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
