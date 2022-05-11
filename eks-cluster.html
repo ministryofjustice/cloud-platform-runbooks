@@ -335,41 +335,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/create-cluster.html#create-a-new-cluster"><span>Create a new cluster</span></a>
-    <ul>
-      <li>
-        <a href="/create-cluster.html#create-a-new-cluster-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="/create-cluster.html#environment-variables"><span>Environment Variables</span></a>
-      </li>
-      <li>
-        <a href="/create-cluster.html#run-the-build-script-via-the-tools-image"><span>Run the build script, via the tools image</span></a>
-      </li>
-      <li>
-        <a href="/create-cluster.html#alerts"><span>Alerts</span></a>
-        <ul>
-          <li>
-            <a href="/create-cluster.html#apply-the-changes"><span>Apply the changes</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="/create-cluster.html#authenticating"><span>Authenticating</span></a>
-      </li>
-      <li>
-        <a href="/create-cluster.html#docker-authentication"><span>Docker authentication</span></a>
-        <ul>
-          <li>
-            <a href="/create-cluster.html#adding-a-docker-config-file-to-your-cluster"><span>Adding a Docker config file to your cluster</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/add-concourse-to-cluster.html#add-concourse-to-a-test-cluster"><span>Add Concourse to a test cluster</span></a>
     <ul>
       <li>
@@ -575,6 +540,22 @@
 </ul>
 <ul>
   <li>
+    <a href="/upgrade-user-components.html#upgrade-user-components"><span>Upgrade user components</span></a>
+    <ul>
+      <li>
+        <a href="/upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+      </li>
+      <li>
+        <a href="/upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="/upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/delete-cluster.html#delete-a-cluster"><span>Delete a cluster</span></a>
     <ul>
       <li>
@@ -593,22 +574,6 @@
       </li>
       <li>
         <a href="/delete-cluster.html#delete-an-eks-cluster"><span>Delete an EKS cluster</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/upgrade-user-components.html#upgrade-user-components"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="/upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="/upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="/upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -714,7 +679,7 @@
         <a href="/disaster-recovery.html#apply-cloud-platform-resources"><span>Apply cloud-platform resources</span></a>
       </li>
       <li>
-        <a href="/disaster-recovery.html#cloud-platform-disaster-recovery-create-a-new-cluster"><span>Create a new cluster</span></a>
+        <a href="/disaster-recovery.html#create-a-new-cluster"><span>Create a new cluster</span></a>
       </li>
       <li>
         <a href="/disaster-recovery.html#perform-the-restore"><span>Perform the restore</span></a>
@@ -1227,6 +1192,26 @@
 </ul>
 <ul>
   <li>
+    <a href="/custom-default-backend.html#custom-default-backend"><span>Custom default-backend</span></a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/custom-default-backend.html#background"><span>Background</span></a>
+          </li>
+          <li>
+            <a href="/custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
+          </li>
+          <li>
+            <a href="/custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/add-new-opa-policy.html#open-policy-agent-policies"><span>Open Policy Agent policies</span></a>
     <ul>
       <li>
@@ -1272,26 +1257,6 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access"><span>ACCESS</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/custom-default-backend.html#custom-default-backend"><span>Custom default-backend</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/custom-default-backend.html#background"><span>Background</span></a>
-          </li>
-          <li>
-            <a href="/custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
-          </li>
-          <li>
-            <a href="/custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -1505,8 +1470,7 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1><p>For now EKS is only used for the manager cluster, it mainly holds Cloud Platform concourse CI. We are working on migrating our live cluster to EKS.</p>
-<p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong> (EKS or kOps). Each one creates a unique Route53 hostzone which is unique to the name</p>
+              <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1><p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong>. Each one creates a unique Route53 hostzone which is unique to the name</p>
 <p>You can create a new EKS test cluster using the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/build-test-cluster/">cluster build pipeline</a>.</p>
 <p>Alternatively, using the <code>create-cluster</code> script.</p>
 <p>Execute the script, by giving the <code>-k eks</code> or <code>--kind eks</code> option and the desired name of your new cluster. e.g.:</p>
@@ -1518,8 +1482,7 @@
 <li>Make sure you have access to Cloud Platform AWS account</li>
 <li>Set your environment variables (you might also want to include <code>AWS_*</code> envs):</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    export KOPS_STATE_STORE=s3://cloud-platform-kops-state
-    export AWS_PROFILE=moj-cp
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    export AWS_PROFILE=moj-cp
 </code></pre></div><h2 id="provisioning">Provisioning</h2><h3 id="1-vpc">1. VPC</h3><p>We need to create a VPC to deploy the cluster, VPCs are deployed using terraform code under <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc">cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc</a> folder:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd cloud-platform-infrastructure/terraform/aws-acounts/cloud-platform-aws/vpc
 terraform init
