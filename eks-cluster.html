@@ -1060,6 +1060,9 @@
         <a href="/eks-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
+        <a href="/eks-cluster.html#environment-variables"><span>Environment Variables</span></a>
+      </li>
+      <li>
         <a href="/eks-cluster.html#provisioning"><span>Provisioning</span></a>
         <ul>
           <li>
@@ -1123,19 +1126,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/get-audit-log-from-modsec.html#get-an-audit-log-from-modsec"><span>Get an audit log from modsec</span></a>
-    <ul>
-      <li>
-        <a href="/get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
-      </li>
-      <li>
-        <a href="/get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/access-eks-cluster.html#access-eks-cluster"><span>Access EKS cluster</span></a>
     <ul>
       <li>
@@ -1148,6 +1138,19 @@
             <a href="/access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/get-audit-log-from-modsec.html#get-an-audit-log-from-modsec"><span>Get an audit log from modsec</span></a>
+    <ul>
+      <li>
+        <a href="/get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
+      </li>
+      <li>
+        <a href="/get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
       </li>
     </ul>
   </li>
@@ -1176,16 +1179,29 @@
 </ul>
 <ul>
   <li>
-    <a href="/cloud-platform-to-tgw.html#adding-a-route-to-connect-to-a-tgw"><span>Adding a route to connect to a TGW</span></a>
+    <a href="/destroy-concourse-build-data.html#destroy-concourse-build-data"><span>Destroy Concourse Build Data</span></a>
     <ul>
       <li>
-        <a href="/cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+        <a href="/destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
       </li>
       <li>
-        <a href="/cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+        <a href="/destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/add-new-opa-policy.html#open-policy-agent-policies"><span>Open Policy Agent policies</span></a>
+    <ul>
+      <li>
+        <a href="/add-new-opa-policy.html#adding-a-policy"><span>Adding a policy</span></a>
       </li>
       <li>
-        <a href="/cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+        <a href="/add-new-opa-policy.html#writing-tests"><span>Writing tests</span></a>
+      </li>
+      <li>
+        <a href="/add-new-opa-policy.html#references"><span>References</span></a>
       </li>
     </ul>
   </li>
@@ -1212,29 +1228,16 @@
 </ul>
 <ul>
   <li>
-    <a href="/add-new-opa-policy.html#open-policy-agent-policies"><span>Open Policy Agent policies</span></a>
+    <a href="/cloud-platform-to-tgw.html#adding-a-route-to-connect-to-a-tgw"><span>Adding a route to connect to a TGW</span></a>
     <ul>
       <li>
-        <a href="/add-new-opa-policy.html#adding-a-policy"><span>Adding a policy</span></a>
+        <a href="/cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
       </li>
       <li>
-        <a href="/add-new-opa-policy.html#writing-tests"><span>Writing tests</span></a>
+        <a href="/cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
       </li>
       <li>
-        <a href="/add-new-opa-policy.html#references"><span>References</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/destroy-concourse-build-data.html#destroy-concourse-build-data"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="/destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="/destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+        <a href="/cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
       </li>
     </ul>
   </li>
@@ -1475,15 +1478,36 @@
 <p>Alternatively, using the <code>create-cluster</code> script.</p>
 <p>Execute the script, by giving the <code>-k eks</code> or <code>--kind eks</code> option and the desired name of your new cluster. e.g.:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>./create-cluster.rb <span class="nt">--name</span> mogaal-eks <span class="nt">--kind</span> eks
-</code></pre></div><p>Check the <a href="https://runbooks.cloud-platform.service.justice.gov.uk/create-cluster.html#create-a-new-cluster">create a cluster</a> runbook for pre-requisites and environment variables to run the script.</p>
+</code></pre></div><p>Check the pre-requisites and environment variables section of this document before running this script.</p>
+<p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
+<p>See our [cluster naming policy] for information on how to choose a suitable name for your cluster.</p>
+<p>By default, the script will create a <code>small</code> cluster. This means the master and worker EC2 instances will be less powerful machine types than in our production cluster.</p>
+<p>You can see more options to use when creating the cluster by running:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>./create-cluster.rb <span class="nt">--help</span>
+</code></pre></div><p>The script takes around 30 minutes to execute. At the end, you should see output like this:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>2022-05-04 12:10:27 kubectl cluster-info
+Kubernetes control plane is running at https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.yl4.eu-west-2.eks.amazonaws.com
+CoreDNS is running at https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.yl4.eu-west-2.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+</code></pre></div><p>The section before <code>kubectl cluster-info</code> is the cluster integration tests, which run at the end of the build
+process. The number of tests will change, so the output will vary from what is shown here.</p>
 <p>Alternatively, if you need more control over the test cluster parameters, or you just prefer to do it manually, the rest of this document describes the process.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <ul>
 <li>Make sure you have access to Cloud Platform AWS account</li>
 <li>Set your environment variables (you might also want to include <code>AWS_*</code> envs):</li>
+<li>You have an [AWS CLI] profile <code>moj-cp</code>, with suitable credentials</li>
 </ul>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    export AWS_PROFILE=moj-cp
-</code></pre></div><h2 id="provisioning">Provisioning</h2><h3 id="1-vpc">1. VPC</h3><p>We need to create a VPC to deploy the cluster, VPCs are deployed using terraform code under <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc">cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc</a> folder:</p>
+</code></pre></div>
+<ul>
+<li>Your GPG key must be added to the [infrastructure repo] so that you are able to run <code>git-crypt unlock</code> (the script will run this for you, but you must be <em>able</em> to do it)</li>
+<li>You have [docker] installed</li>
+</ul>
+<h2 id="environment-variables">Environment Variables</h2><p>See the file [example.env.create-cluster] in the [infrastructure repo]. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.rb</code> script to create a new cluster.</p>
+<p>You can get the auth0 values from the <code>terraform-provider-auth0</code> application on <a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/applications">auth0</a>.</p>
+<h2 id="provisioning">Provisioning</h2><h3 id="1-vpc">1. VPC</h3><p>We need to create a VPC to deploy the cluster, VPCs are deployed using terraform code under <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc">cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc</a> folder:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd cloud-platform-infrastructure/terraform/aws-acounts/cloud-platform-aws/vpc
 terraform init
 terraform workspace new &lt;WorkspaceName&gt;
