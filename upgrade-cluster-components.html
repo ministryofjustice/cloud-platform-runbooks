@@ -370,80 +370,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/upgrade-cluster.html#upgrade-a-cluster"><span>Upgrade a cluster</span></a>
-    <ul>
-      <li>
-        <a href="/upgrade-cluster.html#upgrade-a-cluster-planning"><span>Planning</span></a>
-      </li>
-      <li>
-        <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites"><span>Pre-requisites</span></a>
-        <ul>
-          <li>
-            <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites-setup-environment"><span>Setup environment</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites-run-the-integration-tests"><span>Run the integration tests</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#sanity-checks"><span>Sanity checks</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#upgrade-a-cluster-pre-requisites-run-a-shell-in-the-tools-image"><span>Run a shell in the tools image</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="/upgrade-cluster.html#run-the-upgrade"><span>Run the upgrade</span></a>
-        <ul>
-          <li>
-            <a href="/upgrade-cluster.html#authenticate-to-the-cluster"><span>Authenticate to the cluster</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#update-the-live-cluster-manifest"><span>Update the live cluster manifest</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#push-changes-to-kops-state"><span>Push changes to kops state</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#perform-a-rolling-update"><span>Perform a rolling-update</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#take-stock-of-current-running-worker-nodes"><span>Take stock of current running worker nodes</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#create-new-worker-instance-groups"><span>Create new worker instance groups</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#cordon-old-workers"><span>Cordon old workers</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#scale-the-number-of-ingress-controllers"><span>Scale the number of ingress controllers</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#drain-the-old-worker-nodes"><span>Drain the old worker nodes</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#validate-the-cluster"><span>Validate the cluster</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#run-the-integration-tests-again"><span>Run the integration tests again</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#delete-the-old-instance-groups"><span>Delete the old instance groups</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-cluster.html#scale-the-ingress-controllers-down"><span>Scale the ingress-controllers down</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="/upgrade-cluster.html#commit-changes-back-to-main-branch"><span>Commit changes back to main branch</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/upgrade-eks-cluster.html#upgrade-eks-cluster"><span>Upgrade EKS cluster</span></a>
     <ul>
       <li>
@@ -466,6 +392,36 @@
           </li>
           <li>
             <a href="/upgrade-eks-cluster.html#upgrade-addon-s"><span>Upgrade addon(s)</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/upgrade-terraform-version.html#upgrade-terraform-version"><span>Upgrade Terraform Version</span></a>
+    <ul>
+      <li>
+        <a href="/upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+      </li>
+      <li>
+        <a href="/upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
+      </li>
+      <li>
+        <a href="/upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
+      </li>
+      <li>
+        <a href="/upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
+        <ul>
+          <li>
+            <a href="/upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
+          </li>
+          <li>
+            <a href="/upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
+          </li>
+          <li>
+            <a href="/upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
       </li>
@@ -502,36 +458,6 @@
           </li>
           <li>
             <a href="/upgrade-cluster-components.html#performing-the-upgrade"><span>Performing the upgrade</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/upgrade-terraform-version.html#upgrade-terraform-version"><span>Upgrade Terraform Version</span></a>
-    <ul>
-      <li>
-        <a href="/upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
-      </li>
-      <li>
-        <a href="/upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
-      </li>
-      <li>
-        <a href="/upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
-      </li>
-      <li>
-        <a href="/upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
-        <ul>
-          <li>
-            <a href="/upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
-          </li>
-          <li>
-            <a href="/upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
       </li>
@@ -927,6 +853,24 @@
 </ul>
 <ul>
   <li>
+    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <ul>
+      <li>
+        <a href="/export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
+        <ul>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
+          </li>
+          <li>
+            <a href="/export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/remove-data-from-elasticsearch.html#remove-data-from-elasticsearch"><span>Remove data from Elasticsearch</span></a>
     <ul>
       <li>
@@ -943,24 +887,6 @@
       </li>
       <li>
         <a href="/remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/export-elasticsearch-to-csv.html#export-data-from-elasticsearch-into-a-csv-file"><span>Export data from Elasticsearch into a CSV file</span></a>
-    <ul>
-      <li>
-        <a href="/export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
-        <ul>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
-          </li>
-          <li>
-            <a href="/export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -1192,6 +1118,28 @@
 </ul>
 <ul>
   <li>
+    <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team"><span>Onboarding into the Cloud Platform Team</span></a>
+    <ul>
+      <li>
+        <a href="/joiners-guide.html#people-team"><span>People Team</span></a>
+      </li>
+      <li>
+        <a href="/joiners-guide.html#service-desk"><span>Service Desk</span></a>
+      </li>
+      <li>
+        <a href="/joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
+      </li>
+      <li>
+        <a href="/joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
+      </li>
+      <li>
+        <a href="/joiners-guide.html#access"><span>ACCESS</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
     <a href="/custom-default-backend.html#custom-default-backend"><span>Custom default-backend</span></a>
     <ul>
       <li>
@@ -1222,28 +1170,6 @@
       </li>
       <li>
         <a href="/cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/joiners-guide.html#onboarding-into-the-cloud-platform-team"><span>Onboarding into the Cloud Platform Team</span></a>
-    <ul>
-      <li>
-        <a href="/joiners-guide.html#people-team"><span>People Team</span></a>
-      </li>
-      <li>
-        <a href="/joiners-guide.html#service-desk"><span>Service Desk</span></a>
-      </li>
-      <li>
-        <a href="/joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
-      </li>
-      <li>
-        <a href="/joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
-      </li>
-      <li>
-        <a href="/joiners-guide.html#access"><span>ACCESS</span></a>
       </li>
     </ul>
   </li>
@@ -1530,19 +1456,25 @@ go <span class="nb">test</span> <span class="nt">-v</span> <span class="nt">-gin
 <li>The existing certificates doesnot change in any way. This can be done by checking the timestamps of certificate creation</li>
 <li>Able to create and validate new certificates</li>
 </ul>
+<h4 id="prometheus">Prometheus</h4>
+<ul>
+<li>Ensure correct CRDs versions of prometheus-operator are updated before upgrading prometheus-operator</li>
+<li>The existing PrometheusRules and ServiceMonitors doesnot change in any way. This can be done by checking the timestamps of those resourse creation</li>
+<li>Able to query prometheus for metrics</li>
+</ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-08-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-08-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 May 2022.
+      This page was last reviewed on 17 May 2022.
 
-        It needs to be reviewed again on 6 August 2022
+        It needs to be reviewed again on 17 August 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 August 2022
+      This page was set to be reviewed before 17 August 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
