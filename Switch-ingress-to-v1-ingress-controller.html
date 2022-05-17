@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Add a new OPA policy - Cloud Platform Runbooks</title>
+    <title>Switch ingress to v1 supported ingress-controller - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-opa-policy.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Add a new OPA policy - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-opa-policy.html" />
+      <meta name="twitter:title" content="Switch ingress to v1 supported ingress-controller - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Add a new OPA policy" />
+      <meta property="og:title" content="Switch ingress to v1 supported ingress-controller" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-new-opa-policy.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html" />
 
     
   </head>
@@ -108,7 +108,7 @@
     <a href="/how-we-work.html#how-we-work"><span>How We Work</span></a>
     <ul>
       <li>
-        <a href="/how-we-work.html#getting-help"><span>Getting Help</span></a>
+        <a href="/how-we-work.html#how-we-work-getting-help"><span>Getting Help</span></a>
       </li>
       <li>
         <a href="/how-we-work.html#the-board-tickets"><span>The Board / Tickets</span></a>
@@ -513,7 +513,7 @@
     <a href="/upgrade-terraform-version.html#upgrade-terraform-version"><span>Upgrade Terraform Version</span></a>
     <ul>
       <li>
-        <a href="/upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+        <a href="/upgrade-terraform-version.html#upgrade-terraform-version-introduction"><span>Introduction</span></a>
       </li>
       <li>
         <a href="/upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
@@ -1041,7 +1041,7 @@
     <a href="/Switch-ingress-to-v1-ingress-controller.html#switch-ingress-to-v1-supported-ingress-controller"><span>Switch ingress to v1 supported ingress-controller</span></a>
     <ul>
       <li>
-        <a href="/Switch-ingress-to-v1-ingress-controller.html#switch-ingress-to-v1-supported-ingress-controller-introduction"><span>Introduction</span></a>
+        <a href="/Switch-ingress-to-v1-ingress-controller.html#introduction"><span>Introduction</span></a>
         <ul>
           <li>
             <a href="/Switch-ingress-to-v1-ingress-controller.html#what-has-caused-this-change"><span>What has caused this change:</span></a>
@@ -1059,7 +1059,7 @@
             <a href="/Switch-ingress-to-v1-ingress-controller.html#switch-to-the-new-ingress-controller-with-zero-downtime"><span>Switch to the new ingress controller with zero downtime</span></a>
           </li>
           <li>
-            <a href="/Switch-ingress-to-v1-ingress-controller.html#switch-ingress-to-v1-supported-ingress-controller-introduction-getting-help"><span>Getting help</span></a>
+            <a href="/Switch-ingress-to-v1-ingress-controller.html#getting-help"><span>Getting help</span></a>
           </li>
         </ul>
       </li>
@@ -1457,54 +1457,303 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="open-policy-agent-policies">Open Policy Agent policies</h1><p>Policies are version controlled in the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-opa/tree/main/resources/policies"><code>cloud-platform-infrastructure</code></a> repository.</p>
-<h2 id="adding-a-policy">Adding a policy</h2><p>Create a new <code>.rego</code> file in the location above. Our policies are currently all defined in the
-<code>cloud_platform.admission</code> package and uses the <code>deny</code> rule to evaluate any checks:</p>
-<p>For example, the following policy would deny all <code>Services</code> of type <code>Loadbalancer</code></p>
-<div class="highlight"><pre class="highlight mosel" tabindex="0"><code><span class="k">package</span> <span class="n">cloud_platform</span><span class="p">.</span><span class="n">admission</span>
+              <h1 id="switch-ingress-to-v1-supported-ingress-controller">Switch ingress to v1 supported ingress-controller</h1><h2 id="introduction">Introduction</h2><p>Service teams using the Cloud Platform are asked to switch to the new instance of ingress controllers created with version &gt;1.0. It is an important step for the upcoming Kubernetes 1.22 upgrade.</p>
+<p>The upcoming Kubernetes 1.22 upgrade will remove several deprecated APIs that are relevant to networking:</p>
 
-<span class="n">import</span> <span class="n">data</span><span class="p">.</span><span class="n">kubernetes</span><span class="p">.</span><span class="n">namespaces</span>
-
-<span class="n">deny</span><span class="p">[</span><span class="n">msg</span><span class="p">]</span> <span class="p">{</span>
-  <span class="n">input</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">kind</span><span class="p">.</span><span class="n">kind</span> <span class="p">==</span> <span class="s2">"Service"</span>
-  <span class="n">input</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">object</span><span class="p">.</span><span class="n">spec</span><span class="p">.</span><span class="n">type</span> <span class="p">==</span> <span class="s2">"LoadBalancer"</span>
-<span class="p">}</span>
-</code></pre></div><h2 id="writing-tests">Writing tests</h2><p>Testing the policies against live data is not a straightforward process and debugging policies is quite minimal at the
-moment. The best way to develop policies is by practicing test-driven development.</p>
-<p>Assuming you have created <code>my_policy.rego</code> with your <code>deny</code> rule defined, you simply need to create
-<code>my_policy_test.rego</code> to define your tests. You can look at the existing policies for examples. There are a few generic
-mocking functions defined which you might find useful.</p>
-<p>Finally, testing the policies, you should see something like this:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ opa test -v .
-data.cloud_platform.admission.test_ingress_create_allowed: PASS (1.956µs)
-data.cloud_platform.admission.test_ingress_create_conflict: PASS (1.518µs)
-data.cloud_platform.admission.test_ingress_update_same_host: PASS (1.088µs)
-data.cloud_platform.admission.test_ingress_update_new_host: PASS (1.246µs)
-data.cloud_platform.admission.test_ingress_update_existing_host: PASS (1.417µs)
-data.cloud_platform.admission.test_ingress_update_existing_host_other_namespace: PASS (1.295µs)
---------------------------------------------------------------------------------
-PASS: 6/6
-</code></pre></div><p>Additionally, tests will be run against pull requests to the repository in a CircleCI job.</p>
-<h2 id="references">References</h2>
 <ul>
-<li><a href="https://www.openpolicyagent.org/docs/latest/how-do-i-write-policies/">How to write policies</a></li>
-<li><a href="https://www.openpolicyagent.org/docs/latest/how-do-i-test-policies/">How to test policies</a></li>
-<li><a href="https://github.com/timothyhinrichs/opa/blob/4d5a1071e5099da42c2cde02faac2075f3ba2bf9/docs/content/docs/policy-primer-k8s.md">Kubernetes Policy Primer
-</a></li>
+<li>the networking.k8s.io/v1beta1 API version of IngressClass</li>
+<li>all beta versions of Ingress: extensions/v1beta1 and networking.k8s.io/v1beta1</li>
 </ul>
+<p>To support Ingress the v1 API version, we have two new instances of the Ingress-NGINX controllers deployed with version &gt;1.0.</p>
+<p>Switching to the new NGINX-Ingress controllers is <strong>required</strong> before the Cloud Platform Kubernetes cluster can be upgraded from <strong>1.21</strong> to <strong>1.22</strong>.</p>
+<h3 id="what-has-caused-this-change">What has caused this change:</h3><p>There are 2 reasons primarily.</p>
+<p>Reason #1</p>
+<p>Until K8s version 1.21, it was possible to create an Ingress resource using deprecated versions of the Ingress API, such as:</p>
+<p>. extensions/v1beta1
+  . networking.k8s.io/v1beta1</p>
+<p>You would get a message about deprecation, but the Ingress resource would get created.</p>
+<p>From K8s version 1.22 onwards, you can only access the Ingress API via the stable, networking.k8s.io/v1 API.</p>
+<p>Reason #2</p>
+<p>If you are on the existing Ingress-NGINX controller and then upgrade to K8s version v1.22 , there are several scenarios where your existing Ingress objects will not work how you expect.</p>
+<h3 id="switch-to-the-new-ingress-controllers-and-convert-an-ingress-to-the-v1-api">Switch to the new ingress controllers and convert an Ingress to the v1 API</h3><p>Currently cloud-platform have muliple instances of the Ingress-NGINX controllers running on the cluster, all instances of the controllers must be aware of which Ingress objects they serve. 
+The ingressClassName field of an Ingress is the way to let the controller know about that.</p>
+
+<ul>
+<li>Switch to the new ingress controller using the .spec.ingressClassName field. Set value to <b>modsec</b> if you use modsec, else set it to <b>default</b></li>
+</ul>
+<p>Details of the changes required for converting the ingress to use the networking.k8s.io/v1 Ingress API</p>
+
+<ul>
+<li>The backend <code>serviceName</code> field is renamed to <code>service.name</code></li>
+<li>Numeric backend <code>servicePort</code> fields are renamed to <code>service.port.number</code></li>
+<li>String backend <code>servicePort</code> fields are renamed to <code>service.port.name</code></li>
+<li><code>pathType</code> is now required for each specified path. Options are <code>Prefix</code>, <code>Exact</code>, and <code>ImplementationSpecific</code>. 
+To match the undefined <code>v1beta1</code> behavior, use <code>ImplementationSpecific</code>.</li>
+<li><code>spec.backend</code> is renamed to <code>spec.defaultBackend</code></li>
+</ul>
+<h3 id="resources-deployed-using-kubectl">Resources deployed using kubectl</h3><p>If your ingress manifest looks similar to below:</p>
+
+<pre>
+apiVersion: <b>networking.k8s.io/v1beta1</b> OR  <b>extensions/v1beta1</b>
+kind: Ingress
+metadata:
+  name: helloworld
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: helloworld-mynamespace-green
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+spec:
+  tls:
+  - hosts:
+    - helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
+  rules:
+  - host: helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
+    http:
+      paths:
+      - <b>path: /
+        backend:
+          serviceName: helloworld
+          servicePort: 4567</b>
+</pre>
+<p>Switch to the new ingress controller and convert the ingress to use the <b>networking.k8s.io/v1</b> API version. Main changes include</p>
+<p>To Switch to the new ingress controller:
+ * Add <code>ingressClassName:</code> under spec, set to <b>modsec</b> if you use modsec, else set it to <b>default</b></p>
+<p>To Convert the ingress to use the <b>networking.k8s.io/v1</b> API version:</p>
+
+<ul>
+<li>Change the <code>apiVersion</code> to <code>networking.k8s.io/v1</code></li>
+<li>Add <code>pathType: ImplementationSpecific</code> after <code>path: /</code></li>
+<li>Rename <code>-backend.serviceName</code> to <code>-backend.service.name</code></li>
+<li>for String servicePort rename <code>-backend.servicePort</code> to <code>-backend.service.port.name</code></li>
+<li>For Numeric servicePort rename <code>-backend.servicePort</code> to <code>-backend.service.port.number</code></li>
+</ul>
+<p>The manifest after changes will look like:</p>
+
+<pre>
+apiVersion: <b>networking.k8s.io/v1</b>
+kind: Ingress
+metadata:
+  name: helloworld
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: helloworld-mynamespace-green
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+spec:
+  ingressClassName: <b>default</b> OR <b>modsec</b>
+  tls:
+  - hosts:
+    - helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
+  rules:
+  - host: helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
+    http:
+      paths:
+      - path: /
+        <b>pathType: ImplementationSpecific
+        backend:
+          service:
+            name: rubyapp-service
+            port:
+              number: 4567</b>
+</pre>
+<p><strong>NOTE: From version &gt;1.0 of the Ingress-NGINX Controller, an IngressClass object is required.
+If you aleady converted your existing ingress to v1, please add <code>ingressClassName:</code> under spec, set to <b>modsec</b> if you use modsec, else set it to <b>default</b>.</strong></p>
+<p>To apply your changes:</p>
+<p><code>kubectl apply --filename ingress.yaml --namespace &lt;namespace&gt;</code></p>
+<h3 id="resources-deployed-using-helm-chart">Resources deployed using helm chart</h3><p><strong>NOTE</strong> - Check the helm version</p>
+<p>The Cloud Platform kubernetes version 1.21 is compatible with helm version 3.5.x so make sure you have the 
+correct version installed before updating the manifest. If you are on older helm versions, you might get an error as below:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Error: UPGRADE FAILED: rendered manifests contain a new resource that already exists. 
+Unable to continue with update: existing resource conflict: namespace: XXX, name: YYYY,
+existing_kind: networking.k8s.io/v1, Kind=Ingress, new_kind: networking.k8s.io/v1, Kind=Ingress
+</code></pre></div><p>If your ingress manifest looks similar to below:</p>
+
+<pre>
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "app.fullname" . -}}
+{{- $ingressPath := .Values.ingress.path -}}
+apiVersion: <b>networking.k8s.io/v1beta1</b>
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+  annotations:
+  {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  tls:
+  {{- range .Values.ingress.hosts }}
+  - hosts:
+    - {{ .host }}
+    {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
+  {{- end }}
+  rules:
+  {{- range .Values.ingress.hosts }}
+    - host: {{ .host }}
+      http:
+        paths:
+          - <b>path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: http</b>
+  {{- end }}
+{{- end }}
+</pre>
+<p>The manifest after changes will look like:</p>
+
+<pre>
+  {{- if .Values.ingress.enabled -}}
+{{- $fullName := include "app.fullname" . -}}
+{{- $ingressPath := .Values.ingress.path -}}
+apiVersion: <b>networking.k8s.io/v1beta1</b>
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+  annotations:
+  {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
+  tls:
+  {{- range .Values.ingress.hosts }}
+  - hosts:
+    - {{ .host }}
+    {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
+  {{- end }}
+  rules:
+  {{- range .Values.ingress.hosts }}
+    - host: {{ .host }}
+      http:
+        paths:
+          - <b>path: {{ $ingressPath }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $fullName }}
+                port: 
+                  name: http</b>
+  {{- end }}
+{{- end }}
+
+</pre>
+<p>To apply your changes:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>helm upgrade -f &lt;values-file.yaml&gt; &lt;your-release&gt; &lt;your-chart&gt; --namespace &lt;your-namespace&gt;
+</code></pre></div><p><strong>IMP NOTE: There will be downtime of up to 5-10 minutes while switching to the new ingress controller following the process described <a href="https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html#switch-to-the-new-ingress-controllers-and-convert-an-ingress-to-the-v1-api">above</a>,<br>
+alternatively you can follow the below steps to switch to the new ingress controller without any downtime.</strong></p>
+<h3 id="switch-to-the-new-ingress-controller-with-zero-downtime">Switch to the new ingress controller with zero downtime</h3><p>These steps describe how to switch without any downtime. Initially, we will strongly suggest teams switch their &lsquo;development&rsquo; ingress so that any issues can be ironed out before affecting the production service.</p>
+<h4 id="step-1-amend-and-apply-your-current-ingress-resource">Step 1 - Amend and apply your current ingress resource</h4><p>You must set <code>external-dns.alpha.kubernetes.io/aws-weight</code> value to &ldquo;0&rdquo; for the current ingress. This does not mean traffic will stop, 0 is a valid value for a single ingress.</p>
+
+<pre>
+apiVersion: <b>networking.k8s.io/v1beta1</b> OR  <b>extensions/v1beta1</b>
+kind: Ingress
+metadata:
+  name: helloworld
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: helloworld-mynamespace-green
+    external-dns.alpha.kubernetes.io/aws-weight: "0"
+spec:
+  tls:
+  - hosts:
+    - helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
+  rules:
+  - host: helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
+    http:
+      paths:
+      - <b>path: /
+        backend:
+          serviceName: helloworld
+          servicePort: 4567</b>
+</pre>
+<h4 id="step-2-add-a-new-ingress-resource">Step 2 - Add a new ingress resource</h4><p>Create a new Ingress with a different ingress name to the existing one, following the process here to convert Ingress to the v1 API.</p>
+<p>Main changes include:</p>
+
+<ul>
+<li><p>Update the ingress name different to the existing one</p>
+
+<ul>
+<li>name: helloworld-new</li>
+</ul></li>
+<li><p>Update set-identifier annotation, to match with the new ingress name</p>
+
+<ul>
+<li>external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green</li>
+</ul></li>
+<li><p>Update aws-weight annotation to &ldquo;100&rdquo;</p>
+
+<ul>
+<li>external-dns.alpha.kubernetes.io/aws-weight: &ldquo;100&rdquo;</li>
+</ul></li>
+</ul>
+<p>To Switch to the new ingress controller:</p>
+
+<ul>
+<li>Add <code>ingressClassName:</code> under spec, set to <b>modsec</b> if you use modsec, else set it to <b>default</b></li>
+</ul>
+<p>To Convert the ingress to use the <b>networking.k8s.io/v1</b> API version:</p>
+
+<ul>
+<li>Change the <code>apiVersion</code> to <code>networking.k8s.io/v1</code></li>
+<li>Add <code>pathType: ImplementationSpecific</code> after <code>path: /</code></li>
+<li>Rename <code>-backend.serviceName</code> to <code>-backend.service.name</code></li>
+<li>for String servicePort rename <code>-backend.servicePort</code> to <code>-backend.service.port.name</code></li>
+<li>For Numeric servicePort rename <code>-backend.servicePort</code> to <code>-backend.service.port.number</code></li>
+</ul>
+<p>The new manifest after changes will look like:</p>
+
+<pre>
+apiVersion: <b>networking.k8s.io/v1</b>
+kind: Ingress
+metadata:
+  name: helloworld-new
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+spec:
+  ingressClassName: <b>default</b> OR <b>modsec</b>
+  tls:
+  - hosts:
+    - helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
+  rules:
+  - host: helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
+    http:
+      paths:
+      - path: /
+        <b>pathType: ImplementationSpecific
+        backend:
+          service:
+            name: rubyapp-service
+            port:
+              number: 4567</b>
+</pre>
+<p>To apply the changes to the ingress, as a quick alternative to running your application&rsquo;s CI/CD pipeline, you can apply them directly:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nt">-n</span> &lt;namespace-name&gt; apply <span class="nt">-f</span> ingress-new.yaml
+</code></pre></div><h5 id="verify-traffic-sent-to-the-new-ingress">Verify traffic sent to the new ingress</h5><p>After you have applied new ingress with <code>external-dns.alpha.kubernetes.io/aws-weight</code> value set to &ldquo;100&rdquo;, you can verify the traffic sent to the new ingress using <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/f1e13059dfd23fdcaf479f4fa833f92610c2dfa5/kubernetes-ingress-traffic?orgId=1">grafana</a></p>
+<p>Get the &ldquo;hostname&rdquo; used in your ingress for your namespace</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl get ingress &lt;ingress-name&gt; <span class="nt">-n</span> &lt;namespace-name&gt; <span class="nt">-o</span> json | jq <span class="nt">-r</span> <span class="s1">'.items[] | .spec.rules[].host'</span>
+</code></pre></div><p>Using the &ldquo;hostname&rdquo; from the above command, make a cURL call every 5 seconds to send traffic to your service</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  <span class="k">while </span><span class="nb">sleep </span>5<span class="p">;</span> <span class="k">do </span>curl <span class="nt">-I</span> https://&lt;host-name&gt;<span class="p">;</span> <span class="k">done</span>
+</code></pre></div><p>To view your ingress traffic, login to <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/f1e13059dfd23fdcaf479f4fa833f92610c2dfa5/kubernetes-ingress-traffic?orgId=1">grafana-live</a>, in <code>Kubernetes-ingress traffic</code> dashboard, select your <code>ingress-name</code> and <code>namespace-name</code> from the drop-down and do a search, you will see traffic for your new ingress.</p>
+<p>Your new ingress is successfully switched to the new ingress controller.</p>
+<h4 id="step-3-cleanup-old-ingress">Step 3 - Cleanup old ingress</h4><p>Once you have successfully switched to the new ingress controller using the v1 API version manifest, you can tidy up by deleting the old ingress and updating your CI pipeline/job with new ingress manifest that deploys
+to the cluster.</p>
+<p><strong>NOTE: If you don&rsquo;t update your manifest to switch to the new ingress controller and convert the ingress to use the latest API versions after we upgraded to Kubernetes 1.22, 
+you will get failures when deploying your application.</strong></p>
+<h3 id="getting-help">Getting help</h3><p>If you have any questions, please contact us on <a href="https://mojdt.slack.com/messages/C57UPMZLY">#ask-cloud-platform</a> Slack channel.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-06-22">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-06-23">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 22 March 2022.
+      This page was last reviewed on 23 March 2022.
 
-        It needs to be reviewed again on 22 June 2022
+        It needs to be reviewed again on 23 June 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 22 June 2022
+      This page was set to be reviewed before 23 June 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1514,8 +1763,8 @@ PASS: 6/6
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/add-new-opa-policy.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Add%20a%20new%20OPA%20policy'&amp;body=Problem%20with%20'Add%20a%20new%20OPA%20policy'%20(https://runbooks.cloud-platform.service.justice.gov.uk/add-new-opa-policy.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/Switch-ingress-to-v1-ingress-controller.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Switch%20ingress%20to%20v1%20supported%20ingress-controller'&amp;body=Problem%20with%20'Switch%20ingress%20to%20v1%20supported%20ingress-controller'%20(https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
