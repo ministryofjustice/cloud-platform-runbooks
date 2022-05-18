@@ -1410,6 +1410,7 @@ The ingressClassName field of an Ingress is the way to let the controller know a
 <p>Details of the changes required for converting the ingress to use the networking.k8s.io/v1 Ingress API</p>
 
 <ul>
+<li>Delete the annotation line with <code>kubernetes.io/ingress.class</code>, this is replaced by <code>ingressClassName</code> under spec</li>
 <li>The backend <code>serviceName</code> field is renamed to <code>service.name</code></li>
 <li>Numeric backend <code>servicePort</code> fields are renamed to <code>service.port.number</code></li>
 <li>String backend <code>servicePort</code> fields are renamed to <code>service.port.name</code></li>
