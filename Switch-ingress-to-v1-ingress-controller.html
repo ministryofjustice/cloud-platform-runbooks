@@ -1547,7 +1547,7 @@ spec:
   {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "app.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
-apiVersion: <b>networking.k8s.io/v1beta1</b>
+apiVersion: <b>networking.k8s.io/v1</b>
 kind: Ingress
 metadata:
   name: {{ $fullName }}
