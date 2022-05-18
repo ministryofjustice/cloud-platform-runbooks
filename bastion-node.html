@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Going on call - Cloud Platform Runbooks</title>
+    <title>Create and access bastion node - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/bastion-node.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Going on call - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html" />
+      <meta name="twitter:title" content="Create and access bastion node - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/bastion-node.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Going on call" />
+      <meta property="og:title" content="Create and access bastion node" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/bastion-node.html" />
 
     
   </head>
@@ -1396,108 +1396,54 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="going-on-call">Going on call</h1><p>Cloud Platform team members provide support out of hours, as detailed in <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/reference/operational-processes.html#our-on-call-process">Cloud Platform Operational Processes</a></p>
-<h2 id="what-s-expected">What’s expected?</h2><h3 id="expected">Expected:</h3>
+              <h1 id="create-and-access-bastion-node">Create and access bastion node.</h1><p>The traditional method of node access is to SSH in via a bastion. This was used to access kOps cluster nodes, this also involves a shared ssh key.
+A bastion node is no longer a permanent feature/resource. If the cloud-platform team would like to have a bastion node within a VPC, this run book can be used to create one.</p>
+<h2 id="create-bastion-node">Create bastion node</h2><p>To create a bastion node, use the Terraform module to create a bastion within an existing VPC. Follow the steps below:</p>
+<p>Step 1:</p>
+<p>Copy the module code below into the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/main.tf">eks main.tf</a> file. There is a dependency on the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/main.tf#L100">aws_route53_zone</a> of the cluster</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>module "bastion" {
+  source = "github.com/ministryofjustice/cloud-platform-terraform-bastion?ref=1.5.0"
+
+  vpc_name            = terraform.workspace
+  route53_zone        = aws_route53_zone.cluster.name
+  cluster_domain_name = "${terraform.workspace}.cloud-platform.service.justice.gov.uk."
+  depends_on = [
+    aws_route53_zone.cluster
+  ]
+}
+
+</code></pre></div><p>Step 2:</p>
+<p>In the bastion module, update the below arguments:</p>
+
 <ul>
-<li>Carry out <a href="https://dsdmoj.atlassian.net/wiki/spaces/PLAT/pages/297533847/Run+Books">well-defined sensible actions</a> in response to critical incidents.</li>
-<li>Understand how to carry out those actions, and what they do.</li>
-<li>Verify access ahead of time to various systems and interfaces required to carry out these actions.</li>
+<li>vpc_name: Update the name to the VPC you like to create the bastion module on. This is normally the terraform workspace name</li>
+<li>route53_zone: This will be the name of the route53 zone created for the cluster in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/main.tf#L100">here</a></li>
+<li>cluster_domain_name: This will be the cluster domain name.</li>
 </ul>
+<p>Step 3:</p>
+<p>Now it&rsquo;s time to apply the module, we change the directory to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks">terraform/aws-accounts/cloud-platform-aws/vpc/eks</a> and follow below terraform workflow:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
+terraform workspace select &lt;WorkspaceName&gt;
+terraform plan
+terraform apply
+</code></pre></div><p>Once terraform finishes you should be able to view the bastion node in the Amazon EC2 console.</p>
+<h2 id="access-bastion-node">Access bastion node</h2><p>Make sure your public key is added to this <a href="https://github.com/ministryofjustice/cloud-platform-terraform-bastion/blob/main/files/authorized_keys.txt">authorized_keys</a> file</p>
+<p>Once the bastion is created successfully and the key is added to the authorized_keys file, ssh to bastion instance:</p>
+<p>In the Amazon EC2 console, on the Instances page, search using <code>${CLUSTER_NAME}</code>to locate the bastion instance (<code>bastion.&lt;cluster_name&gt;.cloud-platform.service.justice.gov.uk</code>). Use Public DNS (IPv4) In the description of the Instance to login into bastion as below:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>ssh <span class="nt">-A</span> admin@ec2-xx-xx-xx-xx.eu-west-2.compute.amazonaws.com <span class="nt">-p</span> 50422
+</code></pre></div>
 
-<blockquote>
-<p>Getting set up to access production is quite involved if you don’t work on the service you’re supporting, so it’s worth making sure you’ve done so ahead of time.</p>
-</blockquote>
-<h3 id="not-expected">Not Expected:</h3>
-<ul>
-<li>Take heroic actions and be able to solve any out-of-hours critical event single handedly.</li>
-<li>Have very detailed knowledge of every nuance of every MOJ Digital service.</li>
-<li>Carrying out risky activities or take judgement calls beyond your comfort zone without support.</li>
-</ul>
-<h2 id="where-do-i-start">Where do I start?</h2>
-<ol>
-<li>Do two rotations on in-hours second line.</li>
-<li>Get production access to supported services.</li>
-<li>Get access to our on-call tools:
-
-<ul>
-<li><a href="https://my.pingdom.com/">Pingdom</a></li>
-<li><a href="https://moj-digital-tools.pagerduty.com/">Pagerduty</a> (and configure your contact details and notifications, this is the single source of truth for when you are on call.)</li>
-<li><a href="https://mojdsd.signin.aws.amazon.com/">AWS</a></li>
-<li>the MOJDS VPN (and configure it to “send all traffic over VPN connection”)</li>
-</ul></li>
-<li>Do a dry-run of an incident.</li>
-<li>Get on the on-call rota.</li>
-<li>Log your hours.</li>
-</ol>
-<h2 id="what-do-i-get-for-being-on-call">What do I get for being on call?</h2>
-<ul>
-<li>15% of day rate for every 8 hours that you’re on call out of standard working hours. This payment is simply for being on call.</li>
-<li>1/8 of day rate for each full hour actively worked while on call.</li>
-</ul>
-<p>Civil servant equivalent of day rate is base salary / 230</p>
-<h2 id="civil-servants">Civil servants</h2>
-<ol>
-<li>Complete this <a href="https://docs.google.com/spreadsheets/d/1lhnaqnHzCJxhW6QZ0HbyZL0-2Yp8hHaoMOx0J5fJjLA/edit#gid=53145943">on-call-form</a></li>
-<li>Send it to your line manager, asking them to approve and submit it to SOP.</li>
-</ol>
-<p>The line manager should:</p>
-
-<ol>
-<li>Check the form against the <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX">PagerDuty schedule</a> and pay policy above. Note:
-
-<ul>
-<li><em>There are two on-call schedules for the Cloud Platform (Primary and Secondary), so when checking against PagerDuty, you may have to check against both</em></li>
-<li>On-call hours: weekdays are 8 hours, weekend days and bank holidays are 15 hours (<a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/reference/operational-processes.html#our-on-call-process">support hours</a>)</li>
-</ul></li>
-<li>Approve the form by completing section 3 of the form</li>
-<li>Submit it in SOP:
-
-<ul>
-<li>Go to &ldquo;MOJ Manager Self-Service&rdquo;</li>
-<li>Under &ldquo;Other&rdquo;, use &ldquo;Form Submission&rdquo;</li>
-<li>Against the employee&rsquo;s name, select &ldquo;Action&rdquo;</li>
-<li>Fill out the web form as follows:
-
-<ul>
-<li>Subject of this request: Other</li>
-<li>Describe the subject: On call allowance</li>
-<li>Confirm: Yes</li>
-</ul></li>
-<li>Form Submission Review:
-
-<ul>
-<li>Attach the approved spreadsheet</li>
-</ul></li>
-<li>&ldquo;Submit&rdquo;</li>
-<li>In around 15 minutes you&rsquo;ll receive a SOP notification &ldquo;SOP Service Request for X has been approved&rdquo;, which you will need to open and select &lsquo;Ok&rsquo;. Otherwise you will get daily reminder emails.</li>
-</ul></li>
-<li>Let the claimant know that it is submitted to SOP, so it&rsquo;s due to be paid in this or next month&rsquo;s pay.</li>
-</ol>
-<h2 id="contractors">Contractors</h2><p>The exact process might depend upon which supplier you are through. Some (or maybe all, we haven’t worked this out yet) supplier systems don’t cope with trying to bill more than 5 days worth in a week (Specifically, &ldquo;Hays&rdquo; fall in to this category).</p>
-<p>If you are not working on a normal work day (Monday–Friday) then you can use this to bill:</p>
-
-<ol>
-<li>Ask your contact at the supplier to set you up on Fieldglass for overtime.</li>
-<li>Log your time
-
-<ul>
-<li>??? Log the overtime (More detail once someone has actually done this successfully); or</li>
-<li>If you are billing a ‘work day’ in lieu, note this as a comment in the timesheet</li>
-</ul></li>
-</ol>
-
-
-              <div data-module='page-expiry' data-last-reviewed-on="2022-07-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-08-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 April 2022.
+      This page was last reviewed on 18 May 2022.
 
-        It needs to be reviewed again on 28 July 2022
+        It needs to be reviewed again on 18 August 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 July 2022
+      This page was set to be reviewed before 18 August 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1507,8 +1453,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/on-call.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Going%20on%20call'&amp;body=Problem%20with%20'Going%20on%20call'%20(https://runbooks.cloud-platform.service.justice.gov.uk/on-call.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/bastion-node.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Create%20and%20access%20bastion%20node'&amp;body=Problem%20with%20'Create%20and%20access%20bastion%20node'%20(https://runbooks.cloud-platform.service.justice.gov.uk/bastion-node.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
