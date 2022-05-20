@@ -466,22 +466,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/upgrade-user-components.html#upgrade-user-components"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="/upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="/upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="/upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/delete-cluster.html#delete-a-cluster"><span>Delete a cluster</span></a>
     <ul>
       <li>
@@ -500,6 +484,22 @@
       </li>
       <li>
         <a href="/delete-cluster.html#delete-an-eks-cluster"><span>Delete an EKS cluster</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/upgrade-user-components.html#upgrade-user-components"><span>Upgrade user components</span></a>
+    <ul>
+      <li>
+        <a href="/upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+      </li>
+      <li>
+        <a href="/upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="/upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -539,19 +539,13 @@
         <a href="/auth0-rotation.html#1-taint-resources-terraform"><span>1) Taint resources (terraform)</span></a>
       </li>
       <li>
-        <a href="/auth0-rotation.html#2-rolling-update-of-cluster-kops"><span>2) Rolling update of cluster (kops)</span></a>
+        <a href="/auth0-rotation.html#2-apply-changes-within-components-terraform"><span>2) Apply changes within components (terraform)</span></a>
       </li>
       <li>
-        <a href="/auth0-rotation.html#3-apply-changes-within-components-terraform"><span>3) Apply changes within components (terraform)</span></a>
+        <a href="/auth0-rotation.html#3-verifiying-changes"><span>3) Verifiying changes</span></a>
       </li>
       <li>
-        <a href="/auth0-rotation.html#4-update-environment-repo"><span>4) Update environment repo</span></a>
-      </li>
-      <li>
-        <a href="/auth0-rotation.html#5-verifiying-changes"><span>5) Verifiying changes</span></a>
-      </li>
-      <li>
-        <a href="/auth0-rotation.html#6-update-pipelines"><span>6) Update pipelines</span></a>
+        <a href="/auth0-rotation.html#4-update-manager-cluster-within-components-terraform"><span>4) Update Manager cluster within components (terraform)</span></a>
       </li>
     </ul>
   </li>
@@ -1102,19 +1096,6 @@
 </ul>
 <ul>
   <li>
-    <a href="/destroy-concourse-build-data.html#destroy-concourse-build-data"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="/destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="/destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
     <a href="/add-new-opa-policy.html#open-policy-agent-policies"><span>Open Policy Agent policies</span></a>
     <ul>
       <li>
@@ -1125,26 +1106,6 @@
       </li>
       <li>
         <a href="/add-new-opa-policy.html#references"><span>References</span></a>
-      </li>
-    </ul>
-  </li>
-</ul>
-<ul>
-  <li>
-    <a href="/custom-default-backend.html#custom-default-backend"><span>Custom default-backend</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="/custom-default-backend.html#background"><span>Background</span></a>
-          </li>
-          <li>
-            <a href="/custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
-          </li>
-          <li>
-            <a href="/custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -1183,6 +1144,39 @@
       </li>
       <li>
         <a href="/joiners-guide.html#access"><span>ACCESS</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/custom-default-backend.html#custom-default-backend"><span>Custom default-backend</span></a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="/custom-default-backend.html#background"><span>Background</span></a>
+          </li>
+          <li>
+            <a href="/custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
+          </li>
+          <li>
+            <a href="/custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>
+    <a href="/destroy-concourse-build-data.html#destroy-concourse-build-data"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="/destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="/destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
   </li>
@@ -1400,24 +1394,24 @@
 <h2 id="preparation">Preparation</h2>
 <ul>
 <li>Ensure users are aware of the change. It is important to point out that <strong>they will have to reauthenticate against the cluster after the change</strong> (following <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#authentication">user guide</a>).</li>
-<li>You must have all the tools and variables (such as Terraform, TF&rsquo;s auth0 provider, environment variables, kops, etc) ready to apply changes against our infrastructure repo.</li>
+<li>You must have all the tools and variables (such as Terraform, TF&rsquo;s auth0 provider, environment variables etc) ready to apply changes against our infrastructure repo.</li>
 <li>It will be handy to have auth0 management console already opened in a browser tab, so you can verify and monitor the changes.</li>
 </ul>
-<h2 id="1-taint-resources-terraform">1) Taint resources (terraform)</h2><p>Tainting auth0 resource will force new credentials generation. Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform"><code>cloud-platform-infrastructure/terraform/cloud-platform</code> directory</a> and run</p>
+<h2 id="1-taint-resources-terraform">1) Taint resources (terraform)</h2><p>Tainting auth0 resource will force new credentials generation. Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a> and run</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform workspace select live
 $ terraform taint module.auth0.auth0_client.components
-</code></pre></div><p>Make sure with <code>terraform plan</code> that auth0 resource is going to be recreated as well as kops template file (it&rsquo;s going to be needed in the next step).</p>
+</code></pre></div><p>Make sure with <code>terraform plan</code> that auth0 resource is going to be recreated (it&rsquo;s going to be needed in the next step).</p>
 <p>Apply changes if you are happy with them:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform apply
-</code></pre></div><h2 id="2-rolling-update-of-cluster-kops">2) Rolling update of cluster (kops)</h2><p>From the previous step a new <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/kops/live-1.yaml">cloud-platform-infrastructure/kops/live-1.yaml</a> file should have been generated. To apply this file we <a href="https://runbooks.cloud-platform.service.justice.gov.uk/running-kops-update-rollingupdate.html#updating-the-remote-kops-state">already have a runbook to follow</a>.</p>
-<p><strong>NOTE</strong>: The change will require rolling replacement of the master nodes</p>
-<h2 id="3-apply-changes-within-components-terraform">3) Apply changes within components (terraform)</h2><p>Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-components"><code>cloud-platform-infrastructure/terraform/cloud-platform-components</code> directory</a> and to ensure changes match resources below, if they do, apply them:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform apply -target=module.prometheus.kubernetes_secret.grafana_secret -target=module.prometheus.helm_release.prometheus_proxy -target=module.prometheus.helm_release.alertmanager_proxy  -target=helm_release.kuberos
+</code></pre></div><h2 id="2-apply-changes-within-components-terraform">2) Apply changes within components (terraform)</h2><p>Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a> 
+to ensure changes match resources below, if they do, apply them:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$terraform workspace select live
+$terraform plan
+$ terraform apply -target=module.monitoring.kubernetes_secret.grafana_secret -target=module.monitoring.helm_release.prometheus_proxy -target=module.monitoring.helm_release.alertmanager_proxy  -target=module.kuberos.helm_release.kuberos -target=module.monitoring.helm_release.kibana_audit_proxy -target=module.monitoring.helm_release.kibana_proxy
 </code></pre></div><p>Unfortunately, grafana pod will not pick up the secret change, so it needs to be recyled (just delete it and it will automatically get redeployed):</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ GrafanaPodName=$(kubectl -n monitoring get pods -o name | grep grafana)
 $ kubectl -n monitoring delete pod $GrafanaPodName
-</code></pre></div><h2 id="4-update-environment-repo">4) Update environment repo</h2><p>We already have a <a href="https://github.com/ministryofjustice/cloud-platform/issues/2006">ticket</a> to get rid of this step. Meanwhile we get it done, we should update <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/main/namespaces/live-1.cloud-platform.service.justice.gov.uk/monitoring/oidc-components-secret.yaml"><code>oidc-components-secret.yaml</code> file</a> with the new auth0 credentials.</p>
-<h2 id="5-verifiying-changes">5) Verifiying changes</h2><p>In order to verify that the changes were successfully applied, follow the checklist below (order doesn&rsquo;t matter):</p>
+</code></pre></div><h2 id="3-verifiying-changes">3) Verifiying changes</h2><p>In order to verify that the changes were successfully applied, follow the checklist below (order doesn&rsquo;t matter):</p>
 
 <ul>
 <li>You can authenticate to the cluster (follow <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#authentication">user guide</a>)</li>
@@ -1426,21 +1420,28 @@ $ kubectl -n monitoring delete pod $GrafanaPodName
 <li>Ensure you can authenticate to <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/home?_g=()">Kibana</a></li>
 <li>Ensure you can authenticate to <a href="https://prometheus.cloud-platform.service.justice.gov.uk/">Prometheus</a></li>
 </ul>
-<h2 id="6-update-pipelines">6) Update pipelines</h2><p>Our pipelines read auth0 credentials from a K8S secret inside the manager cluster. This secret is updated through concourse&rsquo;s TF module variable called <code>tf_provider_auth0_client_secret</code> and <code>tf_provider_auth0_client_id</code> in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/components/terraform.tfvars">cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/components/terraform.tfvars</a></p>
-<p>You only need to update the source code file and have your changed merged to master. The <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/bootstrap">bootstrap pipeline</a> will apply your change.</p>
+<h2 id="4-update-manager-cluster-within-components-terraform">4) Update Manager cluster within components (terraform)</h2><p>Our pipelines read auth0 credentials from a K8S secret inside the manager cluster. This secret is updated through concourse&rsquo;s TF module variable called <code>tf_provider_auth0_client_secret</code> and <code>tf_provider_auth0_client_id</code> in 
+<a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/terraform.tfvars">cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/terraform.tfvars</a></p>
+<p>Switch to manager cluster and Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a> 
+to ensure changes match resources below, if they do, apply them:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ aws eks --region eu-west-2 update-kubeconfig --name manager
+$ terraform workspace select manager
+$ terraform plan
+$ terraform apply -target=module.monitoring.kubernetes_secret.grafana_secret -target=module.monitoring.helm_release.prometheus_proxy -target=module.monitoring.helm_release.alertmanager_proxy  -target=module.kuberos.helm_release.kuberos -target=module.concourse.kubernetes_secret.concourse_tf_auth0_credentials
+</code></pre></div><p>You only need to update the source code file and have your changed merged to main. The <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/bootstrap">bootstrap pipeline</a> will apply your change.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-05-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-08-20">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 February 2022.
+      This page was last reviewed on 20 May 2022.
 
-        It needs to be reviewed again on 3 May 2022
+        It needs to be reviewed again on 20 August 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 May 2022
+      This page was set to be reviewed before 20 August 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
