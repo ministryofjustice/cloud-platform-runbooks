@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Switch ingress to v1 supported ingress-controller - Cloud Platform Runbooks</title>
+    <title>Switch ingress to the new nginx-ingress-controller v1.2 - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
@@ -15,12 +15,12 @@
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Switch ingress to v1 supported ingress-controller - Cloud Platform Runbooks" />
+      <meta name="twitter:title" content="Switch ingress to the new nginx-ingress-controller v1.2 - Cloud Platform Runbooks" />
       <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Switch ingress to v1 supported ingress-controller" />
+      <meta property="og:title" content="Switch ingress to the new nginx-ingress-controller v1.2" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html" />
 
@@ -971,22 +971,16 @@
 </ul>
 <ul>
   <li>
-    <a href="/Switch-ingress-to-v1-ingress-controller.html#switch-ingress-to-v1-supported-ingress-controller"><span>Switch ingress to v1 supported ingress-controller</span></a>
+    <a href="/Switch-ingress-to-v1-ingress-controller.html#switch-ingress-to-the-new-nginx-ingress-controller-v1-2"><span>Switch ingress to the new nginx-ingress-controller v1.2</span></a>
     <ul>
       <li>
         <a href="/Switch-ingress-to-v1-ingress-controller.html#introduction"><span>Introduction</span></a>
         <ul>
           <li>
-            <a href="/Switch-ingress-to-v1-ingress-controller.html#what-has-caused-this-change"><span>What has caused this change:</span></a>
+            <a href="/Switch-ingress-to-v1-ingress-controller.html#pre-requisite-ingress-api-version"><span>Pre-requisite - Ingress API Version</span></a>
           </li>
           <li>
-            <a href="/Switch-ingress-to-v1-ingress-controller.html#switch-to-the-new-ingress-controllers-and-convert-an-ingress-to-the-v1-api"><span>Switch to the new ingress controllers and convert an Ingress to the v1 API</span></a>
-          </li>
-          <li>
-            <a href="/Switch-ingress-to-v1-ingress-controller.html#resources-deployed-using-kubectl"><span>Resources deployed using kubectl</span></a>
-          </li>
-          <li>
-            <a href="/Switch-ingress-to-v1-ingress-controller.html#resources-deployed-using-helm-chart"><span>Resources deployed using helm chart</span></a>
+            <a href="/Switch-ingress-to-v1-ingress-controller.html#switch-to-the-new-nginx-ingress-controller"><span>Switch to the new nginx-ingress-controller</span></a>
           </li>
           <li>
             <a href="/Switch-ingress-to-v1-ingress-controller.html#switch-to-the-new-ingress-controller-with-zero-downtime"><span>Switch to the new ingress controller with zero downtime</span></a>
@@ -1390,80 +1384,41 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="switch-ingress-to-v1-supported-ingress-controller">Switch ingress to v1 supported ingress-controller</h1><h2 id="introduction">Introduction</h2><p>Service teams using the Cloud Platform are asked to switch to the new instance of ingress controllers created with version &gt;1.0. It is an important step for the upcoming Kubernetes 1.22 upgrade.</p>
-<p>The upcoming Kubernetes 1.22 upgrade will remove several deprecated APIs that are relevant to networking:</p>
+              <h1 id="switch-ingress-to-the-new-nginx-ingress-controller-v1-2">Switch ingress to the new nginx-ingress-controller v1.2</h1><h2 id="introduction">Introduction</h2><p>An ingress-controller is a specialised load balancer for Kubernetes. The Cloud Platform use the <a href="https://kubernetes.github.io/ingress-nginx/">nginx-ingress-controller</a> to accept traffic from outside the Kubernetes platform and load balance it to pods running in Namespaces.</p>
+<p>Currently all service teams are using 1 of 2 ingress-controllers using one of the following annotations:</p>
 
 <ul>
-<li>the networking.k8s.io/v1beta1 API version of IngressClass</li>
-<li>all beta versions of Ingress: extensions/v1beta1 and networking.k8s.io/v1beta1</li>
+<li><code>kubernetes.io/ingress.class: nginx</code>   - This is the default ingress-controller</li>
+<li><code>kubernetes.io/ingress.class: modsec</code>  - This ingress-controller has the modsec WAF enabled. </li>
 </ul>
-<p>To support the Ingress v1 API version, we have two new instances of the Ingress-NGINX controllers deployed with version &gt;1.0.</p>
-<p>Switching to the new NGINX-Ingress controllers is <strong>required</strong> before the Cloud Platform Kubernetes cluster can be upgraded from <strong>1.21</strong> to <strong>1.22</strong>.</p>
-<h3 id="what-has-caused-this-change">What has caused this change:</h3><p>There are 2 reasons primarily.</p>
-<p>Reason #1</p>
-<p>Until K8s version 1.21, it was possible to create an Ingress resource using deprecated versions of the Ingress API, such as:</p>
-<p>. extensions/v1beta1
-  . networking.k8s.io/v1beta1</p>
-<p>You would get a message about deprecation, but the Ingress resource would get created.</p>
-<p>From K8s version 1.22 onwards, you can only access the Ingress API via the stable, networking.k8s.io/v1 API.</p>
-<p>Reason #2</p>
-<p>If you are on the existing Ingress-NGINX controller and then upgrade to K8s version v1.22 , there are several scenarios where your existing Ingress objects will not work how you expect.</p>
-<h3 id="switch-to-the-new-ingress-controllers-and-convert-an-ingress-to-the-v1-api">Switch to the new ingress controllers and convert an Ingress to the v1 API</h3><p>Currently cloud-platform have four instances of the Ingress-NGINX controllers(2 existing instances of ingress controller and 2 new instances of ingress controllers with version &gt;1.0, to support the Ingress v1 API version) running on the cluster, all instances of the controllers must be aware of which Ingress objects they serve. 
-The ingressClassName field of an Ingress is the way to let the controller know about that.</p>
+<p>These ingress-controllers are running on version <strong>v0.47.0</strong></p>
+<p>Unfortunately, there is a breaking change in the upgrade path of the nginx-ingress-controller to v1.0 and above. This would require all service teams to make changes to all ingress manifests at the same time as the upgrade.</p>
+<p>To avoid this, the Cloud Platform team have released a new set of nginx-ingress-controllers <strong>(v1.2)</strong> alongside the current nginx-ingress-controllers <strong>(v0.47.0)</strong>.</p>
+<p>Service teams using the Cloud Platform are asked to switch to the new releases of the nginx-ingress-controller(v1.2).</p>
+<h3 id="pre-requisite-ingress-api-version">Pre-requisite - Ingress API Version</h3>
+<blockquote>
+<p>This is a critical change/check all users should complete <strong>before</strong> switching to the new nginx-ingress-controller(v1.2).</p>
+<p>This change is also in preparation for the upgrade of the Cloud-Platform to Kubernetes 1.22 which has deprecated all beta versions of the Ingress API.</p>
+<p>Please follow the <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/other-topics/apiversion-changes-ingress-k8s-1-22.html#removing-deprecated-ingress-apis-for-cloud-platform-kubernetes-v1-22">Deprecated Ingress API</a> document on how to check and if required, change to the stable Ingress API version.</p>
+</blockquote>
+<h3 id="switch-to-the-new-nginx-ingress-controller">Switch to the new nginx-ingress-controller</h3>
+<blockquote>
+<p><strong>IMPORTANT</strong>: There may be downtime of up to 10 minutes while switching to the new ingress controller due to DNS propagation. Please test in non-production environments before making the change on your production applications.</p>
+<p>Alternatively you can follow the steps later in this document to switch to the new nginx-ingress-controller(v1.2) without downtime.</p>
+</blockquote>
+<p>There are 2 releases of the new nginx-ingress-controller(v1.2). They can be selected using the new <code>IngressClassName</code> field:</p>
 
 <ul>
-<li>Switch to the new ingress controller using the .spec.ingressClassName field. Set value to <b>modsec</b> if you use modsec, else set it to <b>default</b></li>
+<li><code>ingressClassName: default</code> - This is the default ingress-controller</li>
+<li><code>ingressClassName: modsec</code>  - This ingress-controller has the modsec WAF enabled. </li>
 </ul>
-<p>Details of the changes required for converting the ingress to use the networking.k8s.io/v1 Ingress API</p>
+<p>To switch to the new nginx-ingress-controller(v1.2):</p>
 
 <ul>
-<li>Delete the annotation line with <code>kubernetes.io/ingress.class</code>, this is replaced by <code>ingressClassName</code> under spec</li>
-<li>The backend <code>serviceName</code> field is renamed to <code>service.name</code></li>
-<li>Numeric backend <code>servicePort</code> fields are renamed to <code>service.port.number</code></li>
-<li>String backend <code>servicePort</code> fields are renamed to <code>service.port.name</code></li>
-<li><code>pathType</code> is now required for each specified path. Options are <code>Prefix</code>, <code>Exact</code>, and <code>ImplementationSpecific</code>. 
-To match the undefined <code>v1beta1</code> behavior, use <code>ImplementationSpecific</code>.</li>
-<li><code>spec.backend</code> is renamed to <code>spec.defaultBackend</code></li>
+<li>Remove the <code>kubernetes.io/ingress.class</code> annotation</li>
+<li>Add the <code>ingressClassName</code> field under <code>spec</code> (using the default or modsec value)</li>
 </ul>
-<h3 id="resources-deployed-using-kubectl">Resources deployed using kubectl</h3><p>If your ingress manifest looks similar to below:</p>
-
-<pre>
-apiVersion: <b>networking.k8s.io/v1beta1</b> OR  <b>extensions/v1beta1</b>
-kind: Ingress
-metadata:
-  name: helloworld
-  annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: helloworld-mynamespace-green
-    external-dns.alpha.kubernetes.io/aws-weight: "100"
-spec:
-  tls:
-  - hosts:
-    - helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
-  rules:
-  - host: helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
-    http:
-      paths:
-      - <b>path: /
-        backend:
-          serviceName: helloworld
-          servicePort: 4567</b>
-</pre>
-<p>Switch to the new ingress controller and convert the ingress to use the <b>networking.k8s.io/v1</b> API version.</p>
-<p>To Switch to the new ingress controller:</p>
-
-<ul>
-<li>Add <code>ingressClassName:</code> under spec, set to <b>modsec</b> if you use modsec, else set it to <b>default</b></li>
-</ul>
-<p>To Convert the ingress to use the <b>networking.k8s.io/v1</b> API version:</p>
-
-<ul>
-<li>Change the <code>apiVersion</code> to <code>networking.k8s.io/v1</code></li>
-<li>Add <code>pathType: ImplementationSpecific</code> after <code>path: /</code></li>
-<li>Rename <code>-backend.serviceName</code> to <code>-backend.service.name</code></li>
-<li>for String servicePort rename <code>-backend.servicePort</code> to <code>-backend.service.port.name</code></li>
-<li>For Numeric servicePort rename <code>-backend.servicePort</code> to <code>-backend.service.port.number</code></li>
-</ul>
-<p>The manifest after changes will look like:</p>
+<p>The changes should look like the below:</p>
 
 <pre>
 apiVersion: <b>networking.k8s.io/v1</b>
@@ -1490,106 +1445,18 @@ spec:
             port:
               number: 4567</b>
 </pre>
-<p><strong>NOTE: From version &gt;1.0 of the Ingress-NGINX Controller, an IngressClass object is required.
-If you aleady converted your existing ingress to v1, please add <code>ingressClassName:</code> under spec, set to &ldquo;modsec&rdquo; if you use modsec, else set it to &ldquo;default&rdquo;, to switch to the new ingress controllers</strong></p>
-<p>To apply your changes:</p>
-<p><code>kubectl apply --filename ingress.yaml --namespace &lt;namespace&gt;</code></p>
-<h3 id="resources-deployed-using-helm-chart">Resources deployed using helm chart</h3><p><strong>NOTE</strong> - Check the helm version</p>
-<p>The Cloud Platform kubernetes version 1.21 is compatible with helm version 3.5.x so make sure you have the 
-correct version installed before updating the manifest. If you are on older helm versions, you might get an error as below:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Error: UPGRADE FAILED: rendered manifests contain a new resource that already exists. 
-Unable to continue with update: existing resource conflict: namespace: XXX, name: YYYY,
-existing_kind: networking.k8s.io/v1, Kind=Ingress, new_kind: networking.k8s.io/v1, Kind=Ingress
-</code></pre></div><p>If your ingress manifest looks similar to below:</p>
+<h3 id="switch-to-the-new-ingress-controller-with-zero-downtime">Switch to the new ingress controller with zero downtime</h3><p>The following steps describe how to switch ingress controllers without downtime. We strongly recommend teams test these steps on their non-production environments before attempting on production.</p>
+<h4 id="step-1-changes-to-your-current-ingress-resource">Step 1 - Changes to your current ingress resource</h4><p>You must set <code>external-dns.alpha.kubernetes.io/aws-weight</code> value to &ldquo;0&rdquo; for the current ingress. This does not mean traffic will stop, 0 is a valid value for a single ingress.</p>
 
 <pre>
-{{- if .Values.ingress.enabled -}}
-{{- $fullName := include "app.fullname" . -}}
-{{- $ingressPath := .Values.ingress.path -}}
-apiVersion: <b>networking.k8s.io/v1beta1</b>
-kind: Ingress
-metadata:
-  name: {{ $fullName }}
-  labels:
-    {{- include "app.labels" . | nindent 4 }}
-  annotations:
-  {{- with .Values.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-spec:
-  tls:
-  {{- range .Values.ingress.hosts }}
-  - hosts:
-    - {{ .host }}
-    {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
-  {{- end }}
-  rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host }}
-      http:
-        paths:
-          - <b>path: {{ $ingressPath }}
-            backend:
-              serviceName: {{ $fullName }}
-              servicePort: http</b>
-  {{- end }}
-{{- end }}
-</pre>
-<p>The manifest after changes will look like:</p>
-
-<pre>
-  {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "app.fullname" . -}}
-{{- $ingressPath := .Values.ingress.path -}}
-apiVersion: <b>networking.k8s.io/v1</b>
-kind: Ingress
-metadata:
-  name: {{ $fullName }}
-  labels:
-    {{- include "app.labels" . | nindent 4 }}
-  annotations:
-  {{- with .Values.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-spec:
-  ingressClassName: {{ .Values.ingress.ingressClassName }}
-  tls:
-  {{- range .Values.ingress.hosts }}
-  - hosts:
-    - {{ .host }}
-    {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
-  {{- end }}
-  rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host }}
-      http:
-        paths:
-          - <b>path: {{ $ingressPath }}
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: {{ $fullName }}
-                port: 
-                  name: http</b>
-  {{- end }}
-{{- end }}
-
-</pre>
-<p>To apply your changes:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>helm upgrade -f &lt;values-file.yaml&gt; &lt;your-release&gt; &lt;your-chart&gt; --namespace &lt;your-namespace&gt;
-</code></pre></div><p><strong>IMP NOTE: There will be downtime of up to 5-10 minutes while switching to the new ingress controller following the process described <a href="https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html#switch-to-the-new-ingress-controllers-and-convert-an-ingress-to-the-v1-api">above</a>,<br>
-alternatively you can follow the below steps to switch to the new ingress controller without any downtime.</strong></p>
-<h3 id="switch-to-the-new-ingress-controller-with-zero-downtime">Switch to the new ingress controller with zero downtime</h3><p>These steps describe how to switch without any downtime. Initially, we will strongly suggest teams switch their &lsquo;development&rsquo; ingress so that any issues can be ironed out before affecting the production service.</p>
-<h4 id="step-1-amend-and-apply-your-current-ingress-resource">Step 1 - Amend and apply your current ingress resource</h4><p>You must set <code>external-dns.alpha.kubernetes.io/aws-weight</code> value to &ldquo;0&rdquo; for the current ingress. This does not mean traffic will stop, 0 is a valid value for a single ingress.</p>
-
-<pre>
-apiVersion: <b>networking.k8s.io/v1beta1</b> OR  <b>extensions/v1beta1</b>
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: helloworld
   annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: helloworld-mynamespace-green
-    external-dns.alpha.kubernetes.io/aws-weight: "0"
+    kubernetes.io/ingress.class: nginx
+    external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green
+    <b>external-dns.alpha.kubernetes.io/aws-weight: "0"</b>
 spec:
   tls:
   - hosts:
@@ -1598,55 +1465,34 @@ spec:
   - host: helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
     http:
       paths:
-      - <b>path: /
+      - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: helloworld
-          servicePort: 4567</b>
+          service:
+            name: helloworld
+            port:
+              number: 4567
 </pre>
-<h4 id="step-2-add-a-new-ingress-resource">Step 2 - Add a new ingress resource</h4><p>Create a new Ingress with a different ingress name to the existing one, following the process below to convert Ingress to the v1 API.</p>
-<p>Main changes include:</p>
-
-<ul>
-<li><p>Update the ingress name different to the existing one</p>
-
-<ul>
-<li>name: helloworld-new</li>
-</ul></li>
-<li><p>Update set-identifier annotation, to match with the new ingress name</p>
-
-<ul>
-<li>external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green</li>
-</ul></li>
-<li><p>Update aws-weight annotation to &ldquo;100&rdquo;</p>
-
-<ul>
-<li>external-dns.alpha.kubernetes.io/aws-weight: &ldquo;100&rdquo;</li>
-</ul></li>
-</ul>
-<p>To Switch to the new ingress controller:</p>
-
-<ul>
-<li>Add <code>ingressClassName:</code> under spec, set to <b>modsec</b> if you use modsec, else set it to <b>default</b></li>
-</ul>
-<p>To Convert the ingress to use the <b>networking.k8s.io/v1</b> API version:</p>
-
-<ul>
-<li>Change the <code>apiVersion</code> to <code>networking.k8s.io/v1</code></li>
-<li>Add <code>pathType: ImplementationSpecific</code> after <code>path: /</code></li>
-<li>Rename <code>-backend.serviceName</code> to <code>-backend.service.name</code></li>
-<li>for String servicePort rename <code>-backend.servicePort</code> to <code>-backend.service.port.name</code></li>
-<li>For Numeric servicePort rename <code>-backend.servicePort</code> to <code>-backend.service.port.number</code></li>
-</ul>
-<p>The new manifest after changes will look like:</p>
+<h4 id="step-2-create-a-new-ingress-resource">Step 2 - Create a new ingress resource</h4><p>Create a new Ingress with a different ingress name to the existing one with the following changes:</p>
+<p>1.Create a new ingress name different to the existing one:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>name: helloworld-new
+</code></pre></div><p>2.Update set-identifier annotation to match with the new ingress name:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green
+</code></pre></div><p>3.Update aws-weight annotation to &ldquo;100&rdquo;:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>external-dns.alpha.kubernetes.io/aws-weight: "100"
+</code></pre></div><p>4.Remove the <code>kubernetes.io/ingress.class</code> annotation.</p>
+<p>5.Use the new ingress controller:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Add ingressClassName under spec, using the value of default or modsec
+</code></pre></div><p>The new manifest after changes will look like:</p>
 
 <pre>
-apiVersion: <b>networking.k8s.io/v1</b>
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: helloworld-new
+  <b>name: helloworld-new</b>
   annotations:
     external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green
-    external-dns.alpha.kubernetes.io/aws-weight: "100"
+    <b>external-dns.alpha.kubernetes.io/aws-weight: "100"</b>
 spec:
   ingressClassName: <b>default</b> OR <b>modsec</b>
   tls:
@@ -1657,26 +1503,24 @@ spec:
     http:
       paths:
       - path: /
-        <b>pathType: ImplementationSpecific
+        pathType: ImplementationSpecific
         backend:
           service:
             name: helloworld
             port:
-              number: 4567</b>
+              number: 4567
 </pre>
 <p>To apply the changes to the ingress, as a quick alternative to running your application&rsquo;s CI/CD pipeline, you can apply them directly:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nt">-n</span> &lt;namespace-name&gt; apply <span class="nt">-f</span> ingress-new.yaml
-</code></pre></div><h5 id="verify-traffic-sent-to-the-new-ingress">Verify traffic sent to the new ingress</h5><p>After you have applied new ingress with <code>external-dns.alpha.kubernetes.io/aws-weight</code> value set to &ldquo;100&rdquo;, you can verify the traffic sent to the new ingress using <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/f1e13059dfd23fdcaf479f4fa833f92610c2dfa5/kubernetes-ingress-traffic?orgId=1">grafana</a></p>
+</code></pre></div><h4 id="verify-traffic-sent-to-the-new-ingress">Verify traffic sent to the new ingress</h4><p>After you have applied new ingress with <code>external-dns.alpha.kubernetes.io/aws-weight</code> value set to &ldquo;100&rdquo;, you can verify traffic is being sent to the new ingress using <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/f1e13059dfd23fdcaf479f4fa833f92610c2dfa5/kubernetes-ingress-traffic?orgId=1">grafana</a></p>
 <p>Get the &ldquo;hostname&rdquo; used in your ingress for your namespace</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl get ingress &lt;ingress-name&gt; <span class="nt">-n</span> &lt;namespace-name&gt; <span class="nt">-o</span> json | jq <span class="nt">-r</span> <span class="s1">'.items[] | .spec.rules[].host'</span>
 </code></pre></div><p>Using the &ldquo;hostname&rdquo; from the above command, make a cURL call every 5 seconds to send traffic to your service</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>  <span class="k">while </span><span class="nb">sleep </span>5<span class="p">;</span> <span class="k">do </span>curl <span class="nt">-I</span> https://&lt;host-name&gt;<span class="p">;</span> <span class="k">done</span>
 </code></pre></div><p>To view your ingress traffic, login to <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/f1e13059dfd23fdcaf479f4fa833f92610c2dfa5/kubernetes-ingress-traffic?orgId=1">grafana-live</a>, in <code>Kubernetes-ingress traffic</code> dashboard, select your <code>ingress-name</code> and <code>namespace-name</code> from the drop-down and do a search, you will see traffic for your new ingress.</p>
 <p>Your new ingress is successfully switched to the new ingress controller.</p>
-<h4 id="step-3-cleanup-old-ingress">Step 3 - Cleanup old ingress</h4><p>Once you have successfully switched to the new ingress controller using the v1 API version manifest, you can tidy up by deleting the old ingress and updating your CI pipeline/job with new ingress manifest that deploys
+<h4 id="step-3-cleanup-old-ingress">Step 3 - Cleanup old ingress</h4><p>Once you have successfully switched to the new ingress controller, you can tidy up by deleting the old ingress and updating your CI pipeline/job with new ingress manifest that deploys
 to the cluster.</p>
-<p><strong>NOTE: If you don&rsquo;t update your manifest to switch to the new ingress controller and convert the ingress to use the latest API versions after we upgraded to Kubernetes 1.22, 
-you will get failures when deploying your application.</strong></p>
 <h3 id="getting-help">Getting help</h3><p>If you have any questions, please contact us on <a href="https://mojdt.slack.com/messages/C57UPMZLY">#ask-cloud-platform</a> Slack channel.</p>
 
 
@@ -1701,7 +1545,7 @@ you will get failures when deploying your application.</strong></p>
           <aside>
               <ul class="contribution-banner">
                 <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/Switch-ingress-to-v1-ingress-controller.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Switch%20ingress%20to%20v1%20supported%20ingress-controller'&amp;body=Problem%20with%20'Switch%20ingress%20to%20v1%20supported%20ingress-controller'%20(https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Switch%20ingress%20to%20the%20new%20nginx-ingress-controller%20v1.2'&amp;body=Problem%20with%20'Switch%20ingress%20to%20the%20new%20nginx-ingress-controller%20v1.2'%20(https://runbooks.cloud-platform.service.justice.gov.uk/Switch-ingress-to-v1-ingress-controller.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
