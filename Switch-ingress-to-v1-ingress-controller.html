@@ -1389,7 +1389,7 @@
 
 <ul>
 <li><code>kubernetes.io/ingress.class: nginx</code>   - This is the default ingress-controller</li>
-<li><code>kubernetes.io/ingress.class: modsec</code>  - This ingress-controller has the modsec WAF enabled. </li>
+<li><code>kubernetes.io/ingress.class: modsec01</code>  - This ingress-controller has the modsec WAF enabled. </li>
 </ul>
 <p>These ingress-controllers are running on version <strong>v0.47.0</strong></p>
 <p>Unfortunately, there is a breaking change in the upgrade path of the nginx-ingress-controller to v1.0 and above. This would require all service teams to make changes to all ingress manifests at the same time as the upgrade.</p>
@@ -1416,12 +1416,12 @@
 
 <ul>
 <li>Remove the <code>kubernetes.io/ingress.class</code> annotation</li>
-<li>Add the <code>ingressClassName</code> field under <code>spec</code> (using the default or modsec value)</li>
+<li>Add the <code>ingressClassName</code> field under <code>spec</code> (using the <code>default</code> or <code>modsec</code> value)</li>
 </ul>
 <p>The changes should look like the below:</p>
 
 <pre>
-apiVersion: <b>networking.k8s.io/v1</b>
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: helloworld
@@ -1429,7 +1429,7 @@ metadata:
     external-dns.alpha.kubernetes.io/set-identifier: helloworld-mynamespace-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
-  ingressClassName: <b>default</b> OR <b>modsec</b>
+  <b>ingressClassName: default</b> OR <b>modsec</b>
   tls:
   - hosts:
     - helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
@@ -1438,14 +1438,14 @@ spec:
     http:
       paths:
       - path: /
-        <b>pathType: ImplementationSpecific
+        pathType: ImplementationSpecific
         backend:
           service:
             name: helloworld
             port:
-              number: 4567</b>
+              number: 4567
 </pre>
-<h3 id="switch-to-the-new-ingress-controller-with-zero-downtime">Switch to the new ingress controller with zero downtime</h3><p>The following steps describe how to switch ingress controllers without downtime. We strongly recommend teams test these steps on their non-production environments before attempting on production.</p>
+<h3 id="switch-to-the-new-ingress-controller-with-zero-downtime">Switch to the new ingress controller with zero downtime</h3><p>The following steps describe how to switch ingress controllers without downtime. We <b>strongly</b> recommend teams test these steps on their non-production environments before attempting on production.</p>
 <h4 id="step-1-changes-to-your-current-ingress-resource">Step 1 - Changes to your current ingress resource</h4><p>You must set <code>external-dns.alpha.kubernetes.io/aws-weight</code> value to &ldquo;0&rdquo; for the current ingress. This does not mean traffic will stop, 0 is a valid value for a single ingress.</p>
 
 <pre>
@@ -1474,16 +1474,19 @@ spec:
               number: 4567
 </pre>
 <h4 id="step-2-create-a-new-ingress-resource">Step 2 - Create a new ingress resource</h4><p>Create a new Ingress with a different ingress name to the existing one with the following changes:</p>
-<p>1.Create a new ingress name different to the existing one:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>name: helloworld-new
-</code></pre></div><p>2.Update set-identifier annotation to match with the new ingress name:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green
-</code></pre></div><p>3.Update aws-weight annotation to &ldquo;100&rdquo;:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>external-dns.alpha.kubernetes.io/aws-weight: "100"
-</code></pre></div><p>4.Remove the <code>kubernetes.io/ingress.class</code> annotation.</p>
-<p>5.Use the new ingress controller:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Add ingressClassName under spec, using the value of default or modsec
-</code></pre></div><p>The new manifest after changes will look like:</p>
+
+<ol>
+<li><p>Create a new ingress name different to the existing one:</p>
+<p><code>name: helloworld-new</code></p></li>
+<li><p>Update set-identifier annotation to match with the new ingress name (<code>-green</code> remains the same):</p>
+<p><code>external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green</code></p></li>
+<li><p>Update aws-weight annotation to &ldquo;100&rdquo;:</p>
+<p><code>external-dns.alpha.kubernetes.io/aws-weight: &quot;100&quot;</code></p></li>
+<li><p>Remove the <code>kubernetes.io/ingress.class</code> annotation.</p></li>
+<li><p>Use the new ingress controller:</p>
+<p>Add <code>ingressClassName</code> under <code>spec</code>, using the value of <code>default</code> or <code>modsec</code></p></li>
+</ol>
+<p>The new manifest after changes will look like:</p>
 
 <pre>
 apiVersion: networking.k8s.io/v1
@@ -1491,10 +1494,10 @@ kind: Ingress
 metadata:
   <b>name: helloworld-new</b>
   annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green
+    <b>external-dns.alpha.kubernetes.io/set-identifier: helloworld-new-mynamespace-green</b>
     <b>external-dns.alpha.kubernetes.io/aws-weight: "100"</b>
 spec:
-  ingressClassName: <b>default</b> OR <b>modsec</b>
+  <b>ingressClassName: default</b> OR <b>modsec</b>
   tls:
   - hosts:
     - helloworld-app.apps.live.cloud-platform.service.justice.gov.uk
@@ -1514,7 +1517,7 @@ spec:
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nt">-n</span> &lt;namespace-name&gt; apply <span class="nt">-f</span> ingress-new.yaml
 </code></pre></div><h4 id="verify-traffic-sent-to-the-new-ingress">Verify traffic sent to the new ingress</h4><p>After you have applied new ingress with <code>external-dns.alpha.kubernetes.io/aws-weight</code> value set to &ldquo;100&rdquo;, you can verify traffic is being sent to the new ingress using <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/f1e13059dfd23fdcaf479f4fa833f92610c2dfa5/kubernetes-ingress-traffic?orgId=1">grafana</a></p>
 <p>Get the &ldquo;hostname&rdquo; used in your ingress for your namespace</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl get ingress &lt;ingress-name&gt; <span class="nt">-n</span> &lt;namespace-name&gt; <span class="nt">-o</span> json | jq <span class="nt">-r</span> <span class="s1">'.items[] | .spec.rules[].host'</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  kubectl get ingress &lt;ingress-name&gt; <span class="nt">-n</span> &lt;namespace-name&gt; <span class="nt">-o</span> json | jq <span class="nt">-r</span> <span class="s1">'.spec.rules[].host'</span>
 </code></pre></div><p>Using the &ldquo;hostname&rdquo; from the above command, make a cURL call every 5 seconds to send traffic to your service</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>  <span class="k">while </span><span class="nb">sleep </span>5<span class="p">;</span> <span class="k">do </span>curl <span class="nt">-I</span> https://&lt;host-name&gt;<span class="p">;</span> <span class="k">done</span>
 </code></pre></div><p>To view your ingress traffic, login to <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/f1e13059dfd23fdcaf479f4fa833f92610c2dfa5/kubernetes-ingress-traffic?orgId=1">grafana-live</a>, in <code>Kubernetes-ingress traffic</code> dashboard, select your <code>ingress-name</code> and <code>namespace-name</code> from the drop-down and do a search, you will see traffic for your new ingress.</p>
@@ -1524,17 +1527,17 @@ to the cluster.</p>
 <h3 id="getting-help">Getting help</h3><p>If you have any questions, please contact us on <a href="https://mojdt.slack.com/messages/C57UPMZLY">#ask-cloud-platform</a> Slack channel.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-06-23">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-08-26">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 23 March 2022.
+      This page was last reviewed on 26 May 2022.
 
-        It needs to be reviewed again on 23 June 2022
+        It needs to be reviewed again on 26 August 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 23 June 2022
+      This page was set to be reviewed before 26 August 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
