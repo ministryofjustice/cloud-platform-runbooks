@@ -827,7 +827,7 @@
 </ul>
 <ul>
   <li>
-    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources"><span>Manually Plan/Apply Namespace Resources</span></a>
+    <a href="/manually-apply-namespace.html#manually-plan-apply-namespace-resources-in-live-cluster"><span>Manually Plan/Apply Namespace Resources in live cluster</span></a>
     <ul>
       <li>
         <a href="/manually-apply-namespace.html#start-in-the-appropriate-branch-of-the-environments-repo"><span>Start in the appropriate branch of the environments repo</span></a>
@@ -1384,25 +1384,26 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="manually-plan-apply-namespace-resources">Manually Plan/Apply Namespace Resources</h1><p>These steps are more or less what the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/environments-terraform.yaml">concourse pipeline</a> does.</p>
+              <h1 id="manually-plan-apply-namespace-resources-in-live-cluster">Manually Plan/Apply Namespace Resources in live cluster</h1><p>These steps are more or less what the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/environments-live.yaml">concourse pipeline</a> does.</p>
 <h2 id="start-in-the-appropriate-branch-of-the-environments-repo">Start in the appropriate branch of the environments repo</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd cloud-platform-environments
 git checkout main
 git pull
 git checkout -b [BRANCH-NAME] origin/[BRANCH-NAME]
-</code></pre></div><h2 id="set-pingdom-environment-variables-optional">Set pingdom environment variables(Optional)</h2><p>If the changes involve applying &ldquo;pingdom_check&rdquo;, set the environment variables for pingdom.
+</code></pre></div><h2 id="set-pingdom-environment-variables-optional">Set pingdom environment variables(Optional)</h2><p>If the changes involve applying &ldquo;pingdom_check&rdquo; or &ldquo;github&rdquo;, set the environment variables for pingdom and github.
 The values are stored as secrets in <code>manager</code> cluster - <code>concourse-main</code> namespace.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export PINGDOM_USER="XXXXXXXXXXX"
-export PINGDOM_PASSWORD="XXXXXXXXXXXX"
-export PINGDOM_API_KEY="XXXXXXXXXXXXX"
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export PINGDOM_API_TOKEN="XXXXXXXXXXXXX"
+export TF_VAR_github_owner="ministryofjustice"
+export TF_VAR_github_token="XXXXXXXXXXXXX"
 </code></pre></div><h2 id="target-the-live-cluster">Target the live cluster</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export AWS_PROFILE=moj-cp
 export KUBECONFIG=${HOME}/.kube/config
 aws eks --region eu-west-2 update-kubeconfig --name live
 </code></pre></div><h2 id="set-some-environment-variables">Set some environment variables</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export TF_VAR_cluster_name="live-1"
-export TF_VAR_cluster_state_bucket=cloud-platform-terraform-state
-export TF_VAR_cluster_state_key="cloud-platform/live/terraform.tfstate"
+export TF_VAR_cluster_state_bucket="cloud-platform-terraform-state"
+export TF_VAR_kubernetes_cluster="DF366E49809688A3B16EEC29707D8C09.gr7.eu-west-2.eks.amazonaws.com"
 #needed by tf k8s provider
 export KUBE_CONFIG_PATH=${HOME}/.kube/config
-</code></pre></div><h2 id="set-the-namespace-name">Set the namespace name</h2><p>I&rsquo;m using <code>offender-events-dev</code> for this example. Use whatever is relevant for your case.</p>
+</code></pre></div><p>Note: The variable cluster_name above is used to get VPC info</p>
+<h2 id="set-the-namespace-name">Set the namespace name</h2><p>I&rsquo;m using <code>offender-events-dev</code> for this example. Use whatever is relevant for your case.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export NAMESPACE=offender-events-dev
 
 cd namespaces/live.cloud-platform.service.justice.gov.uk/${NAMESPACE}/resources
@@ -1411,20 +1412,22 @@ cd namespaces/live.cloud-platform.service.justice.gov.uk/${NAMESPACE}/resources
   -backend-config="key=cloud-platform-environments/live-1.cloud-platform.service.justice.gov.uk/${NAMESPACE}/terraform.tfstate" \
   -backend-config="region=eu-west-1" \
   -backend-config="dynamodb_table=cloud-platform-environments-terraform-lock"
-</code></pre></div><h2 id="terraform-plan-apply">Terraform Plan/Apply</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan
+</code></pre></div><p>Note: live-1 reference in backend-config is s3 repo where namespace terraform state is stored currently.</p>
+<h2 id="terraform-plan-apply">Terraform Plan/Apply</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan
+terraform apply
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-07-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-08-26">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 April 2022.
+      This page was last reviewed on 26 May 2022.
 
-        It needs to be reviewed again on 20 July 2022
+        It needs to be reviewed again on 26 August 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 July 2022
+      This page was set to be reviewed before 26 August 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
