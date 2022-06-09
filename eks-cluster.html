@@ -1417,7 +1417,7 @@ terraform apply
 <p>The delete cluster script must <em>always</em> be run in a container. This ensures that the environment of the script is fully controlled, and you don&rsquo;t run into problems such as the kubernetes context being changed in another window, or extra environment variables causing unwanted effects.</p>
 </blockquote>
 <p>Then invoke the script like this:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./destroy-cluster.rb --name [short cluster name] --kind eks --yes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./destroy-cluster.rb --name [short cluster name] --yes
 </code></pre></div><p>Run without <code>--yes</code> to do a dry run, and see what commands would be executed.</p>
 <p>You can get more information using:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./destroy-cluster.rb --help
@@ -1435,7 +1435,7 @@ terraform apply
     # export $(cat keyval/keyval.properties | grep CLUSTER_NAME )
 </code></pre></div><p>Commenting out this will not set the <code>CLUSTER_NAME</code> provided by the create-cluster-run-tests job.</p>
 <p>Update the <code>$CLUSTER_NAME</code> to <code>&lt;cluster-name-to-be-deleted</code> in the below line</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./destroy-cluster.rb --name $CLUSTER_NAME --kind eks --yes
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./destroy-cluster.rb --name $CLUSTER_NAME --yes
 </code></pre></div><p>Run the below commands updating the <code>&lt;cluster-name-to-be-deleted&gt;</code>.</p>
 <p>The first fly command will apply the changes made for the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/eks-create-test-destroy.yaml">eks-create-test-destroy.yaml</a> file with the hardcoded <code>CLUSTER_NAME</code> in the destroy-cluster job</p>
 <p>The second command will trigger the destroy-cluster job for the CLUSTER_NAME updated in the destroy-cluster job.</p>
