@@ -111,6 +111,22 @@
         <a href="/how-we-work.html#getting-help"><span>Getting Help</span></a>
       </li>
       <li>
+        <a href="/how-we-work.html#sprints-and-ceremonies"><span>Sprints and ceremonies</span></a>
+        <ul>
+          <li>
+            <a href="/how-we-work.html#firebreak"><span>Firebreak</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/how-we-work.html#story"><span>Story</span></a>
+        <ul>
+          <li>
+            <a href="/how-we-work.html#story-points"><span>Story points</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="/how-we-work.html#the-board-tickets"><span>The Board / Tickets</span></a>
         <ul>
           <li>
@@ -1335,11 +1351,43 @@
 
 <ul>
 <li>Post in #cloud-platform explaining the problem</li>
-<li>Post in #cloud-platform to ask for someone to pair-program with you</li>
+<li>Post in #cloud-platform asking for someone to pair-program with you</li>
 <li>Mention the issue during the daily standup</li>
 </ul>
-<h2 id="the-board-tickets">The Board / Tickets</h2><p>We use a kanban process to manage our backlog of work on this <a href="https://app.zenhub.com/workspaces/cloud-platform-team-5ccb0b8a81f66118c983c189/board">zenhub board</a>, which aggregates GitHub Issues from the various CP team repositories.</p>
-<p>We work in two-week sprints, and the process of getting work done should look like this:</p>
+<h2 id="sprints-and-ceremonies">Sprints and ceremonies</h2><p>We work in two-week sprints - these are usually product led. 
+Our team ceremonies include: daily stand up at 10:30am on zoom, planning every forth-night on Wednesday and our sprint demo followed by retro on Friday.</p>
+<h3 id="firebreak">Firebreak</h3><p>For 1 sprint every 2 months, we have a Firebreak sprint. Firebreaks are team led and provides team members the opportunity to work on tickets that’s of interest to them and of value to the organisation such as: 
+1. Address tech debt
+2. Prototyping innovative new features
+3. Try out new technologies</p>
+<p>As with our usual sprint, at the end of the firebreak sprint, we showcase and demo our progress and learning to the team and other interested parties.
+<a href="https://insidegovuk.blog.gov.uk/2018/05/03/firebreaks-on-gov-uk/">find out more about firebreaks on GOV.UK</a></p>
+<h2 id="story">Story</h2><p>Stories/Tickets are an item of work and should have enough information that all team members know what is required. When creating a new ticket, please use the appropriate template for a <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/ISSUE_TEMPLATE/cloud-platform-support-request.md">support request</a> <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/ISSUE_TEMPLATE/cloud-platform-story-template.md">story</a> or <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/ISSUE_TEMPLATE/cloud-platform-firebreak-template.md">firebreak story</a>.</p>
+<p>Stories are estimated with story points based on <strong>complexity</strong> during planning using the fibonacci sequence. Voting is done in the open by show of fingers.</p>
+<h3 id="story-points">Story points</h3><div class="table-container">
+        <table>
+          <tr>
+<th style="text-align: left">Story Points</th>
+<th style="text-align: left">Complexity</th>
+</tr><tr>
+<td style="text-align: left">1</td>
+<td style="text-align: left">This is straight forward and simple. I know exactly the code I would write if I went back to my desk right now.</td>
+</tr><tr>
+<td style="text-align: left">2</td>
+<td style="text-align: left">This is quite easy. I know roughly what I&rsquo;d have to do. I might have to look one or two things up.</td>
+</tr><tr>
+<td style="text-align: left">3</td>
+<td style="text-align: left">This is a bit complex. I might have to refresh my memory on a few things and there are a couple of unknowns.</td>
+</tr><tr>
+<td style="text-align: left">5</td>
+<td style="text-align: left">This is big. I have only a rough idea of how I&rsquo;d do this.</td>
+</tr><tr>
+<td style="text-align: left">8+</td>
+<td style="text-align: left">This is too big, it will have to be broken down.</td>
+</tr>
+        </table>
+      </div><h2 id="the-board-tickets">The Board / Tickets</h2><p>We use a kanban process to manage our backlog of work on this <a href="https://app.zenhub.com/workspaces/cloud-platform-team-5ccb0b8a81f66118c983c189/board">zenhub board</a>, which aggregates GitHub Issues from the various CP team repositories.</p>
+<p>During the sprint, the process of getting work done should look like this:</p>
 
 <ul>
 <li>Assign the topmost ticket (i.e. github issue) of the &ldquo;This Sprint&rdquo; column to yourself, and move it to the &ldquo;In Progress&rdquo; column</li>
@@ -1350,6 +1398,12 @@
 <li>Close the github issue, and move on to the next ticket</li>
 </ul>
 <h3 id="adding-tickets">Adding tickets</h3><p>Anyone in the team is encouraged to add new tickets at any time. So if you think of something we ought to do, please <a href="https://github.com/ministryofjustice/cloud-platform/issues/new/choose">raise a ticket</a> for it.</p>
+<h4 id="support-tickets">Support tickets</h4><p>If the time spent working on a non-ticketed issue or request <em>such as from the &lsquo;#ask-cloud-platform&rsquo; channel</em>, is more than 15 minutes:</p>
+
+<ul>
+<li>The team member working on the issue will create a ticket and estimate the ticket based on complexity, using the agreed criteria for story points. </li>
+<li>Where appropriate, ask the user who raised the issue to create a ticket.</li>
+</ul>
 <h3 id="making-changes-to-code">Making changes to code</h3><p>Please read these <a href="https://ministryofjustice.github.io/technical-guidance/documentation/guides/using-git.html">technical guidelines</a> for how we prefer to work on code.</p>
 <h3 id="reviewing-merging-prs">Reviewing/Merging PRs</h3>
 <ul>
@@ -1387,17 +1441,17 @@
 <p><a href="https://reports.cloud-platform.service.justice.gov.uk/documentation">This page</a> hosts a list of documents which are overdue for review. Please feel free to review any of the documents listed, and raise a PR making any updates (including updating the <code>last_reviewed_on</code> date).</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-07-05">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-09-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 5 April 2022.
+      This page was last reviewed on 17 June 2022.
 
-        It needs to be reviewed again on 5 July 2022
+        It needs to be reviewed again on 17 September 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 5 July 2022
+      This page was set to be reviewed before 17 September 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
