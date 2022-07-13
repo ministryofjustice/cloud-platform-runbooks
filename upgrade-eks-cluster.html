@@ -409,6 +409,9 @@
           <li>
             <a href="/upgrade-eks-cluster.html#upgrade-addon-s"><span>Upgrade addon(s)</span></a>
           </li>
+          <li>
+            <a href="/upgrade-eks-cluster.html#troubleshooting"><span>Troubleshooting</span></a>
+          </li>
         </ul>
       </li>
     </ul>
@@ -1217,7 +1220,7 @@
             <a href="/grafana-dashboards.html#dashboard-layout"><span>Dashboard Layout</span></a>
           </li>
           <li>
-            <a href="/grafana-dashboards.html#troubleshooting"><span>Troubleshooting</span></a>
+            <a href="/grafana-dashboards.html#kubernetes-number-of-pods-per-node-troubleshooting"><span>Troubleshooting</span></a>
           </li>
         </ul>
       </li>
@@ -1416,6 +1419,17 @@ $
 <p><a href="../images/update-node-group.png" rel="noopener noreferrer"><img src="/images/update-node-group.png" alt="Update Node Group" /></a></p>
 <h3 id="upgrade-addon-s">Upgrade addon(s)</h3><p>We have 3 addons managed through cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons">module</a>.</p>
 <p>Refer to the below documents to get the addon version to be used with the EKS major version you just upgraded to.</p>
+<h3 id="troubleshooting">Troubleshooting</h3><p>When we update node group version or change launch template version, we had error &ldquo;Reached max retries while trying to evict pods from nodes in node group live-default_ng_xxxx&rdquo;, even using force which does not respect pod disruption budgets and it forces node restarts. The force drain mode can fail to evict pods when there are pods in CrashLoopBack state and PDB is in effect, related to this <a href="https://github.com/kubernetes/kubernetes/issues/72320">issue</a></p>
+<p>We can use cloudwatch logs insights with following filter to understand for which all pods the eviction was a failure.</p>
+<p>1) Go to cloudwatch logs console, then click on insights.
+  2) Now in the current window, select log groups which corresponds to Cluster Control Plane logs. For live cluster it is: &ldquo;/aws/eks/live/cluster&rdquo;
+  3) Use the below filter to check on all eviction failures that happened to the EKS cluster</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  fields @timestamp, @message | filter @logStream like "kube-apiserver-audit" | filter ispresent(requestURI) | filter objectRef.subresource = "eviction" | filter responseObject.status = "Failure"
+</code></pre></div><p>4) After running the query with above filter, you could see all the eviction failures which includes repeated retries performed by the client.
+  5) The &ldquo;requestURI&rdquo; present inside the message in the results of above query will point you on which pods triggered eviction failure.
+  6) Further to filter out all such duplicate eviction retries you could use the following query.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  fields @timestamp, @message | filter @logStream like "kube-apiserver-audit" | filter ispresent(requestURI) | filter objectRef.subresource = "eviction" | filter responseObject.status = "Failure" | display @logStream, requestURI, responseObject.message | stats count(*) as retry by requestURI, requestObject.message
+</code></pre></div><p>Delete the eviction failure pods manually to avoid the error &ldquo;Reached max retries while trying to evict pods from nodes in node group live-default_ng_xxxx&rdquo;</p>
 <p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">managing-kube-proxy</a></p>
 <p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">managing-coredns</a></p>
 <p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">managing-vpc-cni</a></p>
