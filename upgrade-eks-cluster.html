@@ -1387,6 +1387,7 @@ Therefore, it will not always require an upgrade of the terraform-aws-eks module
 <li><p>You have terraform and docker installed</p></li>
 <li><p>Review the changelog of the <a href="https://kubernetes.io/releases/">Kubernetes release</a> and the <a href="https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html">EKS release</a> you are planning to upgrade to.</p></li>
 <li><p>Review the official <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html">EKS upgrading a cluster</a> document for any extra steps that are a part of a specific EKS release.</p></li>
+<li><p>Run <a href="https://github.com/doitintl/kube-no-trouble">kubent</a> against cluster to find deprecated APIs.</p></li>
 </ul>
 <h2 id="upgrade-steps">Upgrade Steps</h2><h3 id="upgrade-eks-terraform-module">Upgrade EKS Terraform Module</h3><p>As mentioned previously; when a new EKS major version is released, it is normally followed by a release of an associated <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks module</a>.</p>
 <p>1) The first step of the EKS upgrade is to identify the corresponding module release with the EKS major version you want to upgrade to. Review the changes in the <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/CHANGELOG.md">changelog</a>. Plan/make any necessary changes or required updates.</p>
