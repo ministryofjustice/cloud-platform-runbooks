@@ -1301,9 +1301,6 @@
         <a href="/tips-and-tricks.html#check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain"><span>Check the expiration date of the SSL certificate for a live domain</span></a>
       </li>
       <li>
-        <a href="/tips-and-tricks.html#run-etcdctl-on-a-master-node"><span>Run etcdctl on a master node</span></a>
-      </li>
-      <li>
         <a href="/tips-and-tricks.html#delete-a-quot-stuck-quot-resource"><span>Delete a “stuck” resource</span></a>
       </li>
       <li>
@@ -1314,9 +1311,6 @@
       </li>
       <li>
         <a href="/tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
-      </li>
-      <li>
-        <a href="/tips-and-tricks.html#install-tmux-and-docker-on-the-live-bastion-host"><span>Install tmux and docker on the live bastion host</span></a>
       </li>
       <li>
         <a href="/tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
@@ -1374,18 +1368,6 @@ verify error:num<span class="o">=</span>20:unable to get <span class="nb">local 
 verify <span class="k">return</span>:0
 DONE
 <span class="nv">notAfter</span><span class="o">=</span>Oct 21 18:23:00 2019 GMT
-</code></pre></div><h2 id="run-etcdctl-on-a-master-node">Run <code>etcdctl</code> on a master node</h2><p>While SSHed onto a master:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span><span class="nb">sudo </span>docker ps | <span class="nb">grep </span>etcd.manager
-</code></pre></div><p>Pick the kopeio/etcd-manager container you&rsquo;re interested in (&lsquo;main&rsquo; or &lsquo;events&rsquo;) and then docker exec onto it</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span><span class="nb">sudo </span>docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="o">[</span>container <span class="nb">id</span><span class="o">]</span> bash
-</code></pre></div><p>Now you can run etcdctl like this:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">cd</span> /opt/etcd-v3.4.3-linux-amd64
-
-<span class="nv">ETCDCTL_API</span><span class="o">=</span>3 <span class="se">\</span>
-  ./etcdctl <span class="nt">--key</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.key <span class="se">\</span>
-  <span class="nt">--cert</span>  /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-client.crt <span class="se">\</span>
-  <span class="nt">--cacert</span> /rootfs/etc/kubernetes/pki/kube-apiserver/etcd-ca.crt  <span class="se">\</span>
-  <span class="nt">--endpoints</span> <span class="s2">"https://etcd-a.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-b.internal.live-1.cloud-platform.service.justice.gov.uk:4001,https://etcd-c.internal.live-1.cloud-platform.service.justice.gov.uk:4001"</span> endpoint health
 </code></pre></div><h2 id="delete-a-quot-stuck-quot-resource">Delete a &ldquo;stuck&rdquo; resource</h2><p>kubectl can freeze with resources in status &ldquo;Terminating&rdquo;, these workarounds can force a cleanup:</p>
 <p>Identify what resources are still present in a namespace:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>ns=my-app ; for api in `kubectl api-resources --verbs=list --namespaced -o name` ; do echo $api ;  kubectl get $api -n $ns ; done
@@ -1404,16 +1386,6 @@ DONE
 <h2 id="find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</h2><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-172-20-80-62.eu-west-2.compute.internal
 </code></pre></div><h2 id="count-pods-running-on-all-nodes">Count pods running on all nodes</h2><p>Paste this into the search field on <a href="https://prometheus.cloud-platform.service.justice.gov.uk">Prometheus</a>:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>max by(node) (max by(instance) (kubelet_running_pod_count{job="kubelet",metrics_path="/metrics"}) * on(instance) group_left(node) kubelet_node_name{job="kubelet",metrics_path="/metrics"})
-</code></pre></div><h2 id="install-tmux-and-docker-on-the-live-bastion-host">Install tmux and docker on the live bastion host</h2><p>From <a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9">here</a></p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">sudo </span>apt update
-<span class="nb">sudo </span>apt <span class="nb">install </span>tmux
-<span class="nb">sudo </span>apt <span class="nb">install </span>apt-transport-https ca-certificates curl gnupg2 software-properties-common
-curl <span class="nt">-fsSL</span> https://download.docker.com/linux/debian/gpg | <span class="nb">sudo </span>apt-key add -
-<span class="nb">sudo </span>add-apt-repository <span class="s2">"deb [arch=amd64] https://download.docker.com/linux/debian </span><span class="si">$(</span>lsb_release <span class="nt">-cs</span><span class="si">)</span><span class="s2"> stable"</span>
-<span class="nb">sudo </span>apt update
-apt-cache policy docker-ce
-<span class="nb">sudo </span>apt <span class="nb">install </span>docker-ce
-<span class="nb">sudo </span>systemctl status docker
 </code></pre></div><h2 id="output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</h2><p>Use <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/bin/route53-to-csv.rb">this script</a></p>
 <h2 id="add-more-rss-feeds-to-cloud-platform-rss-channel">Add more RSS feeds to <code>#cloud-platform-rss</code> channel</h2><p><code>/feed subscribe &lt;feed address&gt;</code></p>
 <p>There are more slash commands for rss feed which can be used to list, remove and help. Type <code>/feed help</code> in the #cloud-platform-rss` channel to get more details.</p>
@@ -1442,17 +1414,17 @@ Error from server: conversion webhook for cert-manager.io/v1alpha2, Kind=Certifi
 Error from server: conversion webhook for cert-manager.io/v1alpha2, Kind=Certificate failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
 </code></pre></div>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-07-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-10-20">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 April 2022.
+      This page was last reviewed on 20 July 2022.
 
-        It needs to be reviewed again on 19 July 2022
+        It needs to be reviewed again on 20 October 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 July 2022
+      This page was set to be reviewed before 20 October 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
