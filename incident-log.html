@@ -216,6 +216,14 @@
     <a href="/incident-log.html#incident-log"><span>Incident Log</span></a>
     <ul>
       <li>
+        <a href="/incident-log.html#q3-2022-july-september"><span>Q3 2022 (July-September)</span></a>
+        <ul>
+          <li>
+            <a href="/incident-log.html#incident-on-2022-07-11-09-33-slow-performance-for-25-of-ingress-traffic"><span>Incident on 2022-07-11 09:33 - Slow performance for 25% of ingress traffic</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="/incident-log.html#q1-2022-january-to-march"><span>Q1 2022 (January to March)</span></a>
         <ul>
           <li>
@@ -1364,6 +1372,49 @@
 <blockquote>
 <p>Use the <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/bin/mean-time-to-repair.rb">mean-time-to-repair.rb</a> script to view performance metrics</p>
 </blockquote>
+<h2 id="q3-2022-july-september">Q3 2022 (July-September)</h2>
+<ul>
+<li><p><strong>Mean Time to Repair</strong>: 6h 27m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 6h 27m</p></li>
+</ul>
+<h3 id="incident-on-2022-07-11-09-33-slow-performance-for-25-of-ingress-traffic">Incident on 2022-07-11 09:33 - Slow performance for 25% of ingress traffic</h3>
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected 2022-07-11 09:33</li>
+<li>Incident declared 2022-07-11 10:11</li>
+<li>Repaired 2022-07-11 16:07</li>
+<li>Resolved 2022-07-11 16:07</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 6h 27m</p></li>
+<li><p><strong>Time to resolve</strong>: 6h 27m</p></li>
+<li><p><strong>Identified</strong>: Users reported in #ask-cloud-platform they&rsquo;re experiencing slow performance of their applications some of the time.</p></li>
+<li><p><strong>Impact</strong>: Slow performance of 25% of ingress traffic</p></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>Following an AWS incident the day before, one of three network interfaces on the &lsquo;default&rsquo; ingress controllers were experiencing slow performance.</li>
+<li>AWS claim, &ldquo;the health checking subsystem did not correctly detect some of your targets as unhealthy, which resulted in clients timing out when they attempted to connect to one of your Network Load Balancer (NLB) Elastic IP&rsquo;s (EIPs).&rdquo;</li>
+<li>AWS go onto say, &ldquo;The Networkd Load Balancer (NLB) has a health checking subsystem that checks the health of each target, and if a target is detected as unhealthy it is removed from service. During this issue, the health checking subsystem was unaware of the health status of your the targets in one of the Availability Zones (AZ).&rdquo;</li>
+<li>Timeline: <a href="https://docs.google.com/document/d/1QR31_9Ga_LdXSzgoFjiemE-jxq5sf59rKj5gAoNTU9E/edit?usp=sharing">timeline</a> for the incident</li>
+<li>Slack thread: <a href="https://mojdt.slack.com/archives/CH6D099DF/p1657531797170269">#cloud-platform-update</a> for the incident</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:</p>
+
+<ul>
+<li>AWS internal components have been restarted. AWS say, &ldquo;The root cause was a latent software race condition that was triggered when some of the health checking instances were restarted. Since the health checking subsystem was unaware of the targets, it did not return a health check status for a specific Availability Zone (AZ) of the NLB&hellip;</li>
+</ul></li>
+</ul>
+<p>We restarted the health checking subsystem, which caused it to refresh the list of targets, after this the NLB was recovered in the impacted AZ.&rdquo;</p>
+
+<ul>
+<li><strong>Review actions</strong>:
+
+<ul>
+<li>Mitigaton tickets raised following a post-incident review: https://github.com/ministryofjustice/cloud-platform/issues?q=is%3Aissue+is%3Aopen+post-aws-incident</li>
+</ul></li>
+</ul>
 <h2 id="q1-2022-january-to-march">Q1 2022 (January to March)</h2>
 <ul>
 <li><p><strong>Mean Time to Repair</strong>: 1h 39m</p></li>
@@ -1573,7 +1624,7 @@
 <li>Created a <a href="https://github.com/ministryofjustice/cloud-platform/issues/3185">ticket</a> to configure Thanos querier to query data for longer period</li>
 <li>Created a <a href="https://github.com/ministryofjustice/cloud-platform/issues/3186">ticket</a> to add an alert to check when prometheus container hit 90% resource limit set</li>
 <li>Created a <a href="https://github.com/ministryofjustice/cloud-platform/issues/3189">ticket</a> to create a grafana dashboard to display queries that take more than 1 minute to complete</li>
-<li>Increase the memory limit for Prometheus container to 60Gi<a href="https://github.com/ministryofjustice/cloud-platform-terraform-monitoring/pull/105">PR #105</a> </li>
+<li>Increase the memory limit for Prometheus container to 60Gi<a href="https://github.com/ministryofjustice/cloud-platform-terraform-monitoring/pull/105">PR #105</a></li>
 <li>Test Pagerduty settings for weekends of the Cloud Platform on-call person to receive alarm immediately on the phone when a high priority alert is triggered</li>
 </ul></li>
 </ul>
@@ -1616,7 +1667,7 @@
 <li>Canary app should have #high-priority-alerts after 2 minutes if it goes down. DONE in <a href="https://github.com/ministryofjustice/cloud-platform-environments/pull/5126">PR #5126</a></li>
 <li>Fix the pipeline: in the <a href="https://github.com/ministryofjustice/cloud-platform-cli">cloud-platform-cli</a>, create an assertion to ensure the cluster name is equal to the terraform workspace name. To prevent the null-resources acting on the wrong cluster. PR exists</li>
 <li>Created a <a href="https://github.com/ministryofjustice/cloud-platform/issues/3084">ticket</a> to migrate all terraform null_resources within our modules to <a href="https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs">terraform kubectl provider</a></li>
-<li>Created a <a href="https://github.com/ministryofjustice/cloud-platform/issues/3083">ticket</a> to set terraform kubernetes credentials dynamically (at executing time)<br></li>
+<li>Created a <a href="https://github.com/ministryofjustice/cloud-platform/issues/3083">ticket</a> to set terraform kubernetes credentials dynamically (at executing time)</li>
 <li>Fix the pipeline: Before the creation of Terraform resources, add a function in the cli to perform a <code>kubectl context</code> switch to the correct cluster. PR exists</li>
 </ul></li>
 </ul>
