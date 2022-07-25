@@ -1381,48 +1381,26 @@
               <h1 id="manage-published-grafana-dashboard-snapshots">Manage Published Grafana Dashboard Snapshots</h1><p>Users are able to Publish Grafana Dashboard Snapshots which are available publicly. There are various Expire options available including <code>Never</code> expire. 
 If a user chooses this option, but later requires to remove the snapshot from public view, the Cloud Platform team are required to remove this. This is due to all users having read access only to Grafana.</p>
 <h2 id="steps-to-remove-snapshot">Steps to remove Snapshot</h2><p>1) Retrieve the admin username and password for Grafana. This is stored in the <code>prometheus-operator-grafana</code> secret within the <code>Monitoring</code> namespace.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>You can use the cloud-platform-cli to retrieve this:
-
-```
-cloud-platform decode-secret -n monitoring -s prometheus-operator-grafana
-```
+<p>You can use the cloud-platform-cli to retrieve this:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cloud-platform decode-secret -n monitoring -s prometheus-operator-grafana
 </code></pre></div><p>2) Using the admin credentials and the Grafana API, run the following <code>curl</code> command to get a list of all the published snapshots:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>```
-curl 'https://&lt;admin-id&gt;:&lt;admin_pass&gt;@grafana.live.cloud-platform.service.justice.gov.uk/api/dashboard/snapshots'
-```
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl 'https://&lt;admin-id&gt;:&lt;admin_pass&gt;@grafana.live.cloud-platform.service.justice.gov.uk/api/dashboard/snapshots'
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl 'https://abc123:abc123@grafana.live.cloud-platform.service.justice.gov.uk/api/dashboard/snapshots'
 
-Example:
-
-```
-curl 'https://abc123:abc123@grafana.live.cloud-platform.service.justice.gov.uk/api/dashboard/snapshots'
-
-```
-
-The output should look something like the below:
-
-```
-[{"id":1,"name":"my_dashboard","key":"abcdefg123456","orgId":123,"userId":123,"external":false,"externalUrl":"","expires":"2072-07-08T15:19:01Z","created":"2022-07-21T15:19:01Z","updated":"2022-07-21T15:19:01Z"}]
+</code></pre></div><p>The output should look something like the below:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>[{"id":1,"name":"my_dashboard","key":"abcdefg123456","orgId":123,"userId":123,"external":false,"externalUrl":"","expires":"2072-07-08T15:19:01Z","created":"2022-07-21T15:19:01Z","updated":"2022-07-21T15:19:01Z"}]
 [{"id":2,"name":"your_dashboard","key":"98765qwerty","orgId":123,"userId":123,"external":false,"externalUrl":"","expires":"2072-07-08T15:19:01Z","created":"2022-07-21T15:19:01Z","updated":"2022-07-21T15:19:01Z"}]
 
-```
 </code></pre></div><p>3) Retrieve the <code>&quot;key&quot;:</code> value of the dashboard you would like to remove.</p>
 <p>4) Run the following <code>curl</code> command to delete the snapshot:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>```
-curl -X DELETE 'https://&lt;admin-id&gt;:&lt;admin_pass&gt;@grafana.live.cloud-platform.service.justice.gov.uk/api/snapshots/&lt;snapshot_key&gt;'
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -X DELETE 'https://&lt;admin-id&gt;:&lt;admin_pass&gt;@grafana.live.cloud-platform.service.justice.gov.uk/api/snapshots/&lt;snapshot_key&gt;'
 
-```
-Example:
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -X DELETE 'https://abc123:abc123@grafana.live.cloud-platform.service.justice.gov.uk/api/snapshots/abcdefg123456'
+</code></pre></div><p>The output should look something like the below:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>{"id":1,"message":"Snapshot deleted. It might take an hour before it's cleared from any CDN caches."}
 
-```
-curl -X DELETE 'https://abc123:abc123@grafana.live.cloud-platform.service.justice.gov.uk/api/snapshots/abcdefg123456'
-```
-
-The output should look something like the below:
-
-```
-{"id":1,"message":"Snapshot deleted. It might take an hour before it's cleared from any CDN caches."}
-
-```
 </code></pre></div>
 
               <div data-module='page-expiry' data-last-reviewed-on="2022-10-25">
