@@ -1384,7 +1384,7 @@ If a user chooses this option, but later requires to remove the snapshot from pu
 <p>You can use the cloud-platform-cli to retrieve this:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cloud-platform decode-secret -n monitoring -s prometheus-operator-grafana
 </code></pre></div><p>2) Using the admin credentials and the Grafana API, run the following <code>curl</code> command to get a list of all the published snapshots:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl 'https://&lt;admin-id&gt;:&lt;admin_pass&gt;@grafana.live.cloud-platform.service.justice.gov.uk/api/dashboard/snapshots'
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl 'https://&lt;admin_id&gt;:&lt;admin_pass&gt;@grafana.live.cloud-platform.service.justice.gov.uk/api/dashboard/snapshots'
 </code></pre></div><p>Example:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl 'https://abc123:abc123@grafana.live.cloud-platform.service.justice.gov.uk/api/dashboard/snapshots'
 </code></pre></div><p>The output should look something like the below:</p>
@@ -1392,7 +1392,7 @@ If a user chooses this option, but later requires to remove the snapshot from pu
 [{"id":2,"name":"your_dashboard","key":"98765qwerty","orgId":123,"userId":123,"external":false,"externalUrl":"","expires":"2072-07-08T15:19:01Z","created":"2022-07-21T15:19:01Z","updated":"2022-07-21T15:19:01Z"}]
 </code></pre></div><p>3) Retrieve the <code>&quot;key&quot;:</code> value of the dashboard you would like to remove.</p>
 <p>4) Run the following <code>curl</code> command to delete the snapshot:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -X DELETE 'https://&lt;admin-id&gt;:&lt;admin_pass&gt;@grafana.live.cloud-platform.service.justice.gov.uk/api/snapshots/&lt;snapshot_key&gt;'
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -X DELETE 'https://&lt;admin_id&gt;:&lt;admin_pass&gt;@grafana.live.cloud-platform.service.justice.gov.uk/api/snapshots/&lt;snapshot_key&gt;'
 </code></pre></div><p>Example:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -X DELETE 'https://abc123:abc123@grafana.live.cloud-platform.service.justice.gov.uk/api/snapshots/abcdefg123456'
 </code></pre></div><p>The output should look something like the below:</p>
