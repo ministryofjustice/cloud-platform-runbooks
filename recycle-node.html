@@ -1378,7 +1378,7 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="recycle-node">Recycle-node</h1><p>The <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/maintenance.yaml#L61">recycle-node pipeline</a> runs every weekday between 8am and 10am, it executes the <a href="https://github.com/ministryofjustice/cloud-platform-cli/blob/main/pkg/commands/cluster.go">cloud-platform cli</a> command to replace the oldest worker node by:</p>
+              <h1 id="recycle-node">Recycle-node</h1><p>The <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/maintenance.yaml#L44">recycle-node pipeline</a> runs every day on the <code>live</code> and <code>manager</code> clusters, it executes the <a href="https://github.com/ministryofjustice/cloud-platform-cli/blob/main/pkg/commands/cluster.go">cloud-platform cli</a> command to replace the oldest worker node by:</p>
 
 <ul>
 <li>Cordoning the oldest node</li>
@@ -1391,10 +1391,24 @@
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cloud-platform cluster recycle-node --oldest
 </code></pre></div><p>To recycle a given node on the cluster in your current context</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cloud-platform cluster recycle-node --name ip-XXX.XX.XX.XX.eu-west-2.compute.internal
+</code></pre></div><p>To recycle a node previously cordoned but not drained (this is usually the result of an interruption of failure)</p>
+<p>example error:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>FATA[0000] node ip-172-20-53-167.eu-west-2.compute.internal is already cordoned, abort  <span class="nv">subcommand</span><span class="o">=</span>recycle-node
+</code></pre></div><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cloud-platform cluster recycle-node --ignore-label
 </code></pre></div><p>The other optional flags are</p>
-<p><code>--kubecfg &lt;string&gt;</code>: to specify the path of kubeconfig file (default &ldquo;~/.kube/config&rdquo;)</p>
-<p><code>--debug</code> : enable debug logging</p>
-<p>For other flags, refer the help with <code>--help</code> flag.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>      <span class="nt">--aws-access-key</span> string   aws access key to use
+      <span class="nt">--aws-profile</span> string      aws profile to use
+      <span class="nt">--aws-region</span> string       aws region to use <span class="o">(</span>default <span class="s2">"eu-west-2"</span><span class="o">)</span>
+      <span class="nt">--aws-secret-key</span> string   aws secret to use
+      <span class="nt">--debug</span>                   <span class="nb">enable </span>debug logging
+  <span class="nt">-f</span>, <span class="nt">--force</span>                   force the pods to drain <span class="o">(</span>default <span class="nb">true</span><span class="o">)</span>
+  <span class="nt">-h</span>, <span class="nt">--help</span>                    <span class="nb">help </span><span class="k">for </span>recycle-node
+  <span class="nt">-i</span>, <span class="nt">--ignore-label</span>            whether to ignore the labels on the resource
+      <span class="nt">--kubecfg</span> string          path to kubeconfig file <span class="o">(</span>default <span class="s2">"/Users/jasonbirchall/.kube/config"</span><span class="o">)</span>
+  <span class="nt">-n</span>, <span class="nt">--name</span> string             name of the resource to recycle
+      <span class="nt">--oldest</span>                  whether to recycle the oldest node
+  <span class="nt">-t</span>, <span class="nt">--timeout</span> int             amount of <span class="nb">time </span>to <span class="nb">wait </span><span class="k">for </span>the drain <span class="nb">command </span>to <span class="nb">complete</span> <span class="o">(</span>default 360<span class="o">)</span>
+</code></pre></div><p>For other flags, refer the help with <code>--help</code> flag.</p>
 
 
               <div data-module='page-expiry' data-last-reviewed-on="2022-09-13">
