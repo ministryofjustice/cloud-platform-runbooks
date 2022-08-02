@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Leavers Guide - Cloud Platform Runbooks</title>
+    <title>Change load balancer alias to the interface IP's in Route53. - Cloud Platform Runbooks</title>
 
     <link href="/stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/change-alias-in-route53.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Leavers Guide - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html" />
+      <meta name="twitter:title" content="Change load balancer alias to the interface IP's in Route53. - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/change-alias-in-route53.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Leavers Guide" />
+      <meta property="og:title" content="Change load balancer alias to the interface IP's in Route53." />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/change-alias-in-route53.html" />
 
     
   </head>
@@ -1391,54 +1391,50 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-              <h1 id="leavers-guide">Leavers Guide</h1><p>When CP team members leave, follow this guide, and log completion in a ticket.</p>
-<h2 id="revoking-access">Revoking Access</h2><h3 id="digital-services">Digital Services</h3><p>The Service Desk will be able to remove and revoke access from a number of different accounts outside of Cloud Platform.</p>
-<h4 id="1-google-account-closure-ordered-in-advance-of-them-leaving-by-creating-a-servicenow-order-return-device-for-digital-mac-amp-wtp-users">1/ Google account closure, ordered in advance of them leaving, by creating a ServiceNow order <a href="https://mojprod.service-now.com/moj_sp?id=sc_cat_item&amp;sys_id=a1f163211bb1a8507b10ca286e4bcb7a">Return device for Digital Mac &amp; WTP users</a></h4><p>This is not just about returning their Mac - it will do the important step of closing their Google account.</p>
+              <h1 id="change-load-balancer-alias-to-the-interface-ip-39-s-in-route53">Change load balancer alias to the interface IP&rsquo;s in Route53.</h1><p>This run book is a recovery action to mitigate slow performance of ingress traffic <a href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-log.html#q3-2022-july-september">incident</a> when an interface fails in an availability zone (AZ), clients time out when they attempt to connect to one of unhealthy NLB EIPs</p>
+<h2 id="request-aws-to-restart-the-health-check">Request AWS to restart the health check</h2><p>AWS confirmed the root cause of the <a href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-log.html#q3-2022-july-september">incident</a> as, “the health checking subsystem did not correctly detect some of your targets as unhealthy, which resulted in clients timing out when they attempted to connect to one of your NLB EIPs&quot;.</p>
+<p>AWS mitigated the impact by restarting the health checking service, which caused the target health to be updated appropriately. Cloud-platform team don&rsquo;t have access to restart the health check service, request AWS to restart it for us.</p>
+<p>If restarting still has not resolved the issue, look at changing the load balancer alias.</p>
+<h2 id="change-load-balancer-alias">Change load balancer alias</h2><p>Steps to change the alias to healthy EIPs</p>
+<p>1) Find the NLB EIPs of the ingress host which have a performance issue</p>
+<p>For this example, we will use &ldquo;login.yy-0208-0000.cloud-platform.service.justice.gov.uk&rdquo;</p>
+<p>Get the external load balancer used by the ingress</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nt">-n</span> kuberos get ingress kuberos <span class="nt">-o</span><span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">"{.items[*]['status.loadBalancer']}"</span> | jq <span class="nb">.</span>
+</code></pre></div><p>Get the EIPs of the external load balancer</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>host a76b4f2b1811e4f7589eaca69c4a46c5-b700f2aa70780ce3.elb.eu-west-2.amazonaws.com
+</code></pre></div><p>The output shows the EIPs of the NLB</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>a76b4f2b1811e4f7589eaca69c4a46c5-b700f2aa70780ce3.elb.eu-west-2.amazonaws.com has address 35.179.65.116
+a76b4f2b1811e4f7589eaca69c4a46c5-b700f2aa70780ce3.elb.eu-west-2.amazonaws.com has address 18.135.71.213
+a76b4f2b1811e4f7589eaca69c4a46c5-b700f2aa70780ce3.elb.eu-west-2.amazonaws.com has address 13.41.209.82
+</code></pre></div><p>2) Find the unhealthy NLB EIP</p>
+<p>Now we have all of the information we need to make a cURL call over to the external load balancer EIPs.</p>
+<p>Run this on 3 EIPs of the NLB. If everything is working correctly it would return OK. If it return &ldquo;Timeout&rdquo;, then it is most likely an unhealthy external load balancer EIP.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>while :; do (curl -o/dev/null -m1 -k -H 'Host: login.yy-0208-0000.cloud-platform.service.justice.gov.uk' https://35.179.65.116 2&gt;/dev/null &amp;&amp; echo "OK") || echo "Timeout" ; sleep 1 ; done
+</code></pre></div><p>3) Change the load balancer alias to the healthy interface IPs in Route53.</p>
+<p>In the Route53 section of the AWS console, Find the &ldquo;A&rdquo; and &ldquo;TXT&rdquo; records of the ingress host in the hosted zone.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>login.yy-0208-0000.cloud-platform.service.justice.gov.uk    A   Weighted    100 
+a76b4f2b1811e4f7589eaca69c4a46c5-b700f2aa70780ce3.elb.eu-west-2.amazonaws.com.
 
-<ul>
-<li><p>Note - Include details in the ServiceNow request to transfer the leaver&rsquo;s Google Drive to someone in their team.</p></li>
-<li><p>Note - for leavers from the cloud-platforms team - ask the service desk to transfer any slack webhook integrations to someone in the team. <br>IT IS MOST IMPORTANT THAT YOU REQUEST THIS BEFORE THE PERSON LEAVES<br>
-This is because if the person has created a slack-webhook for alerting purposes, the loss of that slack-webhook can cause problems - when their profile is deleted (as the webhook link is referenced in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars">cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars</a>.</p></li>
-</ul>
-<h4 id="2-moj-digital-vpn-removal-by-creating-a-servicenow-order-digital-vpn-add-remove">2/ MOJ Digital VPN removal by creating a ServiceNow order: <a href="https://mojprod.service-now.com/moj_sp?id=sc_cat_item&amp;sys_id=6860adc01b8b6818f58d206fe54bcbe3">Digital VPN add/remove</a></h4><h3 id="aws-accounts">AWS Accounts</h3><h4 id="1-purge-them-from-aws-accounts">1/ Purge them from AWS accounts:</h4>
-<ul>
-<li><a href="https://justice-cloud-platform.eu.auth0.com/samlp/bnqndz9kxf7wDge8ndCWyVwIX1OEElYf">moj-cp</a></li>
-<li><a href="https://moj.awsapps.com/start#/">mojdsd</a></li>
-<li>Cloud Platform Ephemeral Test</li>
-<li>Cloud Platform Transit Gateways</li>
-</ul>
-<p>To login, use the SSO links above, or use the <a href="https://console.aws.amazon.com/">AWS console</a></p>
-<h4 id="2-remove-them-from-cloud-platform-terraform-awsaccounts-iam">2/ Remove them from <code>cloud-platform-terraform-awsaccounts-iam</code></h4>
-<ul>
-<li>As per <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/pull/2/files">this PR</a></li>
-</ul>
-<h4 id="3-remove-them-from-cloud-platform-eks">3/ Remove them from <code>cloud-platform-eks</code></h4>
-<ul>
-<li>As per <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/cluster.tf">this File</a></li>
-</ul>
-<h4 id="4-request-password-management-removal-contact-details-here-removal">4/ Request Password Management removal - <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a> removal</h4><h4 id="5-remove-their-access-to">5/ Remove their access to:</h4>
-<ul>
-<li><p><a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/users">Auth0 justice-cloud-platform</a></p></li>
-<li><p><a href="https://manage.auth0.com/dashboard/eu/moj-cloud-platforms-dev/users">Auth0 moj-cloud-platforms</a></p></li>
-<li><p><a href="https://moj-digital-tools.pagerduty.com/users">Pagerduty</a></p></li>
-<li><p><a href="https://devcenter.heroku.com/articles/org-users-access">Heroku</a></p></li>
-<li><p><a href="https://cloud.docker.com/orgs/ministryofjustice/teams">DockerHub MoJ teams</a></p></li>
-<li><p><a href="https://www.pingdom.com">Pingdom</a></p></li>
-<li><p><a href="https://github.com/ministryofjustice">MoJ Github Organisation</a></p></li>
-</ul>
-<h4 id="6-remove-them-from-the-pagerduty-support-rota-if-applicable">6/ Remove them from the <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">PagerDuty support rota</a> (if applicable)</h4><h4 id="7-remove-them-from-platforms-digital-justice-gov-uk-google-group">7/ Remove them from <a href="https://groups.google.com/a/digital.justice.gov.uk/g/platforms/members">platforms@digital.justice.gov.uk Google Group</a></h4><h2 id="line-manager-actions">Line manager actions</h2><h4 id="1-fill-in-the-moj-digital-leavers-form">1/ Fill in the MOJ Digital <a href="https://leavers.form.service.justice.gov.uk/">Leavers Form</a></h4><h4 id="2-complete-the-leavers-checklist-for-managers">2/ Complete the <a href="https://intranet.justice.gov.uk/documents/2015/04/leavers-checklist-for-managers.docx">Leavers Checklist for Managers</a></h4>
+_external_dns.login.yy-0208-0000.cloud-platform.service.justice.gov.uk  TXT Weighted    100 
+"heritage=external-dns,external-dns/owner=yy-0208-0000,external-dns/resource=ingress/kuberos/kuberos"
+</code></pre></div><p>Edit the route53 TXT record and update the owner, set the incorrect owner field, so external-dns couldn&rsquo;t revert the information in the A record.
+<code>
+&quot;heritage=external-dns,external-dns/owner=yy-CCCC-BBBB,external-dns/resource=ingress/kuberos/kuberos&quot;
+</code></p>
+<p>Edit the &ldquo;A&rdquo; record and uncheck the alias option, add 2 healthy IP&rsquo;s in the value filed and save the record. Repeat this on all the hosts using the affected NLB.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-08-31">
+
+              <div data-module='page-expiry' data-last-reviewed-on="2022-11-02">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 31 May 2022.
+      This page was last reviewed on 2 August 2022.
 
-        It needs to be reviewed again on 31 August 2022
+        It needs to be reviewed again on 2 November 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 31 August 2022
+      This page was set to be reviewed before 2 November 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1448,8 +1444,8 @@ This is because if the person has created a slack-webhook for alerting purposes,
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/leavers-guide.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Leavers%20Guide'&amp;body=Problem%20with%20'Leavers%20Guide'%20(https://runbooks.cloud-platform.service.justice.gov.uk/leavers-guide.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/change-alias-in-route53.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?labels=bug&amp;title=Re:%20'Change%20load%20balancer%20alias%20to%20the%20interface%20IP's%20in%20Route53.'&amp;body=Problem%20with%20'Change%20load%20balancer%20alias%20to%20the%20interface%20IP's%20in%20Route53.'%20(https://runbooks.cloud-platform.service.justice.gov.uk/change-alias-in-route53.html)">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
