@@ -507,10 +507,7 @@
         <a href="/delete-cluster.html#delete-the-cluster-using-concourse-fly-commands"><span>Delete the cluster using concourse fly commands</span></a>
       </li>
       <li>
-        <a href="/delete-cluster.html#delete-the-cluster-manually"><span>Delete the cluster manually</span></a>
-      </li>
-      <li>
-        <a href="/delete-cluster.html#delete-an-eks-cluster"><span>Delete an EKS cluster</span></a>
+        <a href="/delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
       </li>
     </ul>
   </li>
@@ -1107,7 +1104,7 @@
         <a href="/joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
       </li>
       <li>
-        <a href="/joiners-guide.html#access"><span>ACCESS</span></a>
+        <a href="/joiners-guide.html#access"><span>Access</span></a>
       </li>
     </ul>
   </li>
@@ -1374,9 +1371,9 @@
 .</p>
 <h2 id="making-changes-to-cloud-plarform-infrastructure">Making Changes to cloud-plarform-infrastructure</h2>
 <ol>
-<li>Create a PR which includes the change you want to make. Make sure the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/cloud-platform-infrastructure/jobs/plan-cloud-platform-infrastructure">plan pipeline</a> is happy with the change. </li>
+<li>Create a PR which includes the change you want to make. Make sure the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-plan/">plan pipeline</a> is happy with the change.</li>
 <li>Chase the team to get your PR approved, if it involves downtime ensure you have communications in place.</li>
-<li>Merge and wait until the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/cloud-platform-infrastructure/jobs/apply-cloud-platform-infrastructure/">apply pipeline</a> applies your change.</li>
+<li>Merge and wait until the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-apply/">apply pipeline</a> applies your change.</li>
 </ol>
 <h2 id="marking-changes-to-terraform-modules">Marking Changes to terraform modules</h2><p>Updating a module is very simple and consist in the following steps:</p>
 
@@ -1399,7 +1396,7 @@
 low similar process:</p>
 
 <ol>
-<li>Create PR and verify for the changes in the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform">plan pipeline</a>, if you are happy with them ask a team member fo
+<li>Create PR and verify for the changes in the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live">plan pipeline</a>, if you are happy with them ask a team member fo
 r approval.</li>
 <li>Merge PR</li>
 </ol>
@@ -1408,17 +1405,17 @@ r approval.</li>
 <p>Sometimes teams misunderstand downtimes of Cloud Platform services also involve downtime of <strong>their services</strong>, so it is very handy being  precise about the change.</p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-08-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-11-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 May 2022.
+      This page was last reviewed on 11 August 2022.
 
-        It needs to be reviewed again on 6 August 2022
+        It needs to be reviewed again on 11 November 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 August 2022
+      This page was set to be reviewed before 11 November 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

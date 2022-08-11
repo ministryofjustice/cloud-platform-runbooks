@@ -507,10 +507,7 @@
         <a href="/delete-cluster.html#delete-the-cluster-using-concourse-fly-commands"><span>Delete the cluster using concourse fly commands</span></a>
       </li>
       <li>
-        <a href="/delete-cluster.html#delete-the-cluster-manually"><span>Delete the cluster manually</span></a>
-      </li>
-      <li>
-        <a href="/delete-cluster.html#delete-an-eks-cluster"><span>Delete an EKS cluster</span></a>
+        <a href="/delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
       </li>
     </ul>
   </li>
@@ -1107,7 +1104,7 @@
         <a href="/joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
       </li>
       <li>
-        <a href="/joiners-guide.html#access"><span>ACCESS</span></a>
+        <a href="/joiners-guide.html#access"><span>Access</span></a>
       </li>
     </ul>
   </li>
@@ -1369,7 +1366,6 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
               <h1 id="delete-a-cluster">Delete a cluster</h1><p>To delete a cluster you must first export the following:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ export AWS_PROFILE=moj-cp
-$ export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 </code></pre></div><p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
 <h2 id="delete-the-cluster-using-the-script">Delete the cluster using the script</h2><p>There is a <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/destroy-cluster.rb">destroy-cluster.rb</a> script which you can use to delete your cluster.</p>
 <p>Read the script before using it. Deleting a cluster is something you should be very cautious about, and ensure you know exactly what you&rsquo;re doing.</p>
@@ -1396,8 +1392,8 @@ $ export KOPS_STATE_STORE=s3://cloud-platform-kops-state
 <ul>
 <li><p>In the create-test-destroy pipeline definition, literally add CLUSTER_NAME <a href="https://concourse-ci.org/vars.html#var-syntax">var</a>, under params as below:
 <code>
-params: 
-  CLUSTER_NAME: ((CLUSTER_NAME)) 
+params:
+  CLUSTER_NAME: ((CLUSTER_NAME))
 </code>
 We will specify the CLUSTER_NAME value using &ndash;var NAME=VALUE in the later step, when we run the fly command to set_pipeline.</p></li>
 <li><p>Comment out this line <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/create-test-destroy.yaml#L140">here</a> in destroy-cluster job.</p></li>
@@ -1410,50 +1406,20 @@ We will specify the CLUSTER_NAME value using &ndash;var NAME=VALUE in the later 
 fly -t manager trigger-job -j create-test-destroy/destroy-cluster
 </code></pre></div><p>Note: After the destroy-cluster job completed sucessfully, run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/bootstrap">bootstrap pipleine</a> to discard the changes made to <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/create-test-destroy.yaml">create-test-destroy.yaml</a> file.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager trigger-job -j bootstrap/bootstrap-pipelines
-</code></pre></div><h2 id="delete-the-cluster-manually">Delete the cluster manually</h2><p>In case you prefer not to use the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/destroy-cluster.rb">destroy-cluster.rb</a> script, these are the individual steps to follow, to delete the cluster &ldquo;by hand&rdquo;</p>
-<p>First, set the kubectl context for the cluster you are deleting. The easiest way to do this is with kops. e.g:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kops export kubecfg david-test1.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>You should see this output:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kops has set your kubectl context to david-test1.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>Then, from the components directory, run these commands to destroy all cluster components, and delete the terraform workspace.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ cd terraform/aws-accounts/cloud-platform-aws/vpc/kops/components
-$ terraform init
-$ terraform workspace select &lt;clusterName e.g. cloud-platform-test-3&gt;
-$ terraform destroy -target helm_release.prometheus_operator # delete first, to avoid conflicts later
-$ terraform destroy
-$ terraform workspace select default
-$ terraform workspace delete &lt;clusterName&gt;
-</code></pre></div><p>Then run the following <code>kops</code> command (this will not delete the cluster).</p>
-<p>Append it with <code>--yes</code> to confirm deletion.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kops delete cluster --name &lt;clusterName&gt;.cloud-platform.service.justice.gov.uk
-</code></pre></div><p>Change directories and perform the following to destroy the cluster essentials, and delete the terraform workspace.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ cd .. # working dir is now `kops`
-$ terraform init
-$ terraform workspace select &lt;clusterName e.g. cloud-platform-test-3&gt;
-$ terraform destroy
-$ terraform workspace select default
-$ terraform workspace delete &lt;clusterName&gt;
-</code></pre></div><p>Change directories and perform the following to destroy the cluster VPC, and delete the terraform workspace.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ cd .. # working dir is now `vpc`
-$ terraform init
-$ terraform workspace select &lt;clusterName e.g. cloud-platform-test-3&gt;
-$ terraform destroy
-$ terraform workspace select default
-$ terraform workspace delete &lt;clusterName&gt;
-</code></pre></div><h2 id="delete-an-eks-cluster">Delete an EKS cluster</h2><p>The steps can be found here - <a href="/eks-cluster.html#4-delete-the-eks-cluster">Delete an EKS Cluster</a></p>
+</code></pre></div><h2 id="delete-an-eks-cluster-manually">Delete an EKS cluster manually</h2><p>The steps can be found here - <a href="/eks-cluster.html#4-delete-the-eks-cluster">Delete an EKS Cluster</a></p>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-08-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-11-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 May 2022.
+      This page was last reviewed on 11 August 2022.
 
-        It needs to be reviewed again on 6 August 2022
+        It needs to be reviewed again on 11 November 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 August 2022
+      This page was set to be reviewed before 11 November 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
