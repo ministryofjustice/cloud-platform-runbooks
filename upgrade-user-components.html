@@ -1373,13 +1373,13 @@
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>git tag <span class="nt">-a</span> 0.1.0 <span class="nt">-m</span> <span class="s2">"Release version 0.1.0"</span>
 git push <span class="nt">--tags</span>
 </code></pre></div><p>You&rsquo;ll need to manually create a new release on GitHub.</p>
-<h2 id="upgrading-a-user-component-in-environments">Upgrading a user component in environments</h2><p>The [cloud-platform-environments] repository contains the namespaces for all production and non-production environments. All namespaces should contain the latest version of the modules you&rsquo;ve changed. This is tricky to do manually, so we recommend using the [cloud-platform-cli] tool.</p>
-<p>Clone the [cloud-platform-environments] repository branch off main. Run the following command:</p>
+<h2 id="upgrading-a-user-component-in-environments">Upgrading a user component in environments</h2><p>The <a href="https://github.com/ministryofjustice/cloud-platform-environments">cloud-platform-environments-repo</a> repository contains the namespaces for all production and non-production environments. All namespaces should contain the latest version of the modules you&rsquo;ve changed. This is tricky to do manually, so we recommend using the <a href="https://github.com/ministryofjustice/cloud-platform-cli">cloud-platform-cli</a> tool.</p>
+<p>Clone the repository and branch off main. Run the following command:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environments bump-module <span class="nt">--module</span> &lt;module-name&gt; <span class="nt">--module-version</span> &lt;version&gt;
 </code></pre></div><p>The <code>module-name</code> flag must contain a word in the module source. For example, if you were to upgrade the serviceaccount module to 0.5.0, you would run the following command:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform bump-module <span class="nt">--module</span> serviceaccount <span class="nt">--module-version</span> 0.5.0
 </code></pre></div><p>The CLI will make changes to the local copy of the repository. It&rsquo;s your responsibility to commit these changes to your branch.</p>
-<p>It&rsquo;s recommended that you PR any non-production namespaces before production. A Terraform plan will be generated for each namespace and you can review the impact on non-prod changes before prod. Ideally your change will have very little disruption(i.e. no downtime), but sometimes this is not possible. Any destroys/outages should be communicated to users.</p>
+<p>It&rsquo;s recommended that you PR any non-production namespaces before production. A terraform plan will be generated for each namespace and you can review the impact on non-prod changes before prod. Ideally your change will have very little disruption(i.e. no downtime), but sometimes this is not possible. Any destroys/outages should be communicated to users.</p>
 
 
               <div data-module='page-expiry' data-last-reviewed-on="2022-08-24">
