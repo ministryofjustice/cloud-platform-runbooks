@@ -1389,21 +1389,9 @@
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
 </code></pre></div><h3 id="authenticate-to-the-test-cluster">Authenticate to the test cluster</h3><p>Create the file <code>~/.kube/config</code> in your tools-image container by running:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws eks <span class="nt">--region</span> eu-west-2 update-kubeconfig <span class="nt">--name</span> &lt;cluster-name&gt;
-</code></pre></div><h3 id="run-the-integration-tests">Run the integration tests</h3><p>This is the ensure the test cluster doesnot have any existing issues and ready to use</p>
-<p>To run ruby tests:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd smoke-tests
-bundle binstubs bundler --force --path /usr/local/bin
-bundle binstubs rspec-core --path /usr/local/bin
-</code></pre></div><div class="highlight"><pre class="highlight shell" tabindex="0"><code>rspec <span class="nt">--tag</span> ~live-1 <span class="nt">--tag</span> ~kops <span class="nt">--format</span> progress <span class="nt">--format</span> documentation
-</code></pre></div><p>To run golang tests:</p>
-
-<ul>
-<li>Update the golang config to use test cluster name</li>
-</ul>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code> <span class="nb">export </span><span class="nv">CLUSTER_NAME</span><span class="o">=</span>&lt;test-cluster-name&gt;
-<span class="nb">cat</span> ./tests/config/live.yaml |  <span class="nb">sed</span> <span class="nt">-e</span> <span class="s2">"s/clusterName: 'live.cloud-platform.service.justice.gov.uk'/clusterName: '</span><span class="nv">$CLUSTER_NAME</span><span class="s2">.cloud-platform.service.justice.gov.uk'/g"</span> <span class="o">&gt;</span> /tmp/<span class="nv">$CLUSTER_NAME</span>.yaml
-<span class="nb">cd</span> ./tests/e2e<span class="p">;</span>
-go <span class="nb">test</span> <span class="nt">-v</span> <span class="nt">-ginkgo</span>.slowSpecThreshold<span class="o">=</span>120 <span class="nt">-config</span> /tmp/<span class="nv">$CLUSTER_NAME</span>.yaml
+</code></pre></div><h3 id="run-the-integration-tests">Run the integration tests</h3><p>This will ensure the test cluster does not have any existing issues and is ready to use.</p>
+<p>To run Go tests:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>make run-tests
 </code></pre></div><h3 id="testing-the-upgrade">Testing the upgrade</h3>
 <ol>
 <li><p>Make the changes required to the module. For example, for upgrading the cert-manager, change the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-certmanager">cert-manager terraform module</a>. This might include</p>
@@ -1445,17 +1433,17 @@ go <span class="nb">test</span> <span class="nt">-v</span> <span class="nt">-gin
 </ul>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-08-17">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-12-02">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 May 2022.
+      This page was last reviewed on 2 September 2022.
 
-        It needs to be reviewed again on 17 August 2022
+        It needs to be reviewed again on 2 December 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 August 2022
+      This page was set to be reviewed before 2 December 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
