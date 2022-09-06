@@ -857,6 +857,9 @@
         <a href="/remove-data-from-elasticsearch.html#things-to-know"><span>Things to know</span></a>
       </li>
       <li>
+        <a href="/remove-data-from-elasticsearch.html#get-yourself-access"><span>Get yourself access</span></a>
+      </li>
+      <li>
         <a href="/remove-data-from-elasticsearch.html#build-your-query"><span>Build your query</span></a>
       </li>
       <li>
@@ -1379,6 +1382,24 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <blockquote>
 <p>Running <code>curl</code> queries has to be done from within the live-1 VPC</p>
 </blockquote>
+<h2 id="get-yourself-access">Get yourself access</h2><p>Since https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/1852, <code>delete</code> operations are blocked, to enable temporarily for this operation, add your IP to the &ldquo;Security configuration&rdquo; policy, eg
+<code>
+    {
+      &quot;Sid&quot;: &quot;&quot;,
+      &quot;Effect&quot;: &quot;Allow&quot;,
+      &quot;Principal&quot;: {
+        &quot;AWS&quot;: &quot;*&quot;
+      },
+      &quot;Action&quot;: &quot;es:*&quot;,
+      &quot;Resource&quot;: &quot;arn:aws:es:eu-west-2:123456789012:domain/cloud-platform-live/*&quot;,
+      &quot;Condition&quot;: {
+        &quot;IpAddress&quot;: {
+          &quot;aws:SourceIp&quot;: &quot;1.2.3.4&quot;
+        }
+      }
+    }
+</code>
+then, access Kibana from the direct link not via the OIDC proxy.</p>
 <h2 id="build-your-query">Build your query</h2><p>It is possible to reuse the body of a <code>search</code> query for a <code>delete</code> query.</p>
 <p>Therefore, if we narrow down a search query to exactly what we want to delete, we&rsquo;ve done most of the work.</p>
 <p>Kibana offers a <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/dev_tools/console">webconsole</a> to test queries.</p>
@@ -1493,17 +1514,17 @@ curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west
 </blockquote>
 
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-09-17">
+              <div data-module='page-expiry' data-last-reviewed-on="2022-12-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 June 2022.
+      This page was last reviewed on 6 September 2022.
 
-        It needs to be reviewed again on 17 September 2022
+        It needs to be reviewed again on 6 December 2022
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 September 2022
+      This page was set to be reviewed before 6 December 2022
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
