@@ -1284,39 +1284,40 @@
 </ul>
 <h2 id="delete-the-cluster-using-concourse-fly-commands">Delete the cluster using concourse fly commands</h2>
 <p>In case you prefer concourse pipeline to destroy the cluster, these are the steps to follow, to delete the cluster using &ldquo;concourse fly commands&rdquo;</p>
-<p>First, cd to the working copy of the concourse <a href="https://github.com/ministryofjustice/cloud-platform-concourse/tree/main/pipelines/manager/main">pipelines repo</a>. Make below two changes to the <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/create-test-destroy.yaml">create-test-destroy.yaml</a> file.</p>
+<p>First, cd to the working copy of the concourse <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/tree/main/pipelines/manager/main">pipelines repo</a>. Make the below two changes to the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/eks-create-test-destroy.yaml">eks-create-test-destroy.yaml</a> file.</p>
 
 <ul>
-<li><p>In the create-test-destroy pipeline definition, literally add CLUSTER_NAME <a href="https://concourse-ci.org/vars.html#var-syntax">var</a>, under params as below:
-<code>
-params:
-  CLUSTER_NAME: ((CLUSTER_NAME))
-</code>
-We will specify the CLUSTER_NAME value using &ndash;var NAME=VALUE in the later step, when we run the fly command to set_pipeline.</p></li>
-<li><p>Comment out this line <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/create-test-destroy.yaml#L140">here</a> in destroy-cluster job.</p></li>
+<li>In the create-test-destroy pipeline definition, literally add CLUSTER_NAME <a href="https://concourse-ci.org/vars.html#var-syntax">var</a>, under params as below:</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  params:
+      CLUSTER_NAME: ((CLUSTER_NAME))
+</code></pre></div><p>We will specify the CLUSTER_NAME value using <code>-v NAME=VALUE</code> in the later step, when we run the fly command to set_pipeline.</p>
+
+<ul>
+<li>Comment out this line <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/9d161e0cfd578c643a490f468f1287b5b657afd4/pipelines/manager/main/eks-create-test-destroy.yaml#L195">here</a> in destroy-cluster job.</li>
 </ul>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  args:
     # export $(cat keyval/keyval.properties | grep CLUSTER_NAME )
 </code></pre></div><p>commenting out this will not set the CLUSTER_NAME provided by the create-cluster-run-tests job.</p>
-<p>Run the below commands updating the <code>&lt;cluster-name-to-be-deleted&gt;</code>. The first fly command will apply the changes made for the <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/create-test-destroy.yaml">create-test-destroy.yaml</a> file and set the CLUSTER_NAME <a href="https://concourse-ci.org/vars.html#static-vars">static var</a>, the second command will trigger the destroy-cluster job using the CLUSTER_NAME provided.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager sp -p create-test-destroy -c create-test-destroy.yaml -v CLUSTER_NAME=&lt;cluster-name-to-be-deleted&gt;
-fly -t manager trigger-job -j create-test-destroy/destroy-cluster
-</code></pre></div><p>Note: After the destroy-cluster job completed sucessfully, run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/bootstrap">bootstrap pipleine</a> to discard the changes made to <a href="https://github.com/ministryofjustice/cloud-platform-concourse/blob/main/pipelines/manager/main/create-test-destroy.yaml">create-test-destroy.yaml</a> file.</p>
+<p>Run the below commands updating the <code>&lt;cluster-name-to-be-deleted&gt;</code>. The first fly command will apply the changes made for the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/eks-create-test-destroy.yaml">eks-create-test-destroy.yaml</a> file and set the CLUSTER_NAME <a href="https://concourse-ci.org/vars.html#static-vars">static var</a>, the second command will trigger the destroy-cluster job using the CLUSTER_NAME provided.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager sp -p eks-create-test-destroy -c eks-create-test-destroy.yaml -v CLUSTER_NAME=&lt;cluster-name-to-be-deleted&gt;
+fly -t manager trigger-job -j eks-create-test-destroy/destroy-cluster
+</code></pre></div><p>Note: After the destroy-cluster job has completed sucessfully, run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/bootstrap">bootstrap pipeline</a> to discard the changes made to <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/eks-create-test-destroy.yaml">eks-create-test-destroy.yaml</a> file.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager trigger-job -j bootstrap/bootstrap-pipelines
 </code></pre></div><h2 id="delete-an-eks-cluster-manually">Delete an EKS cluster manually</h2>
 <p>The steps can be found here - <a href="eks-cluster.html#4-delete-the-eks-cluster">Delete an EKS Cluster</a></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-11-11">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-01-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 11 August 2022.
+      This page was last reviewed on 10 October 2022.
 
-        It needs to be reviewed again on 11 November 2022
+        It needs to be reviewed again on 10 January 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 11 November 2022
+      This page was set to be reviewed before 10 January 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
