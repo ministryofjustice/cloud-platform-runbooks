@@ -1258,21 +1258,21 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="adding-a-route-to-connect-to-a-tgw">Adding a route to connect to a TGW</h1>
-<p>This document is a description of the current Cloud Platform &amp; TGW setup. 
+<p>This document is a description of the current Cloud Platform &amp; TGW setup.
 It also explain how to modify the relevant route table</p>
 <p><em>The scope of this guide is limited on purpose, it only covers the Cloud Platform responsibilities.
 The techops/cloud-ops team is able to share the Transit Gateways with other AWS accounts.</em></p>
 <h2 id="quick-introduction">Quick introduction</h2>
 <p>AWS Transit Gateways allows VPCs, from different accounts or regions, to be connected securely.
-Transit Gateways have their own route-table. 
+Transit Gateways have their own route-table.
 Transit Gateways (TGW) also support connecting to VPNs, AWS Direct Connect and other Transit Gateway</p>
 <p>An important limitation: a TGW can only work with VPCs in the same region it is in. However, TGW from different regions can be peered.</p>
 <p>The MoJ current Transit Gateway infrastructure is managed here : <a href="https://github.com/ministryofjustice/transit-gateways">github repository</a></p>
 <h2 id="transit-gateway">Transit Gateway</h2>
 <p>The Cloud Platform VPC is attached to the eu-west-2 TGW located in the <code>moj-transit-gateway</code> account.
 However, the attachment alone doesn&rsquo;t allow traffic to flow: A new route need to be added to VPC&rsquo;s route-table for each target VPC.</p>
-<p>Example: The Analytical Platform(AP) wants to access the Cloud Platform (CP) VPC. 
- - Both are attached the the TGW 
+<p>Example: The Analytical Platform(AP) wants to access the Cloud Platform (CP) VPC.
+ - Both are attached the the TGW
  - The CP route-table should contain a route with the CP VPC&rsquo;s CIDR block as a destination, but with the TGW ID as a target.
  - The same needs to be done on the AP VPC, to route back to CP.</p>
 <h2 id="making-the-change">Making the change</h2>
@@ -1290,17 +1290,17 @@ resource &quot;aws_route&quot; &quot;my-new-route&quot; {
 <p>The TGW gateway ID can be found in the Readme of the repo.</p>
 <p>Note: Something similar need to be done on the &lsquo;other side&rsquo;, terraform or not.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-01-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-04-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 July 2022.
+      This page was last reviewed on 10 October 2022.
 
-        It needs to be reviewed again on 6 January 2023
+        It needs to be reviewed again on 10 April 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 January 2023
+      This page was set to be reviewed before 10 April 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
