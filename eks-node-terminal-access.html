@@ -1276,12 +1276,12 @@
 <p>AWS System Session Manager is used to configure and manage a terminal access to EKS worker nodes.</p>
 <p>All EKS clusters are created with needed permissions for
 AWS System Session Manager to start sessions to the worker nodes.</p>
-<p>On the AWS Console, <strong>Services -&gt; AWS System Manager -&gt; Quick Setup for Host Management</strong> is configured to detect the <code>live</code> EKS cluster worker nodes(default &amp; monitoring) 
+<p>On the AWS Console, <strong>Services -&gt; AWS System Manager -&gt; Quick Setup for Host Management</strong> is configured to detect the <code>live</code> EKS cluster worker nodes(default &amp; monitoring)
 by tag <code>Cluster</code> with value <code>live</code>.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 
 <ul>
-<li>AWS Console access </li>
+<li>AWS Console access</li>
 <li><p>Session Manager plugin (if using AWS Cli). To install Session Manager plugin on macOS,</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>brew install --cask session-manager-plugin
 </code></pre></div></li>
@@ -1301,10 +1301,10 @@ by tag <code>Cluster</code> with value <code>live</code>.</p>
 <ul>
 <li><p>Get the <strong>Instance ID</strong> of the node you want to login using kubectl</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code># To get the list of nodes and their names
-kubectl get nodes 
+kubectl get nodes
 
 # To get the node ID of the node for given node name
-kubectl describe node &lt;node name you want to shell into&gt; | grep 'ProviderID' | awk -F '/' '{print $NF}'` 
+kubectl describe node &lt;node name you want to shell into&gt; | grep 'ProviderID' | awk -F '/' '{print $NF}'`
 
 </code></pre></div></li>
 <li><p>Start the session with cli command</p>
@@ -1320,17 +1320,17 @@ kubectl describe node &lt;node name you want to shell into&gt; | grep 'ProviderI
 </code></pre></div><p>Connect and append your <code>~/.ssh/id_rsa.pub</code> key to the <code>/home/ssm-user/.ssh/authorized_keys</code> file on the node.</p>
 <p>Now you can <code>ssh i-0abcdef</code> or <code>scp 1-0abcdef:file</code></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2022-10-29">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-02-09">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 29 July 2022.
+      This page was last reviewed on 9 November 2022.
 
-        It needs to be reviewed again on 29 October 2022
+        It needs to be reviewed again on 9 February 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 29 October 2022
+      This page was set to be reviewed before 9 February 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
