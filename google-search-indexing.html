@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Remove data from Elasticsearch - Cloud Platform Runbooks</title>
+    <title>Google Search Console and Indexing - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/google-search-indexing.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Remove data from Elasticsearch - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html" />
+      <meta name="twitter:title" content="Google Search Console and Indexing - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/google-search-indexing.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Remove data from Elasticsearch" />
+      <meta property="og:title" content="Google Search Console and Indexing" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/google-search-indexing.html" />
 
     
   </head>
@@ -1274,170 +1274,30 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="remove-data-from-elasticsearch">Remove data from Elasticsearch</h1>
-<p>This runbook aims to guide you through purging specific logs/data from Elasticsearch.</p>
-<p>Let&rsquo;s assume in this guide that we are trying to delete all logs of the  <code>my-namespace-production</code> namespace, from the 01/02/2022</p>
-<h2 id="stop-the-breach-first">Stop the breach first</h2>
-<p>If you&rsquo;re removing data from Elasticsearch, this is presumably because sensitive information has been logged by mistake.
-Please ensure that the underlying problem has been fixed, and no more sensitive data is going to be logged by the same
-application, before spending time removing what&rsquo;s already there.</p>
-<h2 id="things-to-know">Things to know</h2>
-<p>An important thing to understand is the difference between an index and a document. 
-An index contains documents. In our case, documents are log entries.</p>
-<p>The current logging strategy is to have one index per day, containing all the daily logs.
-All application logs are sent to that daily index, ex:  <code>kubernetes_cluster-2021.02.01</code>
-If you want your query to cover all log data stored in the Elasticsearch cluster, you can use an expression like <code>kubernetes_cluster-2*</code></p>
-<p>Although it is possible to delete a whole index with a curator job, this guide will only cover the deletion of specific documents.</p>
+            <h1 id="google-search-console-and-indexing">Google Search Console and Indexing</h1>
+<p>This document describes how to remove subdomains of <code>apps.cloud-platform.service.justice.gov.uk</code> and <code>cloud-platform.service.justice.gov.uk</code> 
+from google search results using Google Search Console.</p>
+<p>By default, all domains are crawled by google unless the domain has taken one of the measures
+mentioned in <a href="https://developers.google.com/search/docs/crawling-indexing/block-indexing">Block Search indexing</a> to block the urls from indexing and not appear in google 
+search results.</p>
+<p>If any of the subdomains were mistakenly added by Google Crawler, follow the below steps to remove the indexing which will in turn not appear in google search results.</p>
+<p>Cloud Platform maintain a Google Search Console account using the email id <code>cloud-platform-bot@digital.justice.gov.uk</code> (The details are in Lastpass)</p>
+<p>Once logged in to the account, click on the <a href="https://search.google.com/search-console?resource_id=sc-domain%3Acloud-platform.service.justice.gov.uk">console page</a> a    nd click on <a href="https://search.google.com/search-console/removals?resource_id=sc-domain%3Acloud-platform.service.justice.gov.uk">Removals</a></p>
+<p>This will list all the current urls that are temporarily removed from indexing.</p>
+<p>Click on <code>&quot;NEW REQUEST&quot;</code> and fill in the url that needs to be unindexed and submit the request.
+In few minutes, check the status for <code>&quot;Temporarily removed&quot;</code>.</p>
 
-<blockquote>
-<p>Running <code>curl</code> queries has to be done from within the live-1 VPC</p>
-</blockquote>
-<h2 id="get-yourself-access">Get yourself access</h2>
-<p>Since https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/1852, <code>delete</code> operations are blocked, to enable temporarily for this operation, add your IP to the &ldquo;Security configuration&rdquo; policy, eg
-<code>
-    {
-      &quot;Sid&quot;: &quot;&quot;,
-      &quot;Effect&quot;: &quot;Allow&quot;,
-      &quot;Principal&quot;: {
-        &quot;AWS&quot;: &quot;*&quot;
-      },
-      &quot;Action&quot;: &quot;es:*&quot;,
-      &quot;Resource&quot;: &quot;arn:aws:es:eu-west-2:123456789012:domain/cloud-platform-live/*&quot;,
-      &quot;Condition&quot;: {
-        &quot;IpAddress&quot;: {
-          &quot;aws:SourceIp&quot;: &quot;1.2.3.4&quot;
-        }
-      }
-    }
-</code>
-then, access Kibana from the direct link not via the OIDC proxy.</p>
-<h2 id="build-your-query">Build your query</h2>
-<p>It is possible to reuse the body of a <code>search</code> query for a <code>delete</code> query.</p>
-<p>Therefore, if we narrow down a search query to exactly what we want to delete, we&rsquo;ve done most of the work.</p>
-<p>Kibana offers a <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/dev_tools/console">webconsole</a> to test queries.</p>
-<p>A standard query is :</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>GET /live_kubernetes_cluster-2022.02.01/_search
-{
-  "query": {
-    "match": {
-      "kubernetes.namespace_name.keyword": "my-namespace-production"
-    }
-  }
-}
-</code></pre></div>
-<blockquote>
-<p>Important note: <code>.keyword</code> forces elasticsearch to only return exact matches. Without it, you may end up deleting more than you wish</p>
-</blockquote>
-<p>As a <code>curl</code> command, the query above would translate to:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XGET "https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2022.02.01/_search" -H 'Content-Type: application/json' -d'
-{
-  "query": {
-    "match": {
-      "kubernetes.namespace_name.keyword": "my-namespace-production"
-    }
-  }
-}'
-</code></pre></div><p>Once the result of the search query exactly fits what you want to delete, carry on to the next step.</p>
-<h2 id="delete-by-query">Delete by query</h2>
-<p>A <code>POST</code> request against the <code>_delete_by_query</code> endpoint will delete all documents matching the query in the request&rsquo;s body.</p>
-<p>If we want to delete all logs from the <code>my-namespace-production</code> from 01/02/2021:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    curl -XPOST \
-        https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2022.02.01/_delete_by_query?pretty \
-        -H 'Content-Type: application/json' \
-        -d'{"query":{"match":{"kubernetes.namespace_name.keyword": "my-namespace-production"}}}'
-</code></pre></div><p>Here again, <code>.keyword</code> is essential.</p>
-
-<blockquote>
-<p>To run the <code>curl</code> commands, you can <code>exec</code> into any of the pods(eg. fluentd-es) inside the cluster. You may have to install <code>curl</code></p>
-</blockquote>
-<p>After executing the commands and removing the data, make sure to delete the pod as it will contain the search results of sensitve data 
-you have queried using <code>curl</code>. A fluentd pod will be recreated automatically.</p>
-<h2 id="removing-specific-logs-filtered-by-phrase">Removing specific logs filtered by phrase</h2>
-<p>If you want to delete log entries which contain a certain phrase, you can use the queries below.</p>
-<p>Searching for the phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>
-curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2*/_search?pretty \
--H 'Content-Type: application/json' -d'
-{
-  "query": {
-    "bool": {
-      "must": [],
-      "filter": [
-        {
-          "multi_match": {
-            "type": "phrase",
-            "query": "What is your name?",
-            "lenient": true
-          }
-        },
-        {
-          "range": {
-            "@timestamp": {
-              "format": "strict_date_optional_time",
-              "gte": "2020-06-13T12:19:24.804Z",
-              "lte": "2020-07-14T15:19:24.804Z"
-            }
-          }
-        }
-      ],
-      "should": [],
-      "must_not": []
-    }
-  }
-}'
-
-</code></pre></div><p>Deleting the log entries which have the phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like this:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XPOST https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2*/_delete_by_query?pretty \
--H 'Content-Type: application/json' -d'
-{
-  "query": {
-    "bool": {
-      "must": [],
-      "filter": [
-        {
-          "multi_match": {
-            "type": "phrase",
-            "query": "What is your name?",
-            "lenient": true
-          }
-        },
-        {
-          "range": {
-            "@timestamp": {
-              "format": "strict_date_optional_time",
-              "gte": "2020-06-13T12:19:24.804Z",
-              "lte": "2020-07-14T15:19:24.804Z"
-            }
-          }
-        }
-      ],
-      "should": [],
-      "must_not": []
-    }
-  }
-}'
-
-</code></pre></div><p>If you have complex search patterns used in kibana which you want to delete, 
- - narrow down the kibana search in the webconsole
- - click on &ldquo;Inspect&rdquo;
- - In the popup search window, click on the tab &ldquo;Request&rdquo;
- - Copy and paste the object which mentions <code>&quot;query&quot;: {</code> to the above curl command and modify dates as needed</p>
-
-<blockquote>
-<p>If you are searching for phrases which contain single-quote characters, those will need special handling when adding the phrases to the query</p>
-</blockquote>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2022-12-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-02-24">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 September 2022.
+      This page was last reviewed on 24 November 2022.
 
-        It needs to be reviewed again on 6 December 2022
+        It needs to be reviewed again on 24 February 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 December 2022
+      This page was set to be reviewed before 24 February 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1447,8 +1307,8 @@ curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/remove-data-from-elasticsearch.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Remove+data+from+Elasticsearch%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fremove-data-from-elasticsearch.html%29&amp;labels=bug&amp;title=Re%3A+%27Remove+data+from+Elasticsearch%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/google-search-indexing.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Google+Search+Console+and+Indexing%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fgoogle-search-indexing.html%29&amp;labels=bug&amp;title=Re%3A+%27Google+Search+Console+and+Indexing%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
