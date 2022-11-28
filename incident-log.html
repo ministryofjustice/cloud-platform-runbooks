@@ -201,6 +201,14 @@
     <a href="./incident-log.html"><span>Incident Log</span></a>
     <ul>
       <li>
+        <a href="./incident-log.html#q4-2022-october-december"><span>Q4 2022 (October-December)</span></a>
+        <ul>
+          <li>
+            <a href="./incident-log.html#incident-on-2022-11-15-16-03-prometheus-eks-live-down"><span>Incident on 2022-11-15 16:03 - Prometheus eks-live DOWN.</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
         <a href="./incident-log.html#q3-2022-july-september"><span>Q3 2022 (July-September)</span></a>
         <ul>
           <li>
@@ -1279,6 +1287,51 @@
 <blockquote>
 <p>Use the <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/bin/mean-time-to-repair.rb">mean-time-to-repair.rb</a> script to view performance metrics</p>
 </blockquote>
+<h2 id="q4-2022-october-december">Q4 2022 (October-December)</h2>
+
+<ul>
+<li><p><strong>Mean Time to Repair</strong>: 27m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 27m</p></li>
+</ul>
+<h3 id="incident-on-2022-11-15-16-03-prometheus-eks-live-down">Incident on 2022-11-15 16:03 - Prometheus eks-live DOWN.</h3>
+
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected 2022-11-15 16:03</li>
+<li>Incident declared: 2022-11-15 16:05</li>
+<li>Repaired 2022-11-15 16:30</li>
+<li>Resolved 2022-11-15 16:30</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 27m</p></li>
+<li><p><strong>Time to resolve</strong>: 27m</p></li>
+<li><p><strong>Identified</strong>:  High Priority Alarms - #347423 Pingdom check Prometheus Cloud-Platform - Healthcheck is DOWN / Resolved: #347424 Pingdom check cloud-platform monitoring Prometheus eks-live is DOWN.</p></li>
+<li><p><strong>Impact</strong>: Prometheus was unavailable for 27 minutes. Not reported at all by users in #ask-cloud-platforms slack channel.</p></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>On the 1st of November 14:49 AWS - notifications sent an email - advising that instance i-087e420c573463c08 (prometheus-operator) would be retired on the 15th of November 2022 at 16:00</li>
+<li>On the 15th of November 2022 - work being carried out on a Kubernetes upgrade on the &ldquo;manager&rdquo; cluster. Cloud-platforms advised in slack in the morning that the instance on &ldquo;manager&rdquo; would be retired that very afternoon. It was thought therefore that that this would have little impact on the upgrade work. However the instance was in fact on the &ldquo;live&rdquo; cluster - not &ldquo;manager&rdquo;</li>
+<li>The instance was retired by AWS at 16:00, Prometheus went down approx 16:03.</li>
+<li>Because the node was killed by AWS, and not gracefully by us - it got stuck - the eks node stayed in a status of &ldquo;not ready&rdquo;, the pod stays as &ldquo;terminated&rdquo;</li>
+<li>Note were users notified in &ldquo;ask-cloud-platform&rdquo; slack channel at approx 16:25, once it was determined that it was NOT to do with Kubernetes upgrade work on &ldquo;manager&rdquo; and therefore it would indeed be having an impact on the live system.</li>
+</ul></li>
+<li><p><strong>Resolution</strong>:</p>
+
+<ul>
+<li>The pod was killed by us at approx 16:12, this therefore made the node go too.</li>
+</ul></li>
+<li><p><strong>Review actions</strong>:</p>
+
+<ul>
+<li>If we had picked up on this retirement in &ldquo;Live&rdquo;- we could have recyled the node  gracefully (cordon, drain and kill first), possibly straight way on the 1st of November (well in advance).</li>
+<li>Therefore we need to find a way of not having these notification buried in our email inbox.</li>
+<li>First course of action, to ask AWS if there is an recomended alterative way of notifying to our slack channel (an alert). be this by sns to slack or some other method</li>
+<li>AWS Support Case ID 11297456601 raised</li>
+<li>Once advise received - to raise a ticket for us to carry out the work.</li>
+</ul></li>
+</ul>
 <h2 id="q3-2022-july-september">Q3 2022 (July-September)</h2>
 
 <ul>
