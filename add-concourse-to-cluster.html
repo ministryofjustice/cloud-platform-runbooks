@@ -1299,8 +1299,39 @@
 <h2 id="process">Process</h2>
 
 <ul>
-<li>Amend the following file and remove the count line from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/components.tf#L2">concourse module</a>.</li>
-<li>Apply the new terraorm to your test cluster</li>
+<li>Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a>
+and update <code>node_groups_count</code> and <code>node_size</code> as below to match the Manager cluster configuration, as this will support the cpu and memory demands of concourse module.</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>node_groups_count = {
+    live    = "54"
+    manager = "4"
+    default = "3" &gt; "4"
+  }
+  node_size = {
+    live    = ["r5.xlarge", "r5.2xlarge", "r5a.xlarge"]
+    manager = ["m5.xlarge", "m5.2xlarge", "m5a.xlarge"]
+    default = ["m5.large", "m5.xlarge", "m5a.large"] &gt; ["m5.xlarge", "m5.2xlarge", "m5a.xlarge"]
+  }
+</code></pre></div>
+<ul>
+<li>Apply the changes using below terraform workflow:</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
+terraform workspace select &lt;WorkspaceName&gt;
+terraform plan
+terraform apply
+</code></pre></div>
+<ul>
+<li>Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components</code> directory</a>.
+Amend the following file and remove the count line from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/components.tf#L2">concourse module</a>.</li>
+<li>Apply the terraform module to your test cluster</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
+terraform workspace select &lt;WorkspaceName&gt;
+terraform plan
+terraform apply -target=module.concourse
+</code></pre></div>
+<ul>
 <li><p>Clone the concourse <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse">repository</a>.</p></li>
 <li><p>Login via <code>fly</code></p></li>
 </ul>
@@ -1321,17 +1352,17 @@
 </ul>
 <p>If your pipeline requires secrets, such as AWS credentials, you need to define those as kubernetes secrets in the <code>concourse-main</code> namespace (or <code>concourse-&lt;team name&gt;</code> if you&rsquo;re using a different concourse team, rather than <code>main</code>)</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-02-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-03-28">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 November 2022.
+      This page was last reviewed on 28 December 2022.
 
-        It needs to be reviewed again on 28 February 2023
+        It needs to be reviewed again on 28 March 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 February 2023
+      This page was set to be reviewed before 28 March 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
