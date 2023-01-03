@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Add nodes/change the instance type of the AWS EKS cluster - Cloud Platform Runbooks</title>
+    <title>How to Investigate External-Dns Errors - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-eks-cluster.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Add nodes/change the instance type of the AWS EKS cluster - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-eks-cluster.html" />
+      <meta name="twitter:title" content="How to Investigate External-Dns Errors - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Add nodes/change the instance type of the AWS EKS cluster" />
+      <meta property="og:title" content="How to Investigate External-Dns Errors" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-eks-cluster.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html" />
 
     
   </head>
@@ -405,7 +405,7 @@
             <a href="./upgrade-eks-cluster.html#upgrade-addon-s"><span>Upgrade addon(s)</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#troubleshooting"><span>Troubleshooting</span></a>
+            <a href="./upgrade-eks-cluster.html#upgrade-steps-troubleshooting"><span>Troubleshooting</span></a>
           </li>
         </ul>
       </li>
@@ -888,7 +888,7 @@
       <li>
         <ul>
           <li>
-            <a href="./external-dns-error.html#how-to-investigate-external-dns-errors-troubleshooting"><span>Troubleshooting</span></a>
+            <a href="./external-dns-error.html#troubleshooting"><span>Troubleshooting</span></a>
           </li>
         </ul>
       </li>
@@ -1300,91 +1300,43 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="add-nodes-change-the-instance-type-of-the-aws-eks-cluster">Add nodes/change the instance type of the AWS EKS cluster</h1>
-<p>This runbook covers how to increase the number of nodes in an eks cluster and/or change the instance type (worker_node_machine_type)</p>
-<p>This can address the problem of CPU high usage/load</p>
-<h2 id="add-nodes-to-the-eks-cluster">Add nodes to the eks cluster</h2>
-<h3 id="requirements">Requirements</h3>
-<h4 id="1-ensure-you-have-access-to-the-cloud-platform-aws-account">1. Ensure you have access to the Cloud Platform AWS account</h4>
-<h4 id="2-access-to-the-eks-cluster">2. Access to the EKS cluster</h4>
-<p><a href="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html#access-eks-cluster">Access to the EKS cluster</a></p>
-<h3 id="cluster-configuration">Cluster configuration:</h3>
-<h4 id="cluster-tf"><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/cluster.tf">cluster.tf</a></h4>
-<p>Use</p>
-<p><code>git crypt unlock</code> to see the following code:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> node_groups = {
-    default_ng = {
-      desired_capacity = var.cluster_node_count
-      max_capacity     = 30
-      min_capacity     = 1
-      subnets          = data.aws_subnet_ids.private.ids
+            <h1 id="how-to-investigate-external-dns-errors">How to Investigate External-Dns Errors</h1>
+<p>When there are errors in external-dns logs, &ldquo;ErrorsInExternalDNS&rdquo; alert sent to the low priority slack channel.</p>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>If we see an ErrorsInExternalDNS alert in low-priority-alerts, this is usually due to a external-dns have an issue to write records to Route-53 for a particual hosted zones.
+You can see errors from the external-dns pod by running:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> kube-system external-dns-&lt;pod-id&gt; <span class="nt">-f</span>
+</code></pre></div><p>You&rsquo;ll see errors similar to:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [RDATA character limit of 32000 exceeded.]"</span>
 
-      instance_type = var.worker_node_machine_type
-      k8s_labels = {
-        Terraform = "true"
-        Cluster   = local.cluster_name
-        Domain    = local.cluster_base_domain_name
-      }
-      additional_tags = {
-        default_ng = "true"
-      }
-    }
-</code></pre></div><h4 id="variable-tf"><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/variables.tf">Variable.tf</a></h4>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>variable "vpc_name" {
-  description = "The VPC name where the cluster(s) are going to be provisioned. VPCs are created in cloud-platform-network"
-  default     = ""
-}
+<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [RRSet with DNS name _external_dns.development.moj.service.justice.gov.uk., type TXT cannot be created as other RRSets exist with the same name and type.,
+RRSet with DNS name development.moj.service.justice.gov.uk., type A cannot be created as other RRSets exist with the same name and type.]"</span>
 
-variable "cluster_node_count" {
-  description = "The number of worker node in the cluster"
-  default     = "4"
-}
+<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [Tried to delete resource record set [name='_external_dns.test.live.cloud-platform.service.justice.gov.uk.', type='TXT', set-identifier='test-live-1'] but it was not found,
+Tried to delete resource record set [name='test.live.cloud-platform.service.justice.gov.uk.', type='A', set-identifier='test-live-1'] but it was not found]
 
-variable "worker_node_machine_type" {
-  description = "The AWS EC2 instance types to use for worker nodes"
-  default     = "m4.large"
-}
-</code></pre></div><h3 id="issue">Issue</h3>
-<p>There is an issue that you cannot update the default &ldquo;cluster_node_count&rdquo; (in isolation) with terraform
- - unless you increase the default &ldquo;worker_node_machine_type&rdquo; too.<br>
-The issue is to do with auto-scaling complexities utilising Terrafom - please see <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/autoscaling.md#notes">here</a></p>
-<p>Therefore you either have to update default &ldquo;worker_node_machine_type&rdquo; to - in above example &ldquo;m4.xlarge&rdquo; and also the default &ldquo;cluster_node_count&rdquo; to - in above example &ldquo;5&rdquo; or &ldquo;6&rdquo;</p>
-<p>Or you have to edit the &ldquo;Desired size&rdquo; in the &ldquo;AWS EKS dashboard Edit Node Group&rdquo; (once you have carried out the AWS dashboard change - update the terraform config, <code>terraform apply</code>  accordingly - so that it is in sync with the AWS dashboard):</p>
-<h4 id="aws-dashboard-eks-edit-node-group"><a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters/manager/nodegroups/manager-default_ng-composed-sculpin/edit-nodegroup">AWS dashboard EKS - Edit Node Group:</a></h4>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Group size
-Minimum size
-Set the minimum number of nodes that the group can scale in to.
-1
-nodes
-Maximum size
-Set the maximum number of nodes that the group can scale out to.
-30
-nodes
-Desired size
-Set the desired number of nodes that the group should launch with initially.
-4
-nodes
-</code></pre></div><h2 id="change-the-aws-eks-instance-type-worker-node-machine-type">Change the AWS EKS instance type (worker_node_machine_type)</h2>
+level=error msg="</span>InvalidChangeBatch: <span class="o">[</span>Tried to create resource record <span class="nb">set</span> <span class="o">[</span><span class="nv">name</span><span class="o">=</span><span class="s1">'cluster-cname-thisingress.example.'</span>, <span class="nb">type</span><span class="o">=</span><span class="s1">'TXT'</span><span class="o">]</span> but it already exists, Tried to create
+resource record <span class="nb">set</span> <span class="o">[</span><span class="nv">name</span><span class="o">=</span><span class="s1">'cluster-thisingress.example.'</span>, <span class="nb">type</span><span class="o">=</span><span class="s1">'TXT'</span><span class="o">]</span> but it already exists]
 
-<ul>
-<li><p>update default &ldquo;worker_node_machine_type&rdquo; to - in above example &ldquo;m4.xlarge&rdquo;</p></li>
-<li><p>A &lsquo;terraform plan&rsquo; will show that that it will replace the existing nodes</p></li>
-<li><p>`terraform apply&rsquo; the changes in the usual way</p></li>
-<li><p>monitor how the update is going in the <a href="https://eu-west-2.console.aws.amazon.com/ec2/autoscaling/home?region=eu-west-2#AutoScalingGroups:view=tags;filter=eks">AWS Autoscaling dashboard:</a></p></li>
-</ul>
-<p>Note that it will create the instances/nodes before it deletes the existing - so there should be no down time</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2023-01-10">
+<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to submit all changes for the following zones: [/hostedzone/ABCDEFGHIJKLMN /hostedzone/NMLKJIHGFEDCBA]"</span>
+</code></pre></div><p>Identify the ingress causing the error in question and fix the ingress depending upon the error message. We may need to inform users to update their ingress causing the error.</p>
+<p>Follow this <a href="https://aws.amazon.com/premiumsupport/knowledge-center/troubleshoot-route53-resource-record/">troubleshoot guide</a> for common error messages to determine the error&rsquo;s cause and how to troubleshoot it.</p>
+<p>Once the error is cleared, you will see info logs similar to:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"Applying provider record filter for domains: [dev.example. .dev.example.]"</span>
+<span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"Desired change: CREATE cluster-a-new.dev.example TXT [Id: /hostedzone/ZZZ]"</span>
+<span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"All records are already up to date"</span>
+</code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2023-03-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 October 2022.
+      This page was last reviewed on 22 December 2022.
 
-        It needs to be reviewed again on 10 January 2023
+        It needs to be reviewed again on 22 March 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 January 2023
+      This page was set to be reviewed before 22 March 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1394,8 +1346,8 @@ nodes
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/add-nodes-to-the-eks-cluster.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Add+nodes%2Fchange+the+instance+type+of+the+AWS+EKS+cluster%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fadd-nodes-to-the-eks-cluster.html%29&amp;labels=bug&amp;title=Re%3A+%27Add+nodes%2Fchange+the+instance+type+of+the+AWS+EKS+cluster%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/external-dns-error.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27How+to+Investigate+External-Dns+Errors%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fexternal-dns-error.html%29&amp;labels=bug&amp;title=Re%3A+%27How+to+Investigate+External-Dns+Errors%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
