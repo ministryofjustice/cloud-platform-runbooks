@@ -1377,7 +1377,7 @@ ip-172-20-106-76.eu-west-2.compute.internal    Ready    &lt;none&gt;   46h     v
 
 delete_pods<span class="o">()</span> <span class="o">{</span>
   <span class="nv">NAMESPACE</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'s/\/api\/v1\/namespaces\/(.*)\/pods\/.*/\1/'</span><span class="si">)</span>
-  <span class="nv">POD</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'s/.*\/pods\/(.*)\/eviction\?timeout=*./\1/'</span><span class="si">)</span>
+  <span class="nv">POD</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'s/.*\/pods\/(.*)\/eviction\?timeout=.*/\1/'</span><span class="si">)</span>
 
   <span class="nb">echo</span> <span class="nv">$NAMESPACE</span>
 
