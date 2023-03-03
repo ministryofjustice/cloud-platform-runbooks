@@ -1317,8 +1317,32 @@
 <p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong>. Each one creates a unique Route53 hostzone which is unique to the name</p>
 <p>You can create a new EKS test cluster using the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/build-test-cluster/">cluster build pipeline</a>.</p>
 <p>Alternatively, using the <code>create-cluster</code> script.</p>
-<p>Execute the script, by giving the <code>-k eks</code> or <code>--kind eks</code> option and the desired name of your new cluster. e.g.:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>./create-cluster.rb <span class="nt">--name</span> mogaal-eks <span class="nt">--kind</span> eks
+<h2 id="pre-requisites">Pre-requisites</h2>
+
+<ul>
+<li>Make sure you have access to Cloud Platform AWS account</li>
+<li>Set your environment variables (you might also want to include <code>AWS_*</code> envs):</li>
+<li>You have an [AWS CLI] profile <code>moj-cp</code>, with suitable credentials</li>
+</ul>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    export AWS_PROFILE=moj-cp
+</code></pre></div>
+<ul>
+<li>Your GPG key must be added to the [infrastructure repo] so that you are able to run <code>git-crypt unlock</code> (the script will run this for you, but you must be <em>able</em> to do it)</li>
+<li>You have [docker] installed</li>
+<li>An AWS iam user with &ldquo;AdministratorAccess&rdquo;, this can be achieved by adding a user to the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam">cloud-platform-terraform-awsaccounts-iam</a> repo</li>
+<li>Make sure your user is added to the <code>terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf -&gt; module -&gt; eks -&gt; map_users</code> in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure%20and%20that%20is%20deployed%20on%20main">cloud-platform-infrastructure</a></li>
+</ul>
+<h2 id="environment-variables">Environment Variables</h2>
+<p>See the file [example.env.create-cluster] in the [infrastructure repo]. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.rb</code> script to create a new cluster.</p>
+<p>You can get the auth0 values from the <code>terraform-provider-auth0</code> application on <a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/applications">auth0</a>.</p>
+<p>or you can export these env vars in your shell:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export AUTH0_DOMAIN=
+export AUTH0_CLIENT_ID=
+export AUTH0_CLIENT_SECRET=
+</code></pre></div><p>Execute the script inside the <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">cloud-platform-tool</a> container from the root of <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure</a> repo, run:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>make tools-shell
+</code></pre></div><p>This will launch the tool container, from there you can run the execute script by providing the desired name of your new cluster. e.g.:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>./create-cluster.rb <span class="nt">--name</span> mogaal-eks
 </code></pre></div><p>Check the pre-requisites and environment variables section of this document before running this script.</p>
 <p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
 <p>See our [cluster naming policy] for information on how to choose a suitable name for your cluster.</p>
@@ -1334,22 +1358,6 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 </code></pre></div><p>The section before <code>kubectl cluster-info</code> is the cluster integration tests, which run at the end of the build
 process. The number of tests will change, so the output will vary from what is shown here.</p>
 <p>Alternatively, if you need more control over the test cluster parameters, or you just prefer to do it manually, the rest of this document describes the process.</p>
-<h2 id="pre-requisites">Pre-requisites</h2>
-
-<ul>
-<li>Make sure you have access to Cloud Platform AWS account</li>
-<li>Set your environment variables (you might also want to include <code>AWS_*</code> envs):</li>
-<li>You have an [AWS CLI] profile <code>moj-cp</code>, with suitable credentials</li>
-</ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    export AWS_PROFILE=moj-cp
-</code></pre></div>
-<ul>
-<li>Your GPG key must be added to the [infrastructure repo] so that you are able to run <code>git-crypt unlock</code> (the script will run this for you, but you must be <em>able</em> to do it)</li>
-<li>You have [docker] installed</li>
-</ul>
-<h2 id="environment-variables">Environment Variables</h2>
-<p>See the file [example.env.create-cluster] in the [infrastructure repo]. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.rb</code> script to create a new cluster.</p>
-<p>You can get the auth0 values from the <code>terraform-provider-auth0</code> application on <a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/applications">auth0</a>.</p>
 <h2 id="provisioning">Provisioning</h2>
 <h3 id="1-vpc">1. VPC</h3>
 <p>We need to create a VPC to deploy the cluster, VPCs are deployed using terraform code under <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc">cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc</a> folder:</p>
@@ -1361,11 +1369,23 @@ terraform apply
 <p><strong>NOTE</strong>: For conventions purposes please call all terraform workspaces the same.</p>
 <h3 id="2-creating-eks-cluster">2. Creating EKS cluster</h3>
 <p>Now it&rsquo;s time to provision the cluster itself, we change directory to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks">terraform/aws-accounts/cloud-platform-aws/vpc/eks</a> and follow very similar terraform workflow:</p>
+<p>If you are running on m1 mac then you may experience this error:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>╷
+│ Error: Incompatible provider version
+│
+│ Provider registry.terraform.io/hashicorp/template v2.2.0 does not have a package available for your current platform, darwin_arm64.
+│
+│ Provider releases are separate from Terraform CLI releases, so not all providers are available for all platforms. Other versions of this provider may have different platforms supported.
+</code></pre></div><p>This is because the template provider was deprecated and archived before the existence of m1 (darwin_arm64) releases. To overcome this error we must compile the provider ourselves for your Apple Silicon. Luckily, there&rsquo;s <a href="https://kreuzwerker.de/en/post/use-m1-terraform-provider-helper-to-compile-terraform-providers-for-mac-m1">this</a> nifty cli tool that will download and compile the provider for us:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>brew install kreuzwerker/taps/m1-terraform-provider-helper
+m1-terraform-provider-helper activate
+m1-terraform-provider-helper install hashicorp/template -v v2.2.0
+</code></pre></div><p>Now we can continue with our terraform commands:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
 terraform workspace new &lt;WorkspaceName&gt;
-terraform apply -var="vpc_name=$VPC_NAME"
-</code></pre></div><p><code>vpc_name</code> must be set, it&rsquo;s the only required variable. It can also be used variables like <code>cluster_node_count</code> and <code>worker_node_machine_type</code> to set up different node groups parameters</p>
-<p>Once terraform finishes you should be able to generate your kubeadmin file (used by <em>kubectl</em> to establish a connection to the cluster) using aws-cli in the following way:</p>
+git-crypt unlock
+terraform apply
+</code></pre></div><p>Once terraform finishes you should be able to generate your kubeadmin file (used by <em>kubectl</em> to establish a connection to the cluster) using aws-cli in the following way:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws eks --region eu-west-2 update-kubeconfig --name mogaal-eks
 </code></pre></div><p><strong>NOTE</strong>: Replace &ldquo;mogaal-eks&rdquo; with the cluster name (workspace name)</p>
 <p>Final check for this step consists in cluster connection</p>
@@ -1409,7 +1429,6 @@ terraform apply
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  args:
     # export $(cat keyval/keyval.properties | grep CLUSTER_NAME )
 </code></pre></div><p>Commenting out this will not set the <code>CLUSTER_NAME</code> provided by the create-cluster-run-tests job.</p>
-<p>Update the <code>$CLUSTER_NAME</code> to <code>&lt;cluster-name-to-be-deleted</code> in the below line</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./destroy-cluster.rb --name $CLUSTER_NAME --yes
 </code></pre></div><p>Run the below commands updating the <code>&lt;cluster-name-to-be-deleted&gt;</code>.</p>
 <p>The first fly command will apply the changes made for the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/eks-create-test-destroy.yaml">eks-create-test-destroy.yaml</a> file with the hardcoded <code>CLUSTER_NAME</code> in the destroy-cluster job</p>
@@ -1457,17 +1476,17 @@ $ terraform destroy
 $ terraform workspace select default
 $ terraform workspace delete ${cluster}
 </code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2023-06-01">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-06-03">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 1 March 2023.
+      This page was last reviewed on 3 March 2023.
 
-        It needs to be reviewed again on 1 June 2023
+        It needs to be reviewed again on 3 June 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 1 June 2023
+      This page was set to be reviewed before 3 June 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
