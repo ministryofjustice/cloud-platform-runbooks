@@ -1315,25 +1315,25 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1>
 <p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong>. Each one creates a unique Route53 hostzone which is unique to the name</p>
-<p>You can create a new EKS test cluster using the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/build-test-cluster/">cluster build pipeline</a>.</p>
+<p>You can create a new EKS test cluster using the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/create-cluster">cluster build pipeline</a>.</p>
 <p>Alternatively, using the <code>create-cluster</code> script.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 
 <ul>
 <li>Make sure you have access to Cloud Platform AWS account</li>
 <li>Set your environment variables (you might also want to include <code>AWS_*</code> envs):</li>
-<li>You have an [AWS CLI] profile <code>moj-cp</code>, with suitable credentials</li>
+<li>You have an <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">AWS CLI</a> profile <code>moj-cp</code>, with suitable credentials</li>
 </ul>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    export AWS_PROFILE=moj-cp
 </code></pre></div>
 <ul>
-<li>Your GPG key must be added to the [infrastructure repo] so that you are able to run <code>git-crypt unlock</code> (the script will run this for you, but you must be <em>able</em> to do it)</li>
-<li>You have [docker] installed</li>
+<li>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code> (the script will run this for you, but you must be <em>able</em> to do it)</li>
+<li>You have <a href="https://docs.docker.com/get-docker/">docker</a> installed</li>
 <li>An AWS iam user with &ldquo;AdministratorAccess&rdquo;, this can be achieved by adding a user to the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam">cloud-platform-terraform-awsaccounts-iam</a> repo</li>
-<li>Make sure your user is added to the <code>terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf -&gt; module -&gt; eks -&gt; map_users</code> in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure%20and%20that%20is%20deployed%20on%20main">cloud-platform-infrastructure</a></li>
+<li>Make sure your user is added to the <code>terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf -&gt; module -&gt; eks -&gt; map_users</code> in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure</a> and that is deployed on main)</li>
 </ul>
 <h2 id="environment-variables">Environment Variables</h2>
-<p>See the file [example.env.create-cluster] in the [infrastructure repo]. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.rb</code> script to create a new cluster.</p>
+<p>See the file <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/example.env.create-cluster">example.env.create-cluster</a> in the infrastructure repo. This shows examples of the environment variables which must be set in order to run the <code>create-cluster.rb</code> script to create a new cluster.</p>
 <p>You can get the auth0 values from the <code>terraform-provider-auth0</code> application on <a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/applications">auth0</a>.</p>
 <p>or you can export these env vars in your shell:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>export AUTH0_DOMAIN=
@@ -1345,7 +1345,7 @@ export AUTH0_CLIENT_SECRET=
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>./create-cluster.rb <span class="nt">--name</span> mogaal-eks
 </code></pre></div><p>Check the pre-requisites and environment variables section of this document before running this script.</p>
 <p>NB: Your cluster name must be <strong>no more than 12 characters</strong>. Any longer, and some of the computed strings which include the cluster name will exceed their maximum allowed values. The error messages you get if this happens are unhelpful. In order to prevent this, the build script will fail immediately if you supply a name which is too long.</p>
-<p>See our [cluster naming policy] for information on how to choose a suitable name for your cluster.</p>
+<p>See our <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/architecture-decision-record/009-Naming-convention-for-clusters.md">cluster naming policy</a> for information on how to choose a suitable name for your cluster.</p>
 <p>By default, the script will create a <code>small</code> cluster. This means the master and worker EC2 instances will be less powerful machine types than in our production cluster.</p>
 <p>You can see more options to use when creating the cluster by running:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>./create-cluster.rb <span class="nt">--help</span>
@@ -1476,17 +1476,17 @@ $ terraform destroy
 $ terraform workspace select default
 $ terraform workspace delete ${cluster}
 </code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2023-06-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-06-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 March 2023.
+      This page was last reviewed on 6 March 2023.
 
-        It needs to be reviewed again on 3 June 2023
+        It needs to be reviewed again on 6 June 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 June 2023
+      This page was set to be reviewed before 6 June 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

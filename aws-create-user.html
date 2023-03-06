@@ -1318,7 +1318,7 @@
 <p>Related repositories:</p>
 
 <ul>
-<li><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-account">cloud-platform-infrastructure (/terraform/cloud-platform-account)</a></p></li>
+<li><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/account">cloud-platform-infrastructure (/terraform/cloud-platform-account)</a></p></li>
 <li><p><a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/blob/main/main.tf">cloud-platform-terraform-awsaccounts-iam</a></p></li>
 <li><p><a href="https://github.com/terraform-aws-modules/terraform-aws-iam">terraform-aws-iam module</a></p></li>
 </ul>
@@ -1328,25 +1328,25 @@
 <p>3) Using <code>terraform plan</code> in <code>cloud-platform-infrastructure/terraform/cloud-platform-account/</code> to verify you&rsquo;re happy with the terraform changes.</p>
 <p>4) Create the PR, ask the team to review it, and merge it.</p>
 <p>5) <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/releases">Create a release</a>.</p>
-<p>6) In the infrastructure repo, edit <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-account/main.tf">the terraform config that calls that module</a>, to use the new release - see <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/938/files">example</a></p>
+<p>6) In the infrastructure repo, edit <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/main.tf#L44">the terraform config that calls that module</a>, to use the new release - see <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/938/files">example</a></p>
 <p>7) Create the PR, ask the team to review it, and merge it.</p>
 <p>8) Apply the changes.</p>
 <p>9) Verify the user is created. (You can use AWS Console for this.)</p>
 <p>10) Tell them they can login here: https://aws-login.cloud-platform.service.justice.gov.uk</p>
 <h2 id="activating-mfa-for-new-users">Activating MFA for new users</h2>
-<p>Unfortunataly terraform can&rsquo;t activate MFA for users, this process must be done done manually either <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">thorugh AWS Console (UI)</a> or <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_cliapi.html">through the AWS CLI</a>.</p>
+<p>Unfortunataly terraform can&rsquo;t activate MFA for users, this process must be done done manually either <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">through AWS Console (UI)</a> or <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_cliapi.html">through the AWS CLI</a>.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-06-01">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-06-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 1 March 2023.
+      This page was last reviewed on 6 March 2023.
 
-        It needs to be reviewed again on 1 June 2023
+        It needs to be reviewed again on 6 June 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 1 June 2023
+      This page was set to be reviewed before 6 June 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
