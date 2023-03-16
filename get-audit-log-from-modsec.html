@@ -838,6 +838,11 @@
       </li>
       <li>
         <a href="./remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
+        <ul>
+          <li>
+            <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1345,37 +1350,32 @@ example: https://mojdt.slack.com/archives/C57UPMZLY/p1630936971082200
 <li>Kubectl access to the live cluster and access to the <code>ingress-controllers</code> namespace.</li>
 </ul>
 <h2 id="perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry">Perform a search for the unique-id (obtained from the Kibana entry)</h2>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code># assuming the event was today
-$ day=$(date '+%Y%m%d')
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code># assuming the event id is 16494071776.005464
 $ event="16494071776.005464"
-$ for k in `kubectl -n ingress-controllers get pods | grep modsec01-nx-controller | awk '{print $1}'` ; do echo $k ; kubectl -n ingress-controllers exec -ti $k -- bash -c "cd /var/log/audit/$day/ ; grep -r $event *" &amp;&amp; break ; done
+$ for k in `kubectl -n ingress-controllers get pods | grep modsec01-nx-controller | awk '{print $1}'` ; do echo $k ; kubectl -n ingress-controllers exec -ti $k -- bash -c "cat /var/log/modsec_audit.log ; grep -r $event *" &amp;&amp; break ; done
 </code></pre></div><p>Which should return the event.</p>
-<p>If you want to copy the filtered events of a particular date e.g. 24/11/2021 to a folder and download to the local machine to extract the data, use the commands in bash
- <code>bash
- cd /var/log/audit/20211124
- find . -name &quot;*&quot; | xargs grep -iEl &quot;String or hostname to search&quot; &gt; list.txt
- mkdir copy
- for file in $(&lt;list.txt); do cp &quot;$file&quot; ./copy; done
-</code></p>
-<p>This should copy the filtered folders and files into the <code>copy</code> folder</p>
-<p>Exit the modsec pod and from your machine, enter the below command
-<code>bash
- kubectl -n ingress-controllers cp &lt;modsec-pod-name&gt;:/var/log/audit/20211124/copy .                     
-</code></p>
-<p>If you want to send the log data to a user, make sure you filter the data specific to that application and encrypt the file.
+<p>If you want to copy the filtered events of a particular search pattern to a folder and download to the local machine to extract the data, use the commands in bash</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> <span class="nb">cd</span> /var/log/
+ <span class="nb">cat </span>modsec_audit.log | <span class="nb">grep</span> <span class="nt">-r</span> <span class="s2">"String or hostname to search"</span> <span class="o">&gt;</span> list.txt
+ <span class="nb">mkdir </span>copy
+ <span class="nb">cp </span>list.txt ./copy
+</code></pre></div><p>This should copy the filtered folders and files into the <code>copy</code> folder</p>
+<p>Exit the modsec pod and from your machine, enter the below command</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code> kubectl <span class="nt">-n</span> ingress-controllers <span class="nb">cp</span> &lt;modsec-pod-name&gt;:/var/log/copy <span class="nb">.</span>
+</code></pre></div><p>If you want to send the log data to a user, make sure you filter the data specific to that application and encrypt the file.
 From mac, you can use gpgkeychain to encrypt the file using the receiver&rsquo;s public key before sending it to the user.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-04-17">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-06-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 January 2023.
+      This page was last reviewed on 16 March 2023.
 
-        It needs to be reviewed again on 17 April 2023
+        It needs to be reviewed again on 16 June 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 April 2023
+      This page was set to be reviewed before 16 June 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

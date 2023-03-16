@@ -838,6 +838,11 @@
       </li>
       <li>
         <a href="./remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
+        <ul>
+          <li>
+            <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1340,24 +1345,22 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 <p>Running <code>curl</code> queries has to be done from within the live-1 VPC</p>
 </blockquote>
 <h2 id="get-yourself-access">Get yourself access</h2>
-<p>Since https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/1852, <code>delete</code> operations are blocked, to enable temporarily for this operation, add your IP to the &ldquo;Security configuration&rdquo; policy, eg
-<code>
-    {
-      &quot;Sid&quot;: &quot;&quot;,
-      &quot;Effect&quot;: &quot;Allow&quot;,
-      &quot;Principal&quot;: {
-        &quot;AWS&quot;: &quot;*&quot;
+<p>Since https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/1852, <code>delete</code> operations are blocked, to enable temporarily for this operation, add your IP to the &ldquo;Security configuration&rdquo; policy, eg</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
       },
-      &quot;Action&quot;: &quot;es:*&quot;,
-      &quot;Resource&quot;: &quot;arn:aws:es:eu-west-2:123456789012:domain/cloud-platform-live/*&quot;,
-      &quot;Condition&quot;: {
-        &quot;IpAddress&quot;: {
-          &quot;aws:SourceIp&quot;: &quot;1.2.3.4&quot;
+      "Action": "es:*",
+      "Resource": "arn:aws:es:eu-west-2:123456789012:domain/cloud-platform-live/*",
+      "Condition": {
+        "IpAddress": {
+          "aws:SourceIp": "1.2.3.4"
         }
       }
     }
-</code>
-then, access Kibana from the direct link not via the OIDC proxy.</p>
+</code></pre></div><p>then, access Kibana from the direct link not via the OIDC proxy.</p>
 <h2 id="build-your-query">Build your query</h2>
 <p>It is possible to reuse the body of a <code>search</code> query for a <code>delete</code> query.</p>
 <p>Therefore, if we narrow down a search query to exactly what we want to delete, we&rsquo;ve done most of the work.</p>
@@ -1473,18 +1476,31 @@ curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west
 <blockquote>
 <p>If you are searching for phrases which contain single-quote characters, those will need special handling when adding the phrases to the query</p>
 </blockquote>
+<h3 id="deleting-documents-stored-in-warm-storage">Deleting documents stored in warm storage</h3>
+<p>The documents can only be deleted from indices that are in hot storage. Currently past 14 days data are in hot storage.
+Once the indices are moved to warm/cold storage, you cannot delete particular documents as they are set as read-only.
+You can move the indices from warm to hot storage and then delete the documents. Follow the steps below to perform this operation.</p>
+<p>Go to kibana -&gt; <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/dev_tools#/console">Dev Tools</a></p>
+<p>For example, if you want to delete the index <code>live_kubernetes_ingress-2023.03.02</code>, run the following command</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>POST _ultrawarm/migration/live_kubernetes_ingress-2023.03.02/_hot
+</code></pre></div><p>This will move the index to hot storage. You can check the status of the migration using the following command</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>GET _ultrawarm/migration/live_kubernetes_ingress-2023.03.02
+</code></pre></div><p>Once the migration is complete, you can delete the documents using the procedure mentioned at the <a href="remove-data-from-elasticsearch.html#delete-by-query">beginning of this runbook</a>.</p>
+<p>Once the documents are deleted, you can move the indices back to warm storage using the following command</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>POST _ultrawarm/migration/live_kubernetes_ingress-2023.03.02/_warm
+</code></pre></div><p><strong>NOTE:</strong> If you are planning to move a lot of warm indices to hot, make sure you have enough storage in hot storage.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-06-01">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-06-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 1 March 2023.
+      This page was last reviewed on 16 March 2023.
 
-        It needs to be reviewed again on 1 June 2023
+        It needs to be reviewed again on 16 June 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 1 June 2023
+      This page was set to be reviewed before 16 June 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
