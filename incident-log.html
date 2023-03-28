@@ -204,6 +204,9 @@
         <a href="./incident-log.html#q1-2023-january-march"><span>Q1 2023 (January-March)</span></a>
         <ul>
           <li>
+            <a href="./incident-log.html#incident-on-2023-02-02-10-21-cjs-dashboard-performance"><span>Incident on 2023-02-02 10:21 - CJS Dashboard Performance</span></a>
+          </li>
+          <li>
             <a href="./incident-log.html#incident-on-2023-01-11-14-22-cluster-image-pull-failure-due-to-dockerhub-password-rotation"><span>Incident on 2023-01-11 14:22 - Cluster image pull failure due to DockerHub password rotation</span></a>
           </li>
           <li>
@@ -1337,8 +1340,55 @@
 <h2 id="q1-2023-january-march">Q1 2023 (January-March)</h2>
 
 <ul>
-<li><p><strong>Mean Time to Repair</strong>: 337h 31m</p></li>
-<li><p><strong>Mean Time to Resolve</strong>: 337h 32m</p></li>
+<li><p><strong>Mean Time to Repair</strong>: 225h 11m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 225h 28m</p></li>
+</ul>
+<h3 id="incident-on-2023-02-02-10-21-cjs-dashboard-performance">Incident on 2023-02-02 10:21 - CJS Dashboard Performance</h3>
+
+<ul>
+<li><p><strong>Key events</strong></p>
+
+<ul>
+<li>First detected: 2023-02-02 10:14</li>
+<li>Incident declared: 2023-02-02 10:20</li>
+<li>Repaired: 2023-02-02 10:20</li>
+<li>Resolved 2023-02-02 11:36</li>
+</ul></li>
+<li><p><strong>Time to repair</strong>: 0h 30m</p></li>
+<li><p><strong>Time to resolve</strong>: 1h 22m</p></li>
+<li><p><strong>Identified</strong>: <a href="https://moj-digital-tools.pagerduty.com/incidents/Q01V8OZ44WU4EX?utm_campaign=channel&amp;utm_source=slack">CPU-Critical alert</a></p></li>
+<li><p><strong>Impact</strong>: Cluster is reaching max capacity. Multiple services might be affected.</p></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>2023-02-02 10:14: <a href="https://moj-digital-tools.pagerduty.com/incidents/Q01V8OZ44WU4EX?utm_campaign=channel&amp;utm_source=slack">CPU-Critical alert</a></li>
+<li>2023-02-02 10:21: Cloudp Platform Team supporting with CJS deployment and noticed that the CJS team increased the pod count and requested more resources causing the CPU critical alert.</li>
+<li>2023-02-02 10:21 <strong>Incident is declared</strong>. </li>
+<li>2023-02-02 10:22 War room started.</li>
+<li>2023-02-02 10:25 Cloud Platform noticed that the CJS team have 100 replicas for their deployment and many CJS pods started crash looping, this is due to the Descheduler service <strong>RemoveDuplicates</strong> strategy plugin making sure that there is only one pod associated with a ReplicaSet running on the same node. If there are more, those duplicate pods are evicted for better spreading of pods in a cluster. </li>
+<li>The live cluster has 60 nodes as desired capacity. As CJS have 100 ReplicaSet for their deployment, Descheduler started terminating the duplicate CJS pods scheduled on the same node. The restart of multiple CJS pods caused the CPU hike.</li>
+<li>2023-02-02 10:30 Cloud Platform team scaled down Descheduler to stop terminating CJS pods.</li>
+<li>2023-02-02 10:37 CJS Dash team planned to roll back a caching change they made around 10 am that appears to have generated the spike.</li>
+<li>2023-02-02 10:38 Decision made to Increase node count to 60 from 80, to support the CJS team with more pods and resources.</li>
+<li>2023-02-02 10:40 Autoscaling group bumped up to 80 - to resolve the CPU critical. Descheduler is scaled down to 0 to accommodate multiple pods on a node.</li>
+<li>2023-02-02 10:44 Resolved status for CPU-Critical high-priority alert. </li>
+<li>2023-02-02 11:30 Performance has steadied.</li>
+<li>2023-02-02 11:36 <strong>Incident is resolved</strong>. </li>
+</ul></li>
+<li><p><strong>Resolution</strong>:</p>
+
+<ul>
+<li>Cloud-platform team scaling down Descheduler to let CJS team have 100 ReplicaSet in their deployment.</li>
+<li>CJS Dash team rolled back a change that appears to have generated the spike.</li>
+<li>Cloud-Platform team increasing the desired node count to 80.</li>
+</ul></li>
+<li><p><strong>Review actions</strong>:</p>
+
+<ul>
+<li>Create an OPA policy to not allow deployment ReplicaSet greater than an agreed number by the cloud-platform team. </li>
+<li>Update the user guide to mention related to OPA policy.</li>
+<li>Update the user guide to request teams to speak to the cloud-platform team before if teams are planning to apply deployments which need large resources like pod count, memory and CPU so the cloud-platform team is aware and provides the necessary support.</li>
+</ul></li>
 </ul>
 <h3 id="incident-on-2023-01-11-14-22-cluster-image-pull-failure-due-to-dockerhub-password-rotation">Incident on 2023-01-11 14:22 - Cluster image pull failure due to DockerHub password rotation</h3>
 
