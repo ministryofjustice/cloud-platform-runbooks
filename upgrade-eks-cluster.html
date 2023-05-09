@@ -367,17 +367,6 @@
     </ul>
   </li>
   <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
-    <ul>
-      <li>
-        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -394,6 +383,17 @@
       </li>
       <li>
         <a href="./changes-in-cloudplatform.html#communications"><span>Communications</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -419,38 +419,10 @@
             <a href="./upgrade-eks-cluster.html#upgrade-node-group-s"><span>Upgrade Node Group(s)</span></a>
           </li>
           <li>
+            <a href="./upgrade-eks-cluster.html#recycle-all-nodes"><span>Recycle all nodes</span></a>
+          </li>
+          <li>
             <a href="./upgrade-eks-cluster.html#upgrade-addon-s"><span>Upgrade addon(s)</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-cluster.html#troubleshooting"><span>Troubleshooting</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
       </li>
@@ -485,6 +457,34 @@
           </li>
           <li>
             <a href="./upgrade-cluster-components.html#performing-the-upgrade"><span>Performing the upgrade</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
       </li>
@@ -844,6 +844,14 @@
     </ul>
   </li>
   <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./remove-data-from-elasticsearch.html"><span>Remove data from Elasticsearch</span></a>
     <ul>
       <li>
@@ -868,14 +876,6 @@
             <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -910,7 +910,7 @@
       <li>
         <ul>
           <li>
-            <a href="./external-dns-error.html#how-to-investigate-external-dns-errors-troubleshooting"><span>Troubleshooting</span></a>
+            <a href="./external-dns-error.html#troubleshooting"><span>Troubleshooting</span></a>
           </li>
         </ul>
       </li>
@@ -1090,6 +1090,17 @@
     </ul>
   </li>
   <li>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
     <ul>
       <li>
@@ -1124,17 +1135,6 @@
       </li>
       <li>
         <a href="./joiners-guide.html#access"><span>Access</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
   </li>
@@ -1263,6 +1263,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1313,9 +1316,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
     <ul>
       <li>
@@ -1346,8 +1346,8 @@
 <p>The Cloud Platform EKS clusters are created using the official <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks</a> module. The EKS version and addons are currently independent of the version of the terraform-aws-eks module.
 Therefore, it will not always require an upgrade of the terraform-aws-eks module and/or the addons whenever there is an upgrade of the EKS version. Please check the changelogs for the terraform-aws-eks module, the EKS version and the addons when planning an upgrade.</p>
 <h2 id="run-the-upgrade-via-the-tools-image">Run the upgrade, via the tools image</h2>
-<p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to run the upgrade.</p>
-<p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a>.</p>
+<p>The cloud platform [tools image] has all the software required to run the upgrade.</p>
+<p>Start from the root directory of a working copy of the [infrastructure repo].</p>
 <p>With your environment variables set, launch a bash shell on the tools image:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
 </code></pre></div><h2 id="pre-requisites">Pre-requisites</h2>
@@ -1394,6 +1394,10 @@ $
 <p>The easiest way to upgrade node groups is through AWS Console. We advise to follow the official AWS EKS upgrade instructions from the <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html">Updating a Managed Node Group</a> documentation.</p>
 <p>While updating the node group AMI release version, we should also change the launch template version which is created in step 2. To perform both the changes together, select <code>Update Node Group version</code> and  <code>Change launch template version</code> options as shown below. Select update strategy as <code>force update</code>, this does not respect pod disruption budgets and it forces node restarts.</p>
 <p><a href="../images/update-node-group.png" rel="noopener noreferrer"><img src="images/update-node-group.png" alt="Update Node Group" /></a></p>
+<h3 id="recycle-all-nodes">Recycle all nodes</h3>
+<p>When a node group version changes, this will cause all of the nodes to recycle. When AWS recycles the nodes, it will not evict pods if it will break the PDB.
+This will cause the node to stall the update and the nodes will <strong>not</strong> continue to recycle.</p>
+<p>To rectify this, run the script mentioned in <a href="recycle-all-nodes.html#gotchas">Recycle-all-nodes- Gotchas</a> section.</p>
 <h3 id="upgrade-addon-s">Upgrade addon(s)</h3>
 <p>We have 3 addons managed through cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons">module</a>.</p>
 <p>Refer to the below documents to get the addon version to be used with the EKS major version you just upgraded to.</p>
@@ -1401,30 +1405,18 @@ $
 <p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">managing-coredns</a></p>
 <p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">managing-vpc-cni</a></p>
 <p>Create a PR in Cloud Platform Infrastructure repository against the cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L192">module</a> making the changes to the desired addon version’s <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons/blob/main/variables.tf#L28-L44">here</a>. Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, run <code>terraform apply</code> to execute the changes.</p>
-<h3 id="troubleshooting">Troubleshooting</h3>
-<p>When we update node group version or change launch template version, we had error &ldquo;Reached max retries while trying to evict pods from nodes in node group live-default_ng_xxxx&rdquo;, even using force which does not respect pod disruption budgets and it forces node restarts. The force drain mode can fail to evict pods when there are pods in CrashLoopBack state and PDB is in effect, related to this <a href="https://github.com/kubernetes/kubernetes/issues/72320">issue</a></p>
-<p>We can use cloudwatch logs insights with following filter to understand for which all pods the eviction was a failure.</p>
-<p>1) Go to cloudwatch logs console, then click on insights.
-  2) Now in the current window, select log groups which corresponds to Cluster Control Plane logs. For live cluster it is: &ldquo;/aws/eks/live/cluster&rdquo;
-  3) Use the below filter to check on all eviction failures that happened to the EKS cluster</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  fields @timestamp, @message | filter @logStream like "kube-apiserver-audit" | filter ispresent(requestURI) | filter objectRef.subresource = "eviction" | filter responseObject.status = "Failure"
-</code></pre></div><p>4) After running the query with above filter, you could see all the eviction failures which includes repeated retries performed by the client.
-  5) The &ldquo;requestURI&rdquo; present inside the message in the results of above query will point you on which pods triggered eviction failure.
-  6) Further to filter out all such duplicate eviction retries you could use the following query.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  fields @timestamp, @message | filter @logStream like "kube-apiserver-audit" | filter ispresent(requestURI) | filter objectRef.subresource = "eviction" | filter responseObject.status = "Failure" | display @logStream, requestURI, responseObject.message | stats count(*) as retry by requestURI, requestObject.message
-</code></pre></div><p>Delete the eviction failure pods manually to avoid the error &ldquo;Reached max retries while trying to evict pods from nodes in node group live-default_ng_xxxx&rdquo;</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-04-17">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-08-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 January 2023.
+      This page was last reviewed on 6 May 2023.
 
-        It needs to be reviewed again on 17 April 2023
+        It needs to be reviewed again on 6 August 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 April 2023
+      This page was set to be reviewed before 6 August 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

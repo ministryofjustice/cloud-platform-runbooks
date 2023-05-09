@@ -367,17 +367,6 @@
     </ul>
   </li>
   <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
-    <ul>
-      <li>
-        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -394,6 +383,17 @@
       </li>
       <li>
         <a href="./changes-in-cloudplatform.html#communications"><span>Communications</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -419,38 +419,10 @@
             <a href="./upgrade-eks-cluster.html#upgrade-node-group-s"><span>Upgrade Node Group(s)</span></a>
           </li>
           <li>
+            <a href="./upgrade-eks-cluster.html#upgrade-steps-recycle-all-nodes"><span>Recycle all nodes</span></a>
+          </li>
+          <li>
             <a href="./upgrade-eks-cluster.html#upgrade-addon-s"><span>Upgrade addon(s)</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-cluster.html#troubleshooting"><span>Troubleshooting</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
       </li>
@@ -485,6 +457,34 @@
           </li>
           <li>
             <a href="./upgrade-cluster-components.html#performing-the-upgrade"><span>Performing the upgrade</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
       </li>
@@ -844,6 +844,14 @@
     </ul>
   </li>
   <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./remove-data-from-elasticsearch.html"><span>Remove data from Elasticsearch</span></a>
     <ul>
       <li>
@@ -868,14 +876,6 @@
             <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -910,7 +910,7 @@
       <li>
         <ul>
           <li>
-            <a href="./external-dns-error.html#how-to-investigate-external-dns-errors-troubleshooting"><span>Troubleshooting</span></a>
+            <a href="./external-dns-error.html#troubleshooting"><span>Troubleshooting</span></a>
           </li>
         </ul>
       </li>
@@ -1090,6 +1090,17 @@
     </ul>
   </li>
   <li>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
     <ul>
       <li>
@@ -1124,17 +1135,6 @@
       </li>
       <li>
         <a href="./joiners-guide.html#access"><span>Access</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
   </li>
@@ -1263,6 +1263,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1313,9 +1316,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
     <ul>
       <li>
@@ -1344,57 +1344,30 @@
 <li>Changes to kubelet environment variables</li>
 </ul>
 <h2 id="recycling-process">Recycling process</h2>
-<p>AWS will handle the process of killing the nodes with the old launch configurations and launching new nodes with the latest launch configuration. AWS will initially spin up some extra nodes (for around a 60 node cluster it will spin up 8 extra) to provide spaces for pods as old nodes are cordoned, drained and deleted.</p>
-<p>It&rsquo;s very useful to use this command to monitor how the update is going, it&rsquo;s suggested to keep this command running in a terminal:</p>
+<p>AWS will handle the process of killing the nodes with the old launch configurations and launching new nodes with the latest
+launch configuration. AWS will initially spin up some extra nodes (for around a 60 node cluster it will spin up 8 extra) to provide spaces for pods as old nodes are cordoned, drained and deleted.</p>
 
 <ul>
 <li><code>watch kubectl get nodes --sort-by=.metadata.creationTimestamp</code></li>
 </ul>
 <p>The above command will output all of the nodes like this:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>NAME                                           STATUS   ROLES    AGE     VERSION
-ip-172-20-93-79.eu-west-2.compute.internal     Ready,SchedulingDisabled      &lt;none&gt;   2d      v1.22.15-eks-fb459a0
-ip-172-20-73-19.eu-west-2.compute.internal     Ready,SchedulingDisabled      &lt;none&gt;   2d      v1.22.15-eks-fb459a0
 ip-172-20-124-118.eu-west-2.compute.internal   Ready,SchedulingDisabled      &lt;none&gt;   47h     v1.22.15-eks-fb459a0
 ip-172-20-101-81.eu-west-2.compute.internal    Ready,SchedulingDisabled      &lt;none&gt;   47h     v1.22.15-eks-fb459a0
 ip-172-20-119-182.eu-west-2.compute.internal   Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
 ip-172-20-106-20.eu-west-2.compute.internal    Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
 ip-172-20-127-1.eu-west-2.compute.internal     Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
-ip-172-20-122-165.eu-west-2.compute.internal   Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
-ip-172-20-108-196.eu-west-2.compute.internal   Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
-ip-172-20-127-54.eu-west-2.compute.internal    Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
-ip-172-20-97-12.eu-west-2.compute.internal     Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
-ip-172-20-116-68.eu-west-2.compute.internal    Ready    &lt;none&gt;   46h     v1.22.15-eks-fb459a0
-ip-172-20-106-76.eu-west-2.compute.internal    Ready    &lt;none&gt;   46h     v1.22.15-eks-fb459a0
 </code></pre></div><p>Where nodes have the Status &ldquo;Ready,SchedulingDisabled&rdquo; this indicates the nodes which have the old update templates, these are the ones that are cordoned off, whereas those which are &ldquo;Ready&rdquo; are the new nodes with the new update template.</p>
 <p>When all nodes have been recycled they will all have a status of &ldquo;Ready&rdquo;.</p>
 <p>This process can take 3 to 4 hours on a cluster of ~60 nodes, depending on how quickly you resolve the gotchas below.</p>
 <h3 id="gotchas">Gotchas</h3>
-<p>As AWS is draining and shutting down old nodes, occasionally the old nodes will get stuck and will not shut down. In this case kubernetes can&rsquo;t evict a specific pod usually because of poorly configured <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets">&ldquo;Pod Disruption Budget&rdquo;</a>.</p>
-<p>Without manual intervention this will indefinitely stall the update and the nodes will <strong>not</strong> continue to recycle. This will eventually cause the update to stop, wait and then exit, leaving the remaining nodes with the old update template and others with the new update template.</p>
+<p>When AWS is draining the old nodes, even after choosing the &ldquo;force update&rdquo; option, it will still respect the <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets">&ldquo;Pod Disruption Budget&rdquo;</a> and will not evict pods if it will break the PDB.</p>
+<p>If a <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets">&ldquo;Pod Disruption Budget&rdquo;</a> is poorly configured, kubernetes can&rsquo;t evict a specific pod. Without manual intervention, this will indefinitely stall the update and the nodes will <strong>not</strong> continue to recycle.
+This will eventually cause the update to stop, wait and then exit, leaving the remaining nodes with the old update template and others with the new update template.</p>
 <p>AWS EKS in some circumstances has even reverted the update and started to drain the new nodes and replace them with the old update template again. So it&rsquo;s important to monitor how the update is going and act when nodes get stuck.</p>
-<p>To resolve the issue we must help kubernetes evict the offending pod by manually deleting the pod with the following steps:</p>
-
-<ol>
-<li>Use Cloudwatch Logs &gt; Logs Insights to identify the offending pod</li>
-<li>Select the relevant cluster from the <code>log group</code> drop down</li>
-<li>Paste the following query (this will identify which pods have failed to be deleted and how many times a has been retried) into the box:
-
-<ul>
-<li><code>fields @timestamp, @message | filter @logStream like &quot;kube-apiserver-audit&quot; | filter ispresent(requestURI) | filter objectRef.subresource = &quot;eviction&quot; | filter responseObject.status = &quot;Failure&quot; | display @logStream, requestURI, responseObject.message | stats count(*) as retry by requestURI, requestObject.message</code></li>
-</ul></li>
-<li>If there are results they will have a pattern like this:
-
-<ul>
-<li><code>/api/v1/namespaces/$NAMESPACE/pods/$POD_NAME-$POD_ID/eviction?timeout=19s</code></li>
-</ul></li>
-<li>You can then run the following command to manually delete the pod
-
-<ul>
-<li><code>kubectl delete pod -n $NAMESPACE $POD_NAME-$POD_ID</code></li>
-</ul></li>
-<li>Nodes should continue to recycle and after a few moments there should be one less node with the status &ldquo;Ready,SchedulingDisabled&rdquo;</li>
-</ol>
-<p>or you can run the following script with: <code>watch -n 180 ./delete-pods-in-namespace.sh &gt; deleted_pods.log</code> and <code>tail -f delete_pods.log</code> in another terminal.</p>
+<p>To resolve the issue, evict the offending pod by running the below script:</p>
+<p><code>watch -n 300 ./delete-pods-in-namespace.sh &#39;/aws/eks/&lt;cluster-name&gt;/cluster&#39; &gt; deleted_pods.log</code></p>
+<p>and <code>tail -f delete_pods.log</code> in another terminal. The <code>&lt;cluster-name&gt;</code> is the short name of the cluster e.g. <code>cp-2901-1531</code></p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c">#!/bin/bash</span>
 
 delete_pods<span class="o">()</span> <span class="o">{</span>
@@ -1414,10 +1387,12 @@ delete_pods<span class="o">()</span> <span class="o">{</span>
 
 <span class="nv">START_TIME</span><span class="o">=</span><span class="k">$((</span><span class="nv">$TIME_NOW_EPOCH</span> <span class="o">-</span> <span class="m">180</span><span class="k">))</span>
 
+<span class="nv">CLUSTER_LOG_GROUP</span><span class="o">=</span><span class="nv">$1</span>
+
 <span class="nv">QUERY_ID</span><span class="o">=</span><span class="si">$(</span>aws logs start-query <span class="se">\</span>
   <span class="nt">--start-time</span> <span class="nv">$START_TIME</span> <span class="se">\</span>
   <span class="nt">--end-time</span> <span class="nv">$TIME_NOW_EPOCH</span> <span class="se">\</span>
-  <span class="nt">--log-group-name</span> <span class="nv">$CLUTER_LOG_GROUP</span> <span class="se">\</span>
+  <span class="nt">--log-group-name</span> <span class="nv">$CLUSTER_LOG_GROUP</span> <span class="se">\</span>
   <span class="nt">--query-string</span> <span class="s1">'fields @timestamp, @message | filter @logStream like "kube-apiserver-audit" | filter ispresent(requestURI) | filter objectRef.subresource = "eviction" | filter responseObject.status = "Failure" | display @logStream, requestURI, responseObject.message | stats count(*) as retry by requestURI, requestObject.message'</span> <span class="se">\</span>
   | jq <span class="nt">-r</span> <span class="s1">'.queryId'</span> <span class="si">)</span>
 
@@ -1428,18 +1403,36 @@ delete_pods<span class="o">()</span> <span class="o">{</span>
 <span class="nb">echo</span> <span class="nt">-n</span> <span class="nv">$RESULTS</span> | jq <span class="s1">'.results[]'</span> | <span class="nb">grep</span> <span class="s1">'/api/v1'</span> | <span class="nb">awk</span> <span class="s1">'{ print $2 }'</span> | xargs <span class="nt">-I</span> <span class="o">{}</span> bash <span class="nt">-c</span> <span class="s1">'delete_pods {}'</span>
 
 <span class="nb">exit </span>0
-</code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2023-05-16">
-    <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 February 2023.
 
-        It needs to be reviewed again on 16 May 2023
+</code></pre></div><p>Run the script with the command editing the cluster log group</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>watch -n 180 ./delete-pods-in-namespace.sh &lt;cluster-log-group-name&gt; deleted_pods.log
+</code></pre></div><p>and <code>tail -f delete_pods.log</code> in another terminal.</p>
+<p>If you want to find the offending pod manually, follow these steps:</p>
+
+<ol>
+<li>Use Cloudwatch Logs &gt; Logs Insights to identify the offending pod</li>
+<li>Select the relevant cluster from the <code>log group</code> drop down</li>
+<li><p>Paste the following query (this will identify which pods have failed to be deleted and how many times deletion has been retried) into the box:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fields @timestamp, @message | filter @logStream like "kube-apiserver-audit" | filter ispresent(requestURI) | filter objectRef.subresource = "eviction" | filter responseObject.status = "Failure" | display @logStream, requestURI, responseObject.message | stats count(*) as retry by requestURI, requestObject.message
+</code></pre></div></li>
+<li><p>If there are results they will have a pattern like this:
+<code>/api/v1/namespaces/$NAMESPACE/pods/$POD_NAME-$POD_ID/eviction?timeout=19s</code></p></li>
+<li><p>You can then run the following command to manually delete the pod
+<code>kubectl delete pod -n $NAMESPACE $POD_NAME-$POD_ID</code></p></li>
+</ol>
+<p>Nodes should continue to recycle and after a few moments there should be one less node with the status &ldquo;Ready,SchedulingDisabled&rdquo;</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2023-08-06">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 6 May 2023.
+
+        It needs to be reviewed again on 6 August 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 May 2023
+      This page was set to be reviewed before 6 August 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
