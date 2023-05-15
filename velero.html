@@ -1346,7 +1346,7 @@
 <h4 id="velero-cli-install">Velero CLI Install:</h4>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>brew install velero
 </code></pre></div><p>Velero is installed on all clusters as part of the cloud-platform-components install. The module is installed by <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/058f7a0808f856413397f8752bc6297b8ad588b1/terraform/cloud-platform-components/components.tf#L144">this section</a> of the code.</p>
-<p>Velero is installed in <code>namespace:velero</code> using helm. The chart used can be found <a href="https://github.com/helm/charts/tree/master/stable/velero">here</a></p>
+<p>Velero is installed in <code>namespace:velero</code> using helm. The chart used can be found <a href="https://github.com/vmware-tanzu/helm-charts/tree/main/charts/velero">here</a></p>
 <p>You can verify the Velero server pod is installed and running using the kubectl get pods command:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get pods -n velero
 </code></pre></div><p>All backups are are stored in a S3 bucket for 30 days. To view the backup location run the following command:</p>
@@ -1403,17 +1403,17 @@ velero restore create --from-backup velero-allnamespacebackup --include-resource
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup create &lt;backup-name&gt; --volume-snapshot-locations &lt;location-name&gt;
 </code></pre></div><p>Click <a href="https://velero.io/docs/v1.6/">here</a> for the official Velero documentation.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-04-17">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-08-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 January 2023.
+      This page was last reviewed on 15 May 2023.
 
-        It needs to be reviewed again on 17 April 2023
+        It needs to be reviewed again on 15 August 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 April 2023
+      This page was set to be reviewed before 15 August 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

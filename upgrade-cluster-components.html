@@ -1350,7 +1350,6 @@
 <li>Review the CHANGELOG notes with another member of the team (check for breaking changes, deprecations, change to values file and suggested plan for upgrading the production clusters <code>live-1</code>, <code>eks-manager</code> and <code>live</code>)</li>
 </ul>
 <h2 id="testing-the-upgrade-in-a-test-cluster">Testing the upgrade in a test cluster</h2>
-<p>It is important to test the upgrade of the component in both kops and EKS cluster.</p>
 
 <ul>
 <li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code></p></li>
@@ -1389,9 +1388,9 @@
 <li><p>Run the integration tests again</p></li>
 <li><p>Once the testing is complete and integration tests are passed, create a PR to be reviewed by the team and have the module unit tests passed.
  After the PR is approved, merge the changes to the main branch of the module and make a release.</p></li>
-<li><p>Change the module release tag in the kops/components and eks/components folder of <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> and raise a PR.
- Verify the terraform plan from the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/cloud-platform-infrastructure/jobs/plan-cloud-platform-infrastructure">cloud-platform-infrastructure plan pipeline</a> and get it reviewed by the team.</p></li>
-<li><p>Once approved, merge the PR and monitor the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/cloud-platform-infrastructure/jobs/apply-cloud-platform-infrastructure">cloud-platform-infrastructure apply pipeline</a> when applying the changes.</p></li>
+<li><p>Change the module release tag in the eks/components folder of <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> and raise a PR.
+ Verify the terraform plan from the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-plan-infra-live/">cloud-platform-infrastructure plan pipeline</a> and get it reviewed by the team.</p></li>
+<li><p>Once approved, merge the PR and monitor the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-apply-infra-live">cloud-platform-infrastructure apply pipeline</a> when applying the changes.</p></li>
 </ol>
 <h3 id="things-to-observe-when-testing-the-upgrade">Things to observe when testing the upgrade</h3>
 <p>The below are some of the general things to check when during the upgrade and not a complete list.</p>
@@ -1403,29 +1402,29 @@
 </code></pre></div><h4 id="cert-manager">Cert manager</h4>
 
 <ul>
-<li>The CRDs for cert-manager doesnot get deleted</li>
-<li>The existing certificates doesnot change in any way. This can be done by checking the timestamps of certificate creation</li>
+<li>The CRDs for cert-manager do not get deleted</li>
+<li>The existing certificates do not change in any way. This can be done by checking the timestamps of certificate creation</li>
 <li>Able to create and validate new certificates</li>
 </ul>
 <h4 id="prometheus">Prometheus</h4>
 
 <ul>
 <li>Ensure correct CRDs versions of prometheus-operator are updated before upgrading prometheus-operator</li>
-<li>The existing PrometheusRules and ServiceMonitors doesnot change in any way. This can be done by checking the timestamps of those resourse creation</li>
+<li>The existing PrometheusRules and ServiceMonitors do not change in any way. This can be done by checking the timestamps of those resourse creation</li>
 <li>Able to query prometheus for metrics</li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-02-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-08-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 November 2022.
+      This page was last reviewed on 15 May 2023.
 
-        It needs to be reviewed again on 28 February 2023
+        It needs to be reviewed again on 15 August 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 February 2023
+      This page was set to be reviewed before 15 August 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
