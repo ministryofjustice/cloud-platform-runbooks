@@ -1023,13 +1023,18 @@
     </ul>
   </li>
   <li>
-    <a href="./get-audit-log-from-modsec.html"><span>Get an audit log from modsec</span></a>
+    <a href="./get-audit-log-from-modsec.html"><span>Opensearch modsec setup</span></a>
     <ul>
       <li>
-        <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
-      </li>
-      <li>
-        <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
+        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to opensearch)</span></a>
+        <ul>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
+          </li>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1335,9 +1340,11 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="get-an-audit-log-from-modsec">Get an audit log from modsec</h1>
+            <h1 id="opensearch-modsec-setup">Opensearch modsec setup</h1>
+<p>We have introduced an opensearch dashboard which collects all modsec logs and has document level security enabled. This means users can only access the logs for the github team they are in (see here for more details)[https://user-guide.cloud-platform.service.justice.gov.uk/documentation/networking/modsecurity.html]. With this feature in place users can self serve and access their own modsec logs. In the case of a rare error, we may shut off logs to the dashboard (from fluent-bit) and then you must use the instructions below to access modsec logs on behalf of the user.</p>
+<h2 id="get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch">Get an audit log from modsec (when fluent-bit is not pushing to opensearch)</h2>
 <p>On occasion users may need you to provide them with audit log information on an modsec event from our ingress-controllers. This information may be sensitive so it can&rsquo;t be placed in our org-wide Elasticsearch cluster. You&rsquo;ll need to fetch this information from the pod that generated the log.</p>
-<h2 id="how-do-i-check-the-audit-log">How do I check the audit log</h2>
+<h3 id="how-do-i-check-the-audit-log">How do I check the audit log</h3>
 <p>As mentioned above, the audit log cannot be placed into Elasticsearch so you&rsquo;ll need the following:</p>
 
 <ul>
@@ -1358,7 +1365,7 @@ example: https://mojdt.slack.com/archives/C57UPMZLY/p1630936971082200
 <ul>
 <li>Kubectl access to the live cluster and access to the <code>ingress-controllers</code> namespace.</li>
 </ul>
-<h2 id="perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry">Perform a search for the unique-id (obtained from the Kibana entry)</h2>
+<h3 id="perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry">Perform a search for the unique-id (obtained from the Kibana entry)</h3>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code># assuming the event id is 16494071776.005464
 $ event="16494071776.005464"
 $ for k in `kubectl -n ingress-controllers get pods | grep modsec01-nx-controller | awk '{print $1}'` ; do echo $k ; kubectl -n ingress-controllers exec -ti $k -- bash -c "cat /var/log/modsec_audit.log ; grep -r $event *" &amp;&amp; break ; done
@@ -1374,17 +1381,17 @@ $ for k in `kubectl -n ingress-controllers get pods | grep modsec01-nx-controlle
 </code></pre></div><p>If you want to send the log data to a user, make sure you filter the data specific to that application and encrypt the file.
 From mac, you can use gpgkeychain to encrypt the file using the receiver&rsquo;s public key before sending it to the user.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-06-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-08-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 March 2023.
+      This page was last reviewed on 19 May 2023.
 
-        It needs to be reviewed again on 16 June 2023
+        It needs to be reviewed again on 19 August 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 June 2023
+      This page was set to be reviewed before 19 August 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
