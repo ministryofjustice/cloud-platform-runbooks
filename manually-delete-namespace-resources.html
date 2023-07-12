@@ -826,12 +826,31 @@
   </li>
   <li>
     <a href="./manually-delete-namespace-resources.html"><span>Manually Delete Namespace Resources</span></a>
-  </li>
-  <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
     <ul>
       <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+        <a href="./manually-delete-namespace-resources.html#prerequisites"><span>Prerequisites</span></a>
+      </li>
+      <li>
+        <a href="./manually-delete-namespace-resources.html#environment-variables"><span>environment variables</span></a>
+      </li>
+      <li>
+        <a href="./manually-delete-namespace-resources.html#usage"><span>Usage</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <ul>
+      <li>
+        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
+        <ul>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
+          </li>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#workaround-usage"><span>Usage</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -864,18 +883,10 @@
     </ul>
   </li>
   <li>
-    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
     <ul>
       <li>
-        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
-        <ul>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
-          </li>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
-          </li>
-        </ul>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -954,7 +965,7 @@
         <a href="./eks-cluster.html#provisioning-eks-clusters-pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
-        <a href="./eks-cluster.html#environment-variables"><span>Environment Variables</span></a>
+        <a href="./eks-cluster.html#provisioning-eks-clusters-environment-variables"><span>Environment Variables</span></a>
       </li>
       <li>
         <a href="./eks-cluster.html#provisioning"><span>Provisioning</span></a>
@@ -1075,44 +1086,6 @@
     </ul>
   </li>
   <li>
-    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to a TGW</span></a>
-    <ul>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#adding-live-2-vpc-to-pttp-tgw"><span>Adding live-2 VPC to PTTP TGW</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#moving-away-from-cloud-platform-transit-gateway-account"><span>Moving away from  Cloud Platform Transit Gateway account</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="./custom-default-backend.html#background"><span>Background</span></a>
-          </li>
-          <li>
-            <a href="./custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
-          </li>
-          <li>
-            <a href="./custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
@@ -1129,6 +1102,26 @@
       </li>
       <li>
         <a href="./joiners-guide.html#access"><span>Access</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to a TGW</span></a>
+    <ul>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#adding-live-2-vpc-to-pttp-tgw"><span>Adding live-2 VPC to PTTP TGW</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#moving-away-from-cloud-platform-transit-gateway-account"><span>Moving away from  Cloud Platform Transit Gateway account</span></a>
       </li>
     </ul>
   </li>
@@ -1154,6 +1147,24 @@
       </li>
       <li>
         <a href="./add-new-opa-policy.html#references"><span>References</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="./custom-default-backend.html#background"><span>Background</span></a>
+          </li>
+          <li>
+            <a href="./custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
+          </li>
+          <li>
+            <a href="./custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1268,9 +1279,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1321,6 +1329,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
     <ul>
       <li>
@@ -1341,43 +1352,60 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="manually-delete-namespace-resources">Manually Delete Namespace Resources</h1>
-<p>We have a <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/main/bin/delete-namespace.rb">script</a> which will delete all of the AWS resources belonging to a given namespace, by running <code>terraform apply</code> with an empty <code>main.tf</code> file, and then running <code>kubectl delete namespace</code>.</p>
+<p>This topic describes how to manually delete namespace resources, deleting namespace resources is now done via the <code>cloud-plaform</code> CLI.</p>
+<h2 id="prerequisites">Prerequisites</h2>
 
-<blockquote>
-<p>The script will not do anything if:</p>
-<p>a) the namespace folder exists in your local working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a>, or</p>
-<p>b) the namespace has <code>is-production: &quot;true&quot;</code></p>
-</blockquote>
-<p>NB: You need <code>ruby</code> installed, in order to use this tool.</p>
-<p>To run the script:</p>
+<ul>
+<li>You have the <code>cloud-platform</code> CLI installed</li>
+<li>You have the <code>kubectl</code> CLI installed</li>
+<li>You have the <code>terraform</code> CLI installed</li>
+</ul>
+<h2 id="environment-variables">environment variables</h2>
+<p>Perform a kubectl destroy and a terraform delete for a given namespace using either -namespace flag or the
+  the namespace in the given PR Id/Number</p>
+<p>Along with the mandatory input flag, the below environments variables needs to be set
+  - TF_VAR_cluster_name - e.g. &ldquo;cp-1902-02&rdquo; to get the vpc details for some modules like rds, es
+  - TF_VAR_cluster_state_bucket - State where the cluster state is stored
+  - TF_VAR_cluster_state_key - folder name/state key inside the state bucket where cluster state is stored
+  - TF_VAR_github_owner - Github owner: ministryofjustice
+  - TF_VAR_github_token - Personal access token with repo scope to push github action secrets
+  - TF_VAR_kubernetes_cluster - Full name of the Cluster e.g. XXXXXX.gr7.eu-west2.eks.amazonaws.com
+  - PINGDOM_API_TOKEN - API Token to access pingdom
+  - PIPELINE_TERRAFORM_STATE_LOCK_TABLE - DynamoDB table where the state lock is stored
+  - PIPELINE_STATE_BUCKET - State bucket where the environments state is stored e.g cloud-platform-terraform-state
+  - PIPELINE_STATE_KEY_PREFIX - State key/ folder where the environments terraform state is stored e.g cloud-platform-environments
+  - PIPELINE_STATE_REGION - State region of the bucket e.g. eu-west-1
+  - PIPELINE_CLUSTER - Cluster name/folder inside namespaces/ in cloud-platform-environments
+  - PIPELINE_CLUSTER_STATE - Cluster name/folder inside the state bucket where the environments terraform state is stored</p>
+<h2 id="usage">Usage</h2>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environment destroy <span class="o">[</span>flags]
 
-<ol>
-<li><p>populate the environment variables listed in the comment at the top of the script</p></li>
-<li><p>cd to the root of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a></p></li>
-<li><p>Run <code>bundle install</code></p></li>
-<li><p>Run the script, supplying the namespace name as the only argument, e.g.</p></li>
-</ol>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>./bin/delete-namespace.rb mynamespace
-</code></pre></div><p>If you need to delete a production namespace, you will have to comment out the code which prevents that from happening.</p>
-<p>That&rsquo;s the code block <a href="https://github.com/ministryofjustice/cloud-platform-environments/blob/dd2e0049b5eb17d2925a55b22f4102896909a96b/lib/cp_env/namespace_deleter.rb#L71">here</a></p>
+Examples:
+<span class="nv">$ </span>cloud-platform environment destroy <span class="nt">-n</span> &lt;namespace&gt;
 
-<blockquote>
-<p>If the script fails partway through, it may leave a new folder in your local working copy:</p>
-<p><code>namespaces/live.cloud-platform.service.justice.gov.uk/[namespace name]</code></p>
-<p>If this happens, just delete the whole <code>namespaces/live.cloud-platform.service.justice.gov.uk/[namespace name]</code> folder and re-run the script.</p>
-</blockquote>
+Flags:
+      <span class="nt">--cluster</span> string        folder name under namespaces/ inside cloud-platform-environments repo refering to full cluster name
+      <span class="nt">--github-token</span> string   Personal access Token from Github
+  <span class="nt">-h</span>, <span class="nt">--help</span>                  <span class="nb">help </span><span class="k">for </span>destroy
+      <span class="nt">--kubecfg</span> string        path to kubeconfig file <span class="o">(</span>default <span class="s2">"&lt;user home directory&gt;/.kube/config"</span><span class="o">)</span>
+  <span class="nt">-n</span>, <span class="nt">--namespace</span> string      Namespace which you want to perform the destroy
+      <span class="nt">--prNumber</span> int          Pull request ID or number to which you want to perform the destroy
+      <span class="nt">--redact</span>                Redact the terraform output before printing <span class="o">(</span>default <span class="nb">true</span><span class="o">)</span>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-02-28">
+Global Flags:
+      <span class="nt">--skip-version-check</span>   don<span class="s1">'t check for updates
+</span></code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2024-01-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 November 2022.
+      This page was last reviewed on 11 July 2023.
 
-        It needs to be reviewed again on 28 February 2023
+        It needs to be reviewed again on 11 January 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 February 2023
+      This page was set to be reviewed before 11 January 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
