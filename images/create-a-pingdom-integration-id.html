@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Search - Cloud Platform Runbooks</title>
+    <title>Create a Pingdom integration id - Cloud Platform Runbooks</title>
 
     <link href="../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/search/">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/images/create-a-pingdom-integration-id.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Search - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/search/" />
+      <meta name="twitter:title" content="Create a Pingdom integration id - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/create-a-pingdom-integration-id.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Search" />
+      <meta property="og:title" content="Create a Pingdom integration id" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/search/" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/create-a-pingdom-integration-id.html" />
 
     
   </head>
@@ -1359,37 +1359,63 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <div id="search-help" class="search-help">
-  <h1 id="how-to-search">Search</h1>
+            <h1 id="create-a-pingdom-integration-id">Create a Pingdom integration id</h1>
+<p>The intention of this document is to provide brief instructions on how to create an integration id in Pingdom. For more information on integration id&rsquo;s, please refer to the <a href="https://help.pingdom.com/hc/en-us/articles/207081599-Webhooks-or-Slack-Integration">Pingdom documentation</a></p>
+<p>Completing the following steps are necessary to support Cloud Platform user requests as detailed <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/monitoring-an-app/how-to-create-pingdom-checks.html#adding-slack-notification">here</a></p>
+<h2 id="how-to-create-integration-id-webhook">How to create integration id (webhook)</h2>
+<p>This cannot be managed by Terraform and will need to be created manually. To continue any further it is assumed you have the following:</p>
 
-  <p class="govuk-body search-help__no-js">
-    You need to turn on JavaScript in your browser to search this site. You can either:
+<ul>
+<li>Access to the <a href="https://slack.com/apps/A0F814AV7-pingdom?next_id=0">Pingdom slack app</a></li>
+<li>Access to Pingdom</li>
+</ul>
+<p>To create the webhook, perform the following:</p>
 
-    <ul>
-      <li>turn on JavaScript in your browser</li>
-      <li>search this site using Google</li>
-    </ul>
-  </p>
+<ul>
+<li>Sign into the mojds Slack <a href="https://mojdt.slack.com/apps/new/A0F814AV7-pingdom">Pingdom app</a></li>
+<li>Create a new configuration:</li>
+</ul>
 
-  <p class="govuk-body">
-    Enter a search term in the search box, then select the search button.
-  </p>
-</div>
+<ol>
+<li>Select the target slack channel</li>
+<li>Click &lsquo;Add Pingdom Integration&rsquo;</li>
+<li>Locate the newly generated Webhook URL, and copy to clipboard. This will look similar to <code>https://hooks.slack.com/services/xxxxxx/xxxxxx/xxxxx</code></li>
+</ol>
 
-<div id="search-results" class="search-results" hidden aria-labelledby="search-results-title">
-  <div class="search-results__inner">
-    <h1 id="search-results-title" class="search-results__title" aria-live="assertive">Results</h1>
-    <div class="search-results__content"></div>
+<ul>
+<li>Sign into <a href="https://my.pingdom.com/app">Pingdom</a></li>
+<li>Go to Settings cog in side menu &gt; <code>Integrations</code> &gt; <code>Add integration</code></li>
+<li>Fill in a suitable name for the integration, and paste the generated webhook from previous step</li>
+<li>Save integration</li>
+</ul>
+<p>Now it&rsquo;s a simple case of finding the <code>integrationid</code>, which can be found by clicking your newly created integration and making a note of the <code>integration=</code> in the URL.</p>
+<p>eg:
+<code>
+https://my.pingdom.com/integrations/settings#integration=90679
+</code></p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2023-10-12">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 12 July 2023.
+
+        It needs to be reviewed again on 12 October 2023
+        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
+        .
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 12 October 2023
+       by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
+      This might mean the content is out of date.
+    </div>
   </div>
-</div>
 
-            
           </main>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/search/index.html.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Search%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fsearch%2F%29&amp;labels=bug&amp;title=Re%3A+%27Search%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/images/create-a-pingdom-integration-id.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Create+a+Pingdom+integration+id%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fimages%2Fcreate-a-pingdom-integration-id.html%29&amp;labels=bug&amp;title=Re%3A+%27Create+a+Pingdom+integration+id%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
