@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Credentials rotation for auth0 apps - Cloud Platform Runbooks</title>
+    <title>Components Versions - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/auth0-rotation.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/components-versions.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Credentials rotation for auth0 apps - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/auth0-rotation.html" />
+      <meta name="twitter:title" content="Components Versions - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/components-versions.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Credentials rotation for auth0 apps" />
+      <meta property="og:title" content="Components Versions" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/auth0-rotation.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/components-versions.html" />
 
     
   </head>
@@ -1362,63 +1362,232 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="credentials-rotation-for-auth0-apps">Credentials rotation for auth0 apps</h1>
-<p>Cloud-Platform team uses <a href="https://auth0.com">auth0</a> in almost every component requiring authentication (clusters, Prometheus, Kibana, Grafana, etc). To rotate credentials we should we must follow steps below but it is important to keep in mind that users will require to re-authenticate (generate new kubeconfig file)</p>
-<h2 id="preparation">Preparation</h2>
-
-<ul>
-<li>Ensure users are aware of the change. It is important to point out that <strong>they will have to reauthenticate against the cluster after the change</strong> (following <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#authentication">user guide</a>).</li>
-<li>You must have all the tools and variables (such as Terraform, TF&rsquo;s auth0 provider, environment variables etc) ready to apply changes against our infrastructure repo.</li>
-<li>It will be handy to have auth0 management console already opened in a browser tab, so you can verify and monitor the changes.</li>
-</ul>
-<h2 id="1-taint-resources-terraform">1) Taint resources (terraform)</h2>
-<p>Tainting auth0 resource will force new credentials generation. Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a> and run</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform workspace select live
-$ terraform taint module.auth0.auth0_client.components
-</code></pre></div><p>Make sure with <code>terraform plan</code> that auth0 resource is going to be recreated (it&rsquo;s going to be needed in the next step).</p>
-<p>Apply changes if you are happy with them:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform apply
-</code></pre></div><h2 id="2-apply-changes-within-components-terraform">2) Apply changes within components (terraform)</h2>
-<p>Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a>
-to ensure changes match resources below, if they do, apply them:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$terraform workspace select live
-$terraform plan
-$ terraform apply -target=module.monitoring.kubernetes_secret.grafana_secret -target=module.monitoring.helm_release.prometheus_proxy -target=module.monitoring.helm_release.alertmanager_proxy  -target=module.kuberos.helm_release.kuberos -target=module.monitoring.helm_release.kibana_audit_proxy -target=module.monitoring.helm_release.kibana_proxy
-</code></pre></div><p>Unfortunately, grafana pod will not pick up the secret change, so it needs to be recyled (just delete it and it will automatically get redeployed):</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ GrafanaPodName=$(kubectl -n monitoring get pods -o name | grep grafana)
-$ kubectl -n monitoring delete pod $GrafanaPodName
-</code></pre></div><h2 id="3-verifiying-changes">3) Verifiying changes</h2>
-<p>In order to verify that the changes were successfully applied, follow the checklist below (order doesn&rsquo;t matter):</p>
-
-<ul>
-<li>You can authenticate to the cluster (follow <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#authentication">user guide</a>)</li>
-<li>Ensure you can authenticate to <a href="https://grafana.cloud-platform.service.justice.gov.uk/">Grafana</a></li>
-<li>Ensure you can authenticate to <a href="https://alertmanager.cloud-platform.service.justice.gov.uk/">AlertManager</a></li>
-<li>Ensure you can authenticate to <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/home?_g=()">Kibana</a></li>
-<li>Ensure you can authenticate to <a href="https://prometheus.cloud-platform.service.justice.gov.uk/">Prometheus</a></li>
-</ul>
-<h2 id="4-update-manager-cluster-within-components-terraform">4) Update Manager cluster within components (terraform)</h2>
-<p>Our pipelines read auth0 credentials from a K8S secret inside the manager cluster. This secret is updated through concourse&rsquo;s TF module variable called <code>tf_provider_auth0_client_secret</code> and <code>tf_provider_auth0_client_id</code> in
-<a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/terraform.tfvars">cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/terraform.tfvars</a></p>
-<p>Switch to manager cluster and Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a>
-to ensure changes match resources below, if they do, apply them:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ aws eks --region eu-west-2 update-kubeconfig --name manager
-$ terraform workspace select manager
-$ terraform plan
-$ terraform apply -target=module.monitoring.kubernetes_secret.grafana_secret -target=module.monitoring.helm_release.prometheus_proxy -target=module.monitoring.helm_release.alertmanager_proxy  -target=module.kuberos.helm_release.kuberos -target=module.concourse.kubernetes_secret.concourse_tf_auth0_credentials
-</code></pre></div><p>You only need to update the source code file and have your changed merged to main. The <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/bootstrap">bootstrap pipeline</a> will apply your change.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2023-09-12">
+            <h1 id="components-versions">Components Versions</h1>
+<div class="table-container">
+        <table>
+          <tr>
+<th>Component(Current)</th>
+<th style="text-align: right">Version(Current)</th>
+<th style="text-align: right">Kubernetes Version</th>
+<th style="text-align: right">Prerequisites Version</th>
+<th>Link</th>
+<th></th>
+<th style="text-align: right">Version(Latest)</th>
+<th style="text-align: right">Kubernetes Version</th>
+<th style="text-align: right">Prerequisites Version</th>
+<th>Link</th>
+</tr><tr>
+<td>concourse</td>
+<td style="text-align: right">16.1.1</td>
+<td style="text-align: right">1.6</td>
+<td style="text-align: right">support on underlying infrastructure (if persistence is required) Helm v3.x</td>
+<td>https://artifacthub.io/packages/helm/concourse/concourse/16.1.1</td>
+<td></td>
+<td style="text-align: right">17.1.1</td>
+<td style="text-align: right">1.6</td>
+<td style="text-align: right">support on underlying infrastructure (if persistence is required) Helm v3.x</td>
+<td>https://artifacthub.io/packages/helm/concourse/concourse/17.1.1</td>
+</tr><tr>
+<td>cluster_autoscaler</td>
+<td style="text-align: right">9.21.0</td>
+<td style="text-align: right">1.8+</td>
+<td style="text-align: right">Helm 3+</td>
+<td>https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler/9.21.0</td>
+<td></td>
+<td style="text-align: right">9.29.1</td>
+<td style="text-align: right">1.8+</td>
+<td style="text-align: right">Helm 3+</td>
+<td>https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler/9.29.1</td>
+</tr><tr>
+<td>cert-manager</td>
+<td style="text-align: right">1.7.2</td>
+<td style="text-align: right">1.18+</td>
+<td style="text-align: right"></td>
+<td>https://artifacthub.io/packages/helm/cert-manager/cert-manager/1.7.2</td>
+<td></td>
+<td style="text-align: right">1.12.2</td>
+<td style="text-align: right">1.20+</td>
+<td style="text-align: right"></td>
+<td>https://artifacthub.io/packages/helm/cert-manager/cert-manager/1.12.2</td>
+</tr><tr>
+<td>external-dns</td>
+<td style="text-align: right">6.10.2</td>
+<td style="text-align: right">1.19+</td>
+<td style="text-align: right">Helm 3.2.0+</td>
+<td>https://artifacthub.io/packages/helm/bitnami/external-dns/6.10.2</td>
+<td></td>
+<td style="text-align: right">6.20.4</td>
+<td style="text-align: right">1.19+</td>
+<td style="text-align: right">Helm 3.2.0+</td>
+<td>https://artifacthub.io/packages/helm/bitnami/external-dns/6.20.4</td>
+</tr><tr>
+<td>ingress_controllers_v1</td>
+<td style="text-align: right">4.1.4</td>
+<td style="text-align: right">1.19+</td>
+<td style="text-align: right"></td>
+<td>https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx/4.1.4</td>
+<td></td>
+<td style="text-align: right">4.7.1</td>
+<td style="text-align: right">1.20+</td>
+<td style="text-align: right"></td>
+<td>https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx/4.7.1</td>
+</tr><tr>
+<td>modsec_ingress_controllers_v1</td>
+<td style="text-align: right">4.1.4</td>
+<td style="text-align: right">1.19+</td>
+<td style="text-align: right"></td>
+<td>https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx/4.1.4</td>
+<td></td>
+<td style="text-align: right">4.7.1</td>
+<td style="text-align: right">1.20+</td>
+<td style="text-align: right"></td>
+<td>https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx/4.7.1</td>
+</tr><tr>
+<td>monitoring</td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+<td></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+</tr><tr>
+<td>prometheus</td>
+<td style="text-align: right">41.9.1</td>
+<td style="text-align: right">1.16+</td>
+<td style="text-align: right">Helm 3+</td>
+<td>https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack/41.9.1</td>
+<td></td>
+<td style="text-align: right">48.1.1</td>
+<td style="text-align: right">1.16+</td>
+<td style="text-align: right">Helm 3+</td>
+<td>https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack/48.1.1</td>
+</tr><tr>
+<td>proxy</td>
+<td style="text-align: right">6.2.1</td>
+<td style="text-align: right">1.19+</td>
+<td style="text-align: right">Helm 3.2.0+ PV provisioner support in the underlying infrastructure</td>
+<td>https://artifacthub.io/packages/helm/oauth2-proxy/oauth2-proxy/6.2.1</td>
+<td></td>
+<td style="text-align: right">6.16.1</td>
+<td style="text-align: right">1.19+</td>
+<td style="text-align: right">Helm 3.2.0+ PV provisioner support in the underlying infrastructure</td>
+<td>https://artifacthub.io/packages/helm/oauth2-proxy/oauth2-proxy/6.16.1</td>
+</tr><tr>
+<td>thanos</td>
+<td style="text-align: right">11.6.2</td>
+<td style="text-align: right">1.19+</td>
+<td style="text-align: right">Helm 3.2.0+ PV provisioner support in the underlying infrastructure</td>
+<td>https://artifacthub.io/packages/helm/bitnami/thanos/11.6.2</td>
+<td></td>
+<td style="text-align: right">12.8.5</td>
+<td style="text-align: right">1.19+</td>
+<td style="text-align: right">Helm 3.2.0+ PV provisioner support in the underlying infrastructure</td>
+<td>https://artifacthub.io/packages/helm/bitnami/thanos/12.8.5</td>
+</tr><tr>
+<td>gatekeeper</td>
+<td style="text-align: right">3.12.0</td>
+<td style="text-align: right">1.22+</td>
+<td style="text-align: right">Helm 3+</td>
+<td>https://artifacthub.io/packages/helm/gatekeeper/gatekeeper/3.12.0</td>
+<td></td>
+<td style="text-align: right">3.12.0</td>
+<td style="text-align: right">1.22+</td>
+<td style="text-align: right">Helm 3+</td>
+<td>https://artifacthub.io/packages/helm/gatekeeper/gatekeeper/3.12.0</td>
+</tr><tr>
+<td></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+<td></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+</tr><tr>
+<td>velero</td>
+<td style="text-align: right">2.31.7</td>
+<td style="text-align: right">1.16+</td>
+<td style="text-align: right"></td>
+<td>https://artifacthub.io/packages/helm/vmware-tanzu/velero/2.31.7</td>
+<td></td>
+<td style="text-align: right">4.1.3</td>
+<td style="text-align: right">1.16+</td>
+<td style="text-align: right">Helm 3+</td>
+<td>https://artifacthub.io/packages/helm/vmware-tanzu/velero/4.1.3</td>
+</tr><tr>
+<td>kuberhealthy</td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+<td></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+</tr><tr>
+<td>cloud platform components</td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+<td></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+</tr><tr>
+<td>kuberos</td>
+<td style="text-align: right">0.5.2</td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td>https://github.com/ministryofjustice/cloud-platform-terraform-kuberos</td>
+<td></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+</tr><tr>
+<td>logging</td>
+<td style="text-align: right">1.7.2</td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td>https://github.com/ministryofjustice/cloud-platform-terraform-logging</td>
+<td></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+</tr><tr>
+<td>starter_pack</td>
+<td style="text-align: right">0.2.1</td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td>https://github.com/ministryofjustice/cloud-platform-terraform-starter-pack</td>
+<td></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td style="text-align: right"></td>
+<td></td>
+</tr>
+        </table>
+      </div>
+              <div data-module='page-expiry' data-last-reviewed-on="2023-10-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 12 June 2023.
+      This page was last reviewed on 18 July 2023.
 
-        It needs to be reviewed again on 12 September 2023
+        It needs to be reviewed again on 18 October 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 12 September 2023
+      This page was set to be reviewed before 18 October 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1428,8 +1597,8 @@ $ terraform apply -target=module.monitoring.kubernetes_secret.grafana_secret -ta
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/auth0-rotation.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Credentials+rotation+for+auth0+apps%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fauth0-rotation.html%29&amp;labels=bug&amp;title=Re%3A+%27Credentials+rotation+for+auth0+apps%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/components-versions.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Components+Versions%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fcomponents-versions.html%29&amp;labels=bug&amp;title=Re%3A+%27Components+Versions%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
