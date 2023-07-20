@@ -508,15 +508,15 @@
     <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
     <ul>
       <li>
-        <a href="./delete-cluster.html#delete-the-cluster-using-the-script"><span>Delete the cluster using the script</span></a>
+        <a href="./delete-cluster.html#delete-the-cluster-using-concourse-fly-commands"><span>Delete the cluster using concourse fly commands</span></a>
+      </li>
+      <li>
+        <a href="./delete-cluster.html#delete-the-cluster-locally-using-the-cli-command"><span>Delete the cluster locally, using the cli command</span></a>
         <ul>
           <li>
             <a href="./delete-cluster.html#first-run-make-tools-shell"><span>First, run make tools-shell</span></a>
           </li>
         </ul>
-      </li>
-      <li>
-        <a href="./delete-cluster.html#delete-the-cluster-using-concourse-fly-commands"><span>Delete the cluster using concourse fly commands</span></a>
       </li>
       <li>
         <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
@@ -1367,7 +1367,6 @@
 
 <ul>
 <li>A <a href="eks-cluster.html#provisioning-eks-clusters">test cluster</a>. For this guide, we&rsquo;ll assume it&rsquo;s called <code>david-test1</code></li>
-<li>You must install concourse</li>
 <li>You must have <a href="https://concourse-ci.org/fly.html">fly</a> installed</li>
 </ul>
 <h2 id="process">Process</h2>
@@ -1384,7 +1383,7 @@ and update <code>node_groups_count</code> and <code>node_size</code> as below to
   node_size = {
     live    = ["r5.xlarge", "r5.2xlarge", "r5a.xlarge"]
     manager = ["m5.xlarge", "m5.2xlarge", "m5a.xlarge"]
-    default = ["m5.large", "m5.xlarge", "m5a.large"] &gt; ["m5.xlarge", "m5.2xlarge", "m5a.xlarge"]
+    default = ["m6.large", "m6.xlarge", "m6i.large"] &gt; ["m6.xlarge", "m6.2xlarge", "m6i.xlarge"]
   }
 </code></pre></div>
 <ul>
@@ -1413,7 +1412,7 @@ terraform apply -target=module.concourse
 the <code>concourse</code> namespace, and can be obtained using the <code>cloud-platform</code> cli tool:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cloud-platform decode-secret -n concourse -s concourse-web
 </code></pre></div><p>Username and password are stored in the <code>local-users</code> key-value pair:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>"local-users": "[local-username]/[local-password]"
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>"local-users": "[local-username]:[local-password]"
 </code></pre></div>
 <ul>
 <li>Once you have these values to hand, login to Concourse with <code>fly</code></li>
@@ -1436,17 +1435,17 @@ the <code>concourse</code> namespace, and can be obtained using the <code>cloud-
 </ul>
 <p>If your pipeline requires secrets, such as AWS credentials, you need to define those as kubernetes secrets in the <code>concourse-main</code> namespace (or <code>concourse-&lt;team name&gt;</code> if you&rsquo;re using a different concourse team, rather than <code>main</code>)</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-06-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-01-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 March 2023.
+      This page was last reviewed on 19 July 2023.
 
-        It needs to be reviewed again on 16 June 2023
+        It needs to be reviewed again on 19 January 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 June 2023
+      This page was set to be reviewed before 19 January 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
