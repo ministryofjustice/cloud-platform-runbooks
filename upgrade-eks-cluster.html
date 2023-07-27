@@ -422,6 +422,9 @@
             <a href="./upgrade-eks-cluster.html#recycle-all-nodes"><span>Recycle all nodes</span></a>
           </li>
           <li>
+            <a href="./upgrade-eks-cluster.html#update-kubectl-version-in-tools-image"><span>Update kubectl version in tools image</span></a>
+          </li>
+          <li>
             <a href="./upgrade-eks-cluster.html#upgrade-addon-s"><span>Upgrade addon(s)</span></a>
           </li>
         </ul>
@@ -1373,8 +1376,8 @@
 <p>The Cloud Platform EKS clusters are created using the official <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks</a> module. The EKS version and addons are currently independent of the version of the terraform-aws-eks module.
 Therefore, it will not always require an upgrade of the terraform-aws-eks module and/or the addons whenever there is an upgrade of the EKS version. Please check the changelogs for the terraform-aws-eks module, the EKS version and the addons when planning an upgrade.</p>
 <h2 id="run-the-upgrade-via-the-tools-image">Run the upgrade, via the tools image</h2>
-<p>The cloud platform [tools image] has all the software required to run the upgrade.</p>
-<p>Start from the root directory of a working copy of the [infrastructure repo].</p>
+<p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image.git">tools image</a> has all the software required to run the upgrade.</p>
+<p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure.git">infrastructure repo</a>.</p>
 <p>With your environment variables set, launch a bash shell on the tools image:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
 </code></pre></div><h2 id="pre-requisites">Pre-requisites</h2>
@@ -1425,6 +1428,9 @@ $
 <p>When a node group version changes, this will cause all of the nodes to recycle. When AWS recycles the nodes, it will not evict pods if it will break the PDB.
 This will cause the node to stall the update and the nodes will <strong>not</strong> continue to recycle.</p>
 <p>To rectify this, run the script mentioned in <a href="recycle-all-nodes.html#gotchas">Recycle-all-nodes- Gotchas</a> section.</p>
+<h3 id="update-kubectl-version-in-tools-image">Update kubectl version in tools image</h3>
+<p>kubectl is supported within one minor version (older or newer) of the cluster version. Update the kubectl version in the cloud platform
+<a href="https://github.com/ministryofjustice/cloud-platform-tools-image.git">tools image</a> to match the current cluster version.</p>
 <h3 id="upgrade-addon-s">Upgrade addon(s)</h3>
 <p>We have 3 addons managed through cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons">module</a>.</p>
 <p>Refer to the below documents to get the addon version to be used with the EKS major version you just upgraded to.</p>
@@ -1433,17 +1439,17 @@ This will cause the node to stall the update and the nodes will <strong>not</str
 <p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">managing-vpc-cni</a></p>
 <p>Create a PR in Cloud Platform Infrastructure repository against the cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L192">module</a> making the changes to the desired addon version’s <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons/blob/main/variables.tf#L28-L44">here</a>. Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, run <code>terraform apply</code> to execute the changes.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-10-27">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 May 2023.
+      This page was last reviewed on 27 July 2023.
 
-        It needs to be reviewed again on 6 August 2023
+        It needs to be reviewed again on 27 October 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 August 2023
+      This page was set to be reviewed before 27 October 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
