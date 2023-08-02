@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Change Process in Cloud Platform - Cloud Platform Runbooks</title>
+    <title>Debugging AWS Console read-only access issues - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/changes-in-cloudplatform.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-aws-console-access.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Change Process in Cloud Platform - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/changes-in-cloudplatform.html" />
+      <meta name="twitter:title" content="Debugging AWS Console read-only access issues - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-aws-console-access.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Change Process in Cloud Platform" />
+      <meta property="og:title" content="Debugging AWS Console read-only access issues" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/changes-in-cloudplatform.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-aws-console-access.html" />
 
     
   </head>
@@ -1373,59 +1373,32 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="change-process-in-cloud-platform">Change Process in Cloud Platform</h1>
-<p>The Cloud Platform team implements and encourage an Infrastructure as Code (IaC) methodology to manage the platform. It means every single change is done through code (if you spot something different raise it with us please).</p>
-<p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repository</a> is our main repository where infrastructure gets created and all components fit together. From this repository everything gets linked.</p>
-<p>Mostly all components are Terraform <a href="https://developer.hashicorp.com/terraform/language/modules">modules</a>, and they are managed in their own git repository; you can list all modules <a href="https://github.com/ministryofjustice?q=cloud-platform-terraform&amp;type=&amp;language=">here</a>.</p>
-<h2 id="making-changes-to-cloud-plarform-infrastructure">Making Changes to cloud-plarform-infrastructure</h2>
+            <h1 id="debugging-aws-console-read-only-access-issues">Debugging AWS Console read-only access issues</h1>
+<p>This page exists to collect and provide guidance on how to debug issues with AWS Console read-only access.</p>
+<h2 id="github-teams-principal-tag-character-limit-exceeded">GitHub teams Principal Tag character limit exceeded</h2>
+<p>You may see users encountering the following error when attempting to SSO into the AWS Console:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Unable to validate tags (Service: AWSSecurityToken; Status Code: 400; Error Code: ValidationError; Request ID: abcd-1234; Proxy: null). Please try again.
+</code></pre></div><p>The cause of this issue has frequently been identified as a result of a user belonging to enough GitHub teams (or those with especially long names) that result in the total
+length of the Principal Tag exceeding the 256 character limit, as documented <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_session-tags.html">here</a></p>
+<p>In order to confirm whether this is the cause, request the user to grab a SAML response from their browser session by following the steps provided in <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/troubleshoot_saml_view-saml-response.html">this link</a></p>
+<p>Ask the user to provide you with their base64 decoded SAML response, and check the character count for the contents of the <code>PrincipalTag:GithubTeam</code> tag.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>&lt;saml:Attribute Name="https://aws.amazon.com/SAML/Attributes/PrincipalTag:GithubTeam" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"&gt;&lt;saml:AttributeValue xsi:type="xs:string"&gt;:github-teams:&lt;/saml:AttributeValue&gt;
+</code></pre></div><p>You can easily get a character count by running the following command:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ printf ":github-team-1:github-team-2:" | wc -c
+</code></pre></div><p>If the character count exceeds 256, you will need to ask the user to review their GitHub team membership, and remove themselves from any teams that are no longer required.</p>
+<p>At this time, there is no other workaround for this issue.</p>
 
-<ol>
-<li>Create a PR which includes the change you want to make. Make sure the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-plan-live/">plan pipeline</a> is happy with the change.</li>
-<li>Chase the team to get your PR approved, and if it involves downtime ensure you have communications in place.</li>
-<li>Merge and wait until the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-apply/">apply pipeline</a> applies your change.</li>
-</ol>
-<h2 id="making-changes-to-terraform-modules">Making Changes to Terraform modules</h2>
-<p>Updating a module is very simple and consist in the following steps:</p>
-
-<ol>
-<li>Create a PR and ask a team member for approval.</li>
-<li>Merge PR</li>
-<li>Create a release following <a href="https://semver.org/">semantic version spec.</a></li>
-<li>In order to keep our definitions/instances <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/architecture-decision-record/015-Keeping-Terraform-modules-up-to-date.md">up to date</a>, update all existing instances in <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a> and <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>. If this step affects team&rsquo;s environments it will need planning and communication.</li>
-</ol>
-<p>Steps 2 and 3 can be done at any time and they don&rsquo;t affect the running infrastructure, since all Terraform modules calls have a pinned release version. No Terraform module should point to master branches or latest releases automatically.</p>
-<p>Finally, create the PR which updates the definition where your module is called and get ready to apply it following the guidelines above.</p>
-<h2 id="making-changes-to-helm-charts">Making Changes to Helm Charts</h2>
-<p>Cloud Platform&rsquo;s Helm Charts are hosted in <a href="https://github.com/ministryofjustice/cloud-platform-helm-charts">cloud-platform-helm-charts</a> repository using <a href="https://helm.sh/docs/topics/chart_repository/#github-pages-example">Github Pages</a>. Changes in Helm Charts should include:</p>
-
-<ul>
-<li>Bump chart version everytime you make a change</li>
-<li>Regenerate the <code>index.yml</code> following <a href="https://github.com/ministryofjustice/cloud-platform-helm-charts/tree/gh-pages#regenerating-the-indexyaml">this</a> instructions</li>
-<li>PR against gh-pages branch</li>
-</ul>
-<h2 id="making-changes-to-environments-service-teams">Making changes to environments (Service Teams)</h2>
-<p>The Cloud Platform source of truth for team&rsquo;s environments (Kubernetes namespaces) is <a href="https://github.com/ministryofjustice/cloud-platform-environments">cloud-platform-environments</a>. Changes under this repository follow a similar process:</p>
-
-<ol>
-<li>Create a PR and verify the planned changes in the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live">plan pipeline</a>. If you are happy with them, ask a team member for approval.</li>
-<li>Merge PR</li>
-</ol>
-<p>Within the environments repository, we have an end to end process fully automated with pipelines. Once the change is merged, it is going to be automatically applied by the apply pipeline (<a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/apply-live">apply-live</a> and <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/apply-namespace-changes-live/builds/1">apply-namespace-changes-live</a> and if the change is destroying a namespace it will be detected by <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/detect-deleted-namespaces/builds/1">detect-deleted-namespace</a> pipeline.</p>
-<h2 id="communications">Communications</h2>
-<p>If any changes involve downtime we must inform teams about it via Slack (#cloud-platform-update). It is important to include <strong>which services</strong> are going to be down and <strong>for how long</strong>.</p>
-<p>Sometimes teams misinterpret downtimes of Cloud Platform services to involve downtime of <strong>their services</strong>, so it is very important to be precise about the change and it&rsquo;s potential impact.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-12">
+              <div data-module='page-expiry' data-last-reviewed-on="2023-11-02">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 12 May 2023.
+      This page was last reviewed on 2 August 2023.
 
-        It needs to be reviewed again on 12 August 2023
+        It needs to be reviewed again on 2 November 2023
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 12 August 2023
+      This page was set to be reviewed before 2 November 2023
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1435,8 +1408,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/changes-in-cloudplatform.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Change+Process+in+Cloud+Platform%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fchanges-in-cloudplatform.html%29&amp;labels=bug&amp;title=Re%3A+%27Change+Process+in+Cloud+Platform%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/debugging-aws-console-access.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Debugging+AWS+Console+read-only+access+issues%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fdebugging-aws-console-access.html%29&amp;labels=bug&amp;title=Re%3A+%27Debugging+AWS+Console+read-only+access+issues%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
