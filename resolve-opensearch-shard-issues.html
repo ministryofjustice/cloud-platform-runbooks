@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Cloud Platform Communications Plan - Cloud Platform Runbooks</title>
+    <title>Resolving Open Search shard problems - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/resolve-opensearch-shard-issues.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Cloud Platform Communications Plan - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html" />
+      <meta name="twitter:title" content="Resolving Open Search shard problems - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/resolve-opensearch-shard-issues.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Cloud Platform Communications Plan" />
+      <meta property="og:title" content="Resolving Open Search shard problems" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-communications-plan.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/resolve-opensearch-shard-issues.html" />
 
     
   </head>
@@ -168,7 +168,7 @@
         <a href="./incident-process.html#2-declare-the-incident"><span>2. Declare the incident</span></a>
         <ul>
           <li>
-            <a href="./incident-process.html#2-declare-the-incident-examples"><span>Examples</span></a>
+            <a href="./incident-process.html#examples"><span>Examples</span></a>
           </li>
         </ul>
       </li>
@@ -1306,7 +1306,7 @@
         <a href="./cloud-platform-communications-plan.html#tips-on-format-of-communications"><span>Tips on format of communications</span></a>
         <ul>
           <li>
-            <a href="./cloud-platform-communications-plan.html#examples"><span>Examples</span></a>
+            <a href="./cloud-platform-communications-plan.html#tips-on-format-of-communications-examples"><span>Examples</span></a>
           </li>
           <li>
             <a href="./cloud-platform-communications-plan.html#things-to-include-in-incident-communications"><span>Things to include in incident communications</span></a>
@@ -1403,142 +1403,66 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="cloud-platform-communications-plan">Cloud Platform Communications Plan</h1>
-<p>This plan details to the who, how and when we will communicate information to users and stakeholders.</p>
-<h2 id="the-plan">The Plan</h2>
-<p>The table below sets out the typical types of communications the Cloud Platform will want to issue.</p>
-<div class="table-container">
-        <table>
-          <tr>
-<th>What information</th>
-<th>Target Audience</th>
-<th>When</th>
-<th>Channel</th>
-</tr><tr>
-<td>New features</td>
-<td>Service Teams</td>
-<td>As features are shipped</td>
-<th scope="row">cloud-platform-update</th>
-</tr><tr>
-<td>Cloud Platform Roadmap</td>
-<td>Service Teams</td>
-<td>Fortnightly</td>
-<th scope="row">cloud-platform-update</th>
-</tr><tr>
-<td>What we are working on now</td>
-<td>Service Teams</td>
-<td>Fortnightly</td>
-<th scope="row">cloud-platform-update</th>
-</tr><tr>
-<td>Things we have learned</td>
-<td>Justice Digital &amp; Technology</td>
-<td>Regularly when we have key things to show or promote</td>
-<td>Show the Thing</td>
-</tr><tr>
-<td>Service impacting incidents</td>
-<td>Service Teams</td>
-<td>When an incident has been declared, key updates during resolution, and at incident closure</td>
-<th scope="row">cloud-platform-update</th>
-</tr><tr>
-<td>Sharing postmortems for service impacting incidents</td>
-<td>Service Teams</td>
-<td>When postmortem has been documented</td>
-<th scope="row">cloud-platform-update</th>
-</tr><tr>
-<td>Service impacting upgrades/Maintence</td>
-<td>Service Teams</td>
-<td>As required</td>
-<th scope="row">cloud-platform-update</th>
-</tr><tr>
-<td>Sharing successes</td>
-<td>Chief Technology Officer</td>
-<td>Weekly</td>
-<td>One to ones and team meetings</td>
-</tr><tr>
-<td>Sharing successes</td>
-<td>SMT</td>
-<td>Fortnightly</td>
-<td>Architecture &amp; Platforms weeknotes</td>
-</tr><tr>
-<td>Sharing successes</td>
-<td>Justice Digital &amp; Technology</td>
-<td>Regularly when we have key things to show or promote</td>
-<td>Post about them in #chat or #announcements on Slack/Consider for a Show the Thing</td>
-</tr>
-        </table>
-      </div><h2 id="tips-on-format-of-communications">Tips on format of communications</h2>
-<p>The #cloud-platform-update channel is used for a number of different types of communications so it is important that messages posted have a clear description so that users can understand the importance of the message. In the case of incidents or upgrades the message should have a <strong>bold</strong> title that clearly describes what the message will be about.</p>
-<h3 id="examples">Examples</h3>
-
-<blockquote>
-<p><strong>Kubernetes 1.14 Upgrade</strong></p>
-<p><strong>Incident - Sentry unavailable</strong></p>
-<p><strong>Action Required - Live-0 Decommissioning</strong></p>
-</blockquote>
-<h3 id="things-to-include-in-incident-communications">Things to include in incident communications</h3>
+            <h1 id="open-search-best-practices">Open search best practices</h1>
+<p>It&rsquo;s important to follow aws best practices around shard sizing for open search or elastic search, these links are helpful:</p>
 
 <ul>
-<li>service impact/what users might be reporting</li>
-<li>action being taken (this might just be that we are investigating the issue)</li>
-<li>when users can expact a progress update (and make sure that the update actually happens when you say it will)</li>
-<li>details of any actions users need to take (if applicable)</li>
-<li>apoligise for the inconvenience (it might not be an issue in our control but this can build trust and let users know that you are taking resolution seriously)</li>
+<li>https://docs.aws.amazon.com/opensearch-service/latest/developerguide/bp.html</li>
+<li>https://repost.aws/knowledge-center/opensearch-rebalance-uneven-shards</li>
+<li>https://docs.aws.amazon.com/opensearch-service/latest/developerguide/sizing-domains.html#bp-sharding</li>
+<li>https://aws.amazon.com/blogs/opensource/open-distro-elasticsearch-shard-allocation/</li>
 </ul>
-<h3 id="example">Example</h3>
+<h2 id="some-general-info-about-shards">Some general info about shards</h2>
+<p>Sharding distributes workload cross the cluster nodes. When you push data into the search engine, that data is partitioned into shards and split into primary and replica shards. By default Open Search has 5 primary (independent partitions of a full dataset) and 1 replica shard (a full set copy of the primaries so takes up the same amount of disk space). Replicas provide redundancy and read capacity, it is recommended you have at least 1. Each shard resides on different nodes.</p>
+<p>Optimum shard distribution means shards spread evenly across nodes, if you can achieve this then resource usage across the nodes will also be equal.</p>
+<p>To help achieve this your total shard count per index should be a multiple of the number of data nodes eg. if you have 12 shards for an index then you should have 2, 3, 4, 6, or 12 data nodes. Also note that the total num of shards per node is recommended to be 25 shards per 1 b of JVM heap memory on the node, with a hard limit of 1,000 shards on a node.</p>
+<p>Your shards should be sized between 10gb - 30 gb (for search heavy workloads) or 30gb - 50gb (for log write heavy workloads)</p>
+<p>Use the follow command to check shard allocation:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl https://&lt;search-domain-endpoint&gt;.com/_cat/allocation?v
+</code></pre></div><h2 id="freestoragespacetoolow-alerts">FreeStorageSpaceTooLow alerts</h2>
+<p>This alert refers to the ebs volume attached to the hot nodes. An initial response may be to increase the storage size but be careful as this may trigger a blue/ green cluster deploy which can take a long time to fully deploy. If you do opt for this method be sure to also adjust iops and throughput accordingly to avoid throttling notifications.</p>
+<p>More effective methods are:</p>
 
-<blockquote>
-<p><strong>High Priority Incident Declared - Cloud Platform</strong>
-We are aware that some users are experiencing issues with the access to services on the Cloud Platform this morning.
-We are unsure of the full impact of these issues and the extent to which this is impacting services.
-An incident team has been formed and the team are investigating.
-We will provide further updates in due course, but in any event the next update will be in 30 minutes.
-Thank you for your patience.</p>
-</blockquote>
-<h3 id="things-to-include-in-upgrade-communications">Things to include in upgrade communications</h3>
+<ol>
+<li>Increase the number of data nodes (this will not rebalance the shards so you will still have a storage issue but is useful if you need a bit of breathing room for incoming data and can be used in combination with other methods)</li>
+<li>Delete old indices (immediately effective but might be hard to know which indices are ok to be deleted)</li>
+<li>Move large indices to warm storage (requires some free space to move the indices)</li>
+</ol>
+<h3 id="connecting-to-the-elastic-search-api">Connecting to the Elastic search api</h3>
+<p>In order to run commands against the search tools api you will need to be in a whitelisted ip block. That includes blocks within the Cloud Platform kubernetes cluster.</p>
+<p>run the following to create a shell that you can run commands from:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl run curl-pod -n &lt;your-namespace&gt; --image="alpine/curl" --restart=Never --rm -it -- /bin/sh
+</code></pre></div><h2 id="connecting-to-the-open-search-api">Connecting to the Open search api</h2>
+<p>Because we have fine-grained access enabled on open search connection isn&rsquo;t based on ip. It&rsquo;s based on SAML. To link your cli with opensearch there is a manual step of adding your aws user arn to the <code>all_access</code> opensearh role.</p>
 
-<ul>
-<li>What you are upgrading</li>
-<li>When the upgrade will take place (including times)</li>
-<li>Why you are upgrading (in might be useful to include a link to some change notes or something that users can refer to if they want more information rather than adding it all in the comms.)</li>
-<li>Details of any service impact or anthing users might need to take action on as a result of changes (including if we are pausing pipelines)</li>
-<li>Details of any risks posed to services as a result of not taking requested actions</li>
-<li>Include examples of code if it helps users understand the changes</li>
-<li>Provide a high level overview of the process we will be taking to implement changes</li>
-<li>Refer users back to the #ask-cloud-platform channel if they have questions or something isn&rsquo;t working as expected</li>
-</ul>
-<h3 id="tips-on-format-of-communications-example">Example</h3>
-
-<blockquote>
-<p><strong>Certificate Manager Upgrade</strong>
-<strong>When</strong>: 23rd April starts at 12:00 PM.
-<strong>What</strong>: Cert-Manager upgrade to v0.14 from v0.8
-<strong>Description</strong>:
-We are upgrading cert-manager, which manages all of the SSL certificates for  &gt; your websites and web applications, from version 0.8 to 0.14.</p>
-<p>This is a significant change. Version 0.14 removes the “v1alpha1” designation for &gt; certificates, and changes the API group from certmanager.k82.io to &gt; &gt; &gt; &gt; cert-manager.io.</p>
-<p><strong>What you need to do</strong>:
-Move all of your certificate definitions into your namespace folders in the environments repository, by the end of 22nd April 2020.</p>
-<p><strong>Certificates in the old format will not work after the upgrade</strong>.</p>
-<p>The Cloud Platform team will make all the required changes to any certificate definitions in the environments repository.</p>
-<p>If you have certificate definitions which are not in the environments repository, you will need to make the required changes to the certificate yaml files, and redeploy the certificates once the upgrade is complete.</p>
-<p><strong>Downtime</strong>:
-We are not expecting any downtime as a result of this change.</p>
-<p><strong>Process</strong>: (overview of steps that need to be taken my users and the the Cloud Platform Team)</p>
-<p>If you experience any issues during or after the changes implemented please contact the team over at #ask-cloud-platform</p>
-</blockquote>
-<h2 id="sharing-information-with-the-wider-ministry-of-justice-and-the-public">Sharing information with the wider Ministry of Justice and the Public</h2>
-<p>There may be occasions where we want to publish something to the wider MoJ or the Public. In these instances we can publish something on the MoJ Digital blog. Requests to publish on the blog should be made to #ask-comms in the first instance.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-25">
+<ol>
+<li>login to the opensearch dashboard using github via saml</li>
+<li>as a webops team member you have permissions to edit roles so head to Security -&gt; Roles -&gt; <code>all_access</code> (see screenshot below)</li>
+</ol>
+<p><a href="./images/add-user-to-opensearch.png" rel="noopener noreferrer"><img src="images/add-user-to-opensearch.png" alt="opensearch add user screenshot from dashboard" /></a></p>
+<h3 id="verify-you-39-re-connected-to-the-api">Verify you&rsquo;re connected to the api</h3>
+<p>list all the indices and their size with the following curl command</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl https://&lt;search-domain-endpoint&gt;.com/_cat/indices
+</code></pre></div><h4 id="deleting-old-indices">Deleting old indices</h4>
+<p>Once you&rsquo;ve identified the index to delete you can use the following command:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -X DELETE "https://&lt;search-domain-endpoint&gt;/&lt;index-name-to-delete&gt;?pretty"
+</code></pre></div><h4 id="migrating-indices-from-a-hot-node-to-a-warm-node">Migrating indices from a hot node to a warm node</h4>
+<p>https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ultrawarm.html#ultrawarm-migrating</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -X POST https://&lt;search-domain-endpoint&gt;.com/_ultrawarm/migration/&lt;index-name&gt;/_warm
+</code></pre></div><p>and get the migration status with:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl https://&lt;search-domain-endpoint&gt;.com/_ultrawarm/migration/_status?v
+</code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2024-02-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 25 May 2023.
+      This page was last reviewed on 17 August 2023.
 
-        It needs to be reviewed again on 25 August 2023
+        It needs to be reviewed again on 17 February 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 25 August 2023
+      This page was set to be reviewed before 17 February 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1548,8 +1472,8 @@ We are not expecting any downtime as a result of this change.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/cloud-platform-communications-plan.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Cloud+Platform+Communications+Plan%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fcloud-platform-communications-plan.html%29&amp;labels=bug&amp;title=Re%3A+%27Cloud+Platform+Communications+Plan%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/resolve-opensearch-shard-issues.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Resolving+Open+Search+shard+problems%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fresolve-opensearch-shard-issues.html%29&amp;labels=bug&amp;title=Re%3A+%27Resolving+Open+Search+shard+problems%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
