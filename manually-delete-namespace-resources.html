@@ -848,10 +848,10 @@
         <a href="./manually-delete-namespace-resources.html#prerequisites"><span>Prerequisites</span></a>
       </li>
       <li>
-        <a href="./manually-delete-namespace-resources.html#environment-variables"><span>environment variables</span></a>
+        <a href="./manually-delete-namespace-resources.html#environment-variables"><span>Environment Variables</span></a>
       </li>
       <li>
-        <a href="./manually-delete-namespace-resources.html#usage"><span>Usage</span></a>
+        <a href="./manually-delete-namespace-resources.html#deleting-a-namespace"><span>Deleting a namespace</span></a>
       </li>
     </ul>
   </li>
@@ -865,7 +865,7 @@
             <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
           </li>
           <li>
-            <a href="./export-elasticsearch-to-csv.html#workaround-usage"><span>Usage</span></a>
+            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
           </li>
         </ul>
       </li>
@@ -1404,60 +1404,59 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="manually-delete-namespace-resources">Manually Delete Namespace Resources</h1>
-<p>This topic describes how to manually delete namespace resources, deleting namespace resources is now done via the <code>cloud-plaform</code> CLI.</p>
+<p>In the event that you need to manually delete a cloud-platform-environments namespace, for example production namespaces which our 
+namespace-deleter pipeline is configured to skip, you can do so by following the steps below.</p>
 <h2 id="prerequisites">Prerequisites</h2>
+<p>Ensure you have the following installed on your machine:</p>
 
 <ul>
-<li>You have the <code>cloud-platform</code> CLI installed</li>
-<li>You have the <code>kubectl</code> CLI installed</li>
-<li>You have the <code>terraform</code> CLI installed</li>
+<li>cloud-platform CLI</li>
+<li>kubectl</li>
+<li>terraform CLI</li>
 </ul>
-<h2 id="environment-variables">environment variables</h2>
-<p>Perform a kubectl destroy and a terraform delete for a given namespace using either -namespace flag or the
-  the namespace in the given PR Id/Number</p>
-<p>Along with the mandatory input flag, the below environments variables needs to be set
-  - TF_VAR_cluster_name - e.g. &ldquo;cp-1902-02&rdquo; to get the vpc details for some modules like rds, es
-  - TF_VAR_cluster_state_bucket - State where the cluster state is stored
-  - TF_VAR_cluster_state_key - folder name/state key inside the state bucket where cluster state is stored
-  - TF_VAR_github_owner - Github owner: ministryofjustice
-  - TF_VAR_github_token - Personal access token with repo scope to push github action secrets
-  - TF_VAR_kubernetes_cluster - Full name of the Cluster e.g. XXXXXX.gr7.eu-west2.eks.amazonaws.com
-  - PINGDOM_API_TOKEN - API Token to access pingdom
-  - PIPELINE_TERRAFORM_STATE_LOCK_TABLE - DynamoDB table where the state lock is stored
-  - PIPELINE_STATE_BUCKET - State bucket where the environments state is stored e.g cloud-platform-terraform-state
-  - PIPELINE_STATE_KEY_PREFIX - State key/ folder where the environments terraform state is stored e.g cloud-platform-environments
-  - PIPELINE_STATE_REGION - State region of the bucket e.g. eu-west-1
-  - PIPELINE_CLUSTER - Cluster name/folder inside namespaces/ in cloud-platform-environments
-  - PIPELINE_CLUSTER_STATE - Cluster name/folder inside the state bucket where the environments terraform state is stored</p>
-<h2 id="usage">Usage</h2>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environment destroy <span class="o">[</span>flags]
+<h2 id="environment-variables">Environment Variables</h2>
+<p>In addition to having your AWS profile configured, the following environment variables must be set before executing a 
+namespace deletion:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>TF_VAR_cluster_name           <span class="c"># e.g. "cp-1902-02" to get the vpc details for some modules like rds, es</span>
+TF_VAR_cluster_state_bucket   <span class="c"># State where the cluster state is stored</span>
+TF_VAR_cluster_state_key      <span class="c"># folder name/state key inside the state bucket where cluster state is stored</span>
+TF_VAR_github_owner           <span class="c"># Github owner: ministryofjustice</span>
+TF_VAR_github_token           <span class="c"># Personal access token with repo scope to push github action secrets</span>
+TF_VAR_kubernetes_cluster     <span class="c"># Full name of the Cluster e.g. XXXXXX.gr7.eu-west2.eks.amazonaws.com</span>
+PINGDOM_API_TOKEN             <span class="c"># API Token to access pingdom</span>
+PIPELINE_TERRAFORM_STATE_LOCK_TABLE <span class="c"># DynamoDB table where the state lock is stored</span>
+PIPELINE_STATE_BUCKET         <span class="c"># State bucket where the environments state is stored e.g cloud-platform-terraform-state</span>
+PIPELINE_STATE_KEY_PREFIX     <span class="c"># State key/ folder where the environments terraform state is stored e.g cloud-platform-environments</span>
+PIPELINE_STATE_REGION         <span class="c"># State region of the bucket e.g. eu-west-1</span>
+PIPELINE_CLUSTER              <span class="c"># Cluster name/folder inside namespaces/ in cloud-platform-environments</span>
+PIPELINE_CLUSTER_STATE        <span class="c"># Cluster name/folder inside the state bucket where the environments terraform state is stored</span>
+</code></pre></div><p>For specific values, you can refer to the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/environments-live.yaml">Concourse environments-live pipeline</a>
+and its associated secrets.</p>
+<h2 id="deleting-a-namespace">Deleting a namespace</h2>
+<p>The <code>cloud-platform</code> CLI namespace delete command must be executed from the root of the <code>cloud-platform-environments</code> repository. If the
+namespace folder still exists in the environments repository (ie no namespace removal PR has been merged), then the command will abort. Therefore
+ensure that your environments repository is up to date with the latest changes.</p>
+<p>Locate the PR number for the namespace deletion PR, and execute the following command:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environment destroy <span class="se">\</span>
+    <span class="nt">--prNumber</span> <span class="o">[</span>namespace-deletion-PR] <span class="se">\</span>
+    <span class="nt">--cluster</span> arn:aws:eks:eu-west-2:754256621582:cluster/live <span class="se">\</span>
+    <span class="nt">--kubecfg</span> ~/.kube/config <span class="se">\</span>
+    <span class="nt">--clusterdir</span> live.cloud-platform.service.justice.gov.uk <span class="se">\</span>
+    <span class="nt">--skip-prod-destroy</span><span class="o">=</span><span class="nb">true</span>  <span class="c"># Set this flag to false to destroy namespace marked :is-production</span>
+</code></pre></div><p>The command will then destroy all terraform and kubernetes resources associated with the namespace, and finally will delete
+the namespace itself.</p>
 
-Examples:
-<span class="nv">$ </span>cloud-platform environment destroy <span class="nt">-n</span> &lt;namespace&gt;
-
-Flags:
-      <span class="nt">--cluster</span> string        folder name under namespaces/ inside cloud-platform-environments repo refering to full cluster name
-      <span class="nt">--github-token</span> string   Personal access Token from Github
-  <span class="nt">-h</span>, <span class="nt">--help</span>                  <span class="nb">help </span><span class="k">for </span>destroy
-      <span class="nt">--kubecfg</span> string        path to kubeconfig file <span class="o">(</span>default <span class="s2">"&lt;user home directory&gt;/.kube/config"</span><span class="o">)</span>
-  <span class="nt">-n</span>, <span class="nt">--namespace</span> string      Namespace which you want to perform the destroy
-      <span class="nt">--prNumber</span> int          Pull request ID or number to which you want to perform the destroy
-      <span class="nt">--redact</span>                Redact the terraform output before printing <span class="o">(</span>default <span class="nb">true</span><span class="o">)</span>
-
-Global Flags:
-      <span class="nt">--skip-version-check</span>   don<span class="s1">'t check for updates
-</span></code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2024-01-11">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-02-24">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 11 July 2023.
+      This page was last reviewed on 24 August 2023.
 
-        It needs to be reviewed again on 11 January 2024
+        It needs to be reviewed again on 24 February 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 11 January 2024
+      This page was set to be reviewed before 24 February 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
