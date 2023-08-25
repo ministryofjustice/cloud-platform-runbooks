@@ -1407,10 +1407,10 @@
 <p>It is recommended to pass responsibility for deleting a test cluster off to concourse. It&rsquo;s easy to make a mistake locally and end up deleting something you shouldn&rsquo;t e.g. switching context to live whilst running a delete cluster in another terminal</p>
 <h2 id="delete-the-cluster-using-concourse-fly-commands">Delete the cluster using concourse fly commands</h2>
 <p>In case you prefer concourse pipeline to destroy the cluster, these are the steps to follow, to delete the cluster using &ldquo;concourse fly commands&rdquo;</p>
-<p>Run the below commands updating the <code>&lt;cluster-name-to-be-deleted&gt;</code>. The second fly command will set the CLUSTER_NAME <a href="https://concourse-ci.org/vars.html#static-vars">static var</a>, the third command will trigger the delete-cluster job using the CLUSTER_NAME provided.</p>
+<p>Run the below commands updating the <code>&lt;cluster-name-to-be-deleted&gt;</code>. The second fly command will set the <code>cluster_name</code> <a href="https://concourse-ci.org/vars.html#static-vars">static var</a>, the third command will trigger the delete-cluster job using the <code>cluster_name</code> provided.</p>
 <p>from the root dir of <code>cloud-platform-terraform-concourse</code>:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly --target manager login --team-name main --concourse-url https://concourse.cloud-platform.service.justice.gov.uk/
-fly -t manager set-pipeline -p delete-cluster -c main/pipelines/manager/main/delete-cluster.yaml -v CLUSTER_NAME=&lt;cluster-name-to-be-deleted&gt;
+fly -t manager set-pipeline -p delete-cluster -c pipelines/manager/main/delete-cluster.yaml -v cluster_name=&lt;cluster-name-to-be-deleted&gt;
 # -w flag is optional and allows user to watch the output from the concourse job
 fly -t manager trigger-job -j delete-cluster/delete -w
 </code></pre></div><h2 id="delete-the-cluster-locally-using-the-cli-command">Delete the cluster locally, using the cli command</h2>
@@ -1438,17 +1438,17 @@ fly -t manager trigger-job -j delete-cluster/delete -w
 <h2 id="delete-an-eks-cluster-manually">Delete an EKS cluster manually</h2>
 <p>The steps can be found here - <a href="eks-cluster.html#4-delete-the-eks-cluster">Delete an EKS Cluster</a></p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-01-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-02-25">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 July 2023.
+      This page was last reviewed on 25 August 2023.
 
-        It needs to be reviewed again on 19 January 2024
+        It needs to be reviewed again on 25 February 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 January 2024
+      This page was set to be reviewed before 25 February 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
