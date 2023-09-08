@@ -1404,7 +1404,7 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="manually-delete-namespace-resources">Manually Delete Namespace Resources</h1>
-<p>In the event that you need to manually delete a cloud-platform-environments namespace, for example production namespaces which our 
+<p>In the event that you need to manually delete a cloud-platform-environments namespace, for example production namespaces which our
 namespace-deleter pipeline is configured to skip, you can do so by following the steps below.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>Ensure you have the following installed on your machine:</p>
@@ -1415,11 +1415,10 @@ namespace-deleter pipeline is configured to skip, you can do so by following the
 <li>terraform CLI</li>
 </ul>
 <h2 id="environment-variables">Environment Variables</h2>
-<p>In addition to having your AWS profile configured, the following environment variables must be set before executing a 
+<p>In addition to having your AWS profile configured, the following environment variables must be set before executing a
 namespace deletion:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>TF_VAR_cluster_name           <span class="c"># e.g. "cp-1902-02" to get the vpc details for some modules like rds, es</span>
 TF_VAR_cluster_state_bucket   <span class="c"># State where the cluster state is stored</span>
-TF_VAR_cluster_state_key      <span class="c"># folder name/state key inside the state bucket where cluster state is stored</span>
 TF_VAR_github_owner           <span class="c"># Github owner: ministryofjustice</span>
 TF_VAR_github_token           <span class="c"># Personal access token with repo scope to push github action secrets</span>
 TF_VAR_kubernetes_cluster     <span class="c"># Full name of the Cluster e.g. XXXXXX.gr7.eu-west2.eks.amazonaws.com</span>
