@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Resolving Open Search shard problems - Cloud Platform Runbooks</title>
+    <title>Resolving OpenSearch shard problems - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
@@ -15,12 +15,12 @@
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Resolving Open Search shard problems - Cloud Platform Runbooks" />
+      <meta name="twitter:title" content="Resolving OpenSearch shard problems - Cloud Platform Runbooks" />
       <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/resolve-opensearch-shard-issues.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Resolving Open Search shard problems" />
+      <meta property="og:title" content="Resolving OpenSearch shard problems" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/resolve-opensearch-shard-issues.html" />
 
@@ -373,6 +373,17 @@
     </ul>
   </li>
   <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -389,17 +400,6 @@
       </li>
       <li>
         <a href="./changes-in-cloudplatform.html#communications"><span>Communications</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
-    <ul>
-      <li>
-        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -856,18 +856,10 @@
     </ul>
   </li>
   <li>
-    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
     <ul>
       <li>
-        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
-        <ul>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
-          </li>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
-          </li>
-        </ul>
+        <a href="./resolve-opensearch-no-logs.html#deebugging"><span>Deebugging</span></a>
       </li>
     </ul>
   </li>
@@ -886,20 +878,12 @@
         </ul>
       </li>
       <li>
-        <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-open-search-api"><span>Connecting to the Open search api</span></a>
+        <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-opensearch-api"><span>Connecting to the OpenSearch api</span></a>
         <ul>
           <li>
             <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -928,6 +912,30 @@
             <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <ul>
+      <li>
+        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
+        <ul>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
+          </li>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -1075,6 +1083,22 @@
     </ul>
   </li>
   <li>
+    <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
+    <ul>
+      <li>
+        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
+        <ul>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
+          </li>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./access-eks-cluster.html"><span>Access EKS cluster</span></a>
     <ul>
       <li>
@@ -1085,22 +1109,6 @@
           </li>
           <li>
             <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./get-audit-log-from-modsec.html"><span>Opensearch modsec setup</span></a>
-    <ul>
-      <li>
-        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to opensearch)</span></a>
-        <ul>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
-          </li>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
           </li>
         </ul>
       </li>
@@ -1135,17 +1143,6 @@
     </ul>
   </li>
   <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
@@ -1162,6 +1159,35 @@
       </li>
       <li>
         <a href="./joiners-guide.html#access"><span>Access</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+            <a href="./custom-default-backend.html#background"><span>Background</span></a>
+          </li>
+          <li>
+            <a href="./custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
+          </li>
+          <li>
+            <a href="./custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
   </li>
@@ -1196,24 +1222,6 @@
       </li>
       <li>
         <a href="./cloud-platform-to-tgw.html#moving-away-from-cloud-platform-transit-gateway-account"><span>Moving away from  Cloud Platform Transit Gateway account</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="./custom-default-backend.html#background"><span>Background</span></a>
-          </li>
-          <li>
-            <a href="./custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
-          </li>
-          <li>
-            <a href="./custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -1328,6 +1336,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1378,9 +1389,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./components-versions.html"><span>Components Versions</span></a>
   </li>
   <li>
@@ -1404,16 +1412,16 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="open-search-best-practices">Open search best practices</h1>
-<p>It&rsquo;s important to follow aws best practices around shard sizing for open search or elastic search, these links are helpful:</p>
+<p>It&rsquo;s important to follow aws best practices around shard sizing for OpenSearch or elastic search, these links are helpful:</p>
 
 <ul>
-<li>https://docs.aws.amazon.com/opensearch-service/latest/developerguide/bp.html</li>
-<li>https://repost.aws/knowledge-center/opensearch-rebalance-uneven-shards</li>
-<li>https://docs.aws.amazon.com/opensearch-service/latest/developerguide/sizing-domains.html#bp-sharding</li>
-<li>https://aws.amazon.com/blogs/opensource/open-distro-elasticsearch-shard-allocation/</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/bp.html">https://docs.aws.amazon.com/opensearch-service/latest/developerguide/bp.html</a></li>
+<li><a href="https://repost.aws/knowledge-center/opensearch-rebalance-uneven-shards]">https://repost.aws/knowledge-center/opensearch-rebalance-uneven-shards</a></li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/sizing-domains.html#bp-sharding">https://docs.aws.amazon.com/opensearch-service/latest/developerguide/sizing-domains.html#bp-sharding</a></li>
+<li><a href="https://aws.amazon.com/blogs/opensource/open-distro-elasticsearch-shard-allocation">https://aws.amazon.com/blogs/opensource/open-distro-elasticsearch-shard-allocation</a></li>
 </ul>
 <h2 id="some-general-info-about-shards">Some general info about shards</h2>
-<p>Sharding distributes workload cross the cluster nodes. When you push data into the search engine, that data is partitioned into shards and split into primary and replica shards. By default Open Search has 5 primary (independent partitions of a full dataset) and 1 replica shard (a full set copy of the primaries so takes up the same amount of disk space). Replicas provide redundancy and read capacity, it is recommended you have at least 1. Each shard resides on different nodes.</p>
+<p>Sharding distributes workload cross the cluster nodes. When you push data into the search engine, that data is partitioned into shards and split into primary and replica shards. By default OpenSearch has 5 primary (independent partitions of a full dataset) and 1 replica shard (a full set copy of the primaries so takes up the same amount of disk space). Replicas provide redundancy and read capacity, it is recommended you have at least 1. Each shard resides on different nodes.</p>
 <p>Optimum shard distribution means shards spread evenly across nodes, if you can achieve this then resource usage across the nodes will also be equal.</p>
 <p>To help achieve this your total shard count per index should be a multiple of the number of data nodes eg. if you have 12 shards for an index then you should have 2, 3, 4, 6, or 12 data nodes. Also note that the total num of shards per node is recommended to be 25 shards per 1 b of JVM heap memory on the node, with a hard limit of 1,000 shards on a node.</p>
 <p>Your shards should be sized between 10gb - 30 gb (for search heavy workloads) or 30gb - 50gb (for log write heavy workloads)</p>
@@ -1432,11 +1440,11 @@
 <p>In order to run commands against the search tools api you will need to be in a whitelisted ip block. That includes blocks within the Cloud Platform kubernetes cluster.</p>
 <p>run the following to create a shell that you can run commands from:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl run curl-pod -n &lt;your-namespace&gt; --image="alpine/curl" --restart=Never --rm -it -- /bin/sh
-</code></pre></div><h2 id="connecting-to-the-open-search-api">Connecting to the Open search api</h2>
-<p>Because we have fine-grained access enabled on open search connection isn&rsquo;t based on ip. It&rsquo;s based on SAML. To link your cli with opensearch there is a manual step of adding your aws user arn to the <code>all_access</code> opensearh role.</p>
+</code></pre></div><h2 id="connecting-to-the-opensearch-api">Connecting to the OpenSearch api</h2>
+<p>Because we have fine-grained access enabled on OpenSearch connection isn&rsquo;t based on ip. It&rsquo;s based on SAML. To link your cli with OpenSearch there is a manual step of adding your aws user arn to the <code>all_access</code> OpenSearh role.</p>
 
 <ol>
-<li>login to the opensearch dashboard using github via saml</li>
+<li>login to the OpenSearch dashboard using github via saml</li>
 <li>as a webops team member you have permissions to edit roles so head to Security -&gt; Roles -&gt; <code>all_access</code> (see screenshot below)</li>
 </ol>
 <p><a href="./images/add-user-to-opensearch.png" rel="noopener noreferrer"><img src="images/add-user-to-opensearch.png" alt="opensearch add user screenshot from dashboard" /></a></p>
@@ -1452,17 +1460,17 @@
 </code></pre></div><p>and get the migration status with:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl https://&lt;search-domain-endpoint&gt;.com/_ultrawarm/migration/_status?v
 </code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2024-02-17">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-03-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 August 2023.
+      This page was last reviewed on 22 September 2023.
 
-        It needs to be reviewed again on 17 February 2024
+        It needs to be reviewed again on 22 March 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 February 2024
+      This page was set to be reviewed before 22 March 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1473,7 +1481,7 @@
           <aside>
               <ul class="contribution-banner">
                 <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/resolve-opensearch-shard-issues.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Resolving+Open+Search+shard+problems%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fresolve-opensearch-shard-issues.html%29&amp;labels=bug&amp;title=Re%3A+%27Resolving+Open+Search+shard+problems%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Resolving+OpenSearch+shard+problems%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fresolve-opensearch-shard-issues.html%29&amp;labels=bug&amp;title=Re%3A+%27Resolving+OpenSearch+shard+problems%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
