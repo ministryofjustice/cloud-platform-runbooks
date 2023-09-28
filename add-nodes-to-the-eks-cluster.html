@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Add nodes/change the instance type of the AWS EKS cluster - Cloud Platform Runbooks</title>
+    <title>Add nodes to the AWS EKS cluster - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
@@ -15,12 +15,12 @@
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Add nodes/change the instance type of the AWS EKS cluster - Cloud Platform Runbooks" />
+      <meta name="twitter:title" content="Add nodes to the AWS EKS cluster - Cloud Platform Runbooks" />
       <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-eks-cluster.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Add nodes/change the instance type of the AWS EKS cluster" />
+      <meta property="og:title" content="Add nodes to the AWS EKS cluster" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/add-nodes-to-the-eks-cluster.html" />
 
@@ -144,17 +144,6 @@
       </li>
       <li>
         <a href="./how-we-work.html#documentation"><span>Documentation</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./how-to-update-gems.html"><span>How to update gem files in technical documentation</span></a>
-    <ul>
-      <li>
-        <a href="./how-to-update-gems.html#when-to-update"><span>When to update</span></a>
-      </li>
-      <li>
-        <a href="./how-to-update-gems.html#how-to-update"><span>How to update</span></a>
       </li>
     </ul>
   </li>
@@ -373,17 +362,6 @@
     </ul>
   </li>
   <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
-    <ul>
-      <li>
-        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -400,6 +378,17 @@
       </li>
       <li>
         <a href="./changes-in-cloudplatform.html#communications"><span>Communications</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -432,6 +421,34 @@
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#upgrade-addon-s"><span>Upgrade addon(s)</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
       </li>
@@ -472,30 +489,16 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
     <ul>
       <li>
-        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
       </li>
       <li>
-        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
       </li>
       <li>
-        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
-          </li>
-        </ul>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -519,24 +522,9 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <a href="./add-nodes-to-the-eks-cluster.html"><span>Add nodes to the AWS EKS cluster</span></a>
     <ul>
       <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./add-nodes-to-the-eks-cluster.html"><span>Add nodes/change the instance type of the AWS EKS cluster</span></a>
-    <ul>
-      <li>
-        <a href="./add-nodes-to-the-eks-cluster.html#add-nodes-to-the-eks-cluster"><span>Add nodes to the eks cluster</span></a>
         <ul>
           <li>
             <a href="./add-nodes-to-the-eks-cluster.html#requirements"><span>Requirements</span></a>
@@ -544,13 +532,7 @@
           <li>
             <a href="./add-nodes-to-the-eks-cluster.html#cluster-configuration"><span>Cluster configuration:</span></a>
           </li>
-          <li>
-            <a href="./add-nodes-to-the-eks-cluster.html#issue"><span>Issue</span></a>
-          </li>
         </ul>
-      </li>
-      <li>
-        <a href="./add-nodes-to-the-eks-cluster.html#change-the-aws-eks-instance-type-worker-node-machine-type"><span>Change the AWS EKS instance type (worker_node_machine_type)</span></a>
       </li>
     </ul>
   </li>
@@ -696,20 +678,6 @@
     </ul>
   </li>
   <li>
-    <a href="./calico.html"><span>Calico checklist before an upgrade</span></a>
-    <ul>
-      <li>
-        <a href="./calico.html#current-status"><span>Current status</span></a>
-      </li>
-      <li>
-        <a href="./calico.html#options-available"><span>Options available</span></a>
-      </li>
-      <li>
-        <a href="./calico.html#making-sure-it-works"><span>Making sure it works</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./rotate-user-aws-credentials.html"><span>Rotate User AWS Credentials</span></a>
     <ul>
       <li>
@@ -744,18 +712,6 @@
           </li>
           <li>
             <a href="./rotate-user-aws-credentials.html#4-let-terraform-create-a-new-key"><span>4. Let terraform create a new key</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./rotate-user-aws-credentials.html"><span>Rotate RDS Credentials</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-            <a href="./rotate-user-aws-credentials.html#let-terraform-create-a-new-password"><span>Let terraform create a new password</span></a>
           </li>
         </ul>
       </li>
@@ -856,38 +812,6 @@
     </ul>
   </li>
   <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#deebugging"><span>Deebugging</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./resolve-opensearch-shard-issues.html"><span>Open search best practices</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-shard-issues.html#some-general-info-about-shards"><span>Some general info about shards</span></a>
-      </li>
-      <li>
-        <a href="./resolve-opensearch-shard-issues.html#freestoragespacetoolow-alerts"><span>FreeStorageSpaceTooLow alerts</span></a>
-        <ul>
-          <li>
-            <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-elastic-search-api"><span>Connecting to the Elastic search api</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-opensearch-api"><span>Connecting to the OpenSearch api</span></a>
-        <ul>
-          <li>
-            <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./remove-data-from-elasticsearch.html"><span>Remove data from Elasticsearch</span></a>
     <ul>
       <li>
@@ -916,6 +840,38 @@
     </ul>
   </li>
   <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./resolve-opensearch-shard-issues.html"><span>Open search best practices</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-shard-issues.html#some-general-info-about-shards"><span>Some general info about shards</span></a>
+      </li>
+      <li>
+        <a href="./resolve-opensearch-shard-issues.html#freestoragespacetoolow-alerts"><span>FreeStorageSpaceTooLow alerts</span></a>
+        <ul>
+          <li>
+            <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-elastic-search-api"><span>Connecting to the Elastic search api</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-opensearch-api"><span>Connecting to the OpenSearch api</span></a>
+        <ul>
+          <li>
+            <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
     <ul>
       <li>
@@ -932,10 +888,10 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
     <ul>
       <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+        <a href="./resolve-opensearch-no-logs.html#deebugging"><span>Deebugging</span></a>
       </li>
     </ul>
   </li>
@@ -1083,22 +1039,6 @@
     </ul>
   </li>
   <li>
-    <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
-    <ul>
-      <li>
-        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
-        <ul>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
-          </li>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./access-eks-cluster.html"><span>Access EKS cluster</span></a>
     <ul>
       <li>
@@ -1109,6 +1049,22 @@
           </li>
           <li>
             <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
+    <ul>
+      <li>
+        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
+        <ul>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
+          </li>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
           </li>
         </ul>
       </li>
@@ -1163,6 +1119,17 @@
     </ul>
   </li>
   <li>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
     <ul>
       <li>
@@ -1177,17 +1144,6 @@
             <a href="./custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
   </li>
@@ -1400,10 +1356,9 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="add-nodes-change-the-instance-type-of-the-aws-eks-cluster">Add nodes/change the instance type of the AWS EKS cluster</h1>
-<p>This runbook covers how to increase the number of nodes in an eks cluster and/or change the instance type (worker_node_machine_type)</p>
+            <h1 id="add-nodes-to-the-aws-eks-cluster">Add nodes to the AWS EKS cluster</h1>
+<p>This runbook covers how to increase the number of nodes in an eks cluster</p>
 <p>This can address the problem of CPU high usage/load</p>
-<h2 id="add-nodes-to-the-eks-cluster">Add nodes to the eks cluster</h2>
 <h3 id="requirements">Requirements</h3>
 <h4 id="1-ensure-you-have-access-to-the-cloud-platform-aws-account">1. Ensure you have access to the Cloud Platform AWS account</h4>
 <h4 id="2-access-to-the-eks-cluster">2. Access to the EKS cluster</h4>
@@ -1412,79 +1367,50 @@
 <h4 id="cluster-tf"><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/cluster.tf">cluster.tf</a></h4>
 <p>Use</p>
 <p><code>git crypt unlock</code> to see the following code:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> node_groups = {
-    default_ng = {
-      desired_capacity = var.cluster_node_count
-      max_capacity     = 30
-      min_capacity     = 1
-      subnets          = data.aws_subnet_ids.private.ids
-
-      instance_type = var.worker_node_machine_type
-      k8s_labels = {
-        Terraform = "true"
-        Cluster   = local.cluster_name
-        Domain    = local.cluster_base_domain_name
-      }
-      additional_tags = {
-        default_ng = "true"
-      }
-    }
-</code></pre></div><h4 id="variable-tf"><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/variables.tf">Variable.tf</a></h4>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>variable "vpc_name" {
-  description = "The VPC name where the cluster(s) are going to be provisioned. VPCs are created in cloud-platform-network"
-  default     = ""
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>node_groups_count = {
+  live    = "64"
+  live-2  = "7"
+  manager = "4"
+  default = "3"
 }
-
-variable "cluster_node_count" {
-  description = "The number of worker node in the cluster"
-  default     = "4"
+# Default node group minimum capacity 
+default_ng_min_count = {
+  live    = "45"
+  live-2  = "2"
+  manager = "4"
+  default = "2"
 }
-
-variable "worker_node_machine_type" {
-  description = "The AWS EC2 instance types to use for worker nodes"
-  default     = "m4.large"
-}
-</code></pre></div><h3 id="issue">Issue</h3>
-<p>There is an issue that you cannot update the default &ldquo;cluster_node_count&rdquo; (in isolation) with terraform
- - unless you increase the default &ldquo;worker_node_machine_type&rdquo; too.<br>
-The issue is to do with auto-scaling complexities utilising Terrafom - please see <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/autoscaling.md#notes">here</a></p>
-<p>Therefore you either have to update default &ldquo;worker_node_machine_type&rdquo; to - in above example &ldquo;m4.xlarge&rdquo; and also the default &ldquo;cluster_node_count&rdquo; to - in above example &ldquo;5&rdquo; or &ldquo;6&rdquo;</p>
-<p>Or you have to edit the &ldquo;Desired size&rdquo; in the &ldquo;AWS EKS dashboard Edit Node Group&rdquo; (once you have carried out the AWS dashboard change - update the terraform config, <code>terraform apply</code>  accordingly - so that it is in sync with the AWS dashboard):</p>
-<h4 id="aws-dashboard-eks-edit-node-group"><a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters/manager/nodegroups/manager-default_ng-composed-sculpin/edit-nodegroup">AWS dashboard EKS - Edit Node Group:</a></h4>
+</code></pre></div><h4 id="aws-dashboard-eks-edit-node-group">AWS dashboard EKS - Edit Node Group</h4>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Group size
 Minimum size
 Set the minimum number of nodes that the group can scale in to.
-1
+2
 nodes
 Maximum size
 Set the maximum number of nodes that the group can scale out to.
-30
+85
 nodes
 Desired size
 Set the desired number of nodes that the group should launch with initially.
-4
+3
 nodes
-</code></pre></div><h2 id="change-the-aws-eks-instance-type-worker-node-machine-type">Change the AWS EKS instance type (worker_node_machine_type)</h2>
+</code></pre></div><p>Modifying the node_groups_count in terraform will not update the desired size of the EKS cluster nor increase the actual node count. Its a design decision the 
+module has taken. Refer issue <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/issues/835">#835</a>.</p>
+<p>To increase/decrease the desired node group count, we need to use the AWS dashboard. Login to the AWS dashboard and navigate to EKS -&gt; Select Cluster -&gt; Select Compute tab 
+Choose the Node Group you want to edit and Click Edit. Change the desired size and click Save Changes.</p>
+<p>Watch the number of nodes using <code>kubectl get nodes</code>. You should see the new nodes getting created to match the desired size.</p>
 
-<ul>
-<li><p>update default &ldquo;worker_node_machine_type&rdquo; to - in above example &ldquo;m4.xlarge&rdquo;</p></li>
-<li><p>A &lsquo;terraform plan&rsquo; will show that that it will replace the existing nodes</p></li>
-<li><p>`terraform apply&rsquo; the changes in the usual way</p></li>
-<li><p>monitor how the update is going in the <a href="https://eu-west-2.console.aws.amazon.com/ec2/autoscaling/home?region=eu-west-2#AutoScalingGroups:view=tags;filter=eks">AWS Autoscaling dashboard:</a></p></li>
-</ul>
-<p>Note that it will create the instances/nodes before it deletes the existing - so there should be no down time</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2023-08-22">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-03-27">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 22 May 2023.
+      This page was last reviewed on 27 September 2023.
 
-        It needs to be reviewed again on 22 August 2023
+        It needs to be reviewed again on 27 March 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 22 August 2023
+      This page was set to be reviewed before 27 March 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1495,7 +1421,7 @@ nodes
           <aside>
               <ul class="contribution-banner">
                 <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/add-nodes-to-the-eks-cluster.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Add+nodes%2Fchange+the+instance+type+of+the+AWS+EKS+cluster%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fadd-nodes-to-the-eks-cluster.html%29&amp;labels=bug&amp;title=Re%3A+%27Add+nodes%2Fchange+the+instance+type+of+the+AWS+EKS+cluster%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Add+nodes+to+the+AWS+EKS+cluster%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fadd-nodes-to-the-eks-cluster.html%29&amp;labels=bug&amp;title=Re%3A+%27Add+nodes+to+the+AWS+EKS+cluster%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
