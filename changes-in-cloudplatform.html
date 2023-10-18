@@ -1382,9 +1382,9 @@
 <h2 id="making-changes-to-cloud-plarform-infrastructure">Making Changes to cloud-plarform-infrastructure</h2>
 
 <ol>
-<li>Create a PR which includes the change you want to make. Make sure the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-plan-live/">plan pipeline</a> is happy with the change.</li>
+<li>Create a PR which includes the change you want to make. Make sure the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-plan-infra-live/">plan pipeline</a> is happy with the change.</li>
 <li>Chase the team to get your PR approved, and if it involves downtime ensure you have communications in place.</li>
-<li>Merge and wait until the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-apply/">apply pipeline</a> applies your change.</li>
+<li>Merge and wait until the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-apply-infra-live/">apply pipeline</a> applies your change.</li>
 </ol>
 <h2 id="making-changes-to-terraform-modules">Making Changes to Terraform modules</h2>
 <p>Updating a module is very simple and consist in the following steps:</p>
@@ -1417,17 +1417,17 @@
 <p>If any changes involve downtime we must inform teams about it via Slack (#cloud-platform-update). It is important to include <strong>which services</strong> are going to be down and <strong>for how long</strong>.</p>
 <p>Sometimes teams misinterpret downtimes of Cloud Platform services to involve downtime of <strong>their services</strong>, so it is very important to be precise about the change and it&rsquo;s potential impact.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2023-11-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-01-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 August 2023.
+      This page was last reviewed on 18 October 2023.
 
-        It needs to be reviewed again on 18 November 2023
+        It needs to be reviewed again on 18 January 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 November 2023
+      This page was set to be reviewed before 18 January 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
