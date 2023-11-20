@@ -1393,7 +1393,7 @@
   manager = "4"
   default = "3"
 }
-# Default node group minimum capacity 
+# Default node group minimum capacity
 default_ng_min_count = {
   live    = "45"
   live-2  = "2"
@@ -1414,23 +1414,23 @@ Desired size
 Set the desired number of nodes that the group should launch with initially.
 3
 nodes
-</code></pre></div><p>Modifying the node_groups_count in terraform will not update the desired size of the EKS cluster nor increase the actual node count. Its a design decision the 
+</code></pre></div><p>Modifying the node_groups_count in terraform will not update the desired size of the EKS cluster nor increase the actual node count. Its a design decision the
 module has taken. Refer issue <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/issues/835">#835</a>.</p>
-<p>To increase/decrease the desired node group count, we need to use the AWS dashboard. Login to the AWS dashboard and navigate to EKS -&gt; Select Cluster -&gt; Select Compute tab 
+<p>To increase/decrease the desired node group count, we need to use the AWS dashboard. Login to the AWS dashboard and navigate to EKS -&gt; Select Cluster -&gt; Select Compute tab
 Choose the Node Group you want to edit and Click Edit. Change the desired size and click Save Changes.</p>
 <p>Watch the number of nodes using <code>kubectl get nodes</code>. You should see the new nodes getting created to match the desired size.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-03-27">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-05-20">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 September 2023.
+      This page was last reviewed on 20 November 2023.
 
-        It needs to be reviewed again on 27 March 2024
+        It needs to be reviewed again on 20 May 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 March 2024
+      This page was set to be reviewed before 20 May 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
