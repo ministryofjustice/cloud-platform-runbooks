@@ -681,6 +681,9 @@
           <li>
             <a href="./disaster-recovery-scenarios.html#recovering-more-complex-scenarios"><span>Recovering more complex scenarios</span></a>
           </li>
+          <li>
+            <a href="./disaster-recovery-scenarios.html#resolving-a-partiallyfailed-backup-alert"><span>Resolving a PartiallyFailed backup alert</span></a>
+          </li>
         </ul>
       </li>
     </ul>
@@ -1527,18 +1530,26 @@ Plan: 7 to add, 0 to change, 0 to destroy.
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan -target=module.starter_pack
 
 No changes. Infrastructure is up-to-date.
+</code></pre></div><h3 id="resolving-a-partiallyfailed-backup-alert">Resolving a PartiallyFailed backup alert</h3>
+<p>A backup may fail and trigger an alert in <code>lower-priority-alerts</code>. inspect the backup job:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get backup -n velero | grep -C 30 YYYYMMDD
+</code></pre></div><p>You identify the failed backup <code>phase: PartiallyFailed</code> and there will also by an <code>errors</code> field with a count.</p>
+<p>To understand the cause of the alert pull out the error messages from the velero pod from kibana:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubernetes.pod_name: velero-&lt;container-id&gt; and log: "level=error"
+</code></pre></div><p>Sometimes the cause of the alert can be genuine, for instance a volume may have been removed (pod restart during a backup):</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>level=error msg="Error backing up item" backup=velero/velero-allnamespacebackup-20231120090023 error="error getting volume info: rpc error: code = Unknown desc = InvalidVolume.NotFound: The volume 'vol-08d317558ab5bd46b' does not exist.\n\tstatus code: 400
 </code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2024-02-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-11-20">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 November 2023.
+      This page was last reviewed on 20 May 2024.
 
-        It needs to be reviewed again on 20 February 2024
+        It needs to be reviewed again on 20 November 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 February 2024
+      This page was set to be reviewed before 20 November 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
