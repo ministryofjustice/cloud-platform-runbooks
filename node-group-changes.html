@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>How to Investigate External-Dns Errors - Cloud Platform Runbooks</title>
+    <title>Handling Node Group and Instance Changes - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="How to Investigate External-Dns Errors - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html" />
+      <meta name="twitter:title" content="Handling Node Group and Instance Changes - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="How to Investigate External-Dns Errors" />
+      <meta property="og:title" content="Handling Node Group and Instance Changes" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html" />
 
     
   </head>
@@ -1406,47 +1406,40 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="how-to-investigate-external-dns-errors">How to Investigate External-Dns Errors</h1>
-<p>When there are errors in external-dns logs, &ldquo;ErrorsInExternalDNS&rdquo; alert sent to the low priority slack channel.</p>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<p>If we see an ErrorsInExternalDNS alert in low-priority-alerts, this is usually due to a external-dns have an issue to write records to Route-53 for a particual hosted zones.
-You can see errors from the external-dns pod by running:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> kube-system external-dns-&lt;pod-id&gt; <span class="nt">-f</span>
-</code></pre></div><h3 id="invalid-change-batch">Invalid Change Batch</h3>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [RDATA character limit of 32000 exceeded.]"</span>
+            <h1 id="making-changes-to-eks-node-groups-or-instances-types">Making changes to EKS node groups or instances types</h1>
+<h2 id="why">Why?</h2>
+<p>You may need to make a change to an EKS <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/97768bfd8b4e25df6f415035acac60cf531d88c1/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L60">cluster node group</a> or <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/97768bfd8b4e25df6f415035acac60cf531d88c1/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L43">instance type config</a>. We can&rsquo;t just let terraform apply these changes because terraform doesn&rsquo;t gracefully rollout the old and new nodes. Terraform will bring down all of the old nodes immediately, which will cause outages to users.</p>
+<h2 id="how">How?</h2>
+<p>The method to avoid bringing down all the nodes at once is to follow these steps:</p>
 
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [RRSet with DNS name _external_dns.development.moj.service.justice.gov.uk., type TXT cannot be created as other RRSets exist with the same name and type.,
-RRSet with DNS name development.moj.service.justice.gov.uk., type A cannot be created as other RRSets exist with the same name and type.]"</span>
+<ol>
+<li>add a new node group with your <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2657">updated changes</a></li>
+<li>lookup the old node group name (you can find this in the aws gui)</li>
+<li>once merged in you can drain the old node group using the command below:</li>
+<li>raise a new <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2663">pr deleting</a> the old node group</li>
+</ol>
 
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [Tried to delete resource record set [name='_external_dns.test.live.cloud-platform.service.justice.gov.uk.', type='TXT', set-identifier='test-live-1'] but it was not found,
-Tried to delete resource record set [name='test.live.cloud-platform.service.justice.gov.uk.', type='A', set-identifier='test-live-1'] but it was not found]
+<blockquote>
+<p><code>cloud-platform pipeline cordon-and-drain --cluster-name &lt;cluster_name&gt; --node-group &lt;old_node_group_name&gt;</code></p>
+</blockquote>
+<p>notes:</p>
 
-level=error msg="</span>InvalidChangeBatch: <span class="o">[</span>Tried to create resource record <span class="nb">set</span> <span class="o">[</span><span class="nv">name</span><span class="o">=</span><span class="s1">'cluster-cname-thisingress.example.'</span>, <span class="nb">type</span><span class="o">=</span><span class="s1">'TXT'</span><span class="o">]</span> but it already exists, Tried to create
-resource record <span class="nb">set</span> <span class="o">[</span><span class="nv">name</span><span class="o">=</span><span class="s1">'cluster-thisingress.example.'</span>, <span class="nb">type</span><span class="o">=</span><span class="s1">'TXT'</span><span class="o">]</span> but it already exists]
+<ul>
+<li>When making changes to the default node group in live, it&rsquo;s handy to pause the pipelines for each of our environments for the duration of the change.</li>
+<li>the <code>cloud-platform pipeline</code> command [cordons-and-drains-nodes] in a given node group waiting 2mins between each drained node. This command runs remotely in concourse.</li>
+</ul>
 
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to submit all changes for the following zones: [/hostedzone/ABCDEFGHIJKLMN /hostedzone/NMLKJIHGFEDCBA]"</span>
-</code></pre></div><p>Identify the ingress causing the error in question and fix the ingress depending upon the error message. We may need to inform users to update their ingress causing the error.</p>
-<p>Follow this <a href="https://aws.amazon.com/premiumsupport/knowledge-center/troubleshoot-route53-resource-record/">troubleshoot guide</a> for common error messages to determine the error&rsquo;s cause and how to troubleshoot it.</p>
-<p>Once the error is cleared, you will see info logs similar to:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"Applying provider record filter for domains: [dev.example. .dev.example.]"</span>
-<span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"Desired change: CREATE cluster-a-new.dev.example TXT [Id: /hostedzone/ZZZ]"</span>
-<span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"All records are already up to date"</span>
-</code></pre></div><h3 id="rate-limited-throttled">Rate Limited / Throttled</h3>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"records retrieval failed: failed to list hosted zones: Throttling: Rate exceeded</span><span class="se">\n\t</span><span class="s2">status code: 400, request id: 9df2a-7blah"</span>
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to list resource records sets for zone /hostedzone/BLAH_MOX: Throttling: Rate exceeded</span><span class="se">\n\t</span><span class="s2">status code: 400, request id: 0-9216-435fblah"</span>
-</code></pre></div><p>There isn&rsquo;t much we can do about being rate limited, acknowledge the alert.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-06-13">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 April 2024.
+      This page was last reviewed on 13 December 2023.
 
-        It needs to be reviewed again on 18 October 2024
+        It needs to be reviewed again on 13 June 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 October 2024
+      This page was set to be reviewed before 13 June 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1456,8 +1449,8 @@ resource record <span class="nb">set</span> <span class="o">[</span><span class=
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/external-dns-error.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27How+to+Investigate+External-Dns+Errors%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fexternal-dns-error.html%29&amp;labels=bug&amp;title=Re%3A+%27How+to+Investigate+External-Dns+Errors%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/node-group-changes.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Handling+Node+Group+and+Instance+Changes%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fnode-group-changes.html%29&amp;labels=bug&amp;title=Re%3A+%27Handling+Node+Group+and+Instance+Changes%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>

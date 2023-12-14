@@ -446,34 +446,6 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./upgrade-cluster-components.html"><span>Upgrade cluster components</span></a>
     <ul>
       <li>
@@ -502,6 +474,45 @@
           </li>
           <li>
             <a href="./upgrade-cluster-components.html#performing-the-upgrade"><span>Performing the upgrade</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#why"><span>Why?</span></a>
+      </li>
+      <li>
+        <a href="./node-group-changes.html#how"><span>How?</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
       </li>
@@ -834,14 +845,6 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./resolve-opensearch-shard-issues.html"><span>Open search best practices</span></a>
     <ul>
       <li>
@@ -862,6 +865,22 @@
             <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-no-logs.html#deebugging"><span>Deebugging</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -906,14 +925,6 @@
             <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#deebugging"><span>Deebugging</span></a>
       </li>
     </ul>
   </li>
@@ -1061,13 +1072,13 @@
         <a href="./velero.html#backups"><span>Backups</span></a>
         <ul>
           <li>
-            <a href="./velero.html#why"><span>Why?</span></a>
+            <a href="./velero.html#backups-why"><span>Why?</span></a>
           </li>
           <li>
             <a href="./velero.html#what"><span>What?</span></a>
           </li>
           <li>
-            <a href="./velero.html#how"><span>How?</span></a>
+            <a href="./velero.html#backups-how"><span>How?</span></a>
           </li>
         </ul>
       </li>
@@ -1142,6 +1153,20 @@
     </ul>
   </li>
   <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
+  </li>
+  <li>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to a TGW</span></a>
     <ul>
       <li>
@@ -1160,20 +1185,6 @@
         <a href="./cloud-platform-to-tgw.html#moving-away-from-cloud-platform-transit-gateway-account"><span>Moving away from  Cloud Platform Transit Gateway account</span></a>
       </li>
     </ul>
-  </li>
-  <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
   </li>
   <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
@@ -1225,14 +1236,13 @@
           <li>
             <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
           </li>
+          <li>
+            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
+          </li>
         </ul>
       </li>
       <li>
         <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
-        <ul>
-          <li>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -1324,9 +1334,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1377,6 +1384,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
     <ul>
       <li>
@@ -1400,65 +1410,83 @@
 <p>When CP team members leave, follow this guide, and log completion in a ticket.</p>
 <h2 id="revoking-access">Revoking Access</h2>
 <h3 id="digital-services">Digital Services</h3>
-<p>The Service Desk will be able to remove and revoke access from a number of different accounts outside of Cloud Platform.</p>
-<h4 id="1-google-account-closure-ordered-in-advance-of-them-leaving-by-creating-a-servicenow-order-return-device-for-digital-mac-amp-wtp-users">1/ Google account closure, ordered in advance of them leaving, by creating a ServiceNow order <a href="https://mojprod.service-now.com/moj_sp?id=sc_cat_item&amp;sys_id=a1f163211bb1a8507b10ca286e4bcb7a">Return device for Digital Mac &amp; WTP users</a></h4>
+<h4 id="google-account-closure">Google account closure</h4>
+<p>This has to be ordered in advance of them leaving, by creating a ServiceNow order <a href="https://mojprod.service-now.com/moj_sp?id=sc_cat_item&amp;sys_id=a1f163211bb1a8507b10ca286e4bcb7a">Return device for Digital Mac &amp; WTP users</a></p>
 <p>This is not just about returning their Mac - it will do the important step of closing their Google account.</p>
+<p>This is usually raised by the line manager for civil servants.</p>
 
 <ul>
 <li><p>Note - Include details in the ServiceNow request to transfer the leaver&rsquo;s Google Drive to someone in their team.</p></li>
-<li><p>Note - for leavers from the cloud-platforms team - ask the service desk to transfer any slack webhook integrations to someone in the team. <br>IT IS MOST IMPORTANT THAT YOU REQUEST THIS BEFORE THE PERSON LEAVES<br>
-This is because if the person has created a slack-webhook for alerting purposes, the loss of that slack-webhook can cause problems - when their profile is deleted (as the webhook link is referenced in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars">cloud-platform-infrastructure/blob/main/terraform/cloud-platform-components/terraform.tfvars</a>.</p></li>
+<li><p>Note - If the leaver has created any slack apps, these will need to be transferred to someone else in the team.</p></li>
 </ul>
-<h4 id="2-moj-digital-vpn-removal-by-creating-a-servicenow-order-digital-vpn-add-remove">2/ MOJ Digital VPN removal by creating a ServiceNow order: <a href="https://mojprod.service-now.com/moj_sp?id=sc_cat_item&amp;sys_id=6860adc01b8b6818f58d206fe54bcbe3">Digital VPN add/remove</a></h4>
+<p>Contact #digital-it-forum channel for any queries</p>
+<h4 id="moj-digital-vpn-removal">MOJ Digital VPN removal</h4>
+<p>Create a ServiceNow order: <a href="https://mojprod.service-now.com/moj_sp?id=sc_cat_item&amp;sys_id=6860adc01b8b6818f58d206fe54bcbe3">Digital VPN add/remove</a>
+  This is usually raised by the line manager for civil servants.</p>
+<h4 id="slack-account-deactivation">Slack account deactivation</h4>
+<p>Cloud Platform maintain a list of webhooks for <a href="https://api.slack.com/apps/ABFSJLD8W/incoming-webhooks">Alertmanager Notifications</a>. When the slack account is deactivated,
+  these webhooks will still be active. Hence, no action is needed.</p>
+<p>Some apps that member installed which require member-specific permissions may be atomatically deactivated.
+  Check in advance, if the leaver has installed any such apps and if so, transfer them to someone else in the team by creating a ServiceNow order: <a href="https://mojprod.service-now.com/moj_sp?id=sc_cat_item&amp;sys_id=2749c237db9c609050fbbfce3b9619bb">Slack tasks for the D&amp;T Workspace</a>
+  Also make sure there there is atleast one other member who is collaborator for the app.</p>
 <h3 id="aws-accounts">AWS Accounts</h3>
-<h4 id="1-purge-them-from-aws-accounts">1/ Purge them from AWS accounts:</h4>
 
 <ul>
-<li><a href="https://justice-cloud-platform.eu.auth0.com/samlp/bnqndz9kxf7wDge8ndCWyVwIX1OEElYf">moj-cp</a></li>
+<li><p>Purge them from AWS accounts:</p>
+
+<ul>
+<li><a href="https://moj.awsapps.com/start#/">moj-cp</a></li>
 <li><a href="https://moj.awsapps.com/start#/">mojdsd</a></li>
 <li>Cloud Platform Ephemeral Test</li>
 <li>Cloud Platform Transit Gateways</li>
 </ul>
-<p>To login, use the SSO links above, or use the <a href="https://console.aws.amazon.com/">AWS console</a></p>
-<h4 id="2-remove-them-from-cloud-platform-terraform-awsaccounts-iam">2/ Remove them from <code>cloud-platform-terraform-awsaccounts-iam</code></h4>
+<p>To login, use the SSO links above, or use the <a href="https://console.aws.amazon.com/">AWS console</a></p></li>
+<li><p>Remove them from <code>cloud-platform-terraform-awsaccounts-iam</code></p>
 
 <ul>
 <li>As per <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/pull/2/files">this PR</a></li>
-</ul>
-<h4 id="3-remove-them-from-cloud-platform-eks">3/ Remove them from <code>cloud-platform-eks</code></h4>
+</ul></li>
+<li><p>Remove them from <code>cloud-platform eks cluster</code></p>
 
 <ul>
-<li>As per <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/cluster.tf">this File</a></li>
+<li>As per <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L243">this File</a></li>
+</ul></li>
 </ul>
-<h4 id="4-request-password-management-removal-contact-details-here-removal">4/ Request Password Management removal - <a href="https://docs.google.com/document/d/1Q6bHUyGEuVi81Bmvi7kOa-DvC-y-L-H3BR13DPsYiVs/edit">contact details here</a> removal</h4>
-<h4 id="5-remove-their-access-to">5/ Remove their access to:</h4>
+<h3 id="other-3rd-party-accounts-access-removal">Other 3rd Party Accounts access removal</h3>
+<p>Below are the list of 3rd party accounts that need to be removed when a member leaves the team. Contact <a href="https://mojdt.slack.com/archives/C01BUKJSZD4">#ask-operations-engineering channel</a> requesting the removal</p>
 
-<ul>
+<ol>
+<li><p>Request Password Management removal - <a href="https://1password.com/">1Password</a></p></li>
 <li><p><a href="https://manage.auth0.com/dashboard/eu/justice-cloud-platform/users">Auth0 justice-cloud-platform</a></p></li>
 <li><p><a href="https://manage.auth0.com/dashboard/eu/moj-cloud-platforms-dev/users">Auth0 moj-cloud-platforms</a></p></li>
 <li><p><a href="https://moj-digital-tools.pagerduty.com/users">Pagerduty</a></p></li>
 <li><p><a href="https://cloud.docker.com/orgs/ministryofjustice/teams">DockerHub MoJ teams</a></p></li>
 <li><p><a href="https://www.pingdom.com">Pingdom</a></p></li>
 <li><p><a href="https://1password.com/">1Password</a></p></li>
+<li><p><a href="https://ministryofjustice.sentry.io/settings/teams/">Sentry</a></p></li>
 <li><p><a href="https://github.com/ministryofjustice">MoJ Github Organisation</a></p></li>
-</ul>
-<h4 id="6-remove-them-from-the-pagerduty-support-rota-if-applicable">6/ Remove them from the <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">PagerDuty support rota</a> (if applicable)</h4>
-<h4 id="7-remove-them-from-platforms-digital-justice-gov-uk-google-group">7/ Remove them from <a href="https://groups.google.com/a/digital.justice.gov.uk/g/platforms/members">platforms@digital.justice.gov.uk Google Group</a></h4>
+<li><p><a href="https://app.zenhub.com/workspaces/cloud-platform-team-5ccb0b8a81f66118c983c189/board">Zenhub</a></p></li>
+<li><p>Remove them from the <a href="https://moj-digital-tools.pagerduty.com/schedules#PFX6FHX/edit">PagerDuty support rota</a> (if applicable)</p></li>
+</ol>
+<p>10.Remove them from <a href="https://groups.google.com/a/digital.justice.gov.uk/g/platforms/members">platforms@digital.justice.gov.uk Google Group</a></p>
 <h2 id="line-manager-actions">Line manager actions</h2>
-<h4 id="1-fill-in-the-moj-digital-leavers-form">1/ Fill in the MOJ Digital <a href="https://leavers.form.service.justice.gov.uk/">Leavers Form</a></h4>
-<h4 id="2-complete-the-leavers-checklist-for-managers">2/ Complete the <a href="https://intranet.justice.gov.uk/documents/2015/04/leavers-checklist-for-managers.docx">Leavers Checklist for Managers</a></h4>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-02-20">
+<ol>
+<li>Fill in the MOJ Digital <a href="https://leavers.form.service.justice.gov.uk/">Leavers Form</a></li>
+<li>Complete the <a href="https://intranet.justice.gov.uk/documents/2015/04/leavers-checklist-for-managers.docx">Leavers Checklist for Managers</a></li>
+</ol>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2024-03-13">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 November 2023.
+      This page was last reviewed on 13 December 2023.
 
-        It needs to be reviewed again on 20 February 2024
+        It needs to be reviewed again on 13 March 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 February 2024
+      This page was set to be reviewed before 13 March 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
