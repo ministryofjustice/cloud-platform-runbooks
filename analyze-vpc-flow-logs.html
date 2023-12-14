@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Destroy Concourse Build Data - Cloud Platform Runbooks</title>
+    <title>Analyze VPC Flow Logs - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-build-data.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/analyze-vpc-flow-logs.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Destroy Concourse Build Data - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-build-data.html" />
+      <meta name="twitter:title" content="Analyze VPC Flow Logs - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/analyze-vpc-flow-logs.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Destroy Concourse Build Data" />
+      <meta property="og:title" content="Analyze VPC Flow Logs" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/destroy-concourse-build-data.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/analyze-vpc-flow-logs.html" />
 
     
   </head>
@@ -1144,7 +1144,7 @@
     <a href="./eks-node-terminal-access.html"><span>Terminal access to EKS managed nodes</span></a>
     <ul>
       <li>
-        <a href="./eks-node-terminal-access.html#terminal-access-to-eks-managed-nodes-overview"><span>Overview</span></a>
+        <a href="./eks-node-terminal-access.html#overview"><span>Overview</span></a>
       </li>
       <li>
         <a href="./eks-node-terminal-access.html#terminal-access-to-eks-managed-nodes-pre-requisites"><span>Pre-requisites</span></a>
@@ -1167,7 +1167,7 @@
     <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
     <ul>
       <li>
-        <a href="./destroy-concourse-build-data.html#overview"><span>Overview</span></a>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
       </li>
       <li>
         <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
@@ -1414,68 +1414,28 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="destroy-concourse-build-data">Destroy Concourse Build Data</h1>
-<h2 id="overview">Overview</h2>
-<p>This document will briefly outline the steps required to empty the Concourse postgres persistent volume. Things to know before reading this document:</p>
+            <h1 id="analyze-vpc-flow-logs">Analyze VPC Flow Logs</h1>
+<p>Cloud Platform <code>live-1</code> VPC is connected to various other MoJ AWS accounts VPC using Transit Gateway. In order to debug network connectivity issues
+that are coming to/from Cloud Platform VPC, the VPC flow logs are enabled. These logs are stored in an S3 bucket and can be analyzed using Athena when needed.</p>
+<p>The steps involve a pointy-clicky exercise to generate Athena integration by creating a CloudFormation stack using a template and use that as a datasource in Athena
+Follow the steps as mentioned in the blog: <a href="https://aws.amazon.com/blogs/networking-and-content-delivery/analyze-vpc-flow-logs-with-point-and-click-amazon-athena-integration/">AWS blog - Analyze VPC Flow Logs with point-and-click Amazon Athena integration</a>.</p>
+<p>Things to note:
+- When creating a CloudFormation template, use the <code>Partition: Daily</code> option. This will create a partition for each day and will make it easier to query the logs for a specific day.
+- Provide Partition start date and end date closer when the issue was observed. The duration is limited to 20 days
+- Create two s3 buckets one for CloudFormation template and and another one to store the Athena query results which you will provide when creating the CloudFormation stack.
+- When the flow logs are downloaded and the user has investigated the issue, delete the created s3 buckets for CloudFormation template and Athena query results and the CloudFormation stack.</p>
 
-<ul>
-<li>We store concourse build data in this database. After deliberation with the team it was decided that this data isn&rsquo;t important enough to keep, meaning the volume attached to Concourse is considered ephemeral.</li>
-<li>Some of the steps in this document require performing a <code>terraform destroy</code> on the Concourse module, so please ensure you have valid AWS credentials and your GPG key is added to the Cloud Platform infrastructure repository.</li>
-<li>The persistent volume for Concourse build data is not large (currently 8G) so will fill up over the course of a few months.</li>
-<li>A low and high priority alarm will trigger for <code>KubePersistentVolumeFillingUp</code>.</li>
-<li>When performing these steps, you will lose concourse-web for a while (minutes rather than hours).</li>
-</ul>
-<h2 id="steps-to-remove-the-build-data">Steps to remove the build data</h2>
-
-<ul>
-<li>Ensure you&rsquo;re authenticated to the correct cluster.</li>
-<li>Destroy the Concourse Helm release with (this assumes you have the infrastructure repository cloned):</li>
-</ul>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nb">cd </span>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks
-terraform destroy <span class="nt">-target</span><span class="o">=</span>module.concourse.helm_release.concourse
-</code></pre></div>
-<ul>
-<li>Identify the persistent volume (PV) in question:</li>
-</ul>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get pv
-</code></pre></div><p>You&rsquo;ll see a claim by the name of <code>concourse/data-concourse-postgres-0</code>. Copy the <code>Name</code> to your clipboard i.e. <code>pvc-1234</code></p>
-<p>Please note - This name is due to change in the future.</p>
-
-<ul>
-<li>Delete the PV with:</li>
-</ul>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl delete pv pvc-1234 <span class="nt">--grace-period</span><span class="o">=</span>0 <span class="nt">--force</span>
-</code></pre></div><p>This will get stuck in a <code>Terminating</code> state.</p>
-
-<ul>
-<li>Patch the PV with:</li>
-</ul>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl patch pv pvc-1234 <span class="nt">-p</span> <span class="s1">'{"metadata":{"finalizers": []}}'</span> <span class="nt">--type</span><span class="o">=</span>merge
-</code></pre></div><p>Which should instantly delete the volume.</p>
-
-<ul>
-<li>Identify the persistent volume claim (PVC):</li>
-</ul>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get pvc <span class="nt">-n</span> concourse
-</code></pre></div><p>Copy the <code>Name</code> to your clipboard i.e. <code>data-concourse-postgres-0</code>
-- Delete the PVC with:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl <span class="nt">-n</span> concourse delete pvc data-concourse-postgresql-0 <span class="nt">--grace-period</span><span class="o">=</span>0 <span class="nt">--force</span>
-</code></pre></div><p>This shouldn&rsquo;t get stuck and will be removed instantly.
-- Re-apply the Concourse Helm chart with:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>module.concourse.helm_release.concourse
-</code></pre></div><p>You should start to see pods returning and the creation of a new PV.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2024-01-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-06-14">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 October 2023.
+      This page was last reviewed on 14 December 2023.
 
-        It needs to be reviewed again on 3 January 2024
+        It needs to be reviewed again on 14 June 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 January 2024
+      This page was set to be reviewed before 14 June 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1485,8 +1445,8 @@ terraform destroy <span class="nt">-target</span><span class="o">=</span>module.
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/destroy-concourse-build-data.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Destroy+Concourse+Build+Data%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fdestroy-concourse-build-data.html%29&amp;labels=bug&amp;title=Re%3A+%27Destroy+Concourse+Build+Data%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/analyze-vpc-flow-logs.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Analyze+VPC+Flow+Logs%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fanalyze-vpc-flow-logs.html%29&amp;labels=bug&amp;title=Re%3A+%27Analyze+VPC+Flow+Logs%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
