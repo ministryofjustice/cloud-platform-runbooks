@@ -1422,15 +1422,19 @@
 
 <ol>
 <li>add a new node group with your <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2657">updated changes</a></li>
+<li>re-run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-account/jobs/terraform-apply">infrastructure-account/terraform-apply</a> pipeline to update the Modsecurity Audit logs cluster to map roles to both old and new node group IAM Role
+This is to avoid losing modsec audit logs from the new node group</li>
 <li>lookup the old node group name (you can find this in the aws gui)</li>
-<li>once merged in you can drain the old node group using the command below:</li>
-<li>raise a new <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2663">pr deleting</a> the old node group</li>
-</ol>
+<li><p>once merged in you can drain the old node group using the command below:</p>
 
 <blockquote>
-<p>cloud-platform pipeline cordon-and-drain &ndash;cluster-name <cluster_name> &ndash;node-group <old_node_group_name></p>
-</blockquote>
-<p><a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/7851f741e6c180ed868a97d51cec0cf1e109de8d/pipelines/manager/main/cordon-and-drain-nodes.yaml#L50">script source</a> because this command runs remotely in concourse you can&rsquo;t use this command to drain default ng on the manager cluster.</p>
+<p>cloud-platform pipeline cordon-and-drain &ndash;cluster-name <cluster_name> &ndash;node-group <old_node_group_name>
+<a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/7851f741e6c180ed868a97d51cec0cf1e109de8d/pipelines/manager/main/cordon-and-drain-nodes.yaml#L50">script source</a> because this command runs remotely in concourse you can&rsquo;t use this command to drain default ng on the manager cluster.</p>
+</blockquote></li>
+<li><p>raise a new <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2663">pr deleting</a> the old node group</p></li>
+<li><p>re-run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-account/jobs/terraform-apply">infrastructure-account/terraform-apply</a> pipeline to again to update the Modsecurity Audit logs cluster to map roles with only the new node group IAM Role</p></li>
+<li><p>run the integration tests to ensure the cluster is healthy</p></li>
+</ol>
 <h3 id="notes">Notes:</h3>
 
 <ul>
@@ -1439,17 +1443,17 @@
 <li>If you can avoid it try not to fiddle around with the target node group in the aws console for example reducing the desired nodes, aws deletes nodes in an unpredictable way which might cause the pipeline command to fail. Although it is possible if you need to.</li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-06-13">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-06-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 13 December 2023.
+      This page was last reviewed on 15 December 2023.
 
-        It needs to be reviewed again on 13 June 2024
+        It needs to be reviewed again on 15 June 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 13 June 2024
+      This page was set to be reviewed before 15 June 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
