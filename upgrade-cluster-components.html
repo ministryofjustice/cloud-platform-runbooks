@@ -486,6 +486,9 @@
             <a href="./upgrade-cluster-components.html#setup-environment"><span>Setup environment</span></a>
           </li>
           <li>
+            <a href="./upgrade-cluster-components.html#create-test-cluster"><span>Create test cluster</span></a>
+          </li>
+          <li>
             <a href="./upgrade-cluster-components.html#run-a-shell-in-the-tools-image"><span>Run a shell in the tools image</span></a>
           </li>
           <li>
@@ -1437,6 +1440,8 @@
 </ul>
 <h3 id="setup-environment">Setup environment</h3>
 <p>Setup the environment variables listed in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/example.env.create-cluster">example.env.create-cluster</a> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>.</p>
+<h3 id="create-test-cluster">Create test cluster</h3>
+<p>Run the <code>create-cluster</code> concourse job to create a test cluster.</p>
 <h3 id="run-a-shell-in-the-tools-image">Run a shell in the tools image</h3>
 <p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to update a cluster.</p>
 <p>From a local copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>,  run the following command:</p>
@@ -1470,6 +1475,7 @@
 <li><p>Change the module release tag in the eks/components folder of <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> and raise a PR.
  Verify the terraform plan from the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-plan-infra-live/">cloud-platform-infrastructure plan pipeline</a> and get it reviewed by the team.</p></li>
 <li><p>Once approved, merge the PR and monitor the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-apply-infra-live">cloud-platform-infrastructure apply pipeline</a> when applying the changes.</p></li>
+<li><p>Run the <code>reporting</code> tests in concourse to ensure live/manager/live-2 are working as expected.</p></li>
 </ol>
 <h3 id="things-to-observe-when-testing-the-upgrade">Things to observe when testing the upgrade</h3>
 <p>The below are some of the general things to check when during the upgrade and not a complete list.</p>
@@ -1492,18 +1498,22 @@
 <li>The existing PrometheusRules and ServiceMonitors do not change in any way. This can be done by checking the timestamps of those resourse creation</li>
 <li>Able to query prometheus for metrics</li>
 </ul>
+<h4 id="logs">Logs</h4>
+<p>Compare the logs for the updated component/addon between test cluster and live to ensure there are no additional warnings or errors.</p>
+<h4 id="compare-environment-variables">Compare <code>environment</code> variables</h4>
+<p>Check the components/addon deamonset to ensure that the environment variables match.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-05-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-06-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 November 2023.
+      This page was last reviewed on 18 December 2023.
 
-        It needs to be reviewed again on 20 May 2024
+        It needs to be reviewed again on 18 June 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 May 2024
+      This page was set to be reviewed before 18 June 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
