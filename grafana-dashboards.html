@@ -1278,8 +1278,16 @@
           <li>
             <a href="./grafana-dashboards.html#dashboard-layout"><span>Dashboard Layout</span></a>
           </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./grafana-dashboards.html#troubleshooting"><span>Troubleshooting</span></a>
+        <ul>
           <li>
-            <a href="./grafana-dashboards.html#troubleshooting"><span>Troubleshooting</span></a>
+            <a href="./grafana-dashboards.html#fixing-quot-failed-to-load-dashboard-quot-errors"><span>Fixing “failed to load dashboard” errors</span></a>
+          </li>
+          <li>
+            <a href="./grafana-dashboards.html#fixing-quot-duplicate-dashboard-uid-quot-errors"><span>Fixing “duplicate dashboard uid” errors</span></a>
           </li>
         </ul>
       </li>
@@ -1419,29 +1427,43 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="grafana-dashboards">Grafana Dashboards</h1>
 <h2 id="kubernetes-number-of-pods-per-node">Kubernetes Number of Pods per Node</h2>
-<p>This <a href="https://grafana.cloud-platform.service.justice.gov.uk/d/anzGBBJHiz/kubernetes-number-of-pods-per-node?orgId=1">dashboard</a> was created to show the current number of pods per node in the cluster.</p>
+<p>This <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/anzGBBJHiz/kubernetes-number-of-pods-per-node?orgId=1">dashboard</a> was created to show the current number of pods per node in the cluster.</p>
 <h3 id="dashboard-layout">Dashboard Layout</h3>
 <p>Each box on the dashboard has the name of the node and the number of pods on the node  - This number includes pods with a statuses such as &ldquo;DeadlineExceeded&rdquo; and completed&quot;.</p>
 <p>The exception is the <code>Max Pods per Node</code> box. This is a constant number set on creation for the maximum allowed pods per node.</p>
 <p>The current architecture does not allow instance group id to be viewed on the dashboard:</p>
-<p>We currently have 5 instance groups:</p>
+<p>We currently have 2 instance groups:</p>
 
 <ul>
-<li>Masters (one per each of the 3 availability zones in the London region)</li>
-<li>Nodes</li>
-<li>2xlarge Nodes</li>
+<li>Default worker node group (r6i.2xlarge)</li>
+<li>Monitoring node group (r6i.8xlarge Nodes)</li>
 </ul>
-<p>As the dashboard is set in descending order, the last two boxes are normally from the 2xlarge Nodes group (2 instances), the next 3 boxes are normally the masters, and the rest are from the Nodes group.</p>
+<p>As the dashboard is set in descending order, the last two boxes are normally from the monitoring Nodes group (2 instances), and the rest are from the default Nodes group.</p>
 <p>You can run the following command to confirm this and get more information about a node:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl describe node &lt;node_name&gt;
-</code></pre></div><h3 id="troubleshooting">Troubleshooting</h3>
-<p>If a customer is reporting their dashboards are failing to load, this is usually due to a duplicate entry. You can see errors from the Grafana pod by running:</p>
+</code></pre></div><h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="fixing-quot-failed-to-load-dashboard-quot-errors">Fixing &ldquo;failed to load dashboard&rdquo; errors</h3>
+<p>The kibana alert has reported an error similar to:</p>
+
+<blockquote>
+<p>Grafana failed to load one or more dashboards - This could prevent new dashboards from being created ⚠️</p>
+</blockquote>
+<p>You can also see errors from the Grafana pod by running:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> monitoring prometheus-operator-grafana-&lt;pod-id&gt; <span class="nt">-f</span> <span class="nt">-c</span> grafana
 </code></pre></div><p>You&rsquo;ll see an error similar to:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">t</span><span class="o">=</span>2021-12-03T13:37:35+0000 <span class="nv">lvl</span><span class="o">=</span>eror <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to load dashboard from "</span> <span class="nv">logger</span><span class="o">=</span>provisioning.dashboard <span class="nb">type</span><span class="o">=</span>file <span class="nv">name</span><span class="o">=</span>sidecarProvider <span class="nv">file</span><span class="o">=</span>/tmp/dashboards/&lt;MY-DASHBOARD&gt;.json <span class="nv">error</span><span class="o">=</span><span class="s2">"invalid character 'c' looking for beginning of value"</span>
-</code></pre></div><p>once you have the dashboard name, you can then search for the dashboard namespace using jq this will give a full list of names and namespaces for all configMap where this dashboard name is present:</p>
+</code></pre></div><p>Identify the namespace and name of the configmap which contains this dashboard name by running:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get configmaps -A -ojson | jq -r '.items[] | select (.data."&lt;MY-DASHBOARD&gt;.json") | .metadata.namespace + "/" + .metadata.name'
-</code></pre></div><p>To help in identifying the dashboards, you can exec into the Grafana pod as follows:</p>
+</code></pre></div><p>This will return the namespace and name of the configmap which contains the dashboard config. Describe the namespace and find the user&rsquo;s slack-channel which is a annotation on the namespace:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl describe namespace &lt;namespace&gt;
+</code></pre></div><p>Contact the user in the given slack-channel and ask them to fix it. Provide the list of affected dashboards and the error message to help diagnose the issue.</p>
+<h3 id="fixing-quot-duplicate-dashboard-uid-quot-errors">Fixing &ldquo;duplicate dashboard uid&rdquo; errors</h3>
+<p>The kibana alert has reported an error similar to:</p>
+
+<blockquote>
+<p>Duplicate Grafana dashboard UID&rsquo;s found</p>
+</blockquote>
+<p>To help in identifying the dashboards, you can exec into the Grafana pod as follows:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl exec --stdin --tty prometheus-operator-grafana-xxxxxx-yyyyy --container grafana-sc-dashboard  -- sh
 </code></pre></div><p>Then, cd into the <code>/tmp/dashboards</code> directory, and execute the <code>find</code> command as below:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd /tmp/dashboards/
@@ -1455,19 +1477,23 @@ for i in $(find ./ -type f); do tail $i; done|grep '"uid": '|cut -f2 -d':'|sort|
 
 ./my-test-dashboard.json:  "uid": "duplicate-dashboard-uid",
 ./my-test-dashboard-2.json:  "uid": "duplicate-dashboard-uid",
-</code></pre></div><p>Identify that dashboard and fix the error in question, depending on where the dashboard config itself is created you may need to identify the user who created the dashboard and ask them to fix it.</p>
+</code></pre></div><p>Identify the namespace and name of the configmap which contains this dashboard name by running:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get configmaps -A -ojson | jq -r '.items[] | select (.data."my-test-dashboard.json") | .metadata.namespace + "/" + .metadata.name'
+</code></pre></div><p>This will return the namespace and name of the configmap which contains the dashboard config. Describe the namespace and find the user&rsquo;s slack-channel which is a annotation on the namespace:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl describe namespace &lt;namespace&gt;
+</code></pre></div><p>Contact the user in the given slack-channel and ask them to fix it. Provide the list of affected dashboards and the error message to help diagnose the issue.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-03-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-03-29">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 December 2023.
+      This page was last reviewed on 29 December 2023.
 
-        It needs to be reviewed again on 19 March 2024
+        It needs to be reviewed again on 29 March 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 March 2024
+      This page was set to be reviewed before 29 March 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
