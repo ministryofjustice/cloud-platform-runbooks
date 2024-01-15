@@ -1374,9 +1374,6 @@
         <a href="./tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
       </li>
       <li>
-        <a href="./tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
-      </li>
-      <li>
         <a href="./tips-and-tricks.html#add-more-rss-feeds-to-cloud-platform-rss-channel"><span>Add more RSS feeds to #cloud-platform-rss channel</span></a>
       </li>
       <li>
@@ -1433,7 +1430,7 @@
 <h4 id="2-access-to-the-eks-cluster">2. Access to the EKS cluster</h4>
 <p><a href="https://runbooks.cloud-platform.service.justice.gov.uk/access-eks-cluster.html#access-eks-cluster">Access to the EKS cluster</a></p>
 <h3 id="cluster-configuration">Cluster configuration:</h3>
-<h4 id="cluster-tf"><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/cloud-platform-eks/cluster.tf">cluster.tf</a></h4>
+<h4 id="cluster-tf"><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">cluster.tf</a></h4>
 <p>Use</p>
 <p><code>git crypt unlock</code> to see the following code:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>node_groups_count = {
@@ -1469,17 +1466,17 @@ module has taken. Refer issue <a href="https://github.com/terraform-aws-modules/
 Choose the Node Group you want to edit and Click Edit. Change the desired size and click Save Changes.</p>
 <p>Watch the number of nodes using <code>kubectl get nodes</code>. You should see the new nodes getting created to match the desired size.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-05-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-07-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 November 2023.
+      This page was last reviewed on 15 January 2024.
 
-        It needs to be reviewed again on 20 May 2024
+        It needs to be reviewed again on 15 July 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 May 2024
+      This page was set to be reviewed before 15 July 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

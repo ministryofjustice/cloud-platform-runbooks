@@ -1374,9 +1374,6 @@
         <a href="./tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
       </li>
       <li>
-        <a href="./tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
-      </li>
-      <li>
         <a href="./tips-and-tricks.html#add-more-rss-feeds-to-cloud-platform-rss-channel"><span>Add more RSS feeds to #cloud-platform-rss channel</span></a>
       </li>
       <li>
@@ -1458,9 +1455,7 @@ DONE
 </code></pre></div><h2 id="count-pods-running-on-all-nodes">Count pods running on all nodes</h2>
 <p>Paste this into the search field on <a href="https://prometheus.cloud-platform.service.justice.gov.uk">Prometheus</a>:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>max by(node) (max by(instance) (kubelet_running_pod_count{job="kubelet",metrics_path="/metrics"}) * on(instance) group_left(node) kubelet_node_name{job="kubelet",metrics_path="/metrics"})
-</code></pre></div><h2 id="output-all-records-from-route53-as-a-csv-file">Output all records from Route53 as a CSV file</h2>
-<p>Use <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/bin/route53-to-csv.rb">this script</a></p>
-<h2 id="add-more-rss-feeds-to-cloud-platform-rss-channel">Add more RSS feeds to <code>#cloud-platform-rss</code> channel</h2>
+</code></pre></div><h2 id="add-more-rss-feeds-to-cloud-platform-rss-channel">Add more RSS feeds to <code>#cloud-platform-rss</code> channel</h2>
 <p><code>/feed subscribe &lt;feed address&gt;</code></p>
 <p>There are more slash commands for rss feed which can be used to list, remove and help. Type <code>/feed help</code> in the #cloud-platform-rss` channel to get more details.</p>
 <p>To validate your feed url, test using the <a href="https://validator.w3.org/feed/">w3c validator</a></p>
@@ -1504,17 +1499,17 @@ The common problem with standard OWASP (CRS) is that it gives some <a href="http
 </code></pre></div><p>Some of the common issues and rules are given <a href="https://stackoverflow.com/questions/33989273/modsecurity-excessive-false-positives/34027786#34027786">here</a></p>
 <p>Note: Turning off these rules completely will reduce the effectiveness of ModSecurity, so users should not use same SecRuleRemoveById&rsquo;s across applications, and before turning off any rules, users should make sure the exceptions apply to their particular use case.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-11-21">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-07-12">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 May 2024.
+      This page was last reviewed on 12 January 2024.
 
-        It needs to be reviewed again on 21 November 2024
+        It needs to be reviewed again on 12 July 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 November 2024
+      This page was set to be reviewed before 12 July 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

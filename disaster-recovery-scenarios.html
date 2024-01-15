@@ -1374,9 +1374,6 @@
         <a href="./tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
       </li>
       <li>
-        <a href="./tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
-      </li>
-      <li>
         <a href="./tips-and-tricks.html#add-more-rss-feeds-to-cloud-platform-rss-channel"><span>Add more RSS feeds to #cloud-platform-rss channel</span></a>
       </li>
       <li>
@@ -1569,8 +1566,7 @@ Executing <code>terraform state rm module.starter_pack</code>, will remove all r
 
 Plan: 7 to add, 0 to change, 0 to destroy.
 </code></pre></div><p>In this scenario, terraform state can be restored from the remote_state stored in the terraform backend S3 bucket.</p>
-<p>For example <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components">eks-components</a> state is stored in &ldquo;aws-accounts/cloud-platform-aws/vpc/eks/components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/main.tf/#L5-L14">here-eks</a>.</p>
-<p>or <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/kops/components">kops-components</a> state is stored in &ldquo;aws-accounts/cloud-platform-aws/vpc/kops/components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/kops/components/main.tf/#L1-L11">here-kops</a>.</p>
+<p>For example <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components">eks/components</a> state is stored in &ldquo;aws-accounts/cloud-platform-aws/vpc/eks/components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/main.tf/#L5-L14">here-eks</a>.</p>
 <p>Access the S3 bucket where the effected terraform state is stored. From the list of terraform.tfstate file versions, identify the file before the state got removed and download as terraform.tfstate. Upload the file again, this will set uploaded file as latest version.</p>
 <p>Now running terraform plan will show, infrastructure is up-to-date.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan -target=module.starter_pack

@@ -1374,9 +1374,6 @@
         <a href="./tips-and-tricks.html#count-pods-running-on-all-nodes"><span>Count pods running on all nodes</span></a>
       </li>
       <li>
-        <a href="./tips-and-tricks.html#output-all-records-from-route53-as-a-csv-file"><span>Output all records from Route53 as a CSV file</span></a>
-      </li>
-      <li>
         <a href="./tips-and-tricks.html#add-more-rss-feeds-to-cloud-platform-rss-channel"><span>Add more RSS feeds to #cloud-platform-rss channel</span></a>
       </li>
       <li>
@@ -1509,7 +1506,9 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 <li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/b11b0372fe71289e51739395664355014df0e655">Remove</a> the conditional logic in the apply library.</li>
 </ul>
 <h3 id="infrastructure-state-files">Infrastructure state files</h3>
-<p>The Infrastructure state we have in the Cloud Platform is structured in a tree related to its dependency, so for example, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/cloud-platform-components">components</a> state (in the output below) relies heavily on the directory above and so on. Here is a snapshot of how our directory looks but this is likely to change:</p>
+<p>The Infrastructure state we have in the Cloud Platform is structured in a tree related to its dependency,
+so for example, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components">components</a> state (in the output below) relies heavily on the directory above and so on.
+Here is a snapshot of how our directory looks but this is likely to change:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws-accounts
 ├── cloud-platform-aws
 │   ├── account                  # AWS Account specific configuration.
@@ -1517,7 +1516,6 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 │       ├── eks                  # Holding EKS, workspaces for individual clusters.
 │       │   └── components       # EKS components. Workspaces for individual clusters
 │       └── kops                 # Holding KOPS, workspaces for individual clusters.
-│           └── components       # KOPS components. Workspaces for individual clusters
 ├── cloud-platform-dsd
 │   └── main.tf
 ├── cloud-platform-ephemeral-test
@@ -1525,8 +1523,6 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 │   └── vpc
 │       ├── eks
 │       │   └── components
-│       └── kops
-│           └── components
 └── README.md
 </code></pre></div><h4 id="where-to-start">Where to start</h4>
 <p>Because of the structure outlined above, it&rsquo;s best to start at the components layer and work in.</p>
