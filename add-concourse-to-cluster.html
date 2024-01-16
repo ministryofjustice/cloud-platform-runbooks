@@ -1467,7 +1467,7 @@ terraform plan
 terraform apply -target=module.concourse
 </code></pre></div>
 <ul>
-<li><p>Clone the concourse <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse">repository</a>.</p></li>
+<li><p>Clone the Concourse <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse">repository</a>.</p></li>
 <li><p>Login to Concourse</p></li>
 </ul>
 <p>For this step you will need to authenticate to Concourse using your instance&rsquo;s local username and password. These are stored in the kubernete secret <code>concourse-web</code> in
@@ -1487,6 +1487,10 @@ the <code>concourse</code> namespace, and can be obtained using the <code>cloud-
 <ul>
 <li>Apply your pipeline</li>
 </ul>
+<p>Please do not deploy the bootstrap pipeline in the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/tree/main/pipelines/manager/main">Concourse repository</a> into your test cluster. It is
+for production level deployment and may trigger false alarms to our Slack Channel.</p>
+<p>To ensure an isolated testing environment, please create a new folder on your local machine and start with a simple pipeline. You may use <a href="https://concourse-ci.org/tutorial-hello-world.html">this link</a> as reference
+to deploy the first pipeline into your test cluster and not the one under <code>manager/main</code>.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly --target david-test1 set-pipeline \
     --pipeline plan-pipeline \
     --config pipelines/david-test1/main/plan-environments.yaml
