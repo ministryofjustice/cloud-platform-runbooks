@@ -427,19 +427,16 @@
             <a href="./upgrade-eks-cluster.html#upgrade-eks-terraform-module"><span>Upgrade EKS Terraform Module</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-control-plane"><span>Upgrade Control Plane</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-node-group-s"><span>Upgrade Node Group(s)</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-cluster.html#recycle-all-nodes"><span>Recycle all nodes</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-cluster.html#update-kubectl-version-in-tools-image"><span>Update kubectl version in tools image</span></a>
+            <a href="./upgrade-eks-cluster.html#upgrade-eks-version"><span>Upgrade EKS version</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#upgrade-addon-s"><span>Upgrade addon(s)</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-cluster.html#upgrade-ami-version"><span>Upgrade AMI version</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-cluster.html#recycle-all-nodes"><span>Recycle all nodes</span></a>
           </li>
         </ul>
       </li>
@@ -1423,15 +1420,18 @@
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="upgrade-eks-cluster">Upgrade EKS cluster</h1>
-<p>The Cloud Platform EKS cluster upgrade consists of three distinct parts:</p>
+<p>The Cloud Platform EKS cluster upgrade involves upgrading any of the below:</p>
 
 <ul>
 <li>Upgrade EKS Terraform Module</li>
 <li>Upgrade EKS version (Control Plane and Node Groups)</li>
 <li>Upgrade addon(s)</li>
+<li>Upgrade AMI version</li>
 </ul>
-<p>The Cloud Platform EKS clusters are created using the official <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks</a> module. The EKS version and addons are currently independent of the version of the terraform-aws-eks module.
-Therefore, it will not always require an upgrade of the terraform-aws-eks module and/or the addons whenever there is an upgrade of the EKS version. Please check the changelogs for the terraform-aws-eks module, the EKS version and the addons when planning an upgrade.</p>
+<p>The Cloud Platform EKS clusters are created using the official <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks</a> module.
+The EKS version and addons are currently independent of the version of the terraform-aws-eks module.
+Therefore, it will not always require an upgrade of the terraform-aws-eks module and/or the addons whenever there is an upgrade of the EKS version.
+Please check the changelogs for the terraform-aws-eks module, the EKS version and the addons when planning an upgrade.</p>
 <h2 id="run-the-upgrade-via-the-tools-image">Run the upgrade, via the tools image</h2>
 <p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image.git">tools image</a> has all the software required to run the upgrade.</p>
 <p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure.git">infrastructure repo</a>.</p>
@@ -1450,63 +1450,109 @@ Therefore, it will not always require an upgrade of the terraform-aws-eks module
 </ul>
 <h2 id="upgrade-steps">Upgrade Steps</h2>
 <h3 id="upgrade-eks-terraform-module">Upgrade EKS Terraform Module</h3>
-<p>As mentioned previously; when a new EKS major version is released, it is normally followed by a release of an associated <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks module</a>.</p>
-<p>1) The first step of the EKS upgrade is to identify the corresponding module release with the EKS major version you want to upgrade to. Review the changes in the <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/CHANGELOG.md">changelog</a>. Plan/make any necessary changes or required updates.</p>
+<p>The first step of the EKS moduke upgrade is to identify the major version you want to upgrade to. Review the changes in the <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/CHANGELOG.md">changelog</a>.</p>
 <p>Create a PR in Cloud Platform Infrastructure repository against the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">EKS module</a> making the change to the desired <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks version</a></p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> module "eks" {
    source  = "terraform-aws-modules/eks/aws"
 -  version = "v16.2.0"
 +  version = "v17.1.0"
-</code></pre></div><p>2) Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, run <code>terraform apply</code> to execute the changes.</p>
-<p>Note: When you run <code>terraform plan</code>, if it is only showing launch_template version change as below, executing <code>terraform apply</code> will only create a new template version. For cluster node groups to use the new template version created, you need to run <code>terraform apply</code> again, that will trigger a re-cycle of all the nodes. To avoid the re-cycle of nodes at this stage, we don&rsquo;t run <code>terraform apply</code> until we complete the upgrade of node groups along with updating the template version at a later stage.</p>
+</code></pre></div><p>Based on the changes in the changelog, you can decide if the upgrade is a breaking change or not.</p>
+<h4 id="upgrade-with-no-breaking-changes">Upgrade with no breaking changes</h4>
+
+<ul>
+<li>Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, run <code>terraform apply</code> to execute the changes.</li>
+</ul>
+<p>Note: When you run <code>terraform plan</code>, if it is only showing launch_template version change as below, executing <code>terraform apply</code> will only create a new template version.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  # module.eks.module.node_groups.aws_launch_template.workers["monitoring_ng"] will be updated in-place
   ~ resource "aws_launch_template" "workers" {
       ~ default_version         = 1 -&gt; (known after apply)
       ~ latest_version          = 1 -&gt; (known after apply)
-</code></pre></div><h3 id="upgrade-control-plane">Upgrade Control Plane</h3>
-<p>3) Create a PR in Cloud Platform Infrastructure repository against the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">EKS module</a> making the change to the desired EKS cluster version.</p>
+</code></pre></div><p>For cluster node groups to use the new template version created, you need to run <code>terraform apply</code> again, that will trigger a re-cycle of all the nodes using terraform.
+This can be disruptive and also incur terraform apply timeout. Hence, follow the below steps to update the node groups with the new template version.</p>
+<p>To update the node groups with the new template version:
+ - login to AWS console
+ - select EKS and select the cluster
+ - click on the Compute and select the node group
+ - click on <code>Change launch template version</code> option
+ - select update strategy as <code>force update</code> and Update.</p>
+<p>This will perform a rolling update of all the nodes in the node group. Follow the steps in <a href="#recycle-all-nodes">Recycle all nodes</a> section to recycle all the nodes.</p>
+<h4 id="upgrade-with-breaking-changes">Upgrade with breaking changes</h4>
+<p>Recent EKS module upgrade from 17 to 18 mentioned breaking changes to the resources. Hence, a non-distruptive process of creating new node group, moving terraform state,
+draining the old node group and finally deleting the old node group was followed.</p>
+<p>Detailed steps are mentioned in the <a href="https://docs.google.com/document/d/1Nv1WsqdYMBzjpO8jfmXEqjAY5nZ9GYWUpNNaMJVJyaw/edit?usp=sharing">google doc</a></p>
+<p>Any future upgrades where the terraform plan or the changelog shows breaking changes, the procedure needs to be reviewed and modified based on what the breaking changes are.</p>
+<h3 id="upgrade-eks-version">Upgrade EKS version</h3>
+<h4 id="upgrade-control-plane">Upgrade Control Plane</h4>
+
+<ul>
+<li>Create a PR in Cloud Platform Infrastructure repository against the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">EKS module</a> making the change to the desired EKS cluster version.</li>
+</ul>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> module "eks" {
    source  = "terraform-aws-modules/eks/aws"
 -  cluster_version = "1.14"
 +  cluster_version = "1.15"
 
-</code></pre></div><p>4) Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, perform the upgrade from the AWS Console EKS Control Plane.</p>
-<p>We don&rsquo;t want to run <code>terraform apply</code> to apply the EKS cluster version, as the terraform apply process will take longer and timed out, also to avoid re-cycling of nodes as explained in step 2.</p>
-<p>Once the process is completed, <a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters">AWS Console</a> will confirm the Control Plane is on the correct version.</p>
+</code></pre></div>
+<ul>
+<li>Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, perform the upgrade from the AWS Console EKS Control Plane.
+Once the process is completed, <a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters">AWS Console</a> will confirm the Control Plane is on the correct version.</li>
+</ul>
+<p>Note: We don&rsquo;t want to run <code>terraform apply</code> to apply the EKS cluster version, as this will trigger a re-cycle of all the nodes using terraform. This can be distruptive and also incur terraform apply timeout.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ aws eks describe-cluster --query 'cluster.version' --name manager
 "1.15"
 $
 </code></pre></div><p><a href="../images/aws-eks-upgrade.png" rel="noopener noreferrer"><img src="images/aws-eks-upgrade.png" alt="AWS Console" /></a></p>
-<h3 id="upgrade-node-group-s">Upgrade Node Group(s)</h3>
+<h4 id="upgrade-node-group-s">Upgrade Node Group(s)</h4>
 <p>The easiest way to upgrade node groups is through AWS Console. We advise to follow the official AWS EKS upgrade instructions from the <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html">Updating a Managed Node Group</a> documentation.</p>
 <p>While updating the node group AMI release version, we should also change the launch template version which is created in step 2. To perform both the changes together, select <code>Update Node Group version</code> and  <code>Change launch template version</code> options as shown below. Select update strategy as <code>force update</code>, this does not respect pod disruption budgets and it forces node restarts.</p>
 <p><a href="../images/update-node-group.png" rel="noopener noreferrer"><img src="images/update-node-group.png" alt="Update Node Group" /></a></p>
-<h3 id="recycle-all-nodes">Recycle all nodes</h3>
-<p>When a node group version changes, this will cause all of the nodes to recycle. When AWS recycles the nodes, it will not evict pods if it will break the PDB.
-This will cause the node to stall the update and the nodes will <strong>not</strong> continue to recycle.</p>
-<p>To rectify this, run the script mentioned in <a href="recycle-all-nodes.html#gotchas">Recycle-all-nodes- Gotchas</a> section.</p>
-<h3 id="update-kubectl-version-in-tools-image">Update kubectl version in tools image</h3>
+<p><strong>Testing the upgrade in a test cluster</strong></p>
+<p>Testing the upgrade involves several things and varies depends on the changes involved. Some of the things to consider are:</p>
+
+<ul>
+<li>Run integrations tests</li>
+<li>Monitor Cloudwatch API logs for any failures</li>
+<li>Compare launch template before and after the upgrade and check for any variable changes</li>
+<li>Check for disk space, Ip subnet and IP allocations changes for any IP starvations. This might not be obvious in test cluster, but to monitor when upgrading live</li>
+</ul>
+<h4 id="update-kubectl-version-in-tools-image">Update kubectl version in tools image</h4>
 <p>kubectl is supported within one minor version (older or newer) of the cluster version. Update the kubectl version in the cloud platform
 <a href="https://github.com/ministryofjustice/cloud-platform-tools-image.git">tools image</a> to match the current cluster version.</p>
 <h3 id="upgrade-addon-s">Upgrade addon(s)</h3>
 <p>We have 3 addons managed through cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons">module</a>.</p>
-<p>Refer to the below documents to get the addon version to be used with the EKS major version you just upgraded to.</p>
+<p>Before every EKS major versions, check and upgrade if the addons versions don&rsquo;t match the EKS major version the cluster is currently on.</p>
+<p>After every EKS major versions, check  and upgrade if the addons don&rsquo;t match the EKS major version the cluster you just upgraded to.</p>
+<p>The following addons are managed through cloud-platform-terraform-eks-add-ons [module](</p>
 <p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">managing-kube-proxy</a></p>
 <p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">managing-coredns</a></p>
 <p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">managing-vpc-cni</a></p>
 <p>Create a PR in Cloud Platform Infrastructure repository against the cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L192">module</a> making the changes to the desired addon version’s <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons/blob/main/variables.tf#L28-L44">here</a>. Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, run <code>terraform apply</code> to execute the changes.</p>
+<h3 id="upgrade-ami-version">Upgrade AMI version</h3>
+<p>AWS releases new AMI versions for EKS node groups that include Kubernetes patches and security updates. To upgrade the node groups to use the new AMI version:</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-01-24">
+<ul>
+<li>login to the AWS console</li>
+<li>Select EKS and select the cluster</li>
+<li>Select the node group and click on <code>Update AMI version</code></li>
+<li>Select the Update Strategy to &ldquo;Force update&rdquo; and click on &ldquo;Update&rdquo;</li>
+</ul>
+<p>This will perform a rolling update of all the nodes in the node group. Follow the steps in <a href="#recycle-all-nodes">Recycle all nodes</a> section to recycle all the nodes.</p>
+<h3 id="recycle-all-nodes">Recycle all nodes</h3>
+<p>When a node group version changes, this will cause all of the nodes to recycle. When AWS recycles the nodes, it will not evict pods if it will break the PDB.
+This will cause the node to stall the update and the nodes will <strong>not</strong> continue to recycle.</p>
+<p>To rectify this, run the script mentioned in <a href="recycle-all-nodes.html#gotchas">Recycle-all-nodes- Gotchas</a> section.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2024-04-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 24 October 2023.
+      This page was last reviewed on 16 January 2024.
 
-        It needs to be reviewed again on 24 January 2024
+        It needs to be reviewed again on 16 April 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 24 January 2024
+      This page was set to be reviewed before 16 April 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
