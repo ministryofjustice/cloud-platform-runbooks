@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Manually Delete Namespace Resources - Cloud Platform Runbooks</title>
+    <title>Upgrade EKS addons - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/manually-delete-namespace-resources.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-addons.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Manually Delete Namespace Resources - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/manually-delete-namespace-resources.html" />
+      <meta name="twitter:title" content="Upgrade EKS addons - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-addons.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Manually Delete Namespace Resources" />
+      <meta property="og:title" content="Upgrade EKS addons" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/manually-delete-namespace-resources.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-addons.html" />
 
     
   </head>
@@ -1433,62 +1433,66 @@
 
         <div class="app-pane__content toc-open-disabled">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="manually-delete-namespace-resources">Manually Delete Namespace Resources</h1>
-<p>In the event that you need to manually delete a cloud-platform-environments namespace, for example production namespaces which our
-namespace-deleter pipeline is configured to skip, you can do so by following the steps below.</p>
-<h2 id="prerequisites">Prerequisites</h2>
-<p>Ensure you have the following installed on your machine:</p>
+            <h1 id="upgrade-eks-addons">Upgrade EKS addons</h1>
+<p>We have 3 addons managed through cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons">module</a>.</p>
+<p>Before every EKS major version upgrade, check and upgrade if the addons versions don&rsquo;t match the EKS major version the cluster is currently on.</p>
+<p>After every EKS major versions upgrade, check and upgrade if the addons don&rsquo;t match the EKS major version the cluster you just upgraded to.</p>
+<p>The following addons are managed through cloud-platform-terraform-eks-add-ons module.</p>
+<p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">managing-kube-proxy</a></p>
+<p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">managing-coredns</a></p>
+<p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">managing-vpc-cni</a></p>
+<h2 id="listing-available-eks-upgrades">Listing available EKS upgrades</h2>
+<h3 id="eksctl-install">eksctl Install</h3>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>brew install eksctl
+</code></pre></div><p>Run the following command to get a list of supported addon version for the Kubernetes version.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>eksctl utils describe-addon-versions --kubernetes-version [k8s-version] --name [addon name: kube-proxy/vpc-cni/coredns] | grep AddonVersion
+</code></pre></div><h2 id="preparing-for-upgrade">Preparing for upgrade</h2>
+<p>Check the changelog for each of the addons and determine if there are any breaking changes.</p>
+<p>Create a thread in #cloud-platform notifying the team that upgrades are starting and the pipelines will be paused.</p>
+<h2 id="starting-the-upgrade">Starting the upgrade</h2>
+
+<ol>
+<li>Bump the version number in cloud-platform-terraform-eks-add-ons</li>
+<li>Commit changes on a new branch and create a pull request</li>
+<li>Request review from someone on the team</li>
+<li>Merge pull request and create a new release through the Github UI</li>
+<li>Bump the version number of the cloud-platform-terraform-eks-add-ons in cloud-platform-infrastructure</li>
+<li>Commit changes on a new branch and create a pull request</li>
+<li>Request review from someone on the team</li>
+<li>Check the terraform plan in concourse and pause the following pipelines:
 
 <ul>
-<li>cloud-platform CLI</li>
-<li>kubectl</li>
-<li>terraform CLI</li>
-</ul>
-<h2 id="environment-variables">Environment Variables</h2>
-<p>In addition to having your AWS profile configured, the following environment variables must be set before executing a
-namespace deletion:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>TF_VAR_cluster_name           <span class="c"># e.g. "cp-1902-02" to get the vpc details for some modules like rds, es</span>
-TF_VAR_vpc_name               <span class="c"># e.g. "live-1"</span>
-TF_VAR_eks_cluster_name       <span class="c"># e.g. "live"</span>
-TF_VAR_cluster_state_bucket   <span class="c"># State where the cluster state is stored</span>
-TF_VAR_github_owner           <span class="c"># Github owner: ministryofjustice</span>
-TF_VAR_github_token           <span class="c"># Personal access token with repo scope to push github action secrets</span>
-TF_VAR_kubernetes_cluster     <span class="c"># Full name of the Cluster e.g. XXXXXX.gr7.eu-west2.eks.amazonaws.com</span>
-PINGDOM_API_TOKEN             <span class="c"># API Token to access pingdom</span>
-PIPELINE_TERRAFORM_STATE_LOCK_TABLE <span class="c"># DynamoDB table where the state lock is stored</span>
-PIPELINE_STATE_BUCKET         <span class="c"># State bucket where the environments state is stored e.g cloud-platform-terraform-state</span>
-PIPELINE_STATE_KEY_PREFIX     <span class="c"># State key/ folder where the environments terraform state is stored e.g cloud-platform-environments</span>
-PIPELINE_STATE_REGION         <span class="c"># State region of the bucket e.g. eu-west-1</span>
-PIPELINE_CLUSTER              <span class="c"># Cluster name/folder inside namespaces/ in cloud-platform-environments</span>
-PIPELINE_CLUSTER_STATE        <span class="c"># Cluster name/folder inside the state bucket where the environments terraform state is stored</span>
-PIPELINE_CLUSTER_DIR          <span class="c"># e.g. "live.cloud-platform.service.justice.gov.uk"</span>
-</code></pre></div><p>For specific values, you can refer to the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/environments-live.yaml">Concourse environments-live pipeline</a>
-and its associated secrets.</p>
-<h2 id="deleting-a-namespace">Deleting a namespace</h2>
-<p>The <code>cloud-platform</code> CLI namespace delete command must be executed from the root of the <code>cloud-platform-environments</code> repository. If the
-namespace folder still exists in the environments repository (ie no namespace removal PR has been merged), then the command will abort. Therefore
-ensure that your environments repository is up to date with the latest changes.</p>
-<p>Locate the PR number for the namespace deletion PR, and execute the following command:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environment destroy <span class="se">\</span>
-    <span class="nt">--prNumber</span> <span class="o">[</span>namespace-deletion-PR] <span class="se">\</span>
-    <span class="nt">--cluster</span> arn:aws:eks:eu-west-2:754256621582:cluster/live <span class="se">\</span>
-    <span class="nt">--kubecfg</span> ~/.kube/config <span class="se">\</span>
-    <span class="nt">--clusterdir</span> live.cloud-platform.service.justice.gov.uk <span class="se">\</span>
-    <span class="nt">--skip-prod-destroy</span><span class="o">=</span><span class="nb">true</span>  <span class="c"># Set this flag to false to destroy namespace marked :is-production</span>
-</code></pre></div><p>The command will then destroy all terraform and kubernetes resources associated with the namespace, and finally will delete
-the namespace itself.</p>
+<li>bootstrap</li>
+<li>infrastructure-live</li>
+<li>infrastructure-manager</li>
+<li>infrastructure-live-2</li>
+</ul></li>
+<li>Create an output of the configuration of a pod before the upgrade. <code>kubectl -n kube-system get pod $addon -oyaml</code> there is also a helper <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/scripts/addons-upgrade.bash">script</a>.</li>
+<li>Merge the pull request</li>
+<li>Unpause an infrastructure pipeline and wait for it to complete</li>
+<li>While running:
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-07-16">
+<ul>
+<li>Keep an eye on pods recycling <code>watch -n 1 &quot;kubectl -n kube-system get pods&quot;</code></li>
+<li>Keep an eye on events <code>watch -n 1 &quot;kubectl -n kube-system get events&quot;</code></li>
+</ul></li>
+<li>Run the reporting pipeline on the infrastructure environment</li>
+<li>If everything is green repeat steps 11-14 on each environment.</li>
+</ol>
+<h2 id="finish-the-upgrade">Finish the upgrade</h2>
+<p>Finish up communications and close the thread.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2024-04-24">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 January 2024.
+      This page was last reviewed on 24 January 2024.
 
-        It needs to be reviewed again on 16 July 2024
+        It needs to be reviewed again on 24 April 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 July 2024
+      This page was set to be reviewed before 24 April 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1498,8 +1502,8 @@ the namespace itself.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/manually-delete-namespace-resources.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Manually+Delete+Namespace+Resources%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fmanually-delete-namespace-resources.html%29&amp;labels=bug&amp;title=Re%3A+%27Manually+Delete+Namespace+Resources%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/upgrade-eks-addons.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Upgrade+EKS+addons%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fupgrade-eks-addons.html%29&amp;labels=bug&amp;title=Re%3A+%27Upgrade+EKS+addons%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
