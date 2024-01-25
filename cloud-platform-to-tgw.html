@@ -1457,7 +1457,7 @@ In order to allow the traffic to flow, a new route need to be added to VPC&rsquo
 <li>The same needs to be done on the AP VPC, to route back to CP.</li>
 </ul>
 <h2 id="making-the-change">Making the change</h2>
-<p>All existing routes that are added to live-1 VPC are managed in the github repository, in the <code>route.tf</code> file of the <a href="https://github.com/ministryofjustice/transit-gateways/tree/master/terraform/cloud-platform">transit-gateway-cloud-platform folder</a>.
+<p>All existing routes that are added to live-1 VPC are managed in the github repository, in the <code>route.tf</code> file of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/transit-gateway">transit-gateway-cloud-platform folder</a>.
 Only an admin of the cloud-platform (<code>moj-cp</code>) is able to run that code.</p>
 <p>Here is the snippet to add the VPC CIDR block to the route.tf :</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>pttp_tgw_destination_cidr_blocks = [
@@ -1477,23 +1477,23 @@ Only an admin of the cloud-platform (<code>moj-cp</code>) is able to run that co
 <p>With the current setup, the PTTP TGW is shared with Cloud Platform account. Cloud Platform Transit Gateway account only holds the terraform state in s3 bucket for eu-west-2 region.</p>
 
 <ul>
-<li>Create s3 bucket in CP account, move the state file from transit-gateway account and link the new s3 bucket in the repository</li>
-<li>Move the code from <a href="https://github.com/ministryofjustice/transit-gateways/tree/master/terraform/cloud-platform">transit-gateway-cloud-platform folder</a> repo to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure</a> or similar where CP can have manage with only CP account permissions</li>
+<li>Create s3 bucket in CP account, move the state file from transit-gateway account and link the new s3 bucket in the repository - Done</li>
+<li>Move the code from <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/transit-gateway">transit-gateway-cloud-platform folder</a> repo to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure</a> or similar where CP can have manage with only CP account permissions - DONE</li>
 <li>Create a concourse pipeline to apply the transit-gateway code changes to CP account</li>
 <li>Find a way to test the connection when a new route is added to any of the VPC</li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-04-24">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-07-25">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 24 October 2023.
+      This page was last reviewed on 25 January 2024.
 
-        It needs to be reviewed again on 24 April 2024
+        It needs to be reviewed again on 25 July 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 24 April 2024
+      This page was set to be reviewed before 25 July 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
