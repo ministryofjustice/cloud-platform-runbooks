@@ -37,7 +37,7 @@
         <header class="govuk-header app-header" role="banner" data-module="govuk-header">
   <div class="govuk-header__container govuk-header__container--full-width">
     <div class="govuk-header__logo">
-      <a href="/" class="govuk-header__link govuk-header__link--homepage">
+      <a href="./" class="govuk-header__link govuk-header__link--homepage">
         <span class="govuk-header__product-name">
           Cloud Platform Runbooks
         </span>
@@ -51,7 +51,7 @@
               <a class="govuk-header__link" href="mailto:platforms+runbooks@digital.justice.gov.uk?subject=Runbooks+feedback">Feedback / Report a problem</a>
             </li>
             <li class="govuk-header__navigation-item">
-              <a class="govuk-header__link" href="/">Documentation</a>
+              <a class="govuk-header__link" href="./">Documentation</a>
             </li>
             <li class="govuk-header__navigation-item">
               <a class="govuk-header__link" href="https://github.com/ministryofjustice/cloud-platform/tree/main/runbooks">GitHub</a>
@@ -381,6 +381,17 @@
     </ul>
   </li>
   <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -397,17 +408,6 @@
       </li>
       <li>
         <a href="./changes-in-cloudplatform.html#communications"><span>Communications</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
-    <ul>
-      <li>
-        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -459,22 +459,6 @@
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#recycle-all-nodes"><span>Recycle all nodes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
-    <ul>
-      <li>
-        <a href="./node-group-changes.html#why"><span>Why?</span></a>
-      </li>
-      <li>
-        <a href="./node-group-changes.html#how"><span>How?</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
           </li>
         </ul>
       </li>
@@ -540,6 +524,22 @@
           </li>
           <li>
             <a href="./upgrade-cluster-components.html#performing-the-upgrade"><span>Performing the upgrade</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#why"><span>Why?</span></a>
+      </li>
+      <li>
+        <a href="./node-group-changes.html#how"><span>How?</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
           </li>
         </ul>
       </li>
@@ -924,14 +924,6 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
     <ul>
       <li>
@@ -944,6 +936,14 @@
             <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -1175,6 +1175,9 @@
     </ul>
   </li>
   <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
+  </li>
+  <li>
     <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
     <ul>
       <li>
@@ -1186,25 +1189,22 @@
     </ul>
   </li>
   <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
-  </li>
-  <li>
-    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to a TGW</span></a>
+    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
-        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
       </li>
       <li>
-        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
       </li>
       <li>
-        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
       </li>
       <li>
-        <a href="./cloud-platform-to-tgw.html#adding-live-2-vpc-to-pttp-tgw"><span>Adding live-2 VPC to PTTP TGW</span></a>
+        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
       </li>
       <li>
-        <a href="./cloud-platform-to-tgw.html#moving-away-from-cloud-platform-transit-gateway-account"><span>Moving away from  Cloud Platform Transit Gateway account</span></a>
+        <a href="./joiners-guide.html#access"><span>Access</span></a>
       </li>
     </ul>
   </li>
@@ -1227,22 +1227,22 @@
     </ul>
   </li>
   <li>
-    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
+    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to a TGW</span></a>
     <ul>
       <li>
-        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
+        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
       </li>
       <li>
-        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
+        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
       </li>
       <li>
-        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
+        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
       </li>
       <li>
-        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
+        <a href="./cloud-platform-to-tgw.html#adding-live-2-vpc-to-pttp-tgw"><span>Adding live-2 VPC to PTTP TGW</span></a>
       </li>
       <li>
-        <a href="./joiners-guide.html#access"><span>Access</span></a>
+        <a href="./cloud-platform-to-tgw.html#moving-away-from-cloud-platform-transit-gateway-account"><span>Moving away from  Cloud Platform Transit Gateway account</span></a>
       </li>
     </ul>
   </li>
@@ -1364,6 +1364,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1411,9 +1414,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
     <ul>
       <li>
@@ -1431,7 +1431,7 @@
             </div>
           </div>
 
-        <div class="app-pane__content toc-open-disabled">
+        <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="aws-console-access">AWS Console Access</h1>
 <p>New joiners for Cloud platform team will need AWS Console access for most things. IAM resources (users, groups, roles, etc) are managed by terraform so new users are nothing more than new resources <strong>in terraform</strong>.</p>

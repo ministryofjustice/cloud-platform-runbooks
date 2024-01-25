@@ -37,7 +37,7 @@
         <header class="govuk-header app-header" role="banner" data-module="govuk-header">
   <div class="govuk-header__container govuk-header__container--full-width">
     <div class="govuk-header__logo">
-      <a href="/" class="govuk-header__link govuk-header__link--homepage">
+      <a href="./" class="govuk-header__link govuk-header__link--homepage">
         <span class="govuk-header__product-name">
           Cloud Platform Runbooks
         </span>
@@ -51,7 +51,7 @@
               <a class="govuk-header__link" href="mailto:platforms+runbooks@digital.justice.gov.uk?subject=Runbooks+feedback">Feedback / Report a problem</a>
             </li>
             <li class="govuk-header__navigation-item">
-              <a class="govuk-header__link" href="/">Documentation</a>
+              <a class="govuk-header__link" href="./">Documentation</a>
             </li>
             <li class="govuk-header__navigation-item">
               <a class="govuk-header__link" href="https://github.com/ministryofjustice/cloud-platform/tree/main/runbooks">GitHub</a>
@@ -381,6 +381,17 @@
     </ul>
   </li>
   <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -397,17 +408,6 @@
       </li>
       <li>
         <a href="./changes-in-cloudplatform.html#communications"><span>Communications</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
-    <ul>
-      <li>
-        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -459,22 +459,6 @@
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#recycle-all-nodes"><span>Recycle all nodes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
-    <ul>
-      <li>
-        <a href="./node-group-changes.html#why"><span>Why?</span></a>
-      </li>
-      <li>
-        <a href="./node-group-changes.html#how"><span>How?</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
           </li>
         </ul>
       </li>
@@ -540,6 +524,22 @@
           </li>
           <li>
             <a href="./upgrade-cluster-components.html#performing-the-upgrade"><span>Performing the upgrade</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#why"><span>Why?</span></a>
+      </li>
+      <li>
+        <a href="./node-group-changes.html#how"><span>How?</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
           </li>
         </ul>
       </li>
@@ -924,14 +924,6 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
     <ul>
       <li>
@@ -944,6 +936,14 @@
             <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -1175,6 +1175,9 @@
     </ul>
   </li>
   <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
+  </li>
+  <li>
     <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
     <ul>
       <li>
@@ -1186,25 +1189,22 @@
     </ul>
   </li>
   <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
-  </li>
-  <li>
-    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to a TGW</span></a>
+    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
-        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
       </li>
       <li>
-        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
       </li>
       <li>
-        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
       </li>
       <li>
-        <a href="./cloud-platform-to-tgw.html#adding-live-2-vpc-to-pttp-tgw"><span>Adding live-2 VPC to PTTP TGW</span></a>
+        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
       </li>
       <li>
-        <a href="./cloud-platform-to-tgw.html#moving-away-from-cloud-platform-transit-gateway-account"><span>Moving away from  Cloud Platform Transit Gateway account</span></a>
+        <a href="./joiners-guide.html#access"><span>Access</span></a>
       </li>
     </ul>
   </li>
@@ -1227,22 +1227,22 @@
     </ul>
   </li>
   <li>
-    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
+    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to a TGW</span></a>
     <ul>
       <li>
-        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
+        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
       </li>
       <li>
-        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
+        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
       </li>
       <li>
-        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
+        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
       </li>
       <li>
-        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
+        <a href="./cloud-platform-to-tgw.html#adding-live-2-vpc-to-pttp-tgw"><span>Adding live-2 VPC to PTTP TGW</span></a>
       </li>
       <li>
-        <a href="./joiners-guide.html#access"><span>Access</span></a>
+        <a href="./cloud-platform-to-tgw.html#moving-away-from-cloud-platform-transit-gateway-account"><span>Moving away from  Cloud Platform Transit Gateway account</span></a>
       </li>
     </ul>
   </li>
@@ -1364,6 +1364,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1411,9 +1414,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
     <ul>
       <li>
@@ -1431,7 +1431,7 @@
             </div>
           </div>
 
-        <div class="app-pane__content toc-open-disabled">
+        <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="incident-log">Incident Log</h1>
 
@@ -1474,14 +1474,14 @@
 <li>2023-09-20 10:00 Team updated the fix on manager and later on live cluster</li>
 <li>2023-09-20 12:30 Started draining the old node group</li>
 <li>2023-09-20 15:04 There was some increased pod state of “ContainerCreating”</li>
-<li>2023-09-20 15:25 There was increased number of <code>&quot;failed to assign an IP address to container&quot; eni error</code>. Checked the CNI logs <code>Unable to get IP address from CIDR: no free IP available in the prefix</code> Understood that this might be because of IP Prefix starving and some are freed when draining old nodes. </li>
+<li>2023-09-20 15:25 There was increased number of <code>&quot;failed to assign an IP address to container&quot; eni error</code>. Checked the CNI logs <code>Unable to get IP address from CIDR: no free IP available in the prefix</code> Understood that this might be because of IP Prefix starving and some are freed when draining old nodes.</li>
 <li>2023-09-20 19:18 All nodes drained and No pods are in errored state. The initial issue of disk space issue is resolved</li>
 </ul></li>
 <li><p><strong>Resolution</strong>:</p>
 
 <ul>
 <li>Team identified that the disk space was reduced from 100Gb to 20Gb as part of EKS Module version 18 change</li>
-<li>Identified the code changes to launch template and applied the fix </li>
+<li>Identified the code changes to launch template and applied the fix</li>
 </ul></li>
 <li><p><strong>Review actions</strong>:</p>
 
@@ -1530,13 +1530,13 @@
 
 <ul>
 <li>Team identified that the latest version of fluent-bit has changes to the chunk drop strategy</li>
-<li>Implemented a fix to handle memory buffer overflow by writing to the file system and handling flush logs into smaller chunks </li>
+<li>Implemented a fix to handle memory buffer overflow by writing to the file system and handling flush logs into smaller chunks</li>
 </ul></li>
 <li><p><strong>Review actions</strong>:</p>
 
 <ul>
 <li>Push notifications from logging clusters to #lower-priority-alerts <a href="https://github.com/ministryofjustice/cloud-platform/issues/4704">#4704</a></li>
-<li>Add integration test to check that logs are being sent to the logging cluster </li>
+<li>Add integration test to check that logs are being sent to the logging cluster</li>
 </ul></li>
 </ul>
 <h3 id="incident-on-2023-07-25-15-21-prometheus-on-live-cluster-down">Incident on 2023-07-25 15:21 - Prometheus on live cluster DOWN</h3>
@@ -1558,7 +1558,7 @@
 
 <ul>
 <li>2023-07-25 14:05 - PagerDuty High Priority alert from Pingdom that Prometheus - live healthcheck is DOWN. Team acknowledged and checked the state of the Prometheus server. Prometheus errored for Rule evaluation and Exit code 137</li>
-<li>2023-07-25 14:09: Prometheus pod is in terminating state </li>
+<li>2023-07-25 14:09: Prometheus pod is in terminating state</li>
 <li>2023-07-25 14:17: The node where prometheus is running went to Not Ready state</li>
 <li>2023-07-25 14:22: Drain the monitoring node which moved the prometheus to the another monitoring node</li>
 <li>2023-07-25 14:56: After moving to new node the prometheus restarted just after coming back and put the node to Node Ready State</li>
@@ -1567,7 +1567,7 @@
 <li>2023-07-25 15:21: Incident declared. https://mojdt.slack.com/archives/C514ETYJX/p1690294889724869</li>
 <li>2023-07-25 15:31: Changed the instance size to <code>r6i.4xlarge</code></li>
 <li>2023-07-25 15:50: Still the Prometheus restarted after running. Team found the recent prometheus pod was terminated with OOMKilled. Increased the memory limits 100Gi</li>
-<li>2023-07-25 16:18: Updated the prometheus container limits:CPU - 12 core and 110 Gi Memory to accommodate the resource need for prometheus </li>
+<li>2023-07-25 16:18: Updated the prometheus container limits:CPU - 12 core and 110 Gi Memory to accommodate the resource need for prometheus</li>
 <li>2023-07-25 16:18: Incident repaired</li>
 <li>2023-07-05 16:18: Incident resolved</li>
 </ul></li>
@@ -1601,11 +1601,11 @@
 <li><p><strong>Context</strong>:</p>
 
 <ul>
-<li>2023-07-21 08:15 - User reported of seeing issues with new deployments (stuck with ContainerCreating) </li>
+<li>2023-07-21 08:15 - User reported of seeing issues with new deployments (stuck with ContainerCreating)</li>
 <li>2023-07-21 09:00 - Team started to put together the list of all effected namespaces</li>
 <li>2023-07-21 09:31 - Incident declared</li>
 <li>2023-07-21 09:45 - Team identified that the issue was affected 6 nodes and added new nodes and and began to cordon/drain affected nodes</li>
-<li>2023-07-21 12:35 - Compared cni settings on a 1.23 test cluster with live and found a setting was different </li>
+<li>2023-07-21 12:35 - Compared cni settings on a 1.23 test cluster with live and found a setting was different</li>
 <li>2023-07-21 12:42 - Set the command to enable Prefix Delegation on the live cluster</li>
 <li>2023-07-21 12:42 - Incident repaired</li>
 <li>2023-07-21 12:42 - Incident resolved</li>
@@ -1657,14 +1657,14 @@
 <li><p><strong>Resolution</strong>:</p>
 
 <ul>
-<li>When the node instance type is changed, the nodes are recycled all at a time. This caused the pods to be deleted all at once. </li>
-<li>Raised a ticket with AWS asking the steps to update the node instance type without causing outage to the services. </li>
+<li>When the node instance type is changed, the nodes are recycled all at a time. This caused the pods to be deleted all at once.</li>
+<li>Raised a ticket with AWS asking the steps to update the node instance type without causing outage to the services.</li>
 <li>The instance type update is performed through terraform, hence the team will have to comeup with a plan and update runbook to perform these changes without downtime.</li>
 </ul></li>
 <li><p><strong>Review actions</strong>:</p>
 
 <ul>
-<li>Add a runbook for the steps to perform when changing the node instance type </li>
+<li>Add a runbook for the steps to perform when changing the node instance type</li>
 </ul></li>
 </ul>
 <h2 id="q1-2023-january-march">Q1 2023 (January-March)</h2>
@@ -1693,17 +1693,17 @@
 <ul>
 <li>2023-02-02 10:14: <a href="https://moj-digital-tools.pagerduty.com/incidents/Q01V8OZ44WU4EX?utm_campaign=channel&amp;utm_source=slack">CPU-Critical alert</a></li>
 <li>2023-02-02 10:21: Cloudp Platform Team supporting with CJS deployment and noticed that the CJS team increased the pod count and requested more resources causing the CPU critical alert.</li>
-<li>2023-02-02 10:21 <strong>Incident is declared</strong>. </li>
+<li>2023-02-02 10:21 <strong>Incident is declared</strong>.</li>
 <li>2023-02-02 10:22 War room started.</li>
-<li>2023-02-02 10:25 Cloud Platform noticed that the CJS team have 100 replicas for their deployment and many CJS pods started crash looping, this is due to the Descheduler service <strong>RemoveDuplicates</strong> strategy plugin making sure that there is only one pod associated with a ReplicaSet running on the same node. If there are more, those duplicate pods are evicted for better spreading of pods in a cluster. </li>
+<li>2023-02-02 10:25 Cloud Platform noticed that the CJS team have 100 replicas for their deployment and many CJS pods started crash looping, this is due to the Descheduler service <strong>RemoveDuplicates</strong> strategy plugin making sure that there is only one pod associated with a ReplicaSet running on the same node. If there are more, those duplicate pods are evicted for better spreading of pods in a cluster.</li>
 <li>The live cluster has 60 nodes as desired capacity. As CJS have 100 ReplicaSet for their deployment, Descheduler started terminating the duplicate CJS pods scheduled on the same node. The restart of multiple CJS pods caused the CPU hike.</li>
 <li>2023-02-02 10:30 Cloud Platform team scaled down Descheduler to stop terminating CJS pods.</li>
 <li>2023-02-02 10:37 CJS Dash team planned to roll back a caching change they made around 10 am that appears to have generated the spike.</li>
 <li>2023-02-02 10:38 Decision made to Increase node count to 60 from 80, to support the CJS team with more pods and resources.</li>
 <li>2023-02-02 10:40 Autoscaling group bumped up to 80 - to resolve the CPU critical. Descheduler is scaled down to 0 to accommodate multiple pods on a node.</li>
-<li>2023-02-02 10:44 Resolved status for CPU-Critical high-priority alert. </li>
+<li>2023-02-02 10:44 Resolved status for CPU-Critical high-priority alert.</li>
 <li>2023-02-02 11:30 Performance has steadied.</li>
-<li>2023-02-02 11:36 <strong>Incident is resolved</strong>. </li>
+<li>2023-02-02 11:36 <strong>Incident is resolved</strong>.</li>
 </ul></li>
 <li><p><strong>Resolution</strong>:</p>
 
@@ -1715,7 +1715,7 @@
 <li><p><strong>Review actions</strong>:</p>
 
 <ul>
-<li>Create an OPA policy to not allow deployment ReplicaSet greater than an agreed number by the cloud-platform team. </li>
+<li>Create an OPA policy to not allow deployment ReplicaSet greater than an agreed number by the cloud-platform team.</li>
 <li>Update the user guide to mention related to OPA policy.</li>
 <li>Update the user guide to request teams to speak to the cloud-platform team before if teams are planning to apply deployments which need large resources like pod count, memory and CPU so the cloud-platform team is aware and provides the necessary support.</li>
 </ul></li>
@@ -1757,13 +1757,13 @@
 Check execution error: kuberhealthy/daemonset: error when waiting for pod to start: ErrImagePull
 </code></pre></div>
 <ul>
-<li>2023-01-11 14:53 dockerconfig node update requirement identified </li>
+<li>2023-01-11 14:53 dockerconfig node update requirement identified</li>
 <li>2023-01-11 14:54 user reports <code>ErrImagePull</code> when creating port-forward pods affecting at least two namespaces.</li>
 <li>2023-01-11 14:56 EKS cluster DockerHub password updated in <code>cloud-platform-infrastructure</code></li>
 <li>2023-01-11 15:01 Concourse plan of password update reveals launch-template will be updated, suggesting node recycle.</li>
-<li>2023-01-11 15:02 Decision made to update password in live-2 cluster to determine whether a node recycle will be required </li>
+<li>2023-01-11 15:02 Decision made to update password in live-2 cluster to determine whether a node recycle will be required</li>
 <li>2023-01-11 15:11 Comms distributed in #cloud-platform-update and #ask-cloud-platform.</li>
-<li>2023-01-11 15:17 Incident is declared. </li>
+<li>2023-01-11 15:17 Incident is declared.</li>
 <li>2023-01-11 15:17 J Birchall assumes incident lead and scribe roles.</li>
 <li>2023-01-11 15:19 War room started</li>
 <li>2023-01-11 15:28 Confirmation that password update will force node recycles across live &amp; manager clusters.</li>
@@ -1771,7 +1771,7 @@ Check execution error: kuberhealthy/daemonset: error when waiting for pod to sta
 <li>2023-01-11 15:40 DockerHub password changed back to previous value.</li>
 <li>2023-01-11 15:46 Check-in with reporting user that pod is now deploying - answer is yes.</li>
 <li>2023-01-11 15:50 Cluster image pulling observed to be working again.</li>
-<li>2023-01-11 15:51 Incident is resolved </li>
+<li>2023-01-11 15:51 Incident is resolved</li>
 <li>2023-01-11 15:51 Noted that live-2 is now set with invalid dockerconfig; no impact on users.</li>
 <li><p>2023-01-11 16:50 comms distributed in #cloud-platform-update.</p>
 
@@ -1996,7 +1996,7 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li><p><strong>Resolution</strong>:</p>
 
 <ul>
-<li>external-dns was trying to restore the DNS records, but it was receiving errors when writing, due to <a href="external-dns.alpha.kubernetes.io/aws-weight">missing annotations</a> in an unrelated ingress. Manually adding the annotations restored the DNS.</li>
+<li>external-dns was trying to restore the DNS records, but it was receiving errors when writing, due to missing annotations (external-dns.alpha.kubernetes.io/aws-weight) in an unrelated ingress. Manually adding the annotations restored the DNS.</li>
 </ul></li>
 <li><p><strong>Review actions</strong>:</p>
 
@@ -2554,7 +2554,7 @@ divergence pipeline shows drift for live-1 components</p></li>
 <li>One of the engineers was creating a test EKS cluster and ran <code>terraform apply</code> on EKS components</li>
 <li>Without fully aware of the current cluster context, the <code>terraform apply</code> for EKS test cluster components has been applied to the <code>live-1</code> kops cluster</li>
 <li>This has changed the configuration of several resources in the <code>live-1</code> cluster</li>
-<li>Timeline : <a href="https://docs.google.com/document/d/1VrABxeHLMOnoM4yYoCi9N4N4zRY1SK1hTjrZ9s05zuc/edit?usp=sharing">https://docs.google.com/document/d/1VrABxeHLMOnoM4yYoCi9N4N4zRY1SK1hTjrZ9s05zuc/edit?usp=sharing</a></li>
+<li>Timeline: <a href="https://docs.google.com/document/d/1VrABxeHLMOnoM4yYoCi9N4N4zRY1SK1hTjrZ9s05zuc/edit?usp=sharing">https://docs.google.com/document/d/1VrABxeHLMOnoM4yYoCi9N4N4zRY1SK1hTjrZ9s05zuc/edit?usp=sharing</a></li>
 <li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1596621864015400">https://mojdt.slack.com/archives/C514ETYJX/p1596621864015400</a>,</li>
 </ul></li>
 <li><p><strong>Resolution</strong>:
@@ -2588,9 +2588,9 @@ Compare each resource configuration with the terraform state and applied the cor
 
 <ul>
 <li>After an upgrade of the Nginx Helm chart v1.24.0 to v1.35</li>
-<li>The current version of Nginx has deprecated support for TLS &lt;1.3</li>
-<li>The issue was spotted on IE11 browsers.</li>
-<li>Timeline : <a href="https://docs.google.com/document/d/1SCf1WT82IlBYWozWN_FXZqL5h0KUcul_QAkxE84YDw0/edit?usp=sharing">https://docs.google.com/document/d/1SCf1WT82IlBYWozWN_FXZqL5h0KUcul_QAkxE84YDw0/edit?usp=sharing</a></li>
+<li>The current version of Nginx has deprecated support for TLS 1.3 and lower</li>
+<li>The issue was spotted on IE11 browsers</li>
+<li>Timeline: <a href="https://docs.google.com/document/d/1SCf1WT82IlBYWozWN_FXZqL5h0KUcul_QAkxE84YDw0/edit?usp=sharing">https://docs.google.com/document/d/1SCf1WT82IlBYWozWN_FXZqL5h0KUcul_QAkxE84YDw0/edit?usp=sharing</a></li>
 <li>Slack thread: <a href="https://mojdt.slack.com/archives/C57UPMZLY/p1586954463298700">https://mojdt.slack.com/archives/C57UPMZLY/p1586954463298700</a></li>
 </ul></li>
 <li><p><strong>Resolution</strong>:
@@ -2659,7 +2659,7 @@ The <code>kube-system</code> namespace has a label, <code>openpolicyagent.org/we
 <li>There seemed to be an issue preventing requests to reach the prometheus pods.</li>
 <li>Disk space and other resources, the usual suspects, were ruled out as the cause.</li>
 <li>The domain name amd ingress were both valid.</li>
-<li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1582035803248800">https://mojdt.slack.com/archives/C514ETYJX/p1582035803248800</a></li>
+<li>Slack thread: <https: mojdt.slack.com archives C514ETYJX p1582035803248800></li>
 </ul></li>
 <li><p><strong>Resolution</strong>:
 We suspect an intermittent &amp; external networking issue to be the cause of this outage.</p></li>
@@ -2681,7 +2681,7 @@ We suspect an intermittent &amp; external networking issue to be the cause of th
 
 <ul>
 <li>One of the engineers was deleting old clusters (he ran <code>terraform destroy</code>) and he wasn&rsquo;t fully aware in which <em>terraform workspace</em> was working on. Using <code>terraform destroy</code>, EKS nodes/workers were deleted from the manager cluster.</li>
-<li>Slack thread: <a href="https://mojdt.slack.com/archives/C514ETYJX/p1581508273080900">https://mojdt.slack.com/archives/C514ETYJX/p1581508273080900</a></li>
+<li>Slack thread: <https: mojdt.slack.com archives C514ETYJX p1581508273080900></li>
 <li><strong>Resolution</strong>: Using terraform (<code>terraform apply -var-file vars/manager.tfvars</code> specifically) the cluster nodes where created and the infrastructure aligned? to the desired terraform state</li>
 </ul></li>
 </ul>
@@ -2722,8 +2722,8 @@ We suspect an intermittent &amp; external networking issue to be the cause of th
 <li><h2 id="context"><strong>Context</strong>:</h2>
 
 <ul>
-<li>Timeline: <a href="url%20of%20google%20document">Timeline</a> for the incident</li>
-<li>Slack thread: <a href="url%20of%20primary%20incident%20thread">Slack thread</a> for the incident.</li>
+<li>Timeline: <code>[Timeline](url of google document)</code> for the incident</li>
+<li>Slack thread: <code>[Slack thread](url of primary incident thread)</code> for the incident.</li>
 </ul></li>
 <li><h2 id="resolution"><strong>Resolution</strong>:</h2></li>
 <li><h2 id="review-actions"><strong>Review actions</strong>:</h2></li>
