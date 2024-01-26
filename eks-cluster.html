@@ -465,6 +465,22 @@
     </ul>
   </li>
   <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#why"><span>Why?</span></a>
+      </li>
+      <li>
+        <a href="./node-group-changes.html#how"><span>How?</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
     <ul>
       <li>
@@ -524,22 +540,6 @@
           </li>
           <li>
             <a href="./upgrade-cluster-components.html#performing-the-upgrade"><span>Performing the upgrade</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
-    <ul>
-      <li>
-        <a href="./node-group-changes.html#why"><span>Why?</span></a>
-      </li>
-      <li>
-        <a href="./node-group-changes.html#how"><span>How?</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
           </li>
         </ul>
       </li>
@@ -1040,6 +1040,32 @@
     </ul>
   </li>
   <li>
+    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
+    <ul>
+      <li>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./eks-cluster.html"><span>Provisioning EKS clusters</span></a>
     <ul>
       <li>
@@ -1061,9 +1087,6 @@
             <a href="./eks-cluster.html#3-deploy-components"><span>3. Deploy components</span></a>
           </li>
         </ul>
-      </li>
-      <li>
-        <a href="./eks-cluster.html#creating-a-live-like-test-cluster"><span>Creating a live like test cluster</span></a>
       </li>
     </ul>
   </li>
@@ -1435,7 +1458,7 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="provisioning-eks-clusters">Provisioning EKS clusters</h1>
 <p><strong>IMPORTANT:</strong> All cluster&rsquo;s names <strong>must be globally unique</strong>. Each one creates a unique Route53 hostzone which is unique to the name</p>
-<p>You can create a new EKS test cluster using the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/create-cluster">cluster build pipeline</a>.</p>
+<p>You can create a new EKS test cluster using the [cluster build pipeline].</p>
 <p>Alternatively, if you want to create a cluster manually, follow the steps below.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 
@@ -1518,27 +1541,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
 terraform workspace new &lt;WorkspaceName&gt;
 terraform apply
-</code></pre></div><h2 id="creating-a-live-like-test-cluster">Creating a live like test cluster</h2>
-<p>When testing clusteer upgrades, it is useful to test the procedure which is as close to the live cluster as possible. The following steps will update an existing test cluster
-to the configuration similar to the live cluster.</p>
-<p><strong>Pre-requisites:</strong></p>
-
-<ul>
-<li>a test cluster created using the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/create-cluster">cluster build pipeline</a> or manually</li>
-<li>The environment variables and pre-requisites as described <a href="#pre-requisites">above</a></li>
-</ul>
-<p><strong>Steps:</strong></p>
-
-<ul>
-<li>Update the node group desired count to same as live cluster (say 50) in the console. The terraform way of applying doesnt work for desired count</li>
-<li>Set the node_groups_count to same as live cluster (say 64) and default_ng_min_count to 50 in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf</a></li>
-<li>Apply the terraform code changes to the test cluster</li>
-<li>cd to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components">terraform/aws-accounts/cloud-platform-aws/vpc/eks/components</a> and enable ecr-exporter, cloudwatch_exporter, velero, overprovisioner and other components that are installed specific to live cluster</li>
-<li>Apply the terraform code changes to the test cluster</li>
-<li>Update the starter pack count to 40 and apply the terraform code changes to the test cluster</li>
-<li>Setup pingdom alerts for starter-pack helloworld app</li>
-</ul>
-
+</code></pre></div>
               <div data-module='page-expiry' data-last-reviewed-on="2024-04-16">
     <div class='page-expiry--not-expired'>
       This page was last reviewed on 16 January 2024.
