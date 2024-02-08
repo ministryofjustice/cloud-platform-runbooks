@@ -389,6 +389,17 @@
     </ul>
   </li>
   <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -409,13 +420,33 @@
     </ul>
   </li>
   <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <a href="./upgrade-eks-cluster.html"><span>Upgrade EKS cluster</span></a>
     <ul>
       <li>
-        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
+        <a href="./upgrade-eks-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+        <a href="./upgrade-eks-cluster.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-eks-cluster.html#compatibility-check"><span>Compatibility Check</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-cluster.html#preparing-for-upgrade"><span> Preparing for upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-cluster.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-cluster.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-cluster.html#finishing-the-upgrade"><span>Finishing the upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-cluster.html#finishing-touches"><span>Finishing touches</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -431,44 +462,13 @@
         </ul>
       </li>
       <li>
-        <a href="./upgrade-eks-addons.html#preparing-for-upgrade"><span>Preparing for upgrade</span></a>
+        <a href="./upgrade-eks-addons.html#upgrade-eks-addons-preparing-for-upgrade"><span>Preparing for upgrade</span></a>
       </li>
       <li>
-        <a href="./upgrade-eks-addons.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
+        <a href="./upgrade-eks-addons.html#upgrade-eks-addons-starting-the-upgrade"><span>Starting the upgrade</span></a>
       </li>
       <li>
         <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-eks-cluster.html"><span>Upgrade EKS cluster</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-eks-cluster.html#run-the-upgrade-via-the-tools-image"><span>Run the upgrade, via the tools image</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-cluster.html#upgrade-steps"><span>Upgrade Steps</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-eks-terraform-module"><span>Upgrade EKS Terraform Module</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-eks-version"><span>Upgrade EKS version</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-addon-s"><span>Upgrade addon(s)</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-ami-version"><span>Upgrade AMI version</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-cluster.html#recycle-all-nodes"><span>Recycle all nodes</span></a>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -495,22 +495,6 @@
           </li>
           <li>
             <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
-    <ul>
-      <li>
-        <a href="./node-group-changes.html#why"><span>Why?</span></a>
-      </li>
-      <li>
-        <a href="./node-group-changes.html#how"><span>How?</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
           </li>
         </ul>
       </li>
@@ -554,16 +538,18 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
     <ul>
       <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+        <a href="./node-group-changes.html#why"><span>Why?</span></a>
       </li>
       <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
+        <a href="./node-group-changes.html#how"><span>How?</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -575,6 +561,20 @@
       </li>
       <li>
         <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -872,6 +872,38 @@
     </ul>
   </li>
   <li>
+    <a href="./resolve-opensearch-shard-issues.html"><span>Open search best practices</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-shard-issues.html#some-general-info-about-shards"><span>Some general info about shards</span></a>
+      </li>
+      <li>
+        <a href="./resolve-opensearch-shard-issues.html#freestoragespacetoolow-alerts"><span>FreeStorageSpaceTooLow alerts</span></a>
+        <ul>
+          <li>
+            <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-elastic-search-api"><span>Connecting to the Elastic search api</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-opensearch-api"><span>Connecting to the OpenSearch api</span></a>
+        <ul>
+          <li>
+            <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
     <ul>
       <li>
@@ -884,14 +916,6 @@
             <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -926,30 +950,6 @@
         <ul>
           <li>
             <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./resolve-opensearch-shard-issues.html"><span>Open search best practices</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-shard-issues.html#some-general-info-about-shards"><span>Some general info about shards</span></a>
-      </li>
-      <li>
-        <a href="./resolve-opensearch-shard-issues.html#freestoragespacetoolow-alerts"><span>FreeStorageSpaceTooLow alerts</span></a>
-        <ul>
-          <li>
-            <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-elastic-search-api"><span>Connecting to the Elastic search api</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="./resolve-opensearch-shard-issues.html#connecting-to-the-opensearch-api"><span>Connecting to the OpenSearch api</span></a>
-        <ul>
-          <li>
-            <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
           </li>
         </ul>
       </li>
@@ -1048,32 +1048,6 @@
     </ul>
   </li>
   <li>
-    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
-    <ul>
-      <li>
-        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./eks-cluster.html"><span>Provisioning EKS clusters</span></a>
     <ul>
       <li>
@@ -1095,6 +1069,32 @@
             <a href="./eks-cluster.html#3-deploy-components"><span>3. Deploy components</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
+    <ul>
+      <li>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
       </li>
     </ul>
   </li>
@@ -1206,40 +1206,6 @@
     </ul>
   </li>
   <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
-    <ul>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#moving-away-from-the-old-cloud-platform-transit-gateway-account"><span>Moving away from the old Cloud Platform Transit Gateway account</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
-  </li>
-  <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
     <ul>
       <li>
@@ -1274,6 +1240,40 @@
       </li>
       <li>
         <a href="./joiners-guide.html#access"><span>Access</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
+  </li>
+  <li>
+    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
+    <ul>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#moving-away-from-the-old-cloud-platform-transit-gateway-account"><span>Moving away from the old Cloud Platform Transit Gateway account</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
   </li>
@@ -1395,6 +1395,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1442,9 +1445,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
     <ul>
       <li>
@@ -1477,12 +1477,7 @@
 The EKS version and addons are currently independent of the version of the terraform-aws-eks module.
 Therefore, it will not always require an upgrade of the terraform-aws-eks module and/or the addons whenever there is an upgrade of the EKS version.
 Please check the changelogs for the terraform-aws-eks module, the EKS version and the addons when planning an upgrade.</p>
-<h2 id="run-the-upgrade-via-the-tools-image">Run the upgrade, via the tools image</h2>
-<p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image.git">tools image</a> has all the software required to run the upgrade.</p>
-<p>Start from the root directory of a working copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure.git">infrastructure repo</a>.</p>
-<p>With your environment variables set, launch a bash shell on the tools image:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
-</code></pre></div><h2 id="pre-requisites">Pre-requisites</h2>
+<h2 id="pre-requisites">Pre-requisites</h2>
 <p>Before you begin, there are a few pre-requisites:</p>
 
 <ul>
@@ -1494,98 +1489,88 @@ Please check the changelogs for the terraform-aws-eks module, the EKS version an
 <li><p>Run <a href="https://github.com/doitintl/kube-no-trouble">kubent</a> against cluster to find deprecated APIs.</p></li>
 </ul>
 <h2 id="upgrade-steps">Upgrade Steps</h2>
-<h3 id="upgrade-eks-terraform-module">Upgrade EKS Terraform Module</h3>
-<p>The first step of the EKS moduke upgrade is to identify the major version you want to upgrade to. Review the changes in the <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/CHANGELOG.md">changelog</a>.</p>
-<p>Create a PR in Cloud Platform Infrastructure repository against the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">EKS module</a> making the change to the desired <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks version</a></p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> module "eks" {
-   source  = "terraform-aws-modules/eks/aws"
--  version = "v16.2.0"
-+  version = "v17.1.0"
-</code></pre></div><p>Based on the changes in the changelog, you can decide if the upgrade is a breaking change or not.</p>
-<h4 id="upgrade-with-no-breaking-changes">Upgrade with no breaking changes</h4>
+<h3 id="compatibility-check">Compatibility Check</h3>
+<p>The following areas need to be looked into to determine if there&rsquo;s any additional preparation work to do:</p>
 
 <ul>
-<li>Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, run <code>terraform apply</code> to execute the changes.</li>
+<li>Kubernetes API Deprecations/Removals</li>
+<li>EKS module</li>
+<li>EKS addons</li>
+<li>Components</li>
 </ul>
-<p>Note: When you run <code>terraform plan</code>, if it is only showing launch_template version change as below, executing <code>terraform apply</code> will only create a new template version.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  # module.eks.module.node_groups.aws_launch_template.workers["monitoring_ng"] will be updated in-place
-  ~ resource "aws_launch_template" "workers" {
-      ~ default_version         = 1 -&gt; (known after apply)
-      ~ latest_version          = 1 -&gt; (known after apply)
-</code></pre></div><p>For cluster node groups to use the new template version created, you need to run <code>terraform apply</code> again, that will trigger a re-cycle of all the nodes using terraform.
-This can be disruptive and also incur terraform apply timeout. Hence, follow the below steps to update the node groups with the new template version.</p>
-<p>To update the node groups with the new template version:
- - login to AWS console
- - select EKS and select the cluster
- - click on the Compute and select the node group
- - click on <code>Change launch template version</code> option
- - select update strategy as <code>force update</code> and Update.</p>
-<p>This will perform a rolling update of all the nodes in the node group. Follow the steps in <a href="#recycle-all-nodes">Recycle all nodes</a> section to recycle all the nodes.</p>
-<h4 id="upgrade-with-breaking-changes">Upgrade with breaking changes</h4>
-<p>Recent EKS module upgrade from 17 to 18 mentioned breaking changes to the resources. Hence, a non-distruptive process of creating new node group, moving terraform state,
-draining the old node group and finally deleting the old node group was followed.</p>
-<p>Detailed steps are mentioned in the <a href="https://docs.google.com/document/d/1Nv1WsqdYMBzjpO8jfmXEqjAY5nZ9GYWUpNNaMJVJyaw/edit?usp=sharing">google doc</a></p>
-<p>Any future upgrades where the terraform plan or the changelog shows breaking changes, the procedure needs to be reviewed and modified based on what the breaking changes are.</p>
-<h3 id="upgrade-eks-version">Upgrade EKS version</h3>
-<h4 id="upgrade-control-plane">Upgrade Control Plane</h4>
+<p>Tools:</p>
+<p>For Kubernetes API deprecations or removals you can use <a href="https://github.com/doitintl/kube-no-trouble">kubent</a> and <a href="https://github.com/FairwindsOps/pluto">pluto</a> to scan the cluster and find if there are any resources impacted in upcoming releases.</p>
+<p>From the AWS console you can also see &ldquo;Upgrade Insights&rdquo; which has a break down of API deprecations and removals. You can drill down into specific versions and see the resources effected. In particular, the User Agent
+field here can be useful for tracking down API calling services.</p>
+
+<blockquote>
+<p>Sometimes the User Agent ID isn&rsquo;t clear enough to immediately identify where the resource is effected, if this is the case it&rsquo;s worth cross checking components or helm chart versions. Additionally, you can head
+over to CloudWatch &gt; Log groups &gt; /aws/eks/[cluster-name] and view the <code>kube-apiserver-audit</code> logs, and filter by the <code>userAgent</code> field, which can help determine the source of the API calls.</p>
+</blockquote>
+<p>Users will need to be notified if their resources are affected by API deprecations or removals.</p>
+<h3 id="preparing-for-upgrade"> Preparing for upgrade</h3>
+<p>Communication is an important part of the upgrade procedure, make sure to update <code>#ask-cloud-platform</code> and <code>#cloud-platform-update</code> when commencing the upgrade. Create a thread in <code>#cloud-platform</code> to keep the team updated on the current status of the upgrade.</p>
+<p>Pause the following pipelines:</p>
 
 <ul>
-<li>Create a PR in Cloud Platform Infrastructure repository against the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">EKS module</a> making the change to the desired EKS cluster version.</li>
+<li>bootstrap</li>
+<li>infrastructure-live</li>
+<li>infrastructure-live-2</li>
+<li>infrastructure-manager</li>
 </ul>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> module "eks" {
-   source  = "terraform-aws-modules/eks/aws"
--  cluster_version = "1.14"
-+  cluster_version = "1.15"
+<p>Update <code>cluster.tf</code> in <code>cloud-platform-infrastructure</code> with the version of Kubernetes you are upgrading to.</p>
+<p>Run a <code>tf plan</code> against the cluster your upgrading to check to see if everything is expected, the only changes should be to resources relating to the the version upgrade.</p>
 
-</code></pre></div>
-<ul>
-<li>Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, perform the upgrade from the AWS Console EKS Control Plane.
-Once the process is completed, <a href="https://eu-west-2.console.aws.amazon.com/eks/home?region=eu-west-2#/clusters">AWS Console</a> will confirm the Control Plane is on the correct version.</li>
-</ul>
-<p>Note: We don&rsquo;t want to run <code>terraform apply</code> to apply the EKS cluster version, as this will trigger a re-cycle of all the nodes using terraform. This can be distruptive and also incur terraform apply timeout.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ aws eks describe-cluster --query 'cluster.version' --name manager
-"1.15"
-$
-</code></pre></div><p><a href="../images/aws-eks-upgrade.png" rel="noopener noreferrer"><img src="images/aws-eks-upgrade.png" alt="AWS Console" /></a></p>
-<h4 id="upgrade-node-group-s">Upgrade Node Group(s)</h4>
-<p>The easiest way to upgrade node groups is through AWS Console. We advise to follow the official AWS EKS upgrade instructions from the <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html">Updating a Managed Node Group</a> documentation.</p>
-<p>While updating the node group AMI release version, we should also change the launch template version which is created in step 2. To perform both the changes together, select <code>Update Node Group version</code> and  <code>Change launch template version</code> options as shown below. Select update strategy as <code>force update</code>, this does not respect pod disruption budgets and it forces node restarts.</p>
-<p><a href="../images/update-node-group.png" rel="noopener noreferrer"><img src="images/update-node-group.png" alt="Update Node Group" /></a></p>
-<p><strong>Testing the upgrade in a test cluster</strong></p>
-<p>Testing the upgrade involves several things and varies depends on the changes involved. Some of the things to consider are:</p>
+<blockquote>
+<p><strong>IMPORTANT:</strong> Do not run <code>tf apply</code> this will most likely time out and fail. Upgrades are manually carried out through the AWS Console.</p>
+</blockquote>
+<h3 id="monitoring-the-upgrade">Monitoring the upgrade</h3>
+<p>Before you start the upgrade it is useful to have a few monitoring resources up and running so you can catch any issues quickly.</p>
+<p><a href="https://k9scli.io/">k9s</a> is a useful tool to have open in a few terminal windows, the following views are helpful:</p>
 
 <ul>
-<li>Run integrations tests</li>
-<li>Monitor Cloudwatch API logs for any failures</li>
-<li>Compare launch template before and after the upgrade and check for any variable changes</li>
-<li>Check for disk space, Ip subnet and IP allocations changes for any IP starvations. This might not be obvious in test cluster, but to monitor when upgrading live</li>
+<li>nodes - see nodes recycling and coming up with new version</li>
+<li>events - check to see if there are any errors</li>
+<li>pods - you can use vim style searching to see pods in <code>Error</code> state.</li>
 </ul>
-<h4 id="update-kubectl-version-in-tools-image">Update kubectl version in tools image</h4>
-<p>kubectl is supported within one minor version (older or newer) of the cluster version. Update the kubectl version in the cloud platform
-<a href="https://github.com/ministryofjustice/cloud-platform-tools-image.git">tools image</a> to match the current cluster version.</p>
-<h3 id="upgrade-addon-s">Upgrade addon(s)</h3>
-<p>We have 3 addons managed through cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons">module</a>.</p>
-<p>Before every EKS major versions, check and upgrade if the addons versions don&rsquo;t match the EKS major version the cluster is currently on.</p>
-<p>After every EKS major versions, check  and upgrade if the addons don&rsquo;t match the EKS major version the cluster you just upgraded to.</p>
-<p>The following addons are managed through cloud-platform-terraform-eks-add-ons module.</p>
-<p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">managing-kube-proxy</a></p>
-<p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">managing-coredns</a></p>
-<p><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">managing-vpc-cni</a></p>
-<p>Create a PR in Cloud Platform Infrastructure repository against the cloud-platform-terraform-eks-add-ons <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L192">module</a> making the changes to the desired addon version’s <a href="https://github.com/ministryofjustice/cloud-platform-terraform-eks-add-ons/blob/main/variables.tf#L28-L44">here</a>. Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, run <code>terraform apply</code> to execute the changes.</p>
-<h3 id="upgrade-ami-version">Upgrade AMI version</h3>
-<p>AWS releases new AMI versions for EKS node groups that include Kubernetes patches and security updates. To upgrade the node groups to use the new AMI version:</p>
-
-<ul>
-<li>login to the AWS console</li>
-<li>Select EKS and select the cluster</li>
-<li>Select the node group and click on <code>Update AMI version</code></li>
-<li>Select the Update Strategy to &ldquo;Force update&rdquo; and click on &ldquo;Update&rdquo;</li>
-</ul>
-<p>This will perform a rolling update of all the nodes in the node group. Follow the steps in <a href="#recycle-all-nodes">Recycle all nodes</a> section to recycle all the nodes.</p>
-<h3 id="recycle-all-nodes">Recycle all nodes</h3>
 <p>When a node group version changes, this will cause all of the nodes to recycle. When AWS recycles the nodes, it will not evict pods if it will break the PDB.
 This will cause the node to stall the update and the nodes will <strong>not</strong> continue to recycle.</p>
-<p>To rectify this, run the script mentioned in <a href="recycle-all-nodes.html#gotchas">Recycle-all-nodes- Gotchas</a> section.</p>
+<p>To rectify this, run the script mentioned in <a href="recycle-all-nodes.html#gotchas">Recycle-all-nodes Gotchas</a> section.</p>
+<p><a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15d,to:now))&amp;_a=(columns:!(_source),filters:!(),index:'1f29f240-00eb-11ec-8a38-954e9fb3b0ba',interval:auto,query:(language:kuery,query:'%22failed%20to%20assign%20an%20IP%20address%20to%20container%22'),sort:!())">This</a> kibana dashboard is used to monitor the IP assignment for pods when they are rescheduled. If there is a spike in errors then the could be a starvation of IP address while scheduling pods.</p>
+<h3 id="starting-the-upgrade">Starting the upgrade</h3>
+<p>As with preparing for the upgrade communication is really important, keep the thread in <code>#cloud-platform</code> up to date as much as possible.</p>
+<h4 id="increasing-coredns-pods">Increasing coredns pods</h4>
+<p>To ensure that coredns stays up and running during the cluster upgrade replications should be scaled up to 10.</p>
+<h4 id="upgrading-the-control-pane">Upgrading the control pane</h4>
+<p>Log in to the AWS console and select the EKS cluster we&rsquo;re going to upgrade.</p>
+<p>In the top right corner there should be a button called <code>Upgrade now</code>, click that and ensure the correct Kubernetes version is selected then press <code>Update</code>.</p>
+<p>Control pane updates usually take 10 minutes to run.</p>
+<h4 id="upgrading-the-monitoring-node-group">Upgrading the monitoring node group</h4>
+<p>From the cluster control panel select <code>Compute</code> tab.</p>
+<p>Select <code>Upgrade now</code> next to the monitoring node group.</p>
+<p>For update strategy select &ldquo;Force update&rdquo;</p>
+<p>Click <code>Update</code></p>
+<h4 id="upgrading-the-default-node-group">Upgrading the default node group</h4>
+<p>From the cluster control panel select <code>Compute</code> tab.</p>
+<p>Select <code>Upgrade now</code> next to the monitoring node group.</p>
+<p>For update strategy select &ldquo;Force update&rdquo;</p>
+<p>Click <code>Update</code></p>
+<p>Once the upgrade has completed notify the Slack channels.</p>
+<h3 id="finishing-the-upgrade">Finishing the upgrade</h3>
+<p>Create a new pull request in the <code>cloud-platform-infrastructure</code> repo with the updated version strings.</p>
+<p>Unpause the following pipelines in this order and check to make sure no changes are present:</p>
+
+<ol>
+<li>infrastructure-live-2</li>
+<li>infrastructure-manager</li>
+<li>infrastructure-live</li>
+</ol>
+<p>If there are no changes for terraform shown in each pipeline then the PR can be merged in.</p>
+<p>Unpause the bootstrap pipeline.</p>
+<p>Scale down the coredns pods.</p>
+<h3 id="finishing-touches">Finishing touches</h3>
+<p>The <code>kubectl</code> version in the <code>cloud-platform-cli</code> and <code>cloud-platform-tools-image</code> needs updating to match the current Kubernetes version.</p>
+<p>Documentation used as part of the upgrade should be reviewed and refined if needed.</p>
 
               <div data-module='page-expiry' data-last-reviewed-on="2024-04-24">
     <div class='page-expiry--not-expired'>
