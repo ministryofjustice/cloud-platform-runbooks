@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Upgrade Terraform Version - Cloud Platform Runbooks</title>
+    <title>Container Images used by Cluster Components - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/container-images.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Upgrade Terraform Version - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
+      <meta name="twitter:title" content="Container Images used by Cluster Components - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/container-images.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Upgrade Terraform Version" />
+      <meta property="og:title" content="Container Images used by Cluster Components" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/container-images.html" />
 
     
   </head>
@@ -591,7 +591,7 @@
         <a href="./container-images.html#calico-system"><span>calico-system</span></a>
       </li>
       <li>
-        <a href="./container-images.html#container-images-used-by-cluster-components-cert-manager"><span>cert-manager</span></a>
+        <a href="./container-images.html#cert-manager"><span>cert-manager</span></a>
       </li>
       <li>
         <a href="./container-images.html#concourse"><span>concourse</span></a>
@@ -1531,137 +1531,582 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="upgrade-terraform-version">Upgrade Terraform Version</h1>
-<h2 id="introduction">Introduction</h2>
-<p>The intention of this document is to provide you with a method to upgrade the Terraform version used in state across the MoJ Cloud Platform. This document won&rsquo;t go into detail on how to perform each task, as each upgrade will require different levels of attention.</p>
-<h2 id="recommendations">Recommendations</h2>
-
-<ul>
-<li>Install <a href="https://github.com/tfutils/tfenv">tfenv</a> to allow you to switch between Terraform versions.</li>
-</ul>
-<h2 id="caveats">Caveats</h2>
-<p>This document was originally written following the Terraform 0.13 to 0.14 upgrade, it&rsquo;s worth noting this was the best course of action for that particular upgrade. Over time this document will evolve and the process of upgrading will improve.</p>
-<h2 id="how-to-perform-the-upgrade-divide-and-conquer">How to perform the upgrade - divide and conquer</h2>
-<p>As the Cloud Platform team have decided to use a <a href="https://patrickleet.medium.com/mono-repo-or-multi-repo-why-choose-one-when-you-can-have-both-e9c77bd0c668">multi-repository</a> approach to Terraform modules it means we have a large distributed code base you&rsquo;ll be required to amend. This section of the guide will suggest an approach to break this work down and tackle it section by section. At a high level we have two Terraform state monoliths managed within the same state bucket:</p>
-
-<ul>
-<li>Cloud Platform Environments (referred to as &ldquo;Environments&rdquo; throughout this document). This holds tenant (user) state, things like a Kubernetes namespace or RDS instance.</li>
-<li>Cloud Platform Infrastructure (referred to as &ldquo;Infrastructure&rdquo; throughout this document). This state represents everything required to build an MoJ Cloud Platform Kubernetes cluster, and it&rsquo;s accompanying components.</li>
-</ul>
-<p>Each of the sections above require individual action, outlined below.</p>
-<p>Note - Not all Terraform upgrades require you to make a change to the code base.</p>
-<h3 id="before-the-upgrade">Before the upgrade</h3>
-<p>There are three recommended tasks required before upgrading Terraform.</p>
-<h4 id="check-for-warnings-and-notices">Check for warnings and notices</h4>
-<p>Terraform is good at warning end users of deprecations in future releases. Check the output of a Terraform init/validation/plan for messages of deprecations of resources that will disappear in future releases. For example, this message appeared in our Environments apply pipeline:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>Warning: Interpolation-only expressions are deprecated
-
-  on .terraform/modules/example_team_es/main.tf line 104, <span class="k">in </span>data <span class="s2">"aws_iam_policy_document"</span> <span class="s2">"elasticsearch_role_snapshot_policy"</span>:
-</code></pre></div><p>It is recommended to act on these messages and look for how and why it&rsquo;s being deprecated.</p>
-<h4 id="read-the-release-notes-carefully">Read the release notes carefully</h4>
-<p>This sounds simple enough but it is vitally important you understand what <a href="https://github.com/hashicorp/terraform/blob/main/CHANGELOG.md">changes</a> are being made to your Terraform state.</p>
-<h4 id="remove-any-test-clusters">Remove any test clusters</h4>
-<p>After upgrading to a new version of Terraform you don&rsquo;t want test clusters lying around using the old version. Remove any test clusters before upgrading the Infrastructure state.</p>
-<h3 id="environments-state-files">Environments state files</h3>
-<p>The <a href="https://github.com/ministryofjustice/cloud-platform-environments">cloud-platform-environments</a> repository contains directories for every namespace in the MoJ Cloud Platform, for each namespace there is a single Terraform state file stored in an S3 bucket. As there are so many state files it is recommended to perform the following:</p>
-<h4 id="use-the-quot-apply-quot-pipeline">Use the &ldquo;apply&rdquo; pipeline</h4>
-<p>We currently use a <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform/jobs/apply-live">concourse pipeline</a> to <code>terraform init/apply</code> everything in the cloud-platform-environments GitHub repository. This pipeline has a number of environment variables that allow it to communicate with the state bucket and amend the necessary state file. Use this pipeline to make amendments to any state in this repository.</p>
-<h4 id="upgrade-the-tools-image">Upgrade the tools image</h4>
-<p>Add your new Terraform version to the <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">cloud-platform-tools</a> image along with the old version. This will allow you to run both versions simultaneously. You can see how this has been achieved <a href="https://github.com/ministryofjustice/cloud-platform-tools-image/commit/9d042e2fe2a5e15e992e9dbbd403fafd3098c10d">previously</a>.</p>
-<h4 id="add-conditional-logic">Add conditional logic</h4>
-<p>Add an if statement to the apply library that checks the version outlined in each <code>versions.tf</code> file in a namespace. Previously, this was achieved by simply making the <code>terraform</code> command <a href="https://github.com/ministryofjustice/cloud-platform-environments/pull/4366/files">variable</a>. This conditional logic allows you to upgrade the state slowly, ensuring you don&rsquo;t have issues in non-production namespaces before you upgrade production.</p>
-<h4 id="upgrade-all-terraform-modules">Upgrade all Terraform modules</h4>
-<p>Not all Terraform upgrades require this, but in 0.12 and 0.13 you were required to change some syntax in your code base. This can be a fairly tricky task as we maintain over 50 Terraform modules. Terraform does provide a <code>terraform upgrade</code> tool if a syntax change is required, but this will need to be executed against all modules and a new release created. This can be tedious if performed manually so there is some <a href="https://github.com/ministryofjustice/cloud-platform-terraform-upgrade">Go code</a> that does this on your behalf.</p>
-<p>Using the example of upgrading to Terraform 0.13, the following was executed:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-git-xargs
-go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span>
-</code></pre></div><p>The code will pull down every repository in the &ldquo;ministryofjustice&rdquo; organisation with the name that contains &ldquo;cloud-platform-terraform&rdquo; and run the command &ldquo;terraform 0.13upgrade&rdquo;. It will then commit and create a Pull Request against each repository using your GitHub credentials.</p>
-<p>This will result in a Pull Request output similar to the one outlined <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/pull/85/files">here</a>.</p>
-<p>Once all the Pull Requests have been reviewed, merge them into main and create a new release.</p>
-<p>Note: Terraform will release an <a href="https://www.terraform.io/docs/cli/commands/0.13upgrade">upgrade</a> command for each release that contains syntax changes, in the example above 0.13upgrade was used to create a more detailed <code>versions.tf</code>.</p>
-<h4 id="upgrade-a-test-namespace">Upgrade a test namespace</h4>
-<p>It is difficult to test an upgrade on the Environments state, this is the best way to do so, with examples.</p>
-
-<ul>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/ad452137912a667c67c6ed065209eb2a92b85a7e#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Create</a> a test namespace in the cloud-platform-environments repository called <code>abdundance-namespace-dev</code> (will probably be the first namespace applied).</li>
-<li>Add every resource available using the release before the Terraform upgrade work above, i.e. RDS, S3 (a full list can be found <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/README.md#our-core-repos">here</a>).</li>
-<li>Create a pull request and then merge to main.</li>
-</ul>
-<p>When the above resources are successfully built:</p>
-
-<ul>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/2769a63f88117865440e60abe5ee0dc6e64e0761#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Bump</a> all of your resources to the latest, containing the Terraform upgrade.</li>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/2298836af43290e0bdb8020ffd2033703260fc51#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Change</a> the version in versions.tf in the cloud-platform-environments to reflect the new version.</li>
-<li>Create a Pull Request against main.</li>
-<li>Monitor possible changes in the plan. It should require no changes.</li>
-<li>If you&rsquo;re happy with the output of the plan pipeline, merge it into main.</li>
-</ul>
-<h4 id="upgrade-all-non-production-namespaces">Upgrade all non-production namespaces</h4>
-<p>When you&rsquo;re happy to begin upgrading users namespaces run the upgrade command against the cloud-platform-environments repository or upgrade all namespaces manually.</p>
-<p>If you decide to use the tool above then perform the following:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
-go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-environments"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span> <span class="nt">--no-commit</span>
-<span class="nb">cd </span>repositories
-</code></pre></div><p>The <code>no-commit</code> argument pulls down the required repository and stores it in a directory called &lsquo;repositories&rsquo;, it then runs the upgrade against all namespaces but doesn&rsquo;t commit the changes. You&rsquo;ll want to pick and choose which namespaces to commit to ensure you&rsquo;re happy. I&rsquo;d recommend creating a new branch and commiting the non-production namespaces only, i.e. any namespace that isn&rsquo;t &ldquo;-prod&rdquo;.</p>
-<p>Create a pull request against main and watch the plan pipeline once more. Again this should be clean.</p>
-<p>If the plan applies no changes and you&rsquo;re happy, merge this into main.</p>
-<h4 id="upgrade-all-production-namespaces">Upgrade all production namespaces</h4>
-<p>Perform the above on all production namespaces.</p>
-<h4 id="tidying-up">Tidying up</h4>
-<p>When all namespaces in the cloud-platform-environments repository are using the new version of Terraform you can begin to clean-up any changes you&rsquo;ve made.</p>
-
-<ul>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-tools-image/commit/3827ea89a95cf78146812a0275b40f3c2d20ed21">Remove</a> the multiple Terraform binaries from the cloud-platform-tools image, leaving only the new version.</li>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/b11b0372fe71289e51739395664355014df0e655">Remove</a> the conditional logic in the apply library.</li>
-</ul>
-<h3 id="infrastructure-state-files">Infrastructure state files</h3>
-<p>The Infrastructure state we have in the Cloud Platform is structured in a tree related to its dependency,
-so for example, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components">components</a> state (in the output below) relies heavily on the directory above and so on.
-Here is a snapshot of how our directory looks but this is likely to change:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws-accounts
-├── cloud-platform-aws
-│   ├── account                  # AWS Account specific configuration.
-│   └── vpc                  # VPC creation. Workspaces for individual clusters
-│       ├── eks                  # Holding EKS, workspaces for individual clusters.
-│       │   └── components       # EKS components. Workspaces for individual clusters
-│       └── kops                 # Holding KOPS, workspaces for individual clusters.
-├── cloud-platform-dsd
-│   └── main.tf
-├── cloud-platform-ephemeral-test
-│   ├── account
-│   └── vpc
-│       ├── eks
-│       │   └── components
-└── README.md
-</code></pre></div><h4 id="where-to-start">Where to start</h4>
-<p>Because of the structure outlined above, it&rsquo;s best to start at the components layer and work in.</p>
-<h4 id="run-terraform-init-validate">Run terraform init/validate</h4>
-<p>Using a tool such as tf-switch, switch to your new version and perform the command <code>terraform init -backend=false</code>. The output of this command will give you a general idea of what needs to change before your perform the upgrade. the <code>-backend=false</code> ensures the state isn&rsquo;t touched.</p>
-<h4 id="infrastructure-state-files-upgrade-all-terraform-modules">Upgrade all Terraform modules</h4>
-<p>Like the Environments, you need to ensure all Terraform modules will work with the new Terraform version. If there is a syntax change, it&rsquo;s recommended to run the <code>terraform upgrade</code> command on all repositories that contain &ldquo;cloud-platform-terraform&rdquo;. Either perform this manually or:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
-go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"&lt;insert upgrade command here&gt;"</span>
-</code></pre></div><p>Which will perform the upgrade command on each repository containing &ldquo;cloud-platform-terraform&rdquo; in the name and then create a Pull Request.</p>
-<h4 id="ensure-all-quot-third-party-quot-modules-conform">Ensure all &ldquo;third-party&rdquo; modules conform</h4>
-<p>We use a number of third party Terraform modules (modules we don&rsquo;t control), these mainly belong to AWS, so it&rsquo;s important that you update the version of these modules and ensure it works with the Terraform version you&rsquo;re upgrading to. <a href="https://github.com/ministryofjustice/cloud-platform-terraform-monitoring/commit/ce9fb73249775c8efe09020d3db7c96ccb9ef251">Here&rsquo;s</a> an example of a change to a third party module.</p>
-<h4 id="perform-terraform-init-validate-manually">Perform terraform init/validate manually</h4>
-<p>With all the leg work complete, you can now perform a Terraform upgrade. We do have a pipeline that can do this on your behalf but I&rsquo;d recommend manually performing a <code>terraform init &amp;&amp; terraform apply</code>.</p>
-<h4 id="work-inwards">Work inwards</h4>
-<p>When you complete the upgrade on the directory/state you&rsquo;ve chosen, e.g. components, then you can work on the directory above and perform the same steps as outlined.</p>
-<h4 id="upgrade-the-cloud-platform-cli-image">Upgrade the cloud-platform-cli image</h4>
-<p>Finally, following the successful upgrade to your new Terraform version, upgrade the version of Terraform used in the cloud-platform-cli docker image.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2024-05-20">
+            <h1 id="container-images-used-by-cluster-components">Container Images used by Cluster Components</h1>
+<p>Ths runbook contains the list of container images used by the Cloud Platform components.</p>
+<h2 id="how-to-update-this-runbook">How to update this runbook</h2>
+<h3 id="latest-version-for-k8s-1-26">Latest version for k8s 1.26</h3>
+<p>The latest versions of some of the components might not be compatible with k8s 1.26. For this, click the link to check the Compatibility Matrix</p>
+<h3 id="latest-version-available">Latest version available</h3>
+<p>Thats the latest version available in the public repository. Update the version when there is a new release. You can find the latest version by clicking on the link or by checking the
+<a href="https://reports.cloud-platform.service.justice.gov.uk/helm_whatup">reports</a> page</p>
+<h3 id="urgency">Urgency</h3>
+<p>This depends on several factors, some of them are:
+- the kubernetes version has been updated and the version currently used or no longer supported
+- the component is not working as expected and the latest version might fix the issue
+- the component is 1 major version behind and more than 3 minor versions behind</p>
+<p>🟢 - low, OK to leave for now</p>
+<p>🟠 - medium, within the next 2 sprints/4 weeks</p>
+<p>🔴 - urgent, within this sprint</p>
+<h2 id="calico-apiserver">calico-apiserver</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>docker.io/calico/apiserver:v3.25.0</td>
+<td>🟢</td>
+<td><a href="https://docs.tigera.io/calico/latest/getting-started/kubernetes/requirements#kubernetes-requirements">v3.27.0</a></td>
+<td><a href="https://github.com/projectcalico/calico/releases/tag/v3.27.0">v3.27.0</a></td>
+<td><a href="https://github.com/tigera/operator/releases/tag/v1.33.0">v1.33.0</a></td>
+</tr>
+        </table>
+      </div><h2 id="calico-system">calico-system</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>docker.io/calico/csi:v3.25.0</td>
+<td>🟢</td>
+<td><a href="https://docs.tigera.io/calico/latest/getting-started/kubernetes/requirements#kubernetes-requirements">v3.27.0</a></td>
+<td><a href="https://github.com/projectcalico/calico/releases/tag/v3.27.0">v3.27.0</a></td>
+<td><a href="https://github.com/tigera/operator/releases/tag/v1.33.0">v1.33.0</a></td>
+</tr><tr>
+<td>docker.io/calico/kube-controllers:v3.25.0</td>
+<td>🟢</td>
+<td>v3.27.0</td>
+<td><a href="https://github.com/projectcalico/calico/releases/tag/v3.27.0">v3.27.0</a></td>
+<td><a href="https://github.com/tigera/operator/releases/tag/v1.33.0">v1.33.0</a></td>
+</tr><tr>
+<td>docker.io/calico/node-driver-registrar:v3.25.0</td>
+<td>🟢</td>
+<td>v3.27.0</td>
+<td><a href="https://github.com/projectcalico/calico/releases/tag/v3.27.0">v3.27.0</a></td>
+<td><a href="https://github.com/tigera/operator/releases/tag/v1.33.0">v1.33.0</a></td>
+</tr><tr>
+<td>docker.io/calico/node:v3.25.0</td>
+<td>🟢</td>
+<td>v3.27.0</td>
+<td><a href="https://github.com/projectcalico/calico/releases/tag/v3.27.0">v3.27.0</a></td>
+<td><a href="https://github.com/tigera/operator/releases/tag/v1.33.0">v1.33.0</a></td>
+</tr><tr>
+<td>docker.io/calico/typha:v3.25.0</td>
+<td>🟢</td>
+<td>v3.27.0</td>
+<td><a href="https://github.com/projectcalico/calico/releases/tag/v3.27.0">v3.27.0</a></td>
+<td><a href="https://github.com/tigera/operator/releases/tag/v1.33.0">v1.33.0</a></td>
+</tr>
+        </table>
+      </div><h2 id="cert-manager">cert-manager</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>quay.io/jetstack/cert-manager-cainjector:v1.13.1</td>
+<td>🟢</td>
+<td><a href="https://cert-manager.io/docs/releases/#currently-supported-releases">v1.14.2</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
+</tr><tr>
+<td>quay.io/jetstack/cert-manager-controller:v1.13.1</td>
+<td>🟢</td>
+<td><a href="https://cert-manager.io/docs/releases/#currently-supported-releases">v1.14.2</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
+</tr><tr>
+<td>quay.io/jetstack/cert-manager-webhook:v1.13.1</td>
+<td>🟢</td>
+<td><a href="https://cert-manager.io/docs/releases/#currently-supported-releases">v1.14.2</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
+</tr>
+        </table>
+      </div><h2 id="concourse">concourse</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>concourse/concourse:7.7.0</td>
+<td>🟠</td>
+<td><a href="https://github.com/concourse/concourse/releases">v7.11.0</a></td>
+<td><a href="https://github.com/concourse/concourse/releases">v7.11.0</a></td>
+<td><a href="https://github.com/concourse/concourse-chart/releases/tag/v17.3.1">v17.3.1</a></td>
+</tr>
+        </table>
+      </div><h2 id="external-secrets-operator">external-secrets-operator</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>ghcr.io/external-secrets/external-secrets:v0.8.1</td>
+<td>🟢</td>
+<td><a href="https://external-secrets.io/latest/introduction/stability-support/#supported-versions">v0.9.12</a></td>
+<td><a href="https://github.com/external-secrets/external-secrets/releases/tag/v0.9.12">v0.9.12</a></td>
+<td><a href="https://github.com/external-secrets/external-secrets/releases/tag/helm-chart-0.9.12">v0.9.12</a></td>
+</tr>
+        </table>
+      </div><h2 id="gatekeeper-system">gatekeeper-system</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>openpolicyagent/gatekeeper:v3.13.0:</td>
+<td>🟢</td>
+<td>v3.15.0</td>
+<td><a href="https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.15.0">v3.15.0</a></td>
+<td><a href="https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.15.0">v3.15.0</a></td>
+</tr>
+        </table>
+      </div><h2 id="ingress-controllers">ingress-controllers</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>debian:bookworm-slim</td>
+<td>🟢</td>
+<td>latest</td>
+<td>n/a</td>
+<td></td>
+</tr><tr>
+<td>fluent/fluent-bit:2.1.8-amd64</td>
+<td>🟢</td>
+<td>v2.2.2</td>
+<td><a href="https://github.com/fluent/fluent-bit/releases/tag/v2.2.2">v2.2.2</a></td>
+<td>n/a</td>
+</tr><tr>
+<td>ministryofjustice/cloud-platform-custom-error-pages:0.6</td>
+<td>🟠</td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">managed by us</a></td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">managed by us</a></td>
+<td>n/a</td>
+</tr><tr>
+<td>registry.k8s.io/ingress-nginx/controller:v1.8.4</td>
+<td>🟢</td>
+<td><a href="https://github.com/kubernetes/ingress-nginx?tab=readme-ov-file#supported-versions-table">v1.9.6</a></td>
+<td><a href="https://github.com/kubernetes/ingress-nginx/releases/tag/controller-v1.9.6">v1.9.6</a></td>
+<td><a href="https://github.com/kubernetes/ingress-nginx/tree/main/charts/ingress-nginx">v4.9.1</a></td>
+</tr>
+        </table>
+      </div><h2 id="kube-system">kube-system</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon-k8s-cni:v1.15.3-eksbuild.1</td>
+<td>🟢</td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.16.2-eksbuild.1</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.16.2-eksbuild.1</a></td>
+<td>n/a</td>
+</tr><tr>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon/aws-network-policy-agent:v1.0.7-eksbuild.1</td>
+<td>🟢</td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.0.7-eksbuild.1</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.0.7-eksbuild.1</a></td>
+<td>n/a</td>
+</tr><tr>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/coredns:v1.9.3-eksbuild.11</td>
+<td>🟢</td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">v1.9.3-eksbuild.11</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">v1.11.1-eksbuild.6</a></td>
+<td>n/a</td>
+</tr><tr>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/kube-proxy:v1.25.15-minimal-eksbuild.2</td>
+<td>🟠</td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">v1.26.12-eksbuild.2</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">v1.29.0-eksbuild.3</a></td>
+<td>n/a</td>
+</tr><tr>
+<td>amazon/aws-efs-csi-driver:v1.4.0</td>
+<td>🟠</td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform/issues/4877#issuecomment-1779717151">????</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.5">v1.7.5</a></td>
+<td>n/a</td>
+</tr><tr>
+<td>docker.io/bitnami/external-dns:0.12.2-debian-11-r22</td>
+<td>🟠</td>
+<td>v0.14.x</td>
+<td><a href="https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.14.0">v0.14.x</a></td>
+<td><a href="https://github.com/bitnami/charts/blob/main/bitnami/external-dns/Chart.yaml#L11">v0.14.x</a></td>
+</tr><tr>
+<td>public.ecr.aws/ebs-csi-driver/aws-ebs-csi-driver:v1.24.0</td>
+<td>🟠</td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver?tab=readme-ov-file#compatibility">v1.27.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
+</tr><tr>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/external-attacher:v4.4.0-eks-1-28-6</td>
+<td>🟢</td>
+<td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v4.5.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
+</tr><tr>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/external-provisioner:v2.1.1-eks-1-18-13</td>
+<td>🟠</td>
+<td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.3">v4.0.0</a></td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform/issues/4877#issuecomment-1779717151">#4877</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.3">v4.0.0</a></td>
+</tr><tr>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/external-provisioner:v3.5.0-eks-1-28-6</td>
+<td>🟢</td>
+<td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v4.0.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
+</tr><tr>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/external-resizer:v1.9.0-eks-1-28-6</td>
+<td>🟢</td>
+<td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v1.10.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
+</tr><tr>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/livenessprobe:v2.10.0-eks-1-28-6</td>
+<td>🟢</td>
+<td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v2.12.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
+</tr><tr>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/livenessprobe:v2.2.0-eks-1-18-13</td>
+<td>🟠</td>
+<td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v2.12.0</a></td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform/issues/4877#issuecomment-1779717151">#4877</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.3">v4.0.0</a></td>
+</tr><tr>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/node-driver-registrar:v2.1.0-eks-1-18-13</td>
+<td>🟠</td>
+<td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v2.10.0</a></td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform/issues/4877#issuecomment-1779717151">#4877</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.3">v4.0.0</a></td>
+</tr><tr>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/node-driver-registrar:v2.9.0-eks-1-28-6</td>
+<td>🟢</td>
+<td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v2.10.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
+</tr><tr>
+<td>registry.k8s.io/autoscaling/cluster-autoscaler:v1.25.3</td>
+<td>🔴</td>
+<td><a href="https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler#releases">v1.26.6</a></td>
+<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.29.0">v1.29.0</a></td>
+<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-chart-9.35.0">9.35.0</a></td>
+</tr><tr>
+<td>registry.k8s.io/descheduler/descheduler:v0.26.1</td>
+<td>🟢</td>
+<td><a href="https://github.com/kubernetes-sigs/descheduler?tab=readme-ov-file#%EF%B8%8F--documentation-versions-by-release">v0.26.1</a></td>
+<td><a href="https://github.com/kubernetes-sigs/descheduler/releases/tag/v0.29.0">v0.29.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/descheduler/releases/tag/descheduler-helm-chart-0.29.0">0.29.0</a></td>
+</tr><tr>
+<td>registry.k8s.io/metrics-server/metrics-server:v0.6.2</td>
+<td>🟠</td>
+<td><a href="https://github.com/kubernetes-sigs/metrics-server?tab=readme-ov-file#compatibility-matrix">v0.7.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0">v0.7.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server">3.12.0</a></td>
+</tr>
+        </table>
+      </div><h2 id="kuberhealthy">kuberhealthy</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>754256621582.dkr.ecr.eu-west-2.amazonaws.com/webops/cloud-platform-kuberhealthy-checks:1.4</td>
+<td>🟢</td>
+<td>managed by us</td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform-kuberhealthy-checks/releases/tag/1.4">1.4</a></td>
+<td>n/a</td>
+</tr><tr>
+<td>docker.io/kuberhealthy/daemonset-check:v3.3.0</td>
+<td>🟢</td>
+<td>v3.3.0</td>
+<td><a href="https://github.com/kuberhealthy/kuberhealthy/releases/tag/v2.7.1">v3.3.0</a></td>
+<td><a href="https://github.com/kuberhealthy/kuberhealthy/tree/master/deploy/helm/kuberhealthy">104</a></td>
+</tr><tr>
+<td>docker.io/kuberhealthy/deployment-check:v1.9.0</td>
+<td>🟢</td>
+<td>v1.9.0</td>
+<td><a href="https://github.com/kuberhealthy/kuberhealthy/releases/tag/v2.7.1">v3.3.0</a></td>
+<td><a href="https://github.com/kuberhealthy/kuberhealthy/tree/master/deploy/helm/kuberhealthy">104</a></td>
+</tr><tr>
+<td>docker.io/kuberhealthy/dns-resolution-check:v1.5.0</td>
+<td>🟢</td>
+<td>v1.5.0</td>
+<td><a href="https://github.com/kuberhealthy/kuberhealthy/releases/tag/v2.7.1">v3.3.0</a></td>
+<td><a href="https://github.com/kuberhealthy/kuberhealthy/tree/master/deploy/helm/kuberhealthy">104</a></td>
+</tr><tr>
+<td>docker.io/kuberhealthy/kuberhealthy:v2.7.1</td>
+<td>🟢</td>
+<td>v2.7.1</td>
+<td><a href="https://github.com/kuberhealthy/kuberhealthy/releases/tag/v2.7.1">v3.3.0</a></td>
+<td><a href="https://github.com/kuberhealthy/kuberhealthy/tree/master/deploy/helm/kuberhealthy">104</a></td>
+</tr>
+        </table>
+      </div><h2 id="kuberos">kuberos</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>docker.io/ministryofjustice/cloud-platform-kuberos:2.6.0</td>
+<td>🟢</td>
+<td>managed by us</td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform-helm-charts/tree/main/kuberos">0.4.0</a></td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform-helm-charts/tree/main/kuberos">0.4.0</a></td>
+</tr>
+        </table>
+      </div><h2 id="logging">logging</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>docker.io/fluent/fluent-bit:2.2.1</td>
+<td>🟢</td>
+<td>v2.2.1</td>
+<td><a href="https://github.com/fluent/fluent-bit/releases/tag/v2.2.1">v2.2.1</a></td>
+<td><a href="https://github.com/fluent/helm-charts">0.43.0</a></td>
+</tr><tr>
+<td>gcr.io/heptio-images/eventrouter:v0.3</td>
+<td>🟠</td>
+<td>deprecated</td>
+<td>deprecated</td>
+<td>deprecated</td>
+</tr>
+        </table>
+      </div><h2 id="monitoring">monitoring</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>docker.io/bitnami/redis:6.2.6-debian-10-r120</td>
+<td>🟠</td>
+<td>v7.2.4-debian-11-r5</td>
+<td><a href="https://hub.docker.com/layers/bitnami/redis/7.2.4-debian-11-r5/images/sha256-a29afa0e88dcfbd941a4576b723286d02653144eb2c27d0e92482404e691e0cd?context=explore">7.2.4-debian-11-r5</a></td>
+<td>n/a</td>
+</tr><tr>
+<td>docker.io/bitnami/thanos:0.28.1-scratch-r0</td>
+<td>🟠</td>
+<td>v0.34.0</td>
+<td><a href="https://github.com/thanos-io/thanos/releases">v0.34.0</a></td>
+<td><a href="https://github.com/bitnami/charts/blob/main/bitnami/thanos/Chart.yaml#L13">v0.34.0</a></td>
+</tr><tr>
+<td>grafana/grafana:9.2.4</td>
+<td>🟠</td>
+<td>v10.3.1</td>
+<td><a href="https://github.com/grafana/grafana/releases/tag/v10.3.1">v10.3.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+</tr><tr>
+<td>ministryofjustice/prometheus-ecr-exporter:0.2.0</td>
+<td>🟢</td>
+<td>managed by us</td>
+<td>n/a</td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform-helm-charts/tree/main/prometheus-ecr-exporter">0.4.0</a></td>
+</tr><tr>
+<td>prom/cloudwatch-exporter:v0.15.0</td>
+<td>🟢</td>
+<td>v0.15.5</td>
+<td><a href="https://github.com/prometheus/cloudwatch_exporter/releases/tag/v0.15.5">v0.15.5</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-cloudwatch-exporter">0.25.3</a></td>
+</tr><tr>
+<td>quay.io/kiwigrid/k8s-sidecar:1.19.2</td>
+<td>🟠</td>
+<td>v1.25.3</td>
+<td><a href="https://github.com/kiwigrid/k8s-sidecar/releases/tag/1.25.3">v1.25.3</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+</tr><tr>
+<td>quay.io/oauth2-proxy/oauth2-proxy:v7.2.1</td>
+<td>🟠</td>
+<td>v7.5.1</td>
+<td><a href="https://github.com/oauth2-proxy/oauth2-proxy/releases/tag/v7.5.1">v7.5.1</a></td>
+<td><a href="https://oauth2-proxy.github.io/manifests/">6.23.1</a></td>
+</tr><tr>
+<td>quay.io/prometheus-operator/prometheus-config-reloader:v0.60.1</td>
+<td>🟠</td>
+<td>v0.70.0</td>
+<td><a href="https://github.com/prometheus-operator/prometheus-operator/releases/tag/v0.70.0">v0.70.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+</tr><tr>
+<td>quay.io/prometheus-operator/prometheus-operator:v0.60.1</td>
+<td>🟠</td>
+<td>v0.70.0</td>
+<td><a href="https://github.com/prometheus-operator/prometheus-operator/releases/tag/v0.70.0">v0.70.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+</tr><tr>
+<td>quay.io/prometheus/alertmanager:v0.24.0</td>
+<td>🟠</td>
+<td>v0.26.0</td>
+<td><a href="https://github.com/prometheus/alertmanager/releases/tag/v0.26.0">v0.26.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+</tr><tr>
+<td>quay.io/prometheus/node-exporter:v1.3.1</td>
+<td>🟠</td>
+<td>v1.7.0</td>
+<td><a href="https://github.com/prometheus/node_exporter/releases/tag/v1.7.0">v1.7.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+</tr><tr>
+<td>quay.io/prometheus/prometheus:v2.39.1</td>
+<td>🟠</td>
+<td>v2.48.1</td>
+<td><a href="https://github.com/prometheus/prometheus/releases/tag/v2.48.1">v2.48.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+</tr><tr>
+<td>quay.io/thanos/thanos:v0.28.0</td>
+<td>🟠</td>
+<td>v0.33.0</td>
+<td><a href="https://github.com/thanos-io/thanos/releases/tag/v0.33.0">v0.33.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+</tr><tr>
+<td>registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.7.0</td>
+<td>🔴</td>
+<td><a href="https://github.com/kubernetes/kube-state-metrics?tab=readme-ov-file#compatibility-matrix">v2.9.2</a></td>
+<td><a href="https://github.com/kubernetes/kube-state-metrics/releases">2.10.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+</tr>
+        </table>
+      </div><h2 id="overprovision">overprovision</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>registry.k8s.io/cpa/cluster-proportional-autoscaler:1.8.6</td>
+<td>🟢</td>
+<td>v1.8.9</td>
+<td><a href="https://github.com/kubernetes-sigs/cluster-proportional-autoscaler/releases/tag/v1.8.9">v1.8.9</a></td>
+<td><a href="https://github.com/kubernetes-sigs/cluster-proportional-autoscaler/tree/master/charts/cluster-proportional-autoscaler">1.1.0</a></td>
+</tr><tr>
+<td>registry.k8s.io/pause:3.9</td>
+<td>🟢</td>
+<td>v3.9</td>
+<td><a href="https://github.com/kubernetes/kubernetes/tree/master/build/pause">v3.9</a></td>
+<td><a href="https://github.com/kubernetes/registry.k8s.io/blob/main/docs/debugging.md#verify-image-repositories-and-tags">registry</a></td>
+</tr>
+        </table>
+      </div><h2 id="tigera-operator">tigera-operator</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>quay.io/tigera/operator:v1.29.1</td>
+<td>🟢</td>
+<td>v1.33.0</td>
+<td><a href="https://github.com/tigera/operator/releases/tag/v1.33.0">v1.33.0</a></td>
+<td><a href="https://github.com/projectcalico/calico/tree/master/charts/tigera-operator">3.27.0</a></td>
+</tr>
+        </table>
+      </div><h2 id="trivy-operator">trivy-operator</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>ghcr.io/aquasecurity/trivy-operator:0.16.4</td>
+<td>🟢</td>
+<td>v0.18.5</td>
+<td><a href="https://github.com/aquasecurity/trivy-operator/releases/tag/v0.18.5">v0.18.5</a></td>
+<td><a href="https://github.com/aquasecurity/trivy-operator/blob/main/deploy/helm/Chart.yaml">0.20.6</a></td>
+</tr><tr>
+<td>ghcr.io/aquasecurity/trivy:0.47.0</td>
+<td>🟢</td>
+<td>v0.49.1</td>
+<td><a href="https://github.com/aquasecurity/trivy/releases">v0.49.1</a></td>
+<td><a href="https://github.com/aquasecurity/trivy-operator/blob/main/deploy/helm/Chart.yaml">0.20.6</a></td>
+</tr>
+        </table>
+      </div><h2 id="velero">velero</h2>
+<div class="table-container">
+        <table>
+          <tr>
+<th>container image</th>
+<th>urgency</th>
+<th>latest version for k8s 1.26</th>
+<th>latest version available</th>
+<th>latest helm chart</th>
+</tr><tr>
+<td>velero/velero:v1.11.1</td>
+<td>🔴</td>
+<td><a href="https://github.com/vmware-tanzu/velero?tab=readme-ov-file#velero-compatibility-matrix">v1.13.0</a></td>
+<td><a href="https://github.com/vmware-tanzu/velero/releases">v1.13.0</a></td>
+<td><a href="https://github.com/vmware-tanzu/velero/releases/tag/v1.13.0">v1.13.0</a></td>
+</tr>
+        </table>
+      </div>
+              <div data-module='page-expiry' data-last-reviewed-on="2024-05-08">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 November 2023.
+      This page was last reviewed on 8 February 2024.
 
-        It needs to be reviewed again on 20 May 2024
+        It needs to be reviewed again on 8 May 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 May 2024
+      This page was set to be reviewed before 8 May 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1671,8 +2116,8 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/upgrade-terraform-version.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Upgrade+Terraform+Version%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fupgrade-terraform-version.html%29&amp;labels=bug&amp;title=Re%3A+%27Upgrade+Terraform+Version%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/container-images.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Container+Images+used+by+Cluster+Components%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fcontainer-images.html%29&amp;labels=bug&amp;title=Re%3A+%27Container+Images+used+by+Cluster+Components%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>

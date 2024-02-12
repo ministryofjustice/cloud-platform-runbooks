@@ -420,6 +420,28 @@
     </ul>
   </li>
   <li>
+    <a href="../upgrade-eks-addons.html"><span>Upgrade EKS addons</span></a>
+    <ul>
+      <li>
+        <a href="../upgrade-eks-addons.html#listing-available-eks-upgrades"><span>Listing available EKS upgrades</span></a>
+        <ul>
+          <li>
+            <a href="../upgrade-eks-addons.html#eksctl-install"><span>eksctl Install</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../upgrade-eks-addons.html#preparing-for-upgrade"><span>Preparing for upgrade</span></a>
+      </li>
+      <li>
+        <a href="../upgrade-eks-addons.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
+      </li>
+      <li>
+        <a href="../upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="../upgrade-eks-cluster.html"><span>Upgrade EKS cluster</span></a>
     <ul>
       <li>
@@ -432,13 +454,13 @@
             <a href="../upgrade-eks-cluster.html#compatibility-check"><span>Compatibility Check</span></a>
           </li>
           <li>
-            <a href="../upgrade-eks-cluster.html#preparing-for-upgrade"><span> Preparing for upgrade</span></a>
+            <a href="../upgrade-eks-cluster.html#upgrade-steps-preparing-for-upgrade"><span> Preparing for upgrade</span></a>
           </li>
           <li>
             <a href="../upgrade-eks-cluster.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
           </li>
           <li>
-            <a href="../upgrade-eks-cluster.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
+            <a href="../upgrade-eks-cluster.html#upgrade-steps-starting-the-upgrade"><span>Starting the upgrade</span></a>
           </li>
           <li>
             <a href="../upgrade-eks-cluster.html#finishing-the-upgrade"><span>Finishing the upgrade</span></a>
@@ -447,28 +469,6 @@
             <a href="../upgrade-eks-cluster.html#finishing-touches"><span>Finishing touches</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="../upgrade-eks-addons.html"><span>Upgrade EKS addons</span></a>
-    <ul>
-      <li>
-        <a href="../upgrade-eks-addons.html#listing-available-eks-upgrades"><span>Listing available EKS upgrades</span></a>
-        <ul>
-          <li>
-            <a href="../upgrade-eks-addons.html#eksctl-install"><span>eksctl Install</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="../upgrade-eks-addons.html#upgrade-eks-addons-preparing-for-upgrade"><span>Preparing for upgrade</span></a>
-      </li>
-      <li>
-        <a href="../upgrade-eks-addons.html#upgrade-eks-addons-starting-the-upgrade"><span>Starting the upgrade</span></a>
-      </li>
-      <li>
-        <a href="../upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
       </li>
     </ul>
   </li>
@@ -554,17 +554,6 @@
     </ul>
   </li>
   <li>
-    <a href="../delete-cluster.html"><span>Delete a cluster</span></a>
-    <ul>
-      <li>
-        <a href="../delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
-      </li>
-      <li>
-        <a href="../delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="../upgrade-user-components.html"><span>Upgrade user components</span></a>
     <ul>
       <li>
@@ -575,6 +564,84 @@
       </li>
       <li>
         <a href="../upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../container-images.html"><span>Container Images used by Cluster Components</span></a>
+    <ul>
+      <li>
+        <a href="../container-images.html#how-to-update-this-runbook"><span>How to update this runbook</span></a>
+        <ul>
+          <li>
+            <a href="../container-images.html#latest-version-for-k8s-1-26"><span>Latest version for k8s 1.26</span></a>
+          </li>
+          <li>
+            <a href="../container-images.html#latest-version-available"><span>Latest version available</span></a>
+          </li>
+          <li>
+            <a href="../container-images.html#urgency"><span>Urgency</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../container-images.html#calico-apiserver"><span>calico-apiserver</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#calico-system"><span>calico-system</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#container-images-used-by-cluster-components-cert-manager"><span>cert-manager</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#concourse"><span>concourse</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#external-secrets-operator"><span>external-secrets-operator</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#gatekeeper-system"><span>gatekeeper-system</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#ingress-controllers"><span>ingress-controllers</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#kube-system"><span>kube-system</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#kuberhealthy"><span>kuberhealthy</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#kuberos"><span>kuberos</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#logging"><span>logging</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#monitoring"><span>monitoring</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#overprovision"><span>overprovision</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#tigera-operator"><span>tigera-operator</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#trivy-operator"><span>trivy-operator</span></a>
+      </li>
+      <li>
+        <a href="../container-images.html#velero"><span>velero</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../delete-cluster.html"><span>Delete a cluster</span></a>
+    <ul>
+      <li>
+        <a href="../delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
+      </li>
+      <li>
+        <a href="../delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
       </li>
     </ul>
   </li>
@@ -896,14 +963,6 @@
     </ul>
   </li>
   <li>
-    <a href="../manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="../manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="../export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
     <ul>
       <li>
@@ -916,6 +975,14 @@
             <a href="../export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="../manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
