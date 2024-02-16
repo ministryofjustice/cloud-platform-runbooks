@@ -9,20 +9,20 @@
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/aws-create-user.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/aws-access-control.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta name="twitter:title" content="AWS Console Access - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-create-user.html" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-access-control.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
       <meta property="og:title" content="AWS Console Access" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-create-user.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/aws-access-control.html" />
 
     
   </head>
@@ -565,20 +565,6 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./container-images.html"><span>Container Images used by Cluster Components</span></a>
     <ul>
       <li>
@@ -642,6 +628,20 @@
       </li>
       <li>
         <a href="./container-images.html#velero"><span>velero</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -859,13 +859,21 @@
     </ul>
   </li>
   <li>
-    <a href="./aws-create-user.html"><span>AWS Console Access</span></a>
+    <a href="./aws-access-control.html"><span>AWS Console Access</span></a>
     <ul>
       <li>
-        <a href="./aws-create-user.html#steps-to-create-delete-users"><span>Steps to create/delete users</span></a>
+        <a href="./aws-access-control.html#steps-to-create-delete-cloud-platform-team-users"><span>Steps to create/delete Cloud Platform team users</span></a>
       </li>
       <li>
-        <a href="./aws-create-user.html#activating-mfa-for-new-users"><span>Activating MFA for new users</span></a>
+        <a href="./aws-access-control.html#activating-mfa-for-new-users"><span>Activating MFA for new users</span></a>
+      </li>
+      <li>
+        <a href="./aws-access-control.html#modifying-cloud-platform-users-permissions"><span>Modifying Cloud Platform users permissions</span></a>
+        <ul>
+          <li>
+            <a href="./aws-access-control.html#troubleshooting-for-modifying-cloud-platform-users-permissions"><span>Troubleshooting for modifying Cloud Platform users permissions</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -963,30 +971,10 @@
     </ul>
   </li>
   <li>
-    <a href="./remove-data-from-elasticsearch.html"><span>Remove data from Elasticsearch</span></a>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
     <ul>
       <li>
-        <a href="./remove-data-from-elasticsearch.html#stop-the-breach-first"><span>Stop the breach first</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#things-to-know"><span>Things to know</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#get-yourself-access"><span>Get yourself access</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#build-your-query"><span>Build your query</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#delete-by-query"><span>Delete by query</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
-        <ul>
-          <li>
-            <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
-          </li>
-        </ul>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -1015,10 +1003,30 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <a href="./remove-data-from-elasticsearch.html"><span>Remove data from Elasticsearch</span></a>
     <ul>
       <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+        <a href="./remove-data-from-elasticsearch.html#stop-the-breach-first"><span>Stop the breach first</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-elasticsearch.html#things-to-know"><span>Things to know</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-elasticsearch.html#get-yourself-access"><span>Get yourself access</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-elasticsearch.html#build-your-query"><span>Build your query</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-elasticsearch.html#delete-by-query"><span>Delete by query</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
+        <ul>
+          <li>
+            <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1536,35 +1544,81 @@
 <p>Related repositories:</p>
 
 <ul>
-<li><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/account">cloud-platform-infrastructure (/terraform/cloud-platform-account)</a></p></li>
+<li><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/account">cloud-platform-infrastructure (/terraform/aws-accounts/cloud-platform-aws/account)</a></p></li>
 <li><p><a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/blob/main/main.tf">cloud-platform-terraform-awsaccounts-iam</a></p></li>
 <li><p><a href="https://github.com/terraform-aws-modules/terraform-aws-iam">terraform-aws-iam module</a></p></li>
 </ul>
-<h2 id="steps-to-create-delete-users">Steps to create/delete users</h2>
+<h2 id="steps-to-create-delete-cloud-platform-team-users">Steps to create/delete Cloud Platform team users</h2>
 <p>1) Check the user is in the <a href="https://github.com/orgs/ministryofjustice/teams/webops/members">webops GitHub team</a>, which authorizes access to this AWS account.</p>
 <p>2) Create a git branch and add (or delete) the user as <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/blob/main/main.tf">terraform code</a>. Do not forget to link the user to a group.</p>
 <p>3) Using <code>terraform plan</code> in <code>cloud-platform-infrastructure/terraform/cloud-platform-account/</code> to verify you&rsquo;re happy with the terraform changes.</p>
 <p>4) Create the PR, ask the team to review it, and merge it.</p>
 <p>5) <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-iam/releases">Create a release</a>.</p>
-<p>6) In the infrastructure repo, edit <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/main.tf#L44">the terraform config that calls that module</a>, to use the new release - see <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/938/files">example</a></p>
+<p>6) In the infrastructure repository, edit <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/main.tf#L44">the terraform config that calls that module</a>, to use the new release - see <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/938/files">example</a></p>
 <p>7) Create the PR, ask the team to review it, and merge it.</p>
 <p>8) Apply the changes.</p>
 <p>9) Verify the user is created. (You can use AWS Console for this.)</p>
 <p>10) Tell them they can login here: https://aws-login.cloud-platform.service.justice.gov.uk</p>
 <h2 id="activating-mfa-for-new-users">Activating MFA for new users</h2>
 <p>Unfortunataly terraform can&rsquo;t activate MFA for users, this process must be done done manually either <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html">through AWS Console (UI)</a> or <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_cliapi.html">through the AWS CLI</a>.</p>
+<h2 id="modifying-cloud-platform-users-permissions">Modifying Cloud Platform users permissions</h2>
+<p>This part is the guideline for handling requests arise to add or modify read only access to any aws resources that are created for Cloud Platform users.</p>
+<p>Related resouce:</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-05-20">
+<ul>
+<li><p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/account">cloud-platform-infrastructure (/terraform/aws-accounts/cloud-platform-aws/account)</a></p></li>
+<li><p><a href="https://github.com/ministryofjustice/cloud-platform-terraform-aws-sso">cloud-platform-terraform-aws-sso</a></p></li>
+<li><p>Make sure you have the MoJ 1Password access</p></li>
+</ul>
+<p>1) Have a discussion within the Cloud Platform Team to assess and agree on the requested permission changes.</p>
+<p>2) Navigate to the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-aws-sso">cloud-platform-terraform-aws-sso</a> to update or create a new Terraform file (e.g. elasticache.tf) with the new IAM policy for the specified resource.</p>
+<p>3) For the newly added resource, modify the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-aws-sso/blob/main/aws.tf">aws.tf</a> to include the new policy in the latest <code>data &quot;aws_iam_policy_document&quot; &quot;combined&quot;</code> block.</p>
+<p>4) Create the PR and request a review from the team.</p>
+<p>5) Create a <a href="https://github.com/ministryofjustice/cloud-platform-terraform-aws-sso/releases">new release</a>.</p>
+<p>6) In the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repository</a>, go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/main.tf">terraform/aws-accounts/cloud-platform-aws/account/main.tf</a>, bump and update the sso module version to the newly released version.</p>
+<p>7) Create a PR for the module update, monitor and observe the <code>terraform plan</code> result.</p>
+<p>8) Request a review from the team, and merge it.</p>
+<p>10) Use the cloud-platform-dummy-user with the credentials from MoJ 1Password to verify the newly granted access on <a href="https://justice-cloud-platform.eu.auth0.com/samlp/mQev56oEa7mrRCKAZRxSnDSoYt6Y7r5m?connection=github">the AWS console</a>.</p>
+<p>11) Once verified, inform the user/requester that the permissions have been updated accordingly.</p>
+<h3 id="troubleshooting-for-modifying-cloud-platform-users-permissions">Troubleshooting for modifying Cloud Platform users permissions</h3>
+<p>Sometimes when you add the newly created resource to the <code>data &quot;aws_iam_policy_document&quot; &quot;combined&quot;</code> block, you may see the below error. This is because there is a limitation of 6144 characters per managed policy.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>│ Error: updating IAM Policy (arn:aws:iam::xxxxxxxxxxxx:policy/access-via-github): LimitExceeded: Cannot exceed quota for PolicySize: 6144
+│     status code: 409, request id: 63ce8d71-4992-4043-a656-a67be75210a7
+</code></pre></div><p>To solve this error, you may follow the below steps.</p>
+<p>1) Go to the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-aws-sso/blob/main/aws.tf">aws.tf</a>, create a new AWS IAM Policy document block <code>data &quot;aws_iam_policy_document&quot; &quot;combined_x&quot;</code> with next numerical suffix pattern.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>data "aws_iam_policy_document" "combined_x" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.elasticache_for_github.json,
+  ]
+}
+</code></pre></div><p>2) Create a new AWS IAM policy block <code>resource &quot;aws_iam_policy&quot; &quot;github_access_x&quot;</code> with next numerical suffix pattern.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>resource "aws_iam_policy" "github_access_x" {
+  policy = data.aws_iam_policy_document.combined_x.json
+  name   = "access-via-github-0x"
+  tags = {
+    GithubTeam = "webops"
+  }
+}
+</code></pre></div><p>3) Create a new AWS IAM policy attachment block <code>resource &quot;aws_iam_role_policy_attachment&quot; &quot;github_access_x&quot;</code>  with next numerical suffix pattern.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>resource "aws_iam_role_policy_attachment" "github_access_x" {
+  role       = aws_iam_role.github_access.name
+  policy_arn = aws_iam_policy.github_access_x.arn
+}
+</code></pre></div><p>4) Create the PR and request a review from the team.</p>
+<p>5) Create a <a href="https://github.com/ministryofjustice/cloud-platform-terraform-aws-sso/releases">new release</a>.</p>
+<p>6) Follow the steps 6-10 in <a href="#modifying-external-user-permissions">Modifying External User Permissions</a> to make changes on <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repository</a>.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2024-08-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 November 2023.
+      This page was last reviewed on 16 February 2024.
 
-        It needs to be reviewed again on 20 May 2024
+        It needs to be reviewed again on 16 August 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 May 2024
+      This page was set to be reviewed before 16 August 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1574,8 +1628,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/aws-create-user.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27AWS+Console+Access%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Faws-create-user.html%29&amp;labels=bug&amp;title=Re%3A+%27AWS+Console+Access%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/aws-access-control.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27AWS+Console+Access%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Faws-access-control.html%29&amp;labels=bug&amp;title=Re%3A+%27AWS+Console+Access%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
