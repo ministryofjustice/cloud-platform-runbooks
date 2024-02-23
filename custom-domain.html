@@ -1546,29 +1546,20 @@
 <ul>
 <li>Wait for the new hosted zone to be created by the pipeline, once the user&rsquo;s PR to define it has been merged</li>
 <li>Find the hosted zone record in the Route53 section of the AWS console of the cloud-platform account, and copy the nameserver details from the <code>NS</code> record. Create a temporary copy of these values (on the clipboard or a text file)</li>
-<li>Switch to the mojdsd AWS account console, and find the <a href="https://console.aws.amazon.com/route53/home?region=eu-west-1#resource-record-sets:Z1QLRMQEXOI5G4">hosted zone for service.justice.gov.uk</a> in the Route53 section</li>
-<li>Use the &ldquo;Create Record Set&rdquo; button:
-
-<ul>
-<li>Name: The new sub-domain</li>
-<li>Type: NS - Name server</li>
-<li>TTL: 300</li>
-<li>Value: The nameserver details you copied from the cloud-platform AWS account hosted zone</li>
-<li>Routing Policy: Simple</li>
-</ul></li>
+<li>Contact Operations Engineering to request the new records be added</li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-02-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-08-23">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 November 2023.
+      This page was last reviewed on 23 February 2024.
 
-        It needs to be reviewed again on 20 February 2024
+        It needs to be reviewed again on 23 August 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 February 2024
+      This page was set to be reviewed before 23 August 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
