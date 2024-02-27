@@ -1295,9 +1295,6 @@
       <li>
         <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
       </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#moving-away-from-the-old-cloud-platform-transit-gateway-account"><span>Moving away from the old Cloud Platform Transit Gateway account</span></a>
-      </li>
     </ul>
   </li>
   <li>
@@ -1580,27 +1577,18 @@ Only an admin of the cloud-platform (<code>moj-cp</code>) is able to run that co
 <p>The Transit Gateway attachment from live-2 VPC to MoJ Transit Gateway has been provisioned, but there is no code provisioned to add routes.
 We decided not to add this for now as there are no requirements for any routing from live-2 VPC to the MoJ Transition Gateway. Also live-2 is planned for decommission.
 If there is a requirement for this, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/add-live-2-tgw-routes">add-live-2-tgw-routes branch</a> shows the code that needs to be applied.</p>
-<h2 id="moving-away-from-the-old-cloud-platform-transit-gateway-account">Moving away from the <em>old</em> Cloud Platform Transit Gateway account</h2>
-<p><code>Cloud Platform Transit Gateway</code> AWS account and <a href="https://github.com/ministryofjustice/transit-gateways">transit-gateways repo</a> previosuly held the terraform state in s3 bucket and terrform code respectively. We have migrated this to the <code>Cloud-Platform</code> AWS account and <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure</a> repo now. The following tasks remain to completely decommision the old Cloud Platform Transit Gateway:</p>
 
-<ul>
-<li>Confirm with owners of Transit Gateway VPC Attachments in Cloud Platform Transit Gateways AWS account can be deleted</li>
-<li>Confirm with owners of Transit Gateway Peering Attachment in Cloud Platform Transit Gateways AWS account can be deleted</li>
-<li>Terraform destroy all redundant Transit Gateway related resources in Cloud Platform Transit Gateways AWS account that are currently being managed by terraform.</li>
-<li>Remove redundant code from <a href="https://github.com/ministryofjustice/transit-gateways">transit-gateways repo</a></li>
-</ul>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2024-07-31">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-08-27">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 31 January 2024.
+      This page was last reviewed on 27 February 2024.
 
-        It needs to be reviewed again on 31 July 2024
+        It needs to be reviewed again on 27 August 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 31 July 2024
+      This page was set to be reviewed before 27 August 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
