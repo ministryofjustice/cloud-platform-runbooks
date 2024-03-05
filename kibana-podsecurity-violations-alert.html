@@ -1551,19 +1551,19 @@
 <p>To fix a PSA violation and stop the monitor from triggering, gather the namespace and violation reason from the logs and then contact a member of the team that owns the violating namespace with details of what is causing the issue, the user then should resolve this issue.</p>
 <h2 id="slack-alert">Slack Alert</h2>
 <p>Kibana will put a message into the <code>#low-priority-alarms</code> slack channel whenever the <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/opendistro-alerting#/monitors/jR-J3YsBP8PE0GofcRIF">PodSecurity Violations monitor</a> first goes into the <code>Triggered</code> status.</p>
-<p>The monitor is throttled to only send 1 message every 24 hours per trigger, this means if a namespace is already triggering the monitor then when another violation occurs then it will not send another message. The best way to check what is triggering the monitor is to use the steps mentioned above under <a href="#checking-logs-for-psa-violations-in-kibana">Checking logs for PSA violation in Kibana</a>.</p>
+<p>The monitor is throttled to only send 1 message every 24 hours per trigger. This means if a namespace is already triggering the monitor then when another violation occurs then it will not send another message. The best way to check what is triggering the monitor is to use the steps mentioned above under <a href="#checking-logs-for-psa-violations-in-kibana">Checking logs for PSA violation in Kibana</a>.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-02-29">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-06-05">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 30 November 2023.
+      This page was last reviewed on 5 March 2024.
 
-        It needs to be reviewed again on 29 February 2024
+        It needs to be reviewed again on 5 June 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 29 February 2024
+      This page was set to be reviewed before 5 June 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
