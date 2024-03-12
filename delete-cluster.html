@@ -1560,6 +1560,9 @@ https://concourse.cloud-platform.service.justice.gov.uk/login?fly_port=12345
 </code></pre></div><p>And will then trigger the job:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>configuration updated
 started delete-cluster/delete #123
+</code></pre></div><p>Additionally, if you&rsquo;ve made changes in your infrastructure branch that render a destroy from the
+main branch impossible, you can optionally pass your branch name to use that terraform source instead:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cloud-platform pipeline delete-cluster --cluster-name &lt;cluster-name&gt; --branch-name &lt;your-branch-name&gt;
 </code></pre></div><h2 id="delete-an-eks-cluster-manually">Delete an EKS cluster manually</h2>
 <p>Follow these steps, to delete the EKS cluster.</p>
 <p>First, set the kubectl context for the EKS cluster you are deleting. The easiest way to do this is with aws command:</p>
