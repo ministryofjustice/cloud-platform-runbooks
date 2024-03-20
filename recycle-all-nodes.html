@@ -1566,9 +1566,10 @@ ip-172-20-127-1.eu-west-2.compute.internal     Ready    &lt;none&gt;   47h     v
 <p>If a <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets">&ldquo;Pod Disruption Budget&rdquo;</a> is poorly configured, kubernetes can&rsquo;t evict a specific pod. Without manual intervention, this will indefinitely stall the update and the nodes will <strong>not</strong> continue to recycle.
 This will eventually cause the update to stop, wait and then exit, leaving the remaining nodes with the old update template and others with the new update template.</p>
 <p>AWS EKS in some circumstances has even reverted the update and started to drain the new nodes and replace them with the old update template again. So it&rsquo;s important to monitor how the update is going and act when nodes get stuck.</p>
-<p>To resolve the issue, evict the offending pod by running the below script:</p>
-<p><code>watch -n 300 ./delete-pods-in-namespace.sh &#39;/aws/eks/&lt;cluster-name&gt;/cluster&#39; &gt; deleted_pods.log</code></p>
-<p>and <code>tail -f delete_pods.log</code> in another terminal. The <code>&lt;cluster-name&gt;</code> is the short name of the cluster e.g. <code>cp-2901-1531</code></p>
+<p>To resolve the issue:</p>
+
+<ol>
+<li><p>Copy below script and save it as <code>delete-pods-in-namespace.sh</code>.</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c">#!/bin/bash</span>
 
 delete_pods<span class="o">()</span> <span class="o">{</span>
@@ -1605,9 +1606,13 @@ delete_pods<span class="o">()</span> <span class="o">{</span>
 
 <span class="nb">exit </span>0
 
-</code></pre></div><p>Run the script with the command editing the cluster log group</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>watch -n 180 ./delete-pods-in-namespace.sh &lt;cluster-log-group-name&gt; deleted_pods.log
-</code></pre></div><p>and <code>tail -f delete_pods.log</code> in another terminal.</p>
+</code></pre></div></li>
+<li><p>Run <code>chmod +x delete-pods-in-namespace.sh</code>.</p></li>
+<li><p>Evict the offending pod by running the below script:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>watch -n 300 ./delete-pods-in-namespace.sh '/aws/eks/&lt;cluster-name&gt;/cluster' &gt; deleted_pods.log
+</code></pre></div><p>The <code>&lt;cluster-name&gt;</code> is the short name of the cluster e.g. <code>cp-2901-1531</code></p></li>
+<li><p>Run <code>tail -f deleted_pods.log</code> in another terminal.</p></li>
+</ol>
 <p>If you want to find the offending pod manually, follow these steps:</p>
 
 <ol>
@@ -1623,17 +1628,17 @@ delete_pods<span class="o">()</span> <span class="o">{</span>
 </ol>
 <p>Nodes should continue to recycle and after a few moments there should be one less node with the status &ldquo;Ready,SchedulingDisabled&rdquo;</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-04-09">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-09-20">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 9 January 2024.
+      This page was last reviewed on 20 March 2024.
 
-        It needs to be reviewed again on 9 April 2024
+        It needs to be reviewed again on 20 September 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 9 April 2024
+      This page was set to be reviewed before 20 September 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
