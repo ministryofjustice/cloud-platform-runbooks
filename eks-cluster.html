@@ -1141,7 +1141,10 @@
             <a href="./eks-cluster.html#2-creating-eks-cluster"><span>2. Creating EKS cluster</span></a>
           </li>
           <li>
-            <a href="./eks-cluster.html#3-deploy-components"><span>3. Deploy components</span></a>
+            <a href="./eks-cluster.html#3-deploy-core"><span>3. Deploy core</span></a>
+          </li>
+          <li>
+            <a href="./eks-cluster.html#4-deploy-components"><span>4. Deploy components</span></a>
           </li>
         </ul>
       </li>
@@ -1616,23 +1619,28 @@ CoreDNS is running at https://B04C5FC7828A0515457E141A9610815D.sk1.eu-west-2.eks
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
-</code></pre></div><h3 id="3-deploy-components">3. Deploy components</h3>
-<p>Components installation is the last step, for that we need to have the <code>KUBECONFIG</code> variable exported and make sure you have access to the cluster. To deploy components we go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components">terraform/aws-accounts/cloud-platform-aws/vpc/eks/components</a> and follow exactly the same terraform workflow:</p>
+</code></pre></div><h3 id="3-deploy-core">3. Deploy core</h3>
+<p>Core installation refers to a set of components that need to deployed to the cluster before other components are installed. Things like networking, policy engines, monitoring etc. We need to have the <code>KUBECONFIG</code> variable exported and make sure you have access to the cluster. To deploy core we go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core">terraform/aws-accounts/cloud-platform-aws/vpc/eks/core</a> and follow exactly the same terraform workflow:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
+terraform workspace new &lt;WorkspaceName&gt;
+terraform apply
+</code></pre></div><h3 id="4-deploy-components">4. Deploy components</h3>
+<p>Components installation is the last step, for that we need to have the <code>KUBECONFIG</code> variable exported and make sure you have access to the cluster. To deploy components we go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components">terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components</a> and follow exactly the same terraform workflow:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
 terraform workspace new &lt;WorkspaceName&gt;
 terraform apply
 </code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2024-04-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-09-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 January 2024.
+      This page was last reviewed on 18 March 2024.
 
-        It needs to be reviewed again on 16 April 2024
+        It needs to be reviewed again on 18 September 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 April 2024
+      This page was set to be reviewed before 18 September 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
