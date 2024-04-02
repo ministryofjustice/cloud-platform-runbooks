@@ -1543,9 +1543,9 @@
 <h2 id="kubernetes-number-of-pods-per-node">Kubernetes Number of Pods per Node</h2>
 <p>This <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/anzGBBJHiz/kubernetes-number-of-pods-per-node?orgId=1">dashboard</a> was created to show the current number of pods per node in the cluster.</p>
 <h3 id="dashboard-layout">Dashboard Layout</h3>
-<p>Each box on the dashboard has the name of the node and the number of pods on the node  - This number includes pods with a statuses such as &ldquo;DeadlineExceeded&rdquo; and completed&quot;.</p>
+<p>Each box on the dashboard has the name of the node and the number of pods on the node. This number includes pods with a statuses such as &ldquo;DeadlineExceeded&rdquo; and completed&quot;.</p>
 <p>The exception is the <code>Max Pods per Node</code> box. This is a constant number set on creation for the maximum allowed pods per node.</p>
-<p>The current architecture does not allow instance group id to be viewed on the dashboard:</p>
+<p>The current architecture does not allow instance group id to be viewed on the dashboard.</p>
 <p>We currently have 2 instance groups:</p>
 
 <ul>
@@ -1568,7 +1568,7 @@
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">t</span><span class="o">=</span>2021-12-03T13:37:35+0000 <span class="nv">lvl</span><span class="o">=</span>eror <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to load dashboard from "</span> <span class="nv">logger</span><span class="o">=</span>provisioning.dashboard <span class="nb">type</span><span class="o">=</span>file <span class="nv">name</span><span class="o">=</span>sidecarProvider <span class="nv">file</span><span class="o">=</span>/tmp/dashboards/&lt;MY-DASHBOARD&gt;.json <span class="nv">error</span><span class="o">=</span><span class="s2">"invalid character 'c' looking for beginning of value"</span>
 </code></pre></div><p>Identify the namespace and name of the configmap which contains this dashboard name by running:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get configmaps -A -ojson | jq -r '.items[] | select (.data."&lt;MY-DASHBOARD&gt;.json") | .metadata.namespace + "/" + .metadata.name'
-</code></pre></div><p>This will return the namespace and name of the configmap which contains the dashboard config. Describe the namespace and find the user&rsquo;s slack-channel which is a annotation on the namespace:</p>
+</code></pre></div><p>This will return the namespace and name of the configmap which contains the dashboard config. Describe the namespace and find the user&rsquo;s slack-channel which is an annotation on the namespace:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl describe namespace &lt;namespace&gt;
 </code></pre></div><p>Contact the user in the given slack-channel and ask them to fix it. Provide the list of affected dashboards and the error message to help diagnose the issue.</p>
 <h3 id="fixing-quot-duplicate-dashboard-uid-quot-errors">Fixing &ldquo;duplicate dashboard uid&rdquo; errors</h3>
@@ -1583,7 +1583,7 @@
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd /tmp/dashboards/
 for i in $(find ./ -type f); do tail $i; done|grep '"uid": '|cut -f2 -d':'|sort|uniq -c|grep -v ' 1 '
 </code></pre></div><p>This will show output any duplicate UIDs and the number of occurrences of each.</p>
-<p>ie:</p>
+<p>i.e.:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>2    "[duplicate-dashboard-uid]",
 ...
 </code></pre></div><p>Now you can grep the dashboard <code>json</code> files within the directory to identify which dashboards contain the duplicate UID with:</p>
@@ -1593,21 +1593,21 @@ for i in $(find ./ -type f); do tail $i; done|grep '"uid": '|cut -f2 -d':'|sort|
 ./my-test-dashboard-2.json:  "uid": "duplicate-dashboard-uid",
 </code></pre></div><p>Identify the namespace and name of the configmap which contains this dashboard name by running:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get configmaps -A -ojson | jq -r '.items[] | select (.data."my-test-dashboard.json") | .metadata.namespace + "/" + .metadata.name'
-</code></pre></div><p>This will return the namespace and name of the configmap which contains the dashboard config. Describe the namespace and find the user&rsquo;s slack-channel which is a annotation on the namespace:</p>
+</code></pre></div><p>This will return the namespace and name of the configmap which contains the dashboard config. Describe the namespace and find the user&rsquo;s slack-channel which is an annotation on the namespace:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl describe namespace &lt;namespace&gt;
 </code></pre></div><p>Contact the user in the given slack-channel and ask them to fix it. Provide the list of affected dashboards and the error message to help diagnose the issue.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-03-29">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-07-02">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 29 December 2023.
+      This page was last reviewed on 2 April 2024.
 
-        It needs to be reviewed again on 29 March 2024
+        It needs to be reviewed again on 2 July 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 29 March 2024
+      This page was set to be reviewed before 2 July 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
