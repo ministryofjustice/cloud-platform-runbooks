@@ -574,7 +574,10 @@
         <a href="./container-images.html#how-to-update-this-runbook"><span>How to update this runbook</span></a>
         <ul>
           <li>
-            <a href="./container-images.html#latest-version-for-k8s-1-26"><span>Latest version for k8s 1.26</span></a>
+            <a href="./container-images.html#check-current-components-images-versions"><span>Check current components images versions</span></a>
+          </li>
+          <li>
+            <a href="./container-images.html#latest-version-for-k8s-1-27"><span>Latest version for k8s 1.27</span></a>
           </li>
           <li>
             <a href="./container-images.html#latest-version-available"><span>Latest version available</span></a>
@@ -627,7 +630,7 @@
         <a href="./container-images.html#tigera-operator"><span>tigera-operator</span></a>
       </li>
       <li>
-        <a href="./container-images.html#trivy-operator"><span>trivy-operator</span></a>
+        <a href="./container-images.html#trivy-system"><span>trivy-system</span></a>
       </li>
       <li>
         <a href="./container-images.html#velero"><span>velero</span></a>
@@ -1581,8 +1584,11 @@
             <h1 id="container-images-used-by-cluster-components">Container Images used by Cluster Components</h1>
 <p>Ths runbook contains the list of container images used by the Cloud Platform components.</p>
 <h2 id="how-to-update-this-runbook">How to update this runbook</h2>
-<h3 id="latest-version-for-k8s-1-26">Latest version for k8s 1.26</h3>
-<p>The latest versions of some of the components might not be compatible with k8s 1.26. For this, click the link to check the Compatibility Matrix</p>
+<h3 id="check-current-components-images-versions">Check current components images versions</h3>
+<p>To grab the current image versions for all containers within components namespace pods, you can run the following command:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get pods <span class="nt">-n</span> <span class="o">[</span>NAMESPACE] <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'</span> | <span class="nb">sort</span>
+</code></pre></div><h3 id="latest-version-for-k8s-1-27">Latest version for k8s 1.27</h3>
+<p>The latest versions of some of the components might not be compatible with k8s 1.27. For this, click the link to check the Compatibility Matrix</p>
 <h3 id="latest-version-available">Latest version available</h3>
 <p>Thats the latest version available in the public repository. Update the version when there is a new release. You can find the latest version by clicking on the link or by checking the
 <a href="https://reports.cloud-platform.service.justice.gov.uk/helm_whatup">reports</a> page</p>
@@ -1600,7 +1606,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1617,7 +1623,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1658,27 +1664,27 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
 <td>quay.io/jetstack/cert-manager-cainjector:v1.13.1</td>
 <td>🟢</td>
-<td><a href="https://cert-manager.io/docs/releases/#currently-supported-releases">v1.14.2</a></td>
-<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
-<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
+<td><a href="https://cert-manager.io/docs/releases/#currently-supported-releases">v1.14.4</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.4">v1.14.4</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.4">v1.14.4</a></td>
 </tr><tr>
 <td>quay.io/jetstack/cert-manager-controller:v1.13.1</td>
 <td>🟢</td>
-<td><a href="https://cert-manager.io/docs/releases/#currently-supported-releases">v1.14.2</a></td>
-<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
-<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
+<td><a href="https://cert-manager.io/docs/releases/#currently-supported-releases">v1.14.4</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.4">v1.14.4</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.4">v1.14.4</a></td>
 </tr><tr>
 <td>quay.io/jetstack/cert-manager-webhook:v1.13.1</td>
 <td>🟢</td>
-<td><a href="https://cert-manager.io/docs/releases/#currently-supported-releases">v1.14.2</a></td>
-<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
-<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.2">v1.14.2</a></td>
+<td><a href="https://cert-manager.io/docs/releases/#currently-supported-releases">v1.14.4</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.4">v1.14.4</a></td>
+<td><a href="https://github.com/cert-manager/cert-manager/releases/tag/v1.14.4">v1.14.4</a></td>
 </tr>
         </table>
       </div><h2 id="concourse">concourse</h2>
@@ -1687,14 +1693,14 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
 <td>concourse/concourse:7.7.0</td>
 <td>🟠</td>
-<td><a href="https://github.com/concourse/concourse/releases">v7.11.0</a></td>
-<td><a href="https://github.com/concourse/concourse/releases">v7.11.0</a></td>
+<td><a href="https://github.com/concourse/concourse/releases">v7.11.2</a></td>
+<td><a href="https://github.com/concourse/concourse/releases">v7.11.2</a></td>
 <td><a href="https://github.com/concourse/concourse-chart/releases/tag/v17.3.1">v17.3.1</a></td>
 </tr>
         </table>
@@ -1704,15 +1710,15 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
 <td>ghcr.io/external-secrets/external-secrets:v0.8.1</td>
 <td>🟢</td>
-<td><a href="https://external-secrets.io/latest/introduction/stability-support/#supported-versions">v0.9.12</a></td>
-<td><a href="https://github.com/external-secrets/external-secrets/releases/tag/v0.9.12">v0.9.12</a></td>
-<td><a href="https://github.com/external-secrets/external-secrets/releases/tag/helm-chart-0.9.12">v0.9.12</a></td>
+<td><a href="https://external-secrets.io/latest/introduction/stability-support/#supported-versions">v0.9.14</a></td>
+<td><a href="https://github.com/external-secrets/external-secrets/releases/tag/v0.9.14">v0.9.14</a></td>
+<td><a href="https://github.com/external-secrets/external-secrets/releases/tag/helm-chart-0.9.14">v0.9.14</a></td>
 </tr>
         </table>
       </div><h2 id="gatekeeper-system">gatekeeper-system</h2>
@@ -1721,15 +1727,15 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
 <td>openpolicyagent/gatekeeper:v3.13.0:</td>
 <td>🟢</td>
-<td>v3.15.0</td>
-<td><a href="https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.15.0">v3.15.0</a></td>
-<td><a href="https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.15.0">v3.15.0</a></td>
+<td>v3.15.1</td>
+<td><a href="https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.15.1">v3.15.1</a></td>
+<td><a href="https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.15.1">v3.15.1</a></td>
 </tr>
         </table>
       </div><h2 id="ingress-controllers">ingress-controllers</h2>
@@ -1738,7 +1744,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1749,9 +1755,9 @@
 <td></td>
 </tr><tr>
 <td>fluent/fluent-bit:2.1.8-amd64</td>
-<td>🟢</td>
-<td>v2.2.2</td>
-<td><a href="https://github.com/fluent/fluent-bit/releases/tag/v2.2.2">v2.2.2</a></td>
+<td>🟠</td>
+<td>v3.0.1</td>
+<td><a href="https://github.com/fluent/fluent-bit/releases/tag/v3.0.1">v3.0.1</a></td>
 <td>n/a</td>
 </tr><tr>
 <td>ministryofjustice/cloud-platform-custom-error-pages:0.6</td>
@@ -1762,9 +1768,9 @@
 </tr><tr>
 <td>registry.k8s.io/ingress-nginx/controller:v1.8.4</td>
 <td>🟢</td>
-<td><a href="https://github.com/kubernetes/ingress-nginx?tab=readme-ov-file#supported-versions-table">v1.9.6</a></td>
-<td><a href="https://github.com/kubernetes/ingress-nginx/releases/tag/controller-v1.9.6">v1.9.6</a></td>
-<td><a href="https://github.com/kubernetes/ingress-nginx/tree/main/charts/ingress-nginx">v4.9.1</a></td>
+<td><a href="https://github.com/kubernetes/ingress-nginx?tab=readme-ov-file#supported-versions-table">v1.10.0</a></td>
+<td><a href="https://github.com/kubernetes/ingress-nginx/releases/tag/controller-v1.10.0">v1.10.0</a></td>
+<td><a href="https://github.com/kubernetes/ingress-nginx/tree/main/charts/ingress-nginx">v4.10.0</a></td>
 </tr>
         </table>
       </div><h2 id="kube-system">kube-system</h2>
@@ -1773,51 +1779,51 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
-<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon-k8s-cni:v1.15.3-eksbuild.1</td>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon-k8s-cni:v1.17.1-eksbuild.1</td>
 <td>🟢</td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.16.2-eksbuild.1</a></td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.16.2-eksbuild.1</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.18.0-eksbuild.1</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.18.0-eksbuild.1</a></td>
 <td>n/a</td>
 </tr><tr>
-<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon/aws-network-policy-agent:v1.0.7-eksbuild.1</td>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon/aws-network-policy-agent:v1.1.0-eksbuild.1</td>
 <td>🟢</td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.0.7-eksbuild.1</a></td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.0.7-eksbuild.1</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.1.0-eksbuild.1</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.1.0-eksbuild.1</a></td>
 <td>n/a</td>
 </tr><tr>
-<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/coredns:v1.9.3-eksbuild.11</td>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/coredns:v1.10.1-eksbuild.7</td>
 <td>🟢</td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">v1.9.3-eksbuild.11</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">v1.10.1-eksbuild.7</a></td>
 <td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">v1.11.1-eksbuild.6</a></td>
 <td>n/a</td>
 </tr><tr>
-<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/kube-proxy:v1.25.15-minimal-eksbuild.2</td>
-<td>🟠</td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">v1.26.12-eksbuild.2</a></td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">v1.29.0-eksbuild.3</a></td>
+<td>066635153087.dkr.ecr.il-central-1.amazonaws.com/eks/kube-proxy:v1.27.10-minimal-eksbuild.2</td>
+<td>🟢</td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">v1.27.12-eksbuild.2</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">v1.29.1-eksbuild.2</a></td>
 <td>n/a</td>
 </tr><tr>
 <td>amazon/aws-efs-csi-driver:v1.4.0</td>
 <td>🟠</td>
 <td><a href="https://github.com/ministryofjustice/cloud-platform/issues/4877#issuecomment-1779717151">????</a></td>
-<td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.5">v1.7.5</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.5">v1.7.7</a></td>
 <td>n/a</td>
 </tr><tr>
-<td>docker.io/bitnami/external-dns:0.12.2-debian-11-r22</td>
-<td>🟠</td>
+<td>docker.io/bitnami/external-dns:0.13.4-debian-11-r14</td>
+<td>🟢</td>
 <td>v0.14.x</td>
 <td><a href="https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.14.0">v0.14.x</a></td>
 <td><a href="https://github.com/bitnami/charts/blob/main/bitnami/external-dns/Chart.yaml#L11">v0.14.x</a></td>
 </tr><tr>
 <td>public.ecr.aws/ebs-csi-driver/aws-ebs-csi-driver:v1.24.0</td>
 <td>🟠</td>
-<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver?tab=readme-ov-file#compatibility">v1.27.0</a></td>
-<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
-<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver?tab=readme-ov-file#compatibility">v1.29.1</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.29.1</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.29.1">2.29.1</a></td>
 </tr><tr>
 <td>public.ecr.aws/eks-distro/kubernetes-csi/external-attacher:v4.4.0-eks-1-28-6</td>
 <td>🟢</td>
@@ -1825,13 +1831,15 @@
 <td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
 </tr><tr>
-<td>public.ecr.aws/eks-distro/kubernetes-csi/external-provisioner:v2.1.1-eks-1-18-13</td>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/external-provisioner:v2.1.1-eks-1-18-13 <strong>[efs-csi-controller]</strong>
+</td>
 <td>🟠</td>
 <td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.3">v4.0.0</a></td>
 <td><a href="https://github.com/ministryofjustice/cloud-platform/issues/4877#issuecomment-1779717151">#4877</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.3">v4.0.0</a></td>
 </tr><tr>
-<td>public.ecr.aws/eks-distro/kubernetes-csi/external-provisioner:v3.5.0-eks-1-28-6</td>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/external-provisioner:v3.5.0-eks-1-28-6 <strong>[ebs-csi-controller]</strong>
+</td>
 <td>🟢</td>
 <td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v4.0.0</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
@@ -1843,47 +1851,51 @@
 <td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
 </tr><tr>
-<td>public.ecr.aws/eks-distro/kubernetes-csi/livenessprobe:v2.10.0-eks-1-28-6</td>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/livenessprobe:v2.10.0-eks-1-28-6 <strong>[ebs-csi-controller]</strong>
+</td>
 <td>🟢</td>
 <td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v2.12.0</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
 </tr><tr>
-<td>public.ecr.aws/eks-distro/kubernetes-csi/livenessprobe:v2.2.0-eks-1-18-13</td>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/livenessprobe:v2.2.0-eks-1-18-13 <strong>[efs-csi-controller]</strong>
+</td>
 <td>🟠</td>
 <td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v2.12.0</a></td>
 <td><a href="https://github.com/ministryofjustice/cloud-platform/issues/4877#issuecomment-1779717151">#4877</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.3">v4.0.0</a></td>
 </tr><tr>
-<td>public.ecr.aws/eks-distro/kubernetes-csi/node-driver-registrar:v2.1.0-eks-1-18-13</td>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/node-driver-registrar:v2.1.0-eks-1-18-13 <strong>[efs-csi-controller]</strong>
+</td>
 <td>🟠</td>
 <td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v2.10.0</a></td>
 <td><a href="https://github.com/ministryofjustice/cloud-platform/issues/4877#issuecomment-1779717151">#4877</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver/releases/tag/v1.7.3">v4.0.0</a></td>
 </tr><tr>
-<td>public.ecr.aws/eks-distro/kubernetes-csi/node-driver-registrar:v2.9.0-eks-1-28-6</td>
+<td>public.ecr.aws/eks-distro/kubernetes-csi/node-driver-registrar:v2.9.0-eks-1-28-6 <strong>[ebs-csi-controller]</strong>
+</td>
 <td>🟢</td>
 <td><a href="https://distro.eks.amazonaws.com/releases/1-26/28/">v2.10.0</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.27.0">v1.27.0</a></td>
 <td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.27.0">2.27.0</a></td>
 </tr><tr>
-<td>registry.k8s.io/autoscaling/cluster-autoscaler:v1.25.3</td>
-<td>🔴</td>
-<td><a href="https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler#releases">v1.26.6</a></td>
+<td>registry.k8s.io/autoscaling/cluster-autoscaler:v1.27.5</td>
+<td>🟢</td>
+<td><a href="https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler#releases">v1.27.5</a></td>
 <td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.29.0">v1.29.0</a></td>
-<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-chart-9.35.0">9.35.0</a></td>
+<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-chart-9.36.0">9.36.0</a></td>
 </tr><tr>
-<td>registry.k8s.io/descheduler/descheduler:v0.26.1</td>
+<td>registry.k8s.io/descheduler/descheduler:v0.27.1</td>
 <td>🟢</td>
-<td><a href="https://github.com/kubernetes-sigs/descheduler?tab=readme-ov-file#%EF%B8%8F--documentation-versions-by-release">v0.26.1</a></td>
+<td><a href="https://github.com/kubernetes-sigs/descheduler?tab=readme-ov-file#%EF%B8%8F--documentation-versions-by-release">v0.27.1</a></td>
 <td><a href="https://github.com/kubernetes-sigs/descheduler/releases/tag/v0.29.0">v0.29.0</a></td>
 <td><a href="https://github.com/kubernetes-sigs/descheduler/releases/tag/descheduler-helm-chart-0.29.0">0.29.0</a></td>
 </tr><tr>
 <td>registry.k8s.io/metrics-server/metrics-server:v0.6.2</td>
 <td>🟠</td>
-<td><a href="https://github.com/kubernetes-sigs/metrics-server?tab=readme-ov-file#compatibility-matrix">v0.7.0</a></td>
-<td><a href="https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.0">v0.7.0</a></td>
-<td><a href="https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server">3.12.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/metrics-server?tab=readme-ov-file#compatibility-matrix">v0.7.1</a></td>
+<td><a href="https://github.com/kubernetes-sigs/metrics-server/releases/tag/v0.7.1">v0.7.1</a></td>
+<td><a href="https://github.com/kubernetes-sigs/metrics-server/releases/tag/metrics-server-helm-chart-3.12.1">3.12.1</a></td>
 </tr>
         </table>
       </div><h2 id="kuberhealthy">kuberhealthy</h2>
@@ -1892,14 +1904,14 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
-<td>754256621582.dkr.ecr.eu-west-2.amazonaws.com/webops/cloud-platform-kuberhealthy-checks:1.4</td>
+<td>754256621582.dkr.ecr.eu-west-2.amazonaws.com/webops/cloud-platform-kuberhealthy-checks:1.8</td>
 <td>🟢</td>
 <td>managed by us</td>
-<td><a href="https://github.com/ministryofjustice/cloud-platform-kuberhealthy-checks/releases/tag/1.4">1.4</a></td>
+<td><a href="https://github.com/ministryofjustice/cloud-platform-kuberhealthy-checks/releases/tag/1.8">1.8</a></td>
 <td>n/a</td>
 </tr><tr>
 <td>docker.io/kuberhealthy/daemonset-check:v3.3.0</td>
@@ -1920,7 +1932,8 @@
 <td><a href="https://github.com/kuberhealthy/kuberhealthy/releases/tag/v2.7.1">v3.3.0</a></td>
 <td><a href="https://github.com/kuberhealthy/kuberhealthy/tree/master/deploy/helm/kuberhealthy">104</a></td>
 </tr><tr>
-<td>docker.io/kuberhealthy/kuberhealthy:v2.7.1</td>
+<td>docker.io/kuberhealthy/kuberhealthy:v2.8.0-rc2 <strong>[pre-release]</strong>
+</td>
 <td>🟢</td>
 <td>v2.7.1</td>
 <td><a href="https://github.com/kuberhealthy/kuberhealthy/releases/tag/v2.7.1">v3.3.0</a></td>
@@ -1933,7 +1946,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1950,21 +1963,15 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
 <td>docker.io/fluent/fluent-bit:2.2.1</td>
-<td>🟢</td>
-<td>v2.2.1</td>
-<td><a href="https://github.com/fluent/fluent-bit/releases/tag/v2.2.1">v2.2.1</a></td>
-<td><a href="https://github.com/fluent/helm-charts">0.43.0</a></td>
-</tr><tr>
-<td>gcr.io/heptio-images/eventrouter:v0.3</td>
 <td>🟠</td>
-<td>deprecated</td>
-<td>deprecated</td>
-<td>deprecated</td>
+<td>v3.0.1</td>
+<td><a href="https://github.com/fluent/fluent-bit/releases/tag/v3.0.1">v3.0.1</a></td>
+<td><a href="https://github.com/fluent/helm-charts">0.46.0</a></td>
 </tr>
         </table>
       </div><h2 id="monitoring">monitoring</h2>
@@ -1973,27 +1980,27 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
-<td>docker.io/bitnami/redis:6.2.6-debian-10-r120</td>
-<td>🟠</td>
-<td>v7.2.4-debian-11-r5</td>
-<td><a href="https://hub.docker.com/layers/bitnami/redis/7.2.4-debian-11-r5/images/sha256-a29afa0e88dcfbd941a4576b723286d02653144eb2c27d0e92482404e691e0cd?context=explore">7.2.4-debian-11-r5</a></td>
+<td>docker.io/bitnami/redis:7.2.4-debian-11-r5</td>
+<td>🟢</td>
+<td>v7.2.4-debian-12-r11</td>
+<td><a href="https://hub.docker.com/layers/bitnami/redis/7.2.4-debian-12-r11/images/sha256-5447a91cb398819dc9a396bfc6d24a0ef0f72800e18e6c442a53ededd45a6331?context=explore">v7.2.4-debian-12-r11</a></td>
 <td>n/a</td>
 </tr><tr>
-<td>docker.io/bitnami/thanos:0.28.1-scratch-r0</td>
-<td>🟠</td>
-<td>v0.34.0</td>
-<td><a href="https://github.com/thanos-io/thanos/releases">v0.34.0</a></td>
-<td><a href="https://github.com/bitnami/charts/blob/main/bitnami/thanos/Chart.yaml#L13">v0.34.0</a></td>
+<td>docker.io/bitnami/thanos:0.34.1-debian-12-r1</td>
+<td>🟢</td>
+<td>v0.34.1</td>
+<td><a href="https://github.com/thanos-io/thanos/releases">v0.34.1</a></td>
+<td><a href="https://github.com/bitnami/charts/blob/main/bitnami/thanos/Chart.yaml#L13">v0.34.1</a></td>
 </tr><tr>
-<td>grafana/grafana:9.2.4</td>
-<td>🟠</td>
-<td>v10.3.1</td>
-<td><a href="https://github.com/grafana/grafana/releases/tag/v10.3.1">v10.3.1</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+<td>docker.io/grafana/grafana:10.3.3</td>
+<td>🟢</td>
+<td>v10.4.1</td>
+<td><a href="https://github.com/grafana/grafana/releases/tag/v10.4.1">v10.4.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">58.0.0</a></td>
 </tr><tr>
 <td>ministryofjustice/prometheus-ecr-exporter:0.2.0</td>
 <td>🟢</td>
@@ -2001,65 +2008,65 @@
 <td>n/a</td>
 <td><a href="https://github.com/ministryofjustice/cloud-platform-helm-charts/tree/main/prometheus-ecr-exporter">0.4.0</a></td>
 </tr><tr>
-<td>prom/cloudwatch-exporter:v0.15.0</td>
+<td>prom/cloudwatch-exporter:v0.15.1</td>
 <td>🟢</td>
 <td>v0.15.5</td>
 <td><a href="https://github.com/prometheus/cloudwatch_exporter/releases/tag/v0.15.5">v0.15.5</a></td>
 <td><a href="https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-cloudwatch-exporter">0.25.3</a></td>
 </tr><tr>
-<td>quay.io/kiwigrid/k8s-sidecar:1.19.2</td>
+<td>quay.io/kiwigrid/k8s-sidecar:1.25.2</td>
 <td>🟠</td>
-<td>v1.25.3</td>
-<td><a href="https://github.com/kiwigrid/k8s-sidecar/releases/tag/1.25.3">v1.25.3</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+<td>v1.26.1</td>
+<td><a href="https://github.com/kiwigrid/k8s-sidecar/releases/tag/1.26.1">v1.26.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">58.0.0</a></td>
 </tr><tr>
-<td>quay.io/oauth2-proxy/oauth2-proxy:v7.2.1</td>
-<td>🟠</td>
-<td>v7.5.1</td>
-<td><a href="https://github.com/oauth2-proxy/oauth2-proxy/releases/tag/v7.5.1">v7.5.1</a></td>
-<td><a href="https://oauth2-proxy.github.io/manifests/">6.23.1</a></td>
+<td>quay.io/oauth2-proxy/oauth2-proxy:v7.6.0</td>
+<td>🟢</td>
+<td>v7.6.0</td>
+<td><a href="https://github.com/oauth2-proxy/oauth2-proxy/releases/tag/v7.6.0">v7.6.0</a></td>
+<td><a href="https://github.com/oauth2-proxy/manifests/releases/tag/oauth2-proxy-7.4.1">7.4.1</a></td>
 </tr><tr>
-<td>quay.io/prometheus-operator/prometheus-config-reloader:v0.60.1</td>
+<td>quay.io/prometheus-operator/prometheus-config-reloader:v0.71.2</td>
 <td>🟠</td>
-<td>v0.70.0</td>
-<td><a href="https://github.com/prometheus-operator/prometheus-operator/releases/tag/v0.70.0">v0.70.0</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+<td>v0.73.0</td>
+<td><a href="https://github.com/prometheus-operator/prometheus-operator/releases/tag/v0.73.0">v0.73.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">58.0.0</a></td>
 </tr><tr>
-<td>quay.io/prometheus-operator/prometheus-operator:v0.60.1</td>
+<td>quay.io/prometheus-operator/prometheus-operator:v0.71.2</td>
 <td>🟠</td>
-<td>v0.70.0</td>
-<td><a href="https://github.com/prometheus-operator/prometheus-operator/releases/tag/v0.70.0">v0.70.0</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+<td>v0.73.0</td>
+<td><a href="https://github.com/prometheus-operator/prometheus-operator/releases/tag/v0.73.0">v0.73.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">58.0.0</a></td>
 </tr><tr>
-<td>quay.io/prometheus/alertmanager:v0.24.0</td>
-<td>🟠</td>
-<td>v0.26.0</td>
-<td><a href="https://github.com/prometheus/alertmanager/releases/tag/v0.26.0">v0.26.0</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+<td>quay.io/prometheus/alertmanager:v0.27.0</td>
+<td>🟢</td>
+<td>v0.27.0</td>
+<td><a href="https://github.com/prometheus/alertmanager/releases/tag/v0.27.0">v0.27.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">58.0.0</a></td>
 </tr><tr>
-<td>quay.io/prometheus/node-exporter:v1.3.1</td>
-<td>🟠</td>
+<td>quay.io/prometheus/node-exporter:v1.7.0</td>
+<td>🟢</td>
 <td>v1.7.0</td>
 <td><a href="https://github.com/prometheus/node_exporter/releases/tag/v1.7.0">v1.7.0</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">58.0.0</a></td>
 </tr><tr>
-<td>quay.io/prometheus/prometheus:v2.39.1</td>
-<td>🟠</td>
-<td>v2.48.1</td>
-<td><a href="https://github.com/prometheus/prometheus/releases/tag/v2.48.1">v2.48.1</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+<td>quay.io/prometheus/prometheus:v2.50.1</td>
+<td>🟢</td>
+<td>v2.51.1</td>
+<td><a href="https://github.com/prometheus/prometheus/releases/tag/v2.51.1">v2.51.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">58.0.0</a></td>
 </tr><tr>
-<td>quay.io/thanos/thanos:v0.28.0</td>
-<td>🟠</td>
-<td>v0.33.0</td>
-<td><a href="https://github.com/thanos-io/thanos/releases/tag/v0.33.0">v0.33.0</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+<td>quay.io/thanos/thanos:v0.33.0</td>
+<td>🟢</td>
+<td>v0.34.1</td>
+<td><a href="https://github.com/thanos-io/thanos/releases/tag/v0.34.1">v0.34.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">58.0.0</a></td>
 </tr><tr>
-<td>registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.7.0</td>
-<td>🔴</td>
-<td><a href="https://github.com/kubernetes/kube-state-metrics?tab=readme-ov-file#compatibility-matrix">v2.9.2</a></td>
-<td><a href="https://github.com/kubernetes/kube-state-metrics/releases">2.10.1</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">56.6.2</a></td>
+<td>registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.10.1</td>
+<td>🟢</td>
+<td><a href="https://github.com/kubernetes/kube-state-metrics?tab=readme-ov-file#compatibility-matrix">v2.10.1</a></td>
+<td><a href="https://github.com/kubernetes/kube-state-metrics/releases">2.12.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L24">58.0.0</a></td>
 </tr>
         </table>
       </div><h2 id="overprovision">overprovision</h2>
@@ -2068,7 +2075,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2091,38 +2098,38 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
 <td>quay.io/tigera/operator:v1.29.1</td>
-<td>🟢</td>
+<td>🟠</td>
 <td>v1.33.0</td>
 <td><a href="https://github.com/tigera/operator/releases/tag/v1.33.0">v1.33.0</a></td>
 <td><a href="https://github.com/projectcalico/calico/tree/master/charts/tigera-operator">3.27.0</a></td>
 </tr>
         </table>
-      </div><h2 id="trivy-operator">trivy-operator</h2>
+      </div><h2 id="trivy-system">trivy-system</h2>
 <div class="table-container">
         <table>
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
 <td>ghcr.io/aquasecurity/trivy-operator:0.16.4</td>
 <td>🟢</td>
-<td>v0.18.5</td>
-<td><a href="https://github.com/aquasecurity/trivy-operator/releases/tag/v0.18.5">v0.18.5</a></td>
-<td><a href="https://github.com/aquasecurity/trivy-operator/blob/main/deploy/helm/Chart.yaml">0.20.6</a></td>
+<td>v0.19.4</td>
+<td><a href="https://github.com/aquasecurity/trivy-operator/releases/tag/v0.19.4">v0.19.4</a></td>
+<td><a href="https://github.com/aquasecurity/trivy-operator/blob/main/deploy/helm/Chart.yaml">0.21.4</a></td>
 </tr><tr>
 <td>ghcr.io/aquasecurity/trivy:0.47.0</td>
 <td>🟢</td>
 <td>v0.49.1</td>
-<td><a href="https://github.com/aquasecurity/trivy/releases">v0.49.1</a></td>
-<td><a href="https://github.com/aquasecurity/trivy-operator/blob/main/deploy/helm/Chart.yaml">0.20.6</a></td>
+<td><a href="https://github.com/aquasecurity/trivy/releases">v0.50.1</a></td>
+<td><a href="https://github.com/aquasecurity/trivy-operator/blob/main/deploy/helm/Chart.yaml">0.21.4</a></td>
 </tr>
         </table>
       </div><h2 id="velero">velero</h2>
@@ -2131,29 +2138,29 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.26</th>
+<th>latest version for k8s 1.27</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
-<td>velero/velero:v1.11.1</td>
-<td>🔴</td>
-<td><a href="https://github.com/vmware-tanzu/velero?tab=readme-ov-file#velero-compatibility-matrix">v1.13.0</a></td>
-<td><a href="https://github.com/vmware-tanzu/velero/releases">v1.13.0</a></td>
-<td><a href="https://github.com/vmware-tanzu/velero/releases/tag/v1.13.0">v1.13.0</a></td>
+<td>velero/velero:v1.13.0</td>
+<td>🟢</td>
+<td><a href="https://github.com/vmware-tanzu/velero?tab=readme-ov-file#velero-compatibility-matrix">v1.13.1</a></td>
+<td><a href="https://github.com/vmware-tanzu/velero/releases">v1.13.1</a></td>
+<td><a href="https://github.com/vmware-tanzu/helm-charts/tree/main/charts/velero"> 6.0.0</a></td>
 </tr>
         </table>
       </div>
-              <div data-module='page-expiry' data-last-reviewed-on="2024-05-08">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-07-09">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 8 February 2024.
+      This page was last reviewed on 9 April 2024.
 
-        It needs to be reviewed again on 8 May 2024
+        It needs to be reviewed again on 9 July 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 8 May 2024
+      This page was set to be reviewed before 9 July 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
