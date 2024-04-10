@@ -1625,7 +1625,7 @@
 <p>This document will briefly outline the steps required to empty the Concourse postgres persistent volume. Things to know before reading this document:</p>
 
 <ul>
-<li>We store concourse build data in this database. After deliberation with the team it was decided that this data isn&rsquo;t important enough to keep, meaning the volume attached to Concourse is considered ephemeral.</li>
+<li>We store concourse build data in this database. After deliberation with the team, it was decided that this data isn&rsquo;t important enough to keep, meaning the volume attached to Concourse is considered ephemeral.</li>
 <li>Some of the steps in this document require performing a <code>terraform destroy</code> on the Concourse module, so please ensure you have valid AWS credentials and your GPG key is added to the Cloud Platform infrastructure repository.</li>
 <li>The persistent volume for Concourse build data is not large (currently 8G) so will fill up over the course of a few months.</li>
 <li>A low and high priority alarm will trigger for <code>KubePersistentVolumeFillingUp</code>.</li>
@@ -1671,17 +1671,17 @@ terraform destroy <span class="nt">-target</span><span class="o">=</span>module.
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>terraform apply <span class="nt">-target</span><span class="o">=</span>module.concourse.helm_release.concourse
 </code></pre></div><p>You should start to see pods returning and the creation of a new PV.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-04-09">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-07-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 9 January 2024.
+      This page was last reviewed on 10 April 2024.
 
-        It needs to be reviewed again on 9 April 2024
+        It needs to be reviewed again on 10 July 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 9 April 2024
+      This page was set to be reviewed before 10 July 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
