@@ -501,6 +501,22 @@
     </ul>
   </li>
   <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#why"><span>Why?</span></a>
+      </li>
+      <li>
+        <a href="./node-group-changes.html#how"><span>How?</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./upgrade-cluster-components.html"><span>Upgrade cluster components</span></a>
     <ul>
       <li>
@@ -538,32 +554,13 @@
     </ul>
   </li>
   <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
     <ul>
       <li>
-        <a href="./node-group-changes.html#why"><span>Why?</span></a>
+        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
       </li>
       <li>
-        <a href="./node-group-changes.html#how"><span>How?</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
+        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
       </li>
     </ul>
   </li>
@@ -638,13 +635,16 @@
     </ul>
   </li>
   <li>
-    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
     <ul>
       <li>
-        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
       </li>
       <li>
-        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -719,6 +719,45 @@
       </li>
       <li>
         <a href="./auth0-rotation.html#4-update-manager-cluster-within-components-terraform"><span>4) Update Manager cluster within components (terraform)</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./monitor-eks-cluster.html"><span>Monitor EKS Cluster</span></a>
+    <ul>
+      <li>
+        <a href="./monitor-eks-cluster.html#monitoring-with-k9s"><span>Monitoring with K9s</span></a>
+        <ul>
+          <li>
+            <a href="./monitor-eks-cluster.html#installation"><span>Installation</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#launching-k9s"><span>Launching K9s</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-nodes"><span>Monitoring Nodes</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-pods"><span>Monitoring Pods</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-events"><span>Monitoring Events</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-with-k9s-further-reading"><span>Further reading</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./monitor-eks-cluster.html#monitoring-with-stern"><span>Monitoring with Stern</span></a>
+        <ul>
+          <li>
+            <a href="./monitor-eks-cluster.html#basic-usage"><span>Basic Usage</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-with-stern-further-reading"><span>Further reading</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -989,30 +1028,6 @@
     </ul>
   </li>
   <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#deebugging"><span>Deebugging</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
-    <ul>
-      <li>
-        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
-        <ul>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
-          </li>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./remove-data-from-elasticsearch.html"><span>Remove data from Elasticsearch</span></a>
     <ul>
       <li>
@@ -1061,6 +1076,30 @@
             <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <ul>
+      <li>
+        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
+        <ul>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
+          </li>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-no-logs.html#deebugging"><span>Deebugging</span></a>
       </li>
     </ul>
   </li>
@@ -1165,6 +1204,32 @@
     </ul>
   </li>
   <li>
+    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
+    <ul>
+      <li>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./eks-cluster.html"><span>Provisioning EKS clusters</span></a>
     <ul>
       <li>
@@ -1189,32 +1254,6 @@
             <a href="./eks-cluster.html#4-deploy-components"><span>4. Deploy components</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
-    <ul>
-      <li>
-        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
       </li>
     </ul>
   </li>
@@ -1619,7 +1658,7 @@ This will eventually cause the update to stop, wait and then exit, leaving the r
 
 delete_pods<span class="o">()</span> <span class="o">{</span>
   <span class="nv">NAMESPACE</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'s/\/api\/v1\/namespaces\/(.*)\/pods\/.*/\1/'</span><span class="si">)</span>
-  <span class="nv">POD</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'s/.*\/pods\/(.*)\/eviction/\1/'</span><span class="si">)</span>
+  <span class="nv">POD</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'s/.*\/pods\/(.*)\/eviction\?timeout=.*/\1/'</span><span class="si">)</span>
 
   <span class="nb">echo</span> <span class="nv">$NAMESPACE</span>
 
@@ -1668,22 +1707,23 @@ delete_pods<span class="o">()</span> <span class="o">{</span>
 </code></pre></div></li>
 <li><p>If there are results they will have a pattern like this:
 <code>/api/v1/namespaces/$NAMESPACE/pods/$POD_NAME-$POD_ID/eviction?timeout=19s</code></p></li>
+<li><p>You may also go to the <a href="https://eu-west-2.console.aws.amazon.com/cloudwatch/home?region=eu-west-2#dashboards/dashboard/cloud-platform-eks-live-pdb-eviction-status">CloudWatch Dashboard</a> directly to identify the offending pod.</p></li>
 <li><p>You can then run the following command to manually delete the pod
 <code>kubectl delete pod -n $NAMESPACE $POD_NAME-$POD_ID</code></p></li>
 </ol>
 <p>Nodes should continue to recycle and after a few moments there should be one less node with the status &ldquo;Ready,SchedulingDisabled&rdquo;</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-09-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-10-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 March 2024.
+      This page was last reviewed on 10 April 2024.
 
-        It needs to be reviewed again on 20 September 2024
+        It needs to be reviewed again on 10 October 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 September 2024
+      This page was set to be reviewed before 10 October 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

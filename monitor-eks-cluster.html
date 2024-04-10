@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Adding a route to connect to a TGW - Cloud Platform Runbooks</title>
+    <title>Monitor EKS Cluster - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-to-tgw.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/monitor-eks-cluster.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Adding a route to connect to a TGW - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-to-tgw.html" />
+      <meta name="twitter:title" content="Monitor EKS Cluster - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/monitor-eks-cluster.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Adding a route to connect to a TGW" />
+      <meta property="og:title" content="Monitor EKS Cluster" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-to-tgw.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/monitor-eks-cluster.html" />
 
     
   </head>
@@ -744,7 +744,7 @@
             <a href="./monitor-eks-cluster.html#monitoring-events"><span>Monitoring Events</span></a>
           </li>
           <li>
-            <a href="./monitor-eks-cluster.html#monitoring-with-k9s-further-reading"><span>Further reading</span></a>
+            <a href="./monitor-eks-cluster.html#further-reading"><span>Further reading</span></a>
           </li>
         </ul>
       </li>
@@ -1620,59 +1620,135 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="adding-a-route-to-connect-to-the-moj-transit-gateway">Adding a route to connect to the MOJ Transit Gateway</h1>
-<p>This document is a description of the current Cloud Platform attachment to the MoJ Transit Gateway.
-It also explain how to modify the relevant route table to route traffic from Cloud Platform to the MoJ Transit Gateway.</p>
-<p><em>The scope of this guide is limited on purpose, it only covers the Cloud Platform responsibilities.
-The NVVS DevOps team is able to share the Transit Gateways with other AWS accounts.</em></p>
-<h2 id="quick-introduction">Quick introduction</h2>
-<p>AWS Transit Gateways allows VPCs, from different accounts or regions, to be connected securely.
-Transit Gateways have their own route-table.
-Transit Gateways (TGW) also support connecting to VPNs, AWS Direct Connect and other Transit Gateway</p>
-<p>An important limitation: a TGW can only work with VPCs in the same region it is in. However, TGW from different regions can be peered.</p>
-<p>The MoJ Transit Gateway infrastructure is managed here : <a href="https://github.com/ministryofjustice/deployment-tgw">github repository</a></p>
-<p><strong><em>Note:</em></strong> The terms <code>TGW-MoJ</code>, <code>pttp_tgw</code>, <code>MoJ Transit Gateway</code> are used interchangeably in this guide and in the code for legacy reasons,
-but they are all referring to the same Transit Gateway.</p>
-<h2 id="transit-gateway">Transit Gateway</h2>
-<p>The Cloud Platform VPC (live-1) is attached to TGW-MoJ (<code>tgw-026162f1ba39ce704</code>) which is shared from a different AWS account using (RAM - Resource Access Manager).</p>
-<p>The vpc_attachement is done by creating the resource <code>aws_ec2_transit_gateway_vpc_attachment</code> in Cloud Platform account providing the transit_gateway_id (the one that is shared),
-vpc_id and the private subnet_ids of <code>live-1</code> VPC. The NVVS DevOps team then approves the vpc attachement and adds the attachment from their side.
-In order to allow the traffic to flow, a new route needs to be added to VPC&rsquo;s route-table for each target VPC.</p>
-<p>Example: The Analytical Platform(AP) wants to access the Cloud Platform (CP) VPC.</p>
+            <h1 id="monitor-eks-cluster">Monitor EKS Cluster</h1>
+<h2 id="monitoring-with-k9s">Monitoring with K9s</h2>
+<p><a href="https://k9scli.io/">K9s</a>  provides a powerful terminal UI to interact with your Kubernetes clusters, allowing you to monitor and manage your resources efficiently. This part covers how to monitor nodes, pods, and events, and how to use filters to narrow down your view to specific namespaces or pods in specific status.</p>
+<h3 id="installation">Installation</h3>
+<p>Before you begin, ensure that K9s is installed on your machine. If not, please follow the official <a href="https://k9scli.io/topics/install/">K9s installation instructions</a>.</p>
+<h3 id="launching-k9s">Launching K9s</h3>
+<p>To start K9s, open your terminal and type <code>k9s</code></p>
+<p>This command launches the K9s interface, displaying your default namespace&rsquo;s pods.</p>
+<h3 id="monitoring-nodes">Monitoring Nodes</h3>
+<p>To view and monitor nodes:</p>
+<p>Press <code>:</code> to activate the command mode and type <code>nodes</code> and press Enter.</p>
+<p>Here, you can see a list of your cluster&rsquo;s nodes along with their status, CPU, memory usage, version, Pods and age.</p>
+<h4 id="sorting-for-nodes">Sorting for nodes</h4>
+<p>K9s allows you to sort resources based on different metrics, providing flexibility in how you view your cluster&rsquo;s data.
+This can be particularly useful in troubleshooting or Cluster Upgrade when you need to quickly identify which nodes are under the most strain or which are the newest or oldest.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>&lt;shift-a&gt;                   Sort Age
+&lt;shift-c&gt;                   Sort CPU
+&lt;shift-m&gt;                   Sort Memory
+&lt;shift-n&gt;                   Sort Name
+&lt;shift-o&gt;                   Sort Pods
+&lt;shift-r&gt;                   Sort Role
+</code></pre></div><p>By default, sorting is in descending order for most metrics except for age. If you need to change the sort order to ascending (for example, to sort the node by CPU usage), you can toggle the sort order by:</p>
+<p>Pressing <code>shift-c</code> and this will show the node sort with CPU usage in descending order.</p>
+<p>You can press <code>shift-c</code> again to toggle back to ascending order.</p>
+<p>Sorting by age <code>shift-a</code> is different and is default in ascending order (see the newest nodes first when sorting by age). If you need to change the sort order to descending to see the oldest nodes first when sorting by age), you can toggle the sort order by
+pressing <code>shift-a</code> again.</p>
+<p>During EKS Cluster upgrade, it is recommended to sort nodes by age in ascending order which allows you to:</p>
 
 <ul>
-<li>Both are attached the the TGW</li>
-<li>The CP route-table should contain a route with the AP VPC&rsquo;s CIDR block as a destination, but with the TGW ID as a target.</li>
-<li>The same needs to be done on the AP VPC, to route back to CP.</li>
+<li>Identify Newly Created Nodes: Quickly determine which nodes are the newest additions to your cluster. This is especially useful to verify that nodes are being successfully created as part of the upgrade process.</li>
+<li>Monitor Node Replacement: Ensure that older nodes are being decommissioned as expected.</li>
+<li>Troubleshoot Issues: Identify and troubleshoot any anomalies with node creation times, such as unexpected delays or nodes not being created as planned.</li>
 </ul>
-<h2 id="making-the-change">Making the change</h2>
-<p>All existing routes that are added to live-1 VPC are managed at the <code>route.tf</code> file in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/transit-gateway">transit-gateway-cloud-platform folder</a> in the <code>cloud-platform-infrastructure</code> Github repository.
-Only an admin of the cloud-platform (<code>moj-cp</code>) is able to run that code.</p>
-<p>Here is the snippet to add the VPC CIDR block to the route.tf :</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>pttp_tgw_destination_cidr_blocks = [
-        "10.161.XX.X/22", # Example VPC
-        ...
-        ...
-        ...
-      ]
-</code></pre></div><p>Note: Something similar need to be done on the &lsquo;other side&rsquo;, terraform or not.</p>
-<p>There is a task defined in the <code>infrastructure-vpc-live-1</code> <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/infrastructure-vpc-live-1.yaml">Concourse pipeline</a> that will apply the new route(s) when merged with the main branch.</p>
-<h2 id="adding-routes-from-live-2-vpc-to-moj-transit-gateway">Adding routes from live-2 VPC to MoJ Transit Gateway</h2>
-<p>The Transit Gateway attachment from live-2 VPC to MoJ Transit Gateway has been provisioned, but there is no code provisioned to add routes.
-We decided not to add this for now as there are no requirements for any routing from live-2 VPC to the MoJ Transition Gateway. Also live-2 is planned for decommission.
-If there is a requirement for this, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/add-live-2-tgw-routes">add-live-2-tgw-routes branch</a> shows the code that needs to be applied.</p>
+<h3 id="monitoring-pods">Monitoring Pods</h3>
+<p>To view and monitor pods:</p>
+<p>Press <code>:</code> to activate the command mode and type <code>pods</code> and press Enter.</p>
+<p>Here, you can see a list of pods along with their namespace, name, status, IP, node and age.</p>
+<p>Press <code>0</code> to monitor all pods across all namespaces.</p>
+<h4 id="filtering-pods">Filtering Pods</h4>
+<p>Filter pods by specific namespace:</p>
+<p>With the pods view open, press <code>/</code> to start a filter.
+Type the namespace name and press Enter.
+Only pods within the specified namespace will be displayed.</p>
+<p>You can also monitor 2 or more namepsace at the same time by adding <code>|</code> in the filter, like <code>namespace-1|namespace-2</code> to view pods in those 2 namespace.</p>
+<p>Filter pods by status:</p>
+<p>With the pods view open, press <code>/</code> to start a filter.
+Type <code>error</code> and press Enter to filter pod by error status.
+You can also filter pods at 2 or more status at the same time by adding <code>|</code> in the filter, like <code>error|fail</code> to view pods in those 2 namespace.</p>
+<p>During EKS Cluster upgrade, it is recommended to filter pods by status <code>ContainerStatusUnknown|error|fail</code> to get all pods in unnormal state.</p>
+<h4 id="sorting-for-pods">Sorting for Pods</h4>
+<p>Sorting concecpt for pods is similar to sorting for nodes. You may refer to <a href="#sorting-for-nodes">Sorting for nodes</a> for more details.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>&lt;shift-a&gt;                                 Sort Age                                                                                                                                                                                                                                                                                                              │
+&lt;shift-c&gt;                                 Sort CPU                                                                                                                                                                                                                                                                                                              │
+&lt;ctrl-x&gt;                                  Sort CPU/L                                                                                                                                                                                                                                                                                                            │
+&lt;shift-x&gt;                                 Sort CPU/R                                                                                                                                                                                                                                                                                                            │
+&lt;shift-i&gt;                                 Sort IP                                                                                                                                                                                                                                                                                                               │
+&lt;shift-m&gt;                                 Sort MEM                                                                                                                                                                                                                                                                                                              │
+&lt;ctrl-q&gt;                                  Sort MEM/L                                                                                                                                                                                                                                                                                                            │
+&lt;shift-z&gt;                                 Sort MEM/R                                                                                                                                                                                                                                                                                                            │
+&lt;shift-n&gt;                                 Sort Name                                                                                                                                                                                                                                                                                                             │
+&lt;shift-p&gt;                                 Sort Namespace                                                                                                                                                                                                                                                                                                        │
+&lt;shift-o&gt;                                 Sort Node                                                                                                                                                                                                                                                                                                             │
+&lt;shift-r&gt;                                 Sort Ready                                                                                                                                                                                                                                                                                                            │
+&lt;shift-t&gt;                                 Sort Restart                                                                                                                                                                                                                                                                                                          │
+&lt;shift-s&gt;                                 Sort Status                                                                                                                                                                                                                                                                                                           │
+</code></pre></div><h3 id="monitoring-events">Monitoring Events</h3>
+<p>To view and monitor events:</p>
+<p>Press <code>:</code> to activate the command mode and type <code>events</code> and press Enter.</p>
+<p>Here, you can see a list of events along with their namespace, last seen, type, reason, object and count.</p>
+<p>Press <code>0</code> to monitor all events across all namespaces.</p>
+<p>Press <code>1</code> to monitor all events across in default view, which is useful for Cluster Upgrade.</p>
+<h4 id="filtering-events">Filtering Events</h4>
+<p>Filtering Events by Namespace:</p>
+<p>With the events view open, press <code>/</code>.
+Enter the namespace name and press Enter.
+Only events related to the specified namespace will be shown.</p>
+<h4 id="monitoring-events-sorting-for-pods">Sorting for Pods</h4>
+<p>Sorting concecpt for pods is similar to sorting for nodes. You may refer to <a href="#sorting-for-nodes">Sorting for nodes</a> for more details.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>&lt;shift-a&gt;                                  Sort Age
+&lt;shift-c&gt;                                  Sort Count
+&lt;shift-f&gt;                                  Sort FirstSeen
+&lt;shift-l&gt;                                  Sort LastSeen
+&lt;shift-n&gt;                                  Sort Name
+&lt;shift-p&gt;                                  Sort Namespace
+&lt;shift-r&gt;                                  Sort Reason
+&lt;shift-s&gt;                                  Sort Source
+&lt;shift-t&gt;                                  Sort Type                                                                                                                                                                                                                                                                                                          │
+</code></pre></div><p>During EKS Cluster upgrade, it is recommended to sort events in default view by last seen in ascending order. This sorting method enhances your understanding by providing a chronological sequence of events.
+It ensures that you can easily track the progression of the upgrade and promptly identify any recent issues that may arise.</p>
+<h3 id="further-reading">Further reading</h3>
+<p>For more details, you may refer to the built-in help by pressing <code>?</code> within K9s or below pages.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-08-27">
+<ul>
+<li><a href="https://k9scli.io/topics/commands/">K9s Commands</a></li>
+<li><a href="https://k9scli.io/topics/config/">K9s Configuration</a></li>
+</ul>
+<h2 id="monitoring-with-stern">Monitoring with Stern</h2>
+<p><a href="https://github.com/stern/stern">Stern</a> allows you to tail multiple pods on Kubernetes and multiple containers within the pod. Each result is color coded for quicker debugging.</p>
+<p>Stern simplifies the process of monitoring logs from multiple pods within Kubernetes. It aggregates logs from various sources, allowing for real-time monitoring and troubleshooting.</p>
+<h3 id="basic-usage">Basic Usage</h3>
+<p>To start using Stern, open your terminal and point it to your Kubernetes cluster by setting the correct context with <code>kubectl</code>.</p>
+<p>To tail logs from all pods in a specific namespace, you may run</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>stern -n &lt;namepsace&gt;
+</code></pre></div><p>Tailing Logs from Specific Pods
+To tail logs from specific pods in a specific namespace, you may run</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>stern -n &lt;namepsace&gt; &lt;pod-name&gt;
+</code></pre></div><p>It&rsquo;s particularly useful during the update process of EKS add-ons, offering visibility into how changes affect pod operations.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>stern --namespace kube-system &lt;coredns aws-node kube-proxy&gt;
+</code></pre></div><p>Stern sometimes may reach the maximum number of log request which is 50 by default, and you may use the flag <code>--max-log-requests &lt;number&gt;</code> to increase the log limit, for example</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>stern -n kube-system kube-proxy --max-log-requests 500
+</code></pre></div><h3 id="monitoring-with-stern-further-reading">Further reading</h3>
+<p>For more details, you may refer to the below pages.</p>
+
+<ul>
+<li><a href="https://github.com/stern/stern?tab=readme-ov-file#usage">Stern Doc</a></li>
+<li><a href="https://kubernetes.io/blog/2016/10/tail-kubernetes-with-stern/">Tail Kubernetes with Stern</a></li>
+</ul>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2024-10-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 February 2024.
+      This page was last reviewed on 10 April 2024.
 
-        It needs to be reviewed again on 27 August 2024
+        It needs to be reviewed again on 10 October 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 August 2024
+      This page was set to be reviewed before 10 October 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1682,8 +1758,8 @@ If there is a requirement for this, the <a href="https://github.com/ministryofju
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/cloud-platform-to-tgw.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Adding+a+route+to+connect+to+a+TGW%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fcloud-platform-to-tgw.html%29&amp;labels=bug&amp;title=Re%3A+%27Adding+a+route+to+connect+to+a+TGW%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/monitor-eks-cluster.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Monitor+EKS+Cluster%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fmonitor-eks-cluster.html%29&amp;labels=bug&amp;title=Re%3A+%27Monitor+EKS+Cluster%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>

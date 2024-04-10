@@ -501,6 +501,22 @@
     </ul>
   </li>
   <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#why"><span>Why?</span></a>
+      </li>
+      <li>
+        <a href="./node-group-changes.html#how"><span>How?</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./upgrade-cluster-components.html"><span>Upgrade cluster components</span></a>
     <ul>
       <li>
@@ -538,32 +554,13 @@
     </ul>
   </li>
   <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
     <ul>
       <li>
-        <a href="./node-group-changes.html#why"><span>Why?</span></a>
+        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
       </li>
       <li>
-        <a href="./node-group-changes.html#how"><span>How?</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
+        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
       </li>
     </ul>
   </li>
@@ -638,13 +635,16 @@
     </ul>
   </li>
   <li>
-    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
     <ul>
       <li>
-        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
       </li>
       <li>
-        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -719,6 +719,45 @@
       </li>
       <li>
         <a href="./auth0-rotation.html#4-update-manager-cluster-within-components-terraform"><span>4) Update Manager cluster within components (terraform)</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./monitor-eks-cluster.html"><span>Monitor EKS Cluster</span></a>
+    <ul>
+      <li>
+        <a href="./monitor-eks-cluster.html#monitoring-with-k9s"><span>Monitoring with K9s</span></a>
+        <ul>
+          <li>
+            <a href="./monitor-eks-cluster.html#installation"><span>Installation</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#launching-k9s"><span>Launching K9s</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-nodes"><span>Monitoring Nodes</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-pods"><span>Monitoring Pods</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-events"><span>Monitoring Events</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-with-k9s-further-reading"><span>Further reading</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./monitor-eks-cluster.html#monitoring-with-stern"><span>Monitoring with Stern</span></a>
+        <ul>
+          <li>
+            <a href="./monitor-eks-cluster.html#basic-usage"><span>Basic Usage</span></a>
+          </li>
+          <li>
+            <a href="./monitor-eks-cluster.html#monitoring-with-stern-further-reading"><span>Further reading</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -989,30 +1028,6 @@
     </ul>
   </li>
   <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#deebugging"><span>Deebugging</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
-    <ul>
-      <li>
-        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
-        <ul>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
-          </li>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./remove-data-from-elasticsearch.html"><span>Remove data from Elasticsearch</span></a>
     <ul>
       <li>
@@ -1061,6 +1076,30 @@
             <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <ul>
+      <li>
+        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
+        <ul>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
+          </li>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-no-logs.html#deebugging"><span>Deebugging</span></a>
       </li>
     </ul>
   </li>
@@ -1165,6 +1204,32 @@
     </ul>
   </li>
   <li>
+    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
+    <ul>
+      <li>
+        <a href="./creating-a-live-like.html#pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./eks-cluster.html"><span>Provisioning EKS clusters</span></a>
     <ul>
       <li>
@@ -1189,32 +1254,6 @@
             <a href="./eks-cluster.html#4-deploy-components"><span>4. Deploy components</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
-    <ul>
-      <li>
-        <a href="./creating-a-live-like.html#pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
       </li>
     </ul>
   </li>
@@ -1592,8 +1631,8 @@ to the configuration similar to the live cluster.</p>
 <h2 id="setting-cluster-size-to-match-live">Setting cluster size to match Live</h2>
 
 <ol>
-<li>Set the node group desired size to 48 (check the live cluster for up-to-date number) in the AWS console under Compute</li>
-<li>Set the node_groups_count to same as live cluster (64) and default_ng_min_count to 48 in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf</a></li>
+<li>Set the node group desired size to 60 (check the live cluster for up-to-date number) in the AWS console under Compute</li>
+<li>Set the node_groups_count to same as live cluster (60) and default_ng_min_count to 60 in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf</a></li>
 <li>Copy the node_size values from live to default, currently <code>[&quot;r6i.2xlarge&quot;, &quot;r6i.xlarge&quot;, &quot;r5.2xlarge&quot;]</code></li>
 <li>Copy the monitoring_node_size values from live to default, currently <code>[&quot;r6i.8xlarge&quot;, &quot;r5a.2xlarge&quot;]</code></li>
 <li>Ensure that your Terraform workspace matches your cluster name</li>
@@ -1656,16 +1695,18 @@ to the configuration similar to the live cluster.</p>
 <li><p>Useful third party tools</p>
 
 <ul>
-<li><a href="https://k9scli.io/">k9s</a></li>
+<li><a href="https://k9scli.io/">K9s</a></li>
 <li><a href="https://github.com/stern/stern">Stern</a></li>
 </ul></li>
 </ul>
+<p>You may refer to <a href="monitor-eks-cluster.html">Monitor EKS Cluster</a> section for more details.</p>
 <h2 id="final-tests">Final Tests</h2>
 
 <ol>
-<li>Run <code>make run-tests</code> from the root cloud-platform repository</li>
+<li>Run <code>make run-tests</code> from the root cloud-platform-infrastructure repository</li>
 <li>Update <code>cluster.tf</code> <code>cluster_version</code> to match version upgraded to</li>
 <li>Run <code>terraform plan</code> to ensure there are no unexpected changes</li>
+<li>Go to <code>component</code> layer and scale up and down the <code>starter_pack</code> module to ensure <code>terraform apply</code> can run smoothly</li>
 </ol>
 <h2 id="tearing-down">Tearing down</h2>
 
@@ -1674,17 +1715,17 @@ to the configuration similar to the live cluster.</p>
 <li>Remove pingdom checks</li>
 </ol>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-07-26">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-10-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 26 January 2024.
+      This page was last reviewed on 10 April 2024.
 
-        It needs to be reviewed again on 26 July 2024
+        It needs to be reviewed again on 10 October 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 26 July 2024
+      This page was set to be reviewed before 10 October 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
