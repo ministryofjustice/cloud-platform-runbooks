@@ -1641,7 +1641,7 @@
 </ul>
 <h3 id="commiting-changes-to-the-lock-file">Commiting changes to the lock file</h3>
 <p>Because the team is mainly on mac m* chips we are generally running a different architecture (arm64) to the terraform that will run in the pipeline (amd64). Therefore if we want to commit a compatible lock file you must run before adding it to git:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform providers lock -platform=amd64
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform providers lock -platform=linux_amd64
 </code></pre></div><h4 id="further-reading">Further reading</h4>
 
 <ul>
