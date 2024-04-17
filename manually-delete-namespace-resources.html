@@ -1025,6 +1025,9 @@
       <li>
         <a href="./manually-delete-namespace-resources.html#deleting-a-namespace"><span>Deleting a namespace</span></a>
       </li>
+      <li>
+        <a href="./manually-delete-namespace-resources.html#locating-pr-number"><span>Locating PR number</span></a>
+      </li>
     </ul>
   </li>
   <li>
@@ -1664,18 +1667,22 @@ ensure that your environments repository is up to date with the latest changes.<
     <span class="nt">--skip-prod-destroy</span><span class="o">=</span><span class="nb">true</span>  <span class="c"># Set this flag to false to destroy namespace marked :is-production</span>
 </code></pre></div><p>The command will then destroy all terraform and kubernetes resources associated with the namespace, and finally will delete
 the namespace itself.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2024-07-16">
+<h2 id="locating-pr-number">Locating PR number</h2>
+<p>If you are unable to locate the PR number for the namespace deletion, you can run this handy <code>git</code> command from the root of the <code>cloud-platform-environments</code> repo
+to get the commit hash for the namespace deletion, and then search for the PR in the environments repository via the GitHub UI search.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git rev-list <span class="nt">-n</span> 1 HEAD <span class="nt">--</span> namespaces/live.cloud-platform.service.justice.gov.uk/[namespace-name]
+</code></pre></div>
+              <div data-module='page-expiry' data-last-reviewed-on="2024-10-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 January 2024.
+      This page was last reviewed on 17 April 2024.
 
-        It needs to be reviewed again on 16 July 2024
+        It needs to be reviewed again on 17 October 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 July 2024
+      This page was set to be reviewed before 17 October 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
