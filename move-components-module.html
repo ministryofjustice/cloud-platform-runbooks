@@ -652,21 +652,6 @@
     <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
     <ul>
       <li>
-        <a href="./move-components-module.html#step-1-migrating-resources"><span>Step 1 - Migrating resources</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#step-2-get-state"><span>Step 2 - Get state</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#step-3-core"><span>Step 3 - Core</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#step-4-components"><span>Step 4 - Components</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#step-4-cleanup"><span>Step 4 - Cleanup</span></a>
-      </li>
-      <li>
         <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
       </li>
     </ul>
@@ -1624,30 +1609,22 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="moving-components-modules-into-core">Moving <code>components</code> modules into <code>core</code></h1>
-<h2 id="step-1-migrating-resources">Step 1 - Migrating resources</h2>
-<p>Pause pipelines.</p>
-<p>Move the module from <code>core/components.tf</code> into it&rsquo;s own file e.g. <code>gatekeeper.tf</code> in <code>core</code>.</p>
-<p>Remove any dependencies from <code>core/components.tf</code></p>
-<p>Run <code>terraform plan -out=$dir.tfplan</code> on both <code>core</code> and <code>components</code> there should be the same number of resources being removed as applied.</p>
-<p>Commit the changes and create a pull request.</p>
-<h2 id="step-2-get-state">Step 2 - Get state</h2>
-<p>Get a list of all resources being added in <code>core</code></p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform show -no-color -json core.tfplan | jq -r '.resource_changes[] | select(.change.actions[0]=="update" or .change.actions[0]=="create" or .change.actions[0]=="create") | .address'
-</code></pre></div><p><a href="https://www.reddit.com/r/Terraform/comments/10m7jdd/comment/jjcihv4/">Source</a></p>
-<p>Pull <code>core</code> and <code>components</code> terraform state:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform state pull &gt; $dir.tfstate
-</code></pre></div><p>Create a copy of each tfstate file as a backup in case something goes wrong.</p>
-<p>Copy each resource state block from <code>components.tfstate</code> into <code>core.tfstate</code>.</p>
-<h2 id="step-3-core">Step 3 - Core</h2>
-<p>Run <code>terraform state push -force core.tfstate</code> this will overwrite the remote state file with our updated state with the additional resources from components.</p>
-<p>Run <code>terraform plan</code> this should show no changes.</p>
-<h2 id="step-4-components">Step 4 - Components</h2>
-<p>Once cores state has been updated with the new state file we need to remove the duplicated resources in components.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform state rm $resource
-</code></pre></div><p>Do this for each resource from step 2.</p>
-<p>Run <code>terraform plan</code> and confirm there are no changes.</p>
-<h2 id="step-4-cleanup">Step 4 - Cleanup</h2>
-<p>Unpause the pipelines there should be no changes.</p>
+
+<ol>
+<li>Raise PR with migrated module</li>
+<li>Update #cloud-platform informing the team about the module migration and to not make new PRs against <code>cloud-platform-infrastructure</code>.</li>
+<li>Pause pipelines</li>
+<li>Update pipelines with module name and cluster name:
+<code>fly -t moj-cp set-pipeline --pipeline migrate-module --config migrate-module.yaml -v cluster_name=$CLUSTER_NAME -v module=$MODULE_NAME</code></li>
+<li>Run <code>migrate-module</code> pipeline from the Concourse UI.</li>
+<li>Unpause pipelines</li>
+<li>Re-run PR plan - the plan should show &ldquo;No changes. Your infrastructure matches the configuration.&rdquo;</li>
+<li>Pause pipelines</li>
+<li>Get approval for the PR and merge.</li>
+<li>Un-pause <code>live-2</code> and check for a clean apply</li>
+<li>Repeat 9. with <code>manager</code> and <code>live</code></li>
+<li>Update #cloud-platform informing the team of the completed migration and that pipelines are unpaused.</li>
+</ol>
 <h2 id="disaster-recovery">Disaster Recovery</h2>
 <p>If for some reason something goes wrong then you can use the backed up state file to overwrite the remote.</p>
 <p>Alternatively all our tf state objects are versioned in S3 so you can restore a previous known working version from the AWS console.</p>
