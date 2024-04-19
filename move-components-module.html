@@ -1614,6 +1614,8 @@
 <li>Raise PR with migrated module</li>
 <li>Update #cloud-platform informing the team about the module migration and to not make new PRs against <code>cloud-platform-infrastructure</code>.</li>
 <li>Pause pipelines</li>
+<li>Log in to Concourse using <code>fly -t moj-cp login -c https://concourse.cloud-platform.service.justice.gov.uk/</code></li>
+<li>Ensure your in the <code>cloud-platform-terraform-concourse</code> directory.</li>
 <li>Update pipelines with module name and cluster name:
 <code>fly -t moj-cp set-pipeline --pipeline migrate-module --config migrate-module.yaml -v cluster_name=$CLUSTER_NAME -v module=$MODULE_NAME</code></li>
 <li>Run <code>migrate-module</code> pipeline from the Concourse UI.</li>
