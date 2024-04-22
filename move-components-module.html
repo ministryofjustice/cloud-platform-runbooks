@@ -1612,6 +1612,10 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="moving-components-modules-into-core">Moving <code>components</code> modules into <code>core</code></h1>
+<p>In order to migrate a terraform module from <code>components</code> into <code>core</code> there are a number of steps that need to be done in order to make sure the process runs smoothly. From a high level the terraform module needs to be moved and then tested in a test cluster.</p>
+<p>The aim is to make sure that when a terraform plan is run against both <code>core</code> and <code>compoents</code> after the MTM tool is ran there should be no terraform changes.</p>
+<p>There is a pipeline in Concourse that accepts <code>$CLUSTER_NAME</code> and <code>$MODULE_NAME</code> setting these and running the pipeline will migrate that module on the cluster specified.</p>
+<p>The exact steps should follow:</p>
 
 <ol>
 <li>Raise PR with migrated module</li>
@@ -1622,9 +1626,9 @@
 <li>Update pipelines with module name and cluster name:
 <code>fly -t moj-cp set-pipeline --pipeline migrate-module --config migrate-module.yaml -v cluster_name=$CLUSTER_NAME -v module=$MODULE_NAME</code></li>
 <li>Run <code>migrate-module</code> pipeline from the Concourse UI.</li>
-<li>Unpause pipelines</li>
+<li>Unpause pipeline environment specific pipeline (e.g. live-2)</li>
 <li>Re-run PR plan - the plan should show &ldquo;No changes. Your infrastructure matches the configuration.&rdquo;</li>
-<li>Pause pipelines</li>
+<li>Re-run step 5-9 with the next environment (e.g. manager)</li>
 <li>Get approval for the PR and merge.</li>
 <li>Un-pause <code>live-2</code> and check for a clean apply</li>
 <li>Repeat 9. with <code>manager</code> and <code>live</code></li>
