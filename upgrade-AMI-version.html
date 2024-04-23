@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Make an S3 bucket public - Cloud Platform Runbooks</title>
+    <title>Upgrade AMI Version - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-AMI-version.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Make an S3 bucket public - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html" />
+      <meta name="twitter:title" content="Upgrade AMI Version - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-AMI-version.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Make an S3 bucket public" />
+      <meta property="og:title" content="Upgrade AMI Version" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/public-s3-bucket.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-AMI-version.html" />
 
     
   </head>
@@ -1617,20 +1617,32 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="make-an-s3-bucket-public">Make an S3 bucket public</h1>
-<p>There is a <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-baselines/blob/main/modules/lambdas/functions/s3-bucket-block-publicaccess/index.py">lambda function</a> in place which runs weekly and revokes public access for all our S3 Buckets. If we want grant public access to S3 buckets they must be <a href="https://github.com/ministryofjustice/cloud-platform-terraform-awsaccounts-baselines/blob/main/modules/lambdas/main.tf#L94">added as exceptions within module definion</a> followed by <code>terraform apply</code>. It should also be followed the instructions described within the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-s3-bucket#usage">S3 module &ldquo;Usage&rdquo; section</a></p>
+            <h1 id="upgrade-ami-version">Upgrade AMI Version</h1>
+<p>AWS releases new AMI versions for EKS node groups that include Kubernetes patches and security updates. To upgrade the node groups to use the new AMI version:</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-04-24">
+<ul>
+<li>login to the AWS console</li>
+<li>Select EKS and select the cluster</li>
+<li>Select the node group and click on <code>Update AMI version</code></li>
+<li>Select the Update Strategy to &ldquo;Force update&rdquo; and click on &ldquo;Update&rdquo;</li>
+</ul>
+<p>This will perform a rolling update of all the nodes in the node group. Follow the steps in <a href="#recycle-all-nodes">Recycle all nodes</a> section to recycle all the nodes.</p>
+<h1 id="recycle-all-nodes">Recycle all nodes</h1>
+<p>When a node group version changes, this will cause all of the nodes to recycle. When AWS recycles the nodes, it will not evict pods if it will break the PDB.
+This will cause the node to stall the update and the nodes will <strong>not</strong> continue to recycle.</p>
+<p>To rectify this, run the script mentioned in <a href="recycle-all-nodes.html#gotchas">Recycle-all-nodes- Gotchas</a> section.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2024-10-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 24 October 2023.
+      This page was last reviewed on 22 April 2024.
 
-        It needs to be reviewed again on 24 April 2024
+        It needs to be reviewed again on 22 October 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 24 April 2024
+      This page was set to be reviewed before 22 October 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1640,8 +1652,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/public-s3-bucket.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Make+an+S3+bucket+public%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fpublic-s3-bucket.html%29&amp;labels=bug&amp;title=Re%3A+%27Make+an+S3+bucket+public%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/upgrade-AMI-version.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Upgrade+AMI+Version%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fupgrade-AMI-version.html%29&amp;labels=bug&amp;title=Re%3A+%27Upgrade+AMI+Version%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
