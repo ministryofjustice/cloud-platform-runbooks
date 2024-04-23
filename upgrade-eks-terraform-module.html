@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Debugging AWS Console read-only access issues - Cloud Platform Runbooks</title>
+    <title>Upgrade EKS Terraform Module - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-aws-console-access.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-terraform-module.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Debugging AWS Console read-only access issues - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-aws-console-access.html" />
+      <meta name="twitter:title" content="Upgrade EKS Terraform Module - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-terraform-module.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Debugging AWS Console read-only access issues" />
+      <meta property="og:title" content="Upgrade EKS Terraform Module" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-aws-console-access.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-eks-terraform-module.html" />
 
     
   </head>
@@ -392,7 +392,7 @@
     <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
     <ul>
       <li>
-        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
         <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
@@ -429,7 +429,7 @@
     <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
     <ul>
       <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
+        <a href="./upgrade-eks-terraform-module.html#pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
         <a href="./upgrade-eks-terraform-module.html#upgrade-steps"><span>Upgrade Steps</span></a>
@@ -1636,32 +1636,69 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="debugging-aws-console-read-only-access-issues">Debugging AWS Console read-only access issues</h1>
-<p>This page exists to collect and provide guidance on how to debug issues with AWS Console read-only access.</p>
-<h2 id="github-teams-principal-tag-character-limit-exceeded">GitHub teams Principal Tag character limit exceeded</h2>
-<p>You may see users encountering the following error when attempting to SSO into the AWS Console:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Unable to validate tags (Service: AWSSecurityToken; Status Code: 400; Error Code: ValidationError; Request ID: abcd-1234; Proxy: null). Please try again.
-</code></pre></div><p>The cause of this issue has frequently been identified as a result of a user belonging to enough GitHub teams (or those with especially long names) that result in the total
-length of the Principal Tag exceeding the 256 character limit, as documented <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_session-tags.html">here</a></p>
-<p>In order to confirm whether this is the cause, request the user to grab a SAML response from their browser session by following the steps provided in <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/troubleshoot_saml_view-saml-response.html">this link</a></p>
-<p>Ask the user to provide you with their base64 decoded SAML response, and check the character count for the contents of the <code>PrincipalTag:GithubTeam</code> tag.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>&lt;saml:Attribute Name="https://aws.amazon.com/SAML/Attributes/PrincipalTag:GithubTeam" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"&gt;&lt;saml:AttributeValue xsi:type="xs:string"&gt;:github-teams:&lt;/saml:AttributeValue&gt;
-</code></pre></div><p>You can easily get a character count by running the following command:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ printf ":github-team-1:github-team-2:" | wc -c
-</code></pre></div><p>If the character count exceeds 256, you will need to ask the user to review their GitHub team membership, and remove themselves from any teams that are no longer required.</p>
-<p>At this time, there is no other workaround for this issue.</p>
+            <h1 id="upgrade-eks-terraform-module">Upgrade EKS Terraform Module</h1>
+<p>The Cloud Platform EKS clusters are created using the official <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks</a> module.
+This is independent of the EKS version and EKS addons. Therefore, it will not always require to upgrade the EKS version or EKS addons when the EKS module is upgraded.</p>
+<h2 id="pre-requisites">Pre-requisites</h2>
+<p>Before you begin, there are a few pre-requisites:</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-08-07">
+<ul>
+<li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">infrastructure repo</a> so that you can run <code>git-crypt unlock</code>.</p></li>
+<li><p>You have the <a href="https://aws.amazon.com/cli/">AWS CLI</a> profile <code>moj-cp</code> with suitable credentials.</p></li>
+<li><p>You have terraform and docker installed</p></li>
+<li><p>Identify the major version you want to upgrade to</p></li>
+<li><p>Review the changes in the <a href="https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/CHANGELOG.md">changelog</a>.</p></li>
+</ul>
+<h2 id="upgrade-steps">Upgrade Steps</h2>
+<p>Create a PR in Cloud Platform Infrastructure repository against the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">EKS module</a>
+making the change to the desired <a href="https://github.com/terraform-aws-modules/terraform-aws-eks">terraform-aws-eks version</a></p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> module "eks" {
+   source  = "terraform-aws-modules/eks/aws"
+-  version = "17.24.0"
++  version = "18.31.2"
+</code></pre></div><p>Based on the changes in the changelog, you can decide if the upgrade is a breaking change or not.</p>
+<h3 id="upgrade-with-no-breaking-changes">Upgrade with no breaking changes</h3>
+
+<ul>
+<li>Execute <code>terraform plan</code> (or the automated plan pipeline) and review changes. If changes are all as expected, run <code>terraform apply</code> to execute the changes.</li>
+</ul>
+<p>Note: When you run <code>terraform plan</code>, if it is only showing launch_template version change as below, executing <code>terraform apply</code> will only create a new template version.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  # module.eks.module.node_groups.aws_launch_template.workers["monitoring_ng"] will be updated in-place
+  ~ resource "aws_launch_template" "workers" {
+      ~ default_version         = 1 -&gt; (known after apply)
+      ~ latest_version          = 1 -&gt; (known after apply)
+</code></pre></div><p>For cluster node groups to use the new template version created, you need to run <code>terraform apply</code> again, that will trigger a re-cycle of all the nodes using terraform.
+This can be disruptive and also incur terraform apply timeout. Hence, follow the below steps to update the node groups with the new template version.</p>
+<p>To update the node groups with the new template version:
+ - login to AWS console
+ - select EKS and select the cluster
+ - click on the Compute and select the node group
+ - click on <code>Change launch template version</code> option
+ - select update strategy as <code>force update</code> and Update.</p>
+<p>This will perform a rolling update of all the nodes in the node group.
+When AWS recycles the nodes, it will not evict pods if it will break the PDB.
+This will cause the node to stall the update and the nodes will not continue to recycle.</p>
+<p>This CloudWatch Dashboard is used to monitor the pod eviction status for live cluster.</p>
+<p>To rectify this, run the script mentioned in <a href="recycle-all-nodes.html#gotchas">Recycle-all-nodes Gotchas</a> section</p>
+<h3 id="upgrade-with-breaking-changes">Upgrade with breaking changes</h3>
+<p>Recent EKS module upgrade from 17 to 18 mentioned breaking changes to the resources.
+Hence, a non-distruptive process of creating new node group, moving terraform state,
+draining the old node group and finally deleting the old node group was followed.</p>
+<p>Detailed steps are mentioned in the <a href="https://docs.google.com/document/d/1Nv1WsqdYMBzjpO8jfmXEqjAY5nZ9GYWUpNNaMJVJyaw/edit?usp=sharing">google doc</a>
+The PR with the module changes are here: Here is the PR for the changes: <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2458">#2458</a></p>
+<p>Any future upgrades where the terraform plan or the changelog shows breaking changes, the procedure needs to be reviewed and modified based on what the breaking changes are.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2024-10-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 7 February 2024.
+      This page was last reviewed on 22 April 2024.
 
-        It needs to be reviewed again on 7 August 2024
+        It needs to be reviewed again on 22 October 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 7 August 2024
+      This page was set to be reviewed before 22 October 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1671,8 +1708,8 @@ length of the Principal Tag exceeding the 256 character limit, as documented <a 
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/debugging-aws-console-access.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Debugging+AWS+Console+read-only+access+issues%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fdebugging-aws-console-access.html%29&amp;labels=bug&amp;title=Re%3A+%27Debugging+AWS+Console+read-only+access+issues%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/upgrade-eks-terraform-module.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Upgrade+EKS+Terraform+Module%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fupgrade-eks-terraform-module.html%29&amp;labels=bug&amp;title=Re%3A+%27Upgrade+EKS+Terraform+Module%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
