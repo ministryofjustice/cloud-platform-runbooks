@@ -1647,6 +1647,10 @@
             <h1 id="updating-prisoner-content-hub-waf">Updating Prisoner Content Hub WAF</h1>
 <p>Every so often the Prisoner Content Hub require their WAF IP allowlist updating. This is a bespoke job and not fully #gitops</p>
 
+<blockquote>
+<p>Note: When adding an IP range e.g. <code>/28</code> it must start with the first address in the range. <code>10.0.0.50/28</code> is not valid however <code>10.0.0.48/28</code> is since it&rsquo;s the start of the block.</p>
+</blockquote>
+
 <ol>
 <li>Log in to AWS Console</li>
 <li>Goto Parameter Store - ensure you&rsquo;re in eu-west-2</li>
