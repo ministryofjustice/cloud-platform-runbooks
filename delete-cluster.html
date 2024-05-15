@@ -1657,7 +1657,7 @@ You can configure and trigger this pipeline against your test cluster for remova
 <li><code>wget</code></li>
 </ul>
 <p>Execute the following command, providing the name of the cluster you wish to delete:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cloud-platform pipeline delete-cluster --cluster-name &lt;cluster-name&gt;
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cloud-platform pipeline delete-cluster --cluster-name &lt;cluster-name&gt; --branch-name &lt;branch-name-defaults-to-main&gt;
 </code></pre></div><p>You&rsquo;ll be prompted to authenticate to Concourse:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>logging in to team 'main'
 navigate to the following URL in your browser:
