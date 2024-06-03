@@ -1653,6 +1653,7 @@
 <li>Changes to kubelet environment variables</li>
 </ul>
 <h2 id="recycling-process">Recycling process</h2>
+<p>Avoid letting terraform run the changes because terraform can start by deleting all the current nodes and then recreating them causing an outage to users. Instead create a new node group through the aws console, <a href="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html">instructions can be found here</a></p>
 <p>AWS will handle the process of killing the nodes with the old launch configurations and launching new nodes with the latest
 launch configuration. AWS will initially spin up some extra nodes (for around a 60 node cluster it will spin up 8 extra) to provide spaces for pods as old nodes are cordoned, drained and deleted.</p>
 
@@ -1737,17 +1738,17 @@ delete_pods<span class="o">()</span> <span class="o">{</span>
 </ol>
 <p>Nodes should continue to recycle and after a few moments there should be one less node with the status &ldquo;Ready,SchedulingDisabled&rdquo;</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-12-03">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 April 2024.
+      This page was last reviewed on 3 June 2024.
 
-        It needs to be reviewed again on 10 October 2024
+        It needs to be reviewed again on 3 December 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 October 2024
+      This page was set to be reviewed before 3 December 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
