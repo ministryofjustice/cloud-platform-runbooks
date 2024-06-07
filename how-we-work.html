@@ -135,10 +135,13 @@
         </ul>
       </li>
       <li>
-        <a href="./how-we-work.html#the-hammer-of-justice"><span>The 🔨 Hammer of Justice</span></a>
+        <a href="./how-we-work.html#support-squad"><span>Support Squad</span></a>
         <ul>
           <li>
-            <a href="./how-we-work.html#backlog-tickets"><span>Backlog Tickets</span></a>
+            <a href="./how-we-work.html#the-hammer-of-justice"><span>The 🔨 Hammer of Justice</span></a>
+          </li>
+          <li>
+            <a href="./how-we-work.html#support-squad-support-tickets"><span>Support Tickets</span></a>
           </li>
         </ul>
       </li>
@@ -1694,7 +1697,7 @@ Our team ceremonies include: daily stand up at 10:30am on Google Meet, planning 
 </tr>
         </table>
       </div><h2 id="the-board-tickets">The Board / Tickets</h2>
-<p>We use a kanban process to manage our backlog of work on this <a href="https://app.zenhub.com/workspaces/cloud-platform-team-5ccb0b8a81f66118c983c189/board">zenhub board</a>, which aggregates GitHub Issues from the various CP team repositories.</p>
+<p>We use a kanban process to manage our backlog of work on this <a href="https://github.com/orgs/ministryofjustice/projects/65">Github Project board</a>, which aggregates GitHub Issues from the various CP team repositories.</p>
 <p>During the sprint, the process of getting work done should look like this:</p>
 
 <ul>
@@ -1723,7 +1726,31 @@ Our team ceremonies include: daily stand up at 10:30am on Google Meet, planning 
 <li>Please be pro-active about reviewing other team members&rsquo; PRs</li>
 <li>When reviewing a PR, please add a &ldquo;reaction&rdquo; emoji to the corresponding slack message, so that other team members know you&rsquo;re doing so. This avoids duplicated effort. We tend to use 👀 to show we&rsquo;re reviewing a PR, and/or ✔ when we&rsquo;ve approved it.</li>
 </ul>
-<h2 id="the-hammer-of-justice">The 🔨 Hammer of Justice</h2>
+<h2 id="support-squad">Support Squad</h2>
+<p>We have a support squad to manage the support requests and alerts that come in. The support squad is responsible for the below in order of priority:</p>
+
+<ul>
+<li>Acknowledging and invoking the team to high-priority alerts in the <code>#high-priority-alarms</code> slack channel during support hours</li>
+<li>The 🔨 Hammer of Justice
+
+<ul>
+<li>Ensuring queries in the <code>#ask-cloud-platform</code> slack channel are answered</li>
+<li>Reviewing PRs raised by users of the Cloud Platform against the <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a></li>
+</ul></li>
+<li>Acknowledging and responding to alerts in the <code>#lower-priority-alarms</code> slack channel which include
+
+<ul>
+<li>Alerts related to the platform - lower priority alarms which are triggered from Prometheus, AWS, and Pingdom</li>
+<li>Alerts from concourse pipelines related to Integration tests, infrastructure and divergence</li>
+<li>Alerts from concourse pipelines related to <a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repository</a> i.e apply-namespace, apply-live</li>
+<li>Any other alerts from concourse pipelines</li>
+</ul></li>
+<li>Support tickets raised by users</li>
+<li>Actions from the How out of date are we? report i.e. (e.g. reviewing documentation pages, or <strong>carefully</strong> destroying orphaned AWS resources)</li>
+<li>Open Dependabot PRs raised against the <code>cloud-platform</code> repositories, which are managed in our GitHub Project <a href="https://github.com/orgs/ministryofjustice/projects/65/views/16">here</a></li>
+<li>Any issues from <a href="https://github.com/ministryofjustice/cloud-platform/issues?q=is%3Aissue+is%3Aopen+Link+Checker+Report">link checker report</a></li>
+</ul>
+<h3 id="the-hammer-of-justice">The 🔨 Hammer of Justice</h3>
 <p>The origin of the name is lost, but it sounds a lot more fun than &ldquo;support manager&rdquo; 😏</p>
 <p>We designate one member of the team to be the Hammer on each working day. Please volunteer when you feel comfortable, so that we all take a turn.</p>
 <p>The Hammer is responsible for:</p>
@@ -1739,17 +1766,19 @@ Our team ceremonies include: daily stand up at 10:30am on Google Meet, planning 
 <blockquote>
 <p>Anyone can (and should) respond to queries in <code>#ask-cloud-platform</code>, and review PRs. You don&rsquo;t have to be the Hammer to help.</p>
 </blockquote>
-<h3 id="backlog-tickets">Backlog Tickets</h3>
-<p>Working on tickets in the backlog when you&rsquo;re the Hammer is not advised. The constant context switching makes it hard to get significant work done, and there is also the risk that questions go unanswered and PRs get blocked waiting for review because you&rsquo;re head down in a problem and don&rsquo;t notice them.</p>
-<p>Instead, when not answering queries and reviewing PRs, the Hammer should work on fixing &ldquo;squeaky wheels&rdquo; - the minor alerts and problems that crop up which don&rsquo;t necessarily result in backlog tickets, or where such tickets never become high-priority enough to get selected during sprint planning.</p>
-<p>&ldquo;Squeaky wheels&rdquo; could include things like:</p>
-
-<ul>
-<li>Todo items reported by <a href="https://reports.cloud-platform.service.justice.gov.uk/dashboard">How out of date are we?</a> - (e.g. reviewing documentation pages, or (carefully) destroying orphaned AWS resources)</li>
-<li>Intermittent alerts in the <code>#lower-priority-alarms</code> slack channel</li>
-<li>Improving our integration tests</li>
-<li>Fixing open issues from Link Checker Report</li>
-</ul>
+<h4 id="backlog-tickets">Backlog Tickets</h4>
+<p>Working on tickets in the backlog when you&rsquo;re the Hammer is not advised. The constant context switching makes it hard to get significant work done,
+and there is also the risk that questions go unanswered and PRs get blocked waiting for review because you&rsquo;re head down in a problem and don&rsquo;t notice them.</p>
+<h3 id="support-squad-support-tickets">Support Tickets</h3>
+<p>Support tickets are created by users of Cloud Platform for various reasons. These can be anything from
+- a request for help with a technical problem,
+- a request for a new feature or service
+- setting up Alertmanager Receiver
+- setting up pingdom integration</p>
+<p>Support tickets are triaged by the support squad. If the support ticket is a quick change e.g. for setting an Alertmanager receiver, the ticket should be assigned to
+a member of the support team and should be finished in a day or two. If the ticket involves some investigation work, then this can be assigned to a support squad member in the same sprint, or discussed in
+backlog refinement and added to the following sprint.</p>
+<p>When working on support ticket, ensure that the ticket is updated with the progress and the user is informed.</p>
 <h2 id="documentation">Documentation</h2>
 <p>Most of our user-facing documentation is in the <a href="https://user-guide.cloud-platform.service.justice.gov.uk">user guide</a>, and documentation for the team is in the <a href="https://runbooks.cloud-platform.service.justice.gov.uk">runbooks</a> site.</p>
 <p>There are also a lot of important <code>README.md</code> files like <a href="https://github.com/ministryofjustice/cloud-platform#ministry-of-justice-cloud-platform-master-repo">this one</a>, especially for our terraform modules.
@@ -1757,17 +1786,17 @@ We also have code samples like <a href="https://github.com/ministryofjustice/clo
 <p>It is important to keep all of this up to date as the underlying code changes, so please remember to factor this in when estimating and working on tickets.</p>
 <p><a href="https://reports.cloud-platform.service.justice.gov.uk/documentation">This page</a> hosts a list of documents which are overdue for review. Please feel free to review any of the documents listed, and raise a PR making any updates (including updating the <code>last_reviewed_on</code> date).</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-05-14">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-09-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 14 February 2024.
+      This page was last reviewed on 6 June 2024.
 
-        It needs to be reviewed again on 14 May 2024
+        It needs to be reviewed again on 6 September 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 14 May 2024
+      This page was set to be reviewed before 6 September 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
