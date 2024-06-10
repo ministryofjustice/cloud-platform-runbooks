@@ -1650,17 +1650,18 @@
             <h1 id="moving-components-modules-into-core">Moving <code>components</code> modules into <code>core</code></h1>
 <p>In order to migrate a terraform module from <code>components</code> into <code>core</code> there are a number of steps that need to be done in order to make sure the process runs smoothly. From a high level the terraform module needs to be moved and then tested in a test cluster.</p>
 <p>The aim is to make sure that when a terraform plan is run against both <code>core</code> and <code>compoents</code> after the MTM tool is ran there should be no terraform changes.</p>
-<p>There is a pipeline in Concourse that accepts <code>$CLUSTER_NAME</code> and <code>$MODULE_NAME</code> setting these and running the pipeline will migrate that module on the cluster specified.</p>
+<p>There is a pipeline in Concourse that accepts <code>$CLUSTER_NAME</code>, <code>$MODULE_NAME</code> and <code>$RESOURCE</code> setting these and running the pipeline will migrate that module/resource on the cluster specified. Resources can be passed as a comma seperated string. Getting a list of resources to migrate is a manual process that requires you to read through the terraform files in <code>components</code>, some can be found by tracing back dependencies others should be obvious via there name. The name format for resources follow <code>$resource_type.$resource name</code> so <code>resource &quot;kubernetes_storage_class&quot; &quot;storageclass&quot;</code> becomes <code>kubernetes_storage_class.storageclass</code>, you can double check this by running <code>terraform state list</code>.</p>
+<p>If you need to upgrade the <code>mtm</code> cli you can update the <code>$MTM_VERSION</code> parameter in the pipeline.</p>
 <p>The exact steps should follow:</p>
 
 <ol>
+<li>Notify <code>#cloud-platform</code> that you are pausing concourse pipelines</li>
+<li>Pause <code>bootstrap</code>, <code>live-2</code>, <code>manager</code> and <code>live</code> pipelines.</li>
 <li>Raise PR with migrated module</li>
-<li>Update #cloud-platform informing the team about the module migration and to not make new PRs against <code>cloud-platform-infrastructure</code>.</li>
-<li>Pause pipelines</li>
 <li>Log in to Concourse using <code>fly -t moj-cp login -c https://concourse.cloud-platform.service.justice.gov.uk/</code></li>
 <li>Ensure your in the <code>cloud-platform-terraform-concourse</code> directory.</li>
-<li>Update pipelines with module name and cluster name:
-<code>fly -t moj-cp set-pipeline --pipeline migrate-module --config migrate-module.yaml -v cluster_name=$CLUSTER_NAME -v module=$MODULE_NAME</code></li>
+<li>Update pipelines with module and/or resources name and cluster name:
+<code>fly -t moj-cp set-pipeline --pipeline migrate-module --config migrate-module.yaml -v cluster_name=cp-0306-0730 -v module=tigera_calico -v resources=kubectl_manifest.calico_crds,http.calico_crds</code></li>
 <li>Run <code>migrate-module</code> pipeline from the Concourse UI.</li>
 <li>Unpause pipeline environment specific pipeline (e.g. live-2)</li>
 <li>Re-run PR plan - the plan should show &ldquo;No changes. Your infrastructure matches the configuration.&rdquo;</li>
