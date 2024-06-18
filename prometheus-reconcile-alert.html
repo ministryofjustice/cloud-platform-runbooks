@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Upgrade cluster components - Cloud Platform Runbooks</title>
+    <title>How to Investigate PrometheusOperatorReconcile Errors - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/prometheus-reconcile-alert.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Upgrade cluster components - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html" />
+      <meta name="twitter:title" content="How to Investigate PrometheusOperatorReconcile Errors - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/prometheus-reconcile-alert.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Upgrade cluster components" />
+      <meta property="og:title" content="How to Investigate PrometheusOperatorReconcile Errors" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-cluster-components.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/prometheus-reconcile-alert.html" />
 
     
   </head>
@@ -1184,7 +1184,7 @@
     <a href="./external-dns-error.html"><span>How to Investigate External-Dns Errors</span></a>
     <ul>
       <li>
-        <a href="./external-dns-error.html#troubleshooting"><span>Troubleshooting</span></a>
+        <a href="./external-dns-error.html#how-to-investigate-external-dns-errors-troubleshooting"><span>Troubleshooting</span></a>
         <ul>
           <li>
             <a href="./external-dns-error.html#invalid-change-batch"><span>Invalid Change Batch</span></a>
@@ -1200,7 +1200,7 @@
     <a href="./prometheus-reconcile-alert.html"><span>How to Investigate PrometheusOperatorReconcile Errors</span></a>
     <ul>
       <li>
-        <a href="./prometheus-reconcile-alert.html#how-to-investigate-prometheusoperatorreconcile-errors-troubleshooting"><span>Troubleshooting</span></a>
+        <a href="./prometheus-reconcile-alert.html#troubleshooting"><span>Troubleshooting</span></a>
       </li>
     </ul>
   </li>
@@ -1655,103 +1655,35 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="upgrade-cluster-components">Upgrade cluster components</h1>
-<p>Cluster components are application layer components that are installed in a cluster such as prometheus, external-dns, opa, certmanager etc.</p>
-<p>Components are configured as terraform modules and are called from <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> with a release tag.</p>
-<h2 id="planning">Planning</h2>
-<p>When you start working on upgrading any cloud-platform-components ticket:</p>
+            <h1 id="how-to-investigate-prometheusoperatorreconcile-errors">How to Investigate PrometheusOperatorReconcile Errors</h1>
+<p>When you see a <code>PrometheusOperatorReconcile</code> alert in the <code>#lower-priority-alarms</code> channel, it means that the Prometheus Operator is unable to reconcile the state of the Prometheus resources in the cluster.
+This means some of the prometheus rules or alerts are having issues and has not applied fine.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Check the logs of the Prometheus Operator pod to see if there are any errors:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> monitoring prometheus-operator-kube-p-operator-&lt;pod-id&gt; <span class="nt">-f</span>
+</code></pre></div><p>If you see any error like below:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>level=info ts=2024-02-23T10:31:29.0543824Z caller=rules.go:345
+component=prometheusoperator msg="Invalid rule" err="group
+\"XXX-elasticache\", rule 1, \"elasticache-enginecpu-utilisation\":
+annotation \"message\": template: __alert_elasticache-enginecpu-utilisation:1:
+undefined variable \"$clusterId\""
+</code></pre></div><p>This could stops Prometheus from sending out alerts to certain channels and stops changes/new ones being created. You may also see an alert
+<a href="https://mojdt.slack.com/archives/C8QR5FQRX/p1718608823815629">PrometheusErrorSendingAlertsToSomeAlertmanagers</a> if that was the case.</p>
+<p>You will need to fix the erroring PrometheusRule.</p>
+<p>If the rule is not configured in <a href="https://github.com/ministryofjustice/cloud-platform-environments">cloud-platform-environments</a> repository,
+find the namespace that rule is applied and get the team slack-channel or the last person who made a change and inform them to fix the rule.</p>
 
-<ul>
-<li>Check which chart versions are available to upgrade to</li>
-<li>Check whether the component is upgradeable to that chart version from the current one (some major versions cannot be skipped)</li>
-<li>Check the release notes of the component for any breaking changes</li>
-<li>Check and add notes from the upgrading process mentioned in the original github repository related the component (if any)</li>
-<li>Check and add notes of every CHANGELOG.md of the component between the current chart version installed in your cluster to the chart version you want to upgrade to</li>
-<li>Review the CHANGELOG notes with another member of the team (check for breaking changes, deprecations, change to values file and suggested plan for upgrading the production clusters <code>live-1</code>, <code>eks-manager</code> and <code>live</code>)</li>
-</ul>
-<h2 id="testing-the-upgrade-in-a-test-cluster">Testing the upgrade in a test cluster</h2>
-
-<ul>
-<li><p>Your GPG key must be added to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> so that you are able to run <code>git-crypt unlock</code></p></li>
-<li><p>You have the <a href="https://aws.amazon.com/cli/">AWS CLI</a> profile <code>moj-cp</code> with suitable credentials</p></li>
-<li><p>You have <a href="https://www.docker.com/">docker</a> installed</p></li>
-</ul>
-<h3 id="setup-environment">Setup environment</h3>
-<p>Setup the environment variables listed in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/example.env.create-cluster">example.env.create-cluster</a> in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>.</p>
-<h3 id="create-test-cluster">Create test cluster</h3>
-<p>Run the <code>create-cluster</code> concourse job to create a test cluster.</p>
-<h3 id="run-a-shell-in-the-tools-image">Run a shell in the tools image</h3>
-<p>The cloud platform <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">tools image</a> has all the software required to update a cluster.</p>
-<p>From a local copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a>,  run the following command:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>make tools-shell
-</code></pre></div><h3 id="authenticate-to-the-test-cluster">Authenticate to the test cluster</h3>
-<p>Create the file <code>~/.kube/config</code> in your tools-image container by running:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws eks <span class="nt">--region</span> eu-west-2 update-kubeconfig <span class="nt">--name</span> &lt;cluster-name&gt;
-</code></pre></div><h3 id="run-the-integration-tests">Run the integration tests</h3>
-<p>This will ensure the test cluster does not have any existing issues and is ready to use.</p>
-<p>To run Go tests:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>make run-tests
-</code></pre></div><h3 id="testing-the-upgrade">Testing the upgrade</h3>
-
-<ol>
-<li><p>Make the changes required to the module. For example, for upgrading the cert-manager, change the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-certmanager">cert-manager terraform module</a>. This might include</p>
-
-<ul>
-<li>The helm chart version</li>
-<li>changes to the values file (in needed)</li>
-</ul></li>
-<li><p>Push changes to a branch(upgrade) of the module</p></li>
-<li><p>Update the local copy of the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> with the branch reference.
- For cert-manager module, the code would change to</p>
-<div class="highlight"><pre class="highlight hcl" tabindex="0"><code><span class="nx">source</span> <span class="err">=</span> <span class="s2">"github.com/ministryofjustice/cloud-platform-terraform-certmanager?ref=upgrade"</span>
-</code></pre></div></li>
-<li><p>Do a <code>terraform plan</code> for the changes, verify whether the changes are correct and do <code>terraform apply</code> to apply the changes</p></li>
-<li><p>Check the <a href="upgrade-cluster-components.html#things-to-observe-when-testing-the-upgrade">things to observe</a> section for specific components</p></li>
-<li><p>Run the integration tests again</p></li>
-<li><p>Once the testing is complete and integration tests are passed, create a PR to be reviewed by the team and have the module unit tests passed.
- After the PR is approved, merge the changes to the main branch of the module and make a release.</p></li>
-<li><p>Change the module release tag in the eks/components folder of <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> and raise a PR.
- Verify the terraform plan from the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-plan-infra-live/">cloud-platform-infrastructure plan pipeline</a> and get it reviewed by the team.</p></li>
-<li><p>Once approved, merge the PR and monitor the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-apply-infra-live">cloud-platform-infrastructure apply pipeline</a> when applying the changes.</p></li>
-<li><p>Run the <code>reporting</code> tests in concourse to ensure live/manager/live-2 are working as expected.</p></li>
-</ol>
-<h3 id="things-to-observe-when-testing-the-upgrade">Things to observe when testing the upgrade</h3>
-<p>The below are some of the general things to check when during the upgrade and not a complete list.</p>
-<h3 id="performing-the-upgrade">Performing the upgrade</h3>
-<p>There is a cli command to perform the upgrade. First navigate to the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> and run the following command:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environments bump-module <span class="nt">--module</span> &lt;module-name&gt; <span class="nt">--module-version</span> &lt;version&gt;
-</code></pre></div><p>The <code>module-name</code> flag must contain a word in the module source. For example, if you were to upgrade the cert-manager module to 0.5.0, you would run the following command:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environment bump-module <span class="nt">--module</span> certmanager <span class="nt">--module-version</span> 0.5.0
-</code></pre></div><h4 id="cert-manager">Cert manager</h4>
-
-<ul>
-<li>The CRDs for cert-manager do not get deleted</li>
-<li>The existing certificates do not change in any way. This can be done by checking the timestamps of certificate creation</li>
-<li>Able to create and validate new certificates</li>
-</ul>
-<h4 id="prometheus">Prometheus</h4>
-
-<ul>
-<li>Ensure correct CRDs versions of prometheus-operator are updated before upgrading prometheus-operator</li>
-<li>The existing PrometheusRules and ServiceMonitors do not change in any way. This can be done by checking the timestamps of those resourse creation</li>
-<li>Able to query prometheus for metrics</li>
-</ul>
-<h4 id="logs">Logs</h4>
-<p>Compare the logs for the updated component/addon between test cluster and live to ensure there are no additional warnings or errors.</p>
-<h4 id="compare-environment-variables">Compare <code>environment</code> variables</h4>
-<p>Check the components/addon deamonset to ensure that the environment variables match.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2024-06-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-12-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 December 2023.
+      This page was last reviewed on 17 June 2024.
 
-        It needs to be reviewed again on 18 June 2024
+        It needs to be reviewed again on 17 December 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 June 2024
+      This page was set to be reviewed before 17 December 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1761,8 +1693,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/upgrade-cluster-components.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Upgrade+cluster+components%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fupgrade-cluster-components.html%29&amp;labels=bug&amp;title=Re%3A+%27Upgrade+cluster+components%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/prometheus-reconcile-alert.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27How+to+Investigate+PrometheusOperatorReconcile+Errors%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fprometheus-reconcile-alert.html%29&amp;labels=bug&amp;title=Re%3A+%27How+to+Investigate+PrometheusOperatorReconcile+Errors%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
