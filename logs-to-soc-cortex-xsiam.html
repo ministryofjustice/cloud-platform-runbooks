@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>How to Investigate External-Dns Errors - Cloud Platform Runbooks</title>
+    <title>Logs going to SOC Palo Alto Cortex Xsiam - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/logs-to-soc-cortex-xsiam.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="How to Investigate External-Dns Errors - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html" />
+      <meta name="twitter:title" content="Logs going to SOC Palo Alto Cortex Xsiam - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/logs-to-soc-cortex-xsiam.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="How to Investigate External-Dns Errors" />
+      <meta property="og:title" content="Logs going to SOC Palo Alto Cortex Xsiam" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/logs-to-soc-cortex-xsiam.html" />
 
     
   </head>
@@ -1680,47 +1680,44 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="how-to-investigate-external-dns-errors">How to Investigate External-Dns Errors</h1>
-<p>When there are errors in external-dns logs, &ldquo;ErrorsInExternalDNS&rdquo; alert sent to the low priority slack channel.</p>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<p>If we see an ErrorsInExternalDNS alert in low-priority-alerts, this is usually due to a external-dns have an issue to write records to Route-53 for a particual hosted zones.
-You can see errors from the external-dns pod by running:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> kube-system external-dns-&lt;pod-id&gt; <span class="nt">-f</span>
-</code></pre></div><h3 id="invalid-change-batch">Invalid Change Batch</h3>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [RDATA character limit of 32000 exceeded.]"</span>
+            <h1 id="pushing-logs-to-the-soc-team">Pushing logs to the SOC team</h1>
+<p>Cloud Platform logs from various sources are being pushed to the SOC team&rsquo;s security monitoring solution <code>Palo Alto Cortex XSIAM</code>.</p>
+<p>We are currently pushing the following logs:</p>
 
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [RRSet with DNS name _external_dns.development.moj.service.justice.gov.uk., type TXT cannot be created as other RRSets exist with the same name and type.,
-RRSet with DNS name development.moj.service.justice.gov.uk., type A cannot be created as other RRSets exist with the same name and type.]"</span>
+<ol>
+<li>Cloudtrail logs</li>
+</ol>
+<p>We are planning to push the following logs in the coming sprints. <a href="https://github.com/ministryofjustice/cloud-platform/milestone/35">Epic found here</a>.</p>
 
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [Tried to delete resource record set [name='_external_dns.test.live.cloud-platform.service.justice.gov.uk.', type='TXT', set-identifier='test-live-1'] but it was not found,
-Tried to delete resource record set [name='test.live.cloud-platform.service.justice.gov.uk.', type='A', set-identifier='test-live-1'] but it was not found]
+<ol>
+<li><code>live-1</code> VPC FlowLogs</li>
+<li>Route 53 logs</li>
+<li>EKS logs</li>
+</ol>
+<h2 id="1-cloudtrail-logs">1. Cloudtrail logs</h2>
+<h3 id="architecture">Architecture</h3>
+<p>We have followed Palo Alto&rsquo;s documentation on implementation to allow <a href="https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/Ingest-Audit-Logs-from-AWS-Cloud-Trail">Cortex XSIAM to injest logs from Cloudtrail</a>.</p>
+<p>Cloudtrail logs are written to a S3 bucket. The implementation consist of enabling the S3 bucket to trigger event notifications to an SQS queue. An IAM user with access keys has been created to grant Cortex XSIAM to accesse the SQS queue and recieves all the log messages. The terraform code for this implementation is found in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/sqs.tf">cloud-platform-terraform-infrastructure</a> repository.</p>
+<h3 id="iam-user-access-keys-rotation">IAM User access keys rotation</h3>
+<p>We need put in a mechanism to periodically rotate the IAM User access keys created for Cortex XSIAM to recieve the logs. <a href="https://github.com/ministryofjustice/cloud-platform/issues/5724">Suggestion and issue</a> for this has been raised.</p>
+<h2 id="2-vpc-flowlogs">2. VPC FlowLogs</h2>
+<p>To be implemented</p>
+<h2 id="3-route53-logs">3. Route53 logs</h2>
+<p>To be implemented</p>
+<h2 id="4-eks-logs">4. EKS logs</h2>
+<p>To be implemented</p>
 
-level=error msg="</span>InvalidChangeBatch: <span class="o">[</span>Tried to create resource record <span class="nb">set</span> <span class="o">[</span><span class="nv">name</span><span class="o">=</span><span class="s1">'cluster-cname-thisingress.example.'</span>, <span class="nb">type</span><span class="o">=</span><span class="s1">'TXT'</span><span class="o">]</span> but it already exists, Tried to create
-resource record <span class="nb">set</span> <span class="o">[</span><span class="nv">name</span><span class="o">=</span><span class="s1">'cluster-thisingress.example.'</span>, <span class="nb">type</span><span class="o">=</span><span class="s1">'TXT'</span><span class="o">]</span> but it already exists]
-
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to submit all changes for the following zones: [/hostedzone/ABCDEFGHIJKLMN /hostedzone/NMLKJIHGFEDCBA]"</span>
-</code></pre></div><p>Identify the ingress causing the error in question and fix the ingress depending upon the error message. We may need to inform users to update their ingress causing the error.</p>
-<p>Follow this <a href="https://aws.amazon.com/premiumsupport/knowledge-center/troubleshoot-route53-resource-record/">troubleshoot guide</a> for common error messages to determine the error&rsquo;s cause and how to troubleshoot it.</p>
-<p>Once the error is cleared, you will see info logs similar to:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"Applying provider record filter for domains: [dev.example. .dev.example.]"</span>
-<span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"Desired change: CREATE cluster-a-new.dev.example TXT [Id: /hostedzone/ZZZ]"</span>
-<span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"All records are already up to date"</span>
-</code></pre></div><h3 id="rate-limited-throttled">Rate Limited / Throttled</h3>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"records retrieval failed: failed to list hosted zones: Throttling: Rate exceeded</span><span class="se">\n\t</span><span class="s2">status code: 400, request id: 9df2a-7blah"</span>
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to list resource records sets for zone /hostedzone/BLAH_MOX: Throttling: Rate exceeded</span><span class="se">\n\t</span><span class="s2">status code: 400, request id: 0-9216-435fblah"</span>
-</code></pre></div><p>There isn&rsquo;t much we can do about being rate limited, acknowledge the alert.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2024-12-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 April 2024.
+      This page was last reviewed on 18 June 2024.
 
-        It needs to be reviewed again on 18 October 2024
+        It needs to be reviewed again on 18 December 2024
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 October 2024
+      This page was set to be reviewed before 18 December 2024
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1730,8 +1727,8 @@ resource record <span class="nb">set</span> <span class="o">[</span><span class=
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/external-dns-error.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27How+to+Investigate+External-Dns+Errors%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fexternal-dns-error.html%29&amp;labels=bug&amp;title=Re%3A+%27How+to+Investigate+External-Dns+Errors%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/logs-to-soc-cortex-xsiam.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Logs+going+to+SOC+Palo+Alto+Cortex+Xsiam%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Flogs-to-soc-cortex-xsiam.html%29&amp;labels=bug&amp;title=Re%3A+%27Logs+going+to+SOC+Palo+Alto+Cortex+Xsiam%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
