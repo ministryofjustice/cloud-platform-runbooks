@@ -1477,19 +1477,29 @@
           <li>
             <a href="./logs-to-soc-cortex-xsiam.html#architecture"><span>Architecture</span></a>
           </li>
-          <li>
-            <a href="./logs-to-soc-cortex-xsiam.html#iam-user-access-keys-rotation"><span>IAM User access keys rotation</span></a>
-          </li>
         </ul>
       </li>
       <li>
-        <a href="./logs-to-soc-cortex-xsiam.html#2-vpc-flowlogs"><span>2. VPC FlowLogs</span></a>
+        <a href="./logs-to-soc-cortex-xsiam.html#2-live-1-vpc-flowlogs"><span>2. live-1 VPC FlowLogs</span></a>
+        <ul>
+          <li>
+            <a href="./logs-to-soc-cortex-xsiam.html#2-live-1-vpc-flowlogs-architecture"><span>Architecture</span></a>
+          </li>
+        </ul>
       </li>
       <li>
         <a href="./logs-to-soc-cortex-xsiam.html#3-route53-logs"><span>3. Route53 logs</span></a>
       </li>
       <li>
         <a href="./logs-to-soc-cortex-xsiam.html#4-eks-logs"><span>4. EKS logs</span></a>
+      </li>
+      <li>
+        <a href="./logs-to-soc-cortex-xsiam.html#todo"><span>Todo</span></a>
+        <ul>
+          <li>
+            <a href="./logs-to-soc-cortex-xsiam.html#iam-user-access-keys-rotation"><span>IAM User access keys rotation</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1686,26 +1696,29 @@
 
 <ol>
 <li>Cloudtrail logs</li>
+<li><code>live-1</code> VPC FlowLogs</li>
 </ol>
 <p>We are planning to push the following logs in the coming sprints. <a href="https://github.com/ministryofjustice/cloud-platform/milestone/35">Epic found here</a>.</p>
 
 <ol>
-<li><code>live-1</code> VPC FlowLogs</li>
 <li>Route 53 logs</li>
 <li>EKS logs</li>
 </ol>
 <h2 id="1-cloudtrail-logs">1. Cloudtrail logs</h2>
 <h3 id="architecture">Architecture</h3>
 <p>We have followed Palo Alto&rsquo;s documentation on implementation to allow <a href="https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/Ingest-Audit-Logs-from-AWS-Cloud-Trail">Cortex XSIAM to injest logs from Cloudtrail</a>.</p>
-<p>Cloudtrail logs are written to a S3 bucket. The implementation consist of enabling the S3 bucket to trigger event notifications to an SQS queue. An IAM user with access keys has been created to grant Cortex XSIAM to accesse the SQS queue and recieves all the log messages. The terraform code for this implementation is found in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/sqs.tf">cloud-platform-terraform-infrastructure</a> repository.</p>
-<h3 id="iam-user-access-keys-rotation">IAM User access keys rotation</h3>
-<p>We need put in a mechanism to periodically rotate the IAM User access keys created for Cortex XSIAM to recieve the logs. <a href="https://github.com/ministryofjustice/cloud-platform/issues/5724">Suggestion and issue</a> for this has been raised.</p>
-<h2 id="2-vpc-flowlogs">2. VPC FlowLogs</h2>
-<p>To be implemented</p>
+<p>Cloudtrail logs are written to a S3 bucket. The implementation consist of enabling the S3 bucket to trigger event notifications to an SQS queue. An IAM user with access keys has been created to grant Cortex XSIAM to access the SQS queue and recieves these messages. Cortex XSIAM then uses the references in these messages to retrieve the logs from the S3 bucket. The terraform code for this implementation is found in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/sqs.tf">cloud-platform-terraform-infrastructure</a> repository.</p>
+<h2 id="2-live-1-vpc-flowlogs">2. <code>live-1</code> VPC FlowLogs</h2>
+<h3 id="2-live-1-vpc-flowlogs-architecture">Architecture</h3>
+<p>We have followed Palo Alto&rsquo;s documentation on implementation to allow <a href="https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/Ingest-Network-Flow-Logs-from-Amazon-S3">Cortex XSIAM to injest VPC flowlogs from S3</a>.</p>
+<p>This implementation follows the same architectural pattern as pushing CloudTrail logs above. VPC flowlogs are written to a S3 bucket and triggers event notifications to an SQS queue. Cortex XSIAM then uses the references in these messages to retrieve the logs from the S3 bucket. The same IAM user access keys are used here. The terraform code for this implementation is found in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/sqs.tf">cloud-platform-terraform-infrastructure</a> repository.</p>
 <h2 id="3-route53-logs">3. Route53 logs</h2>
 <p>To be implemented</p>
 <h2 id="4-eks-logs">4. EKS logs</h2>
 <p>To be implemented</p>
+<h2 id="todo">Todo</h2>
+<h3 id="iam-user-access-keys-rotation">IAM User access keys rotation</h3>
+<p>We need put in a mechanism to periodically rotate the IAM User access keys created for Cortex XSIAM to recieve the logs. <a href="https://github.com/ministryofjustice/cloud-platform/issues/5724">Suggestion and issue</a> for this has been raised.</p>
 
               <div data-module='page-expiry' data-last-reviewed-on="2024-12-18">
     <div class='page-expiry--not-expired'>
