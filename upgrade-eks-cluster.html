@@ -478,6 +478,9 @@
         <a href="./upgrade-eks-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
+        <a href="./upgrade-eks-cluster.html#creating-cluster-upgrade-github-issues"><span>Creating Cluster Upgrade GitHub Issues</span></a>
+      </li>
+      <li>
         <a href="./upgrade-eks-cluster.html#upgrade-steps"><span>Upgrade Steps</span></a>
         <ul>
           <li>
@@ -1293,6 +1296,9 @@
     </ul>
   </li>
   <li>
+    <a href="./eks-cluster.html"><span>Provisiong a custom cluster</span></a>
+  </li>
+  <li>
     <a href="./change-alias-in-route53.html"><span>Change load balancer alias to the interface IP’s in Route53.</span></a>
     <ul>
       <li>
@@ -1714,6 +1720,8 @@ Please check the changelogs for the terraform-aws-eks module, the EKS version an
 <li><p>Review the official <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html">EKS upgrading a cluster</a> document for any extra steps that are a part of a specific EKS release.</p></li>
 <li><p>Run <a href="https://github.com/doitintl/kube-no-trouble">kubent</a> against cluster to find deprecated APIs.</p></li>
 </ul>
+<h2 id="creating-cluster-upgrade-github-issues">Creating Cluster Upgrade GitHub Issues</h2>
+<p>In order to help maintain a clear process for steps to follow in carrying out a cluster upgrade, we have an <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/ISSUE_TEMPLATE/cloud-platform-k8s-upgrade-template.md">issue template</a> which is used by <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/cmd/create-upgrade-issues/main.go">this script</a> to create individual issues for each step of the upgrade process. As you work through these issues, its helpful to review and update the template where necessary to ensure it remains relevant for future upgrades.</p>
 <h2 id="upgrade-steps">Upgrade Steps</h2>
 <h3 id="compatibility-check">Compatibility Check</h3>
 <p>The following areas need to be looked into to determine if there&rsquo;s any additional preparation work to do:</p>
@@ -1800,17 +1808,17 @@ This will cause the node to stall the update and the nodes will <strong>not</str
 <p>The <code>kubectl</code> version in the <code>cloud-platform-cli</code> and <code>cloud-platform-tools-image</code> needs updating to match the current Kubernetes version.</p>
 <p>Documentation used as part of the upgrade should be reviewed and refined if needed.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-01-05">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 April 2024.
+      This page was last reviewed on 5 July 2024.
 
-        It needs to be reviewed again on 10 October 2024
+        It needs to be reviewed again on 5 January 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 October 2024
+      This page was set to be reviewed before 5 January 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
