@@ -1293,10 +1293,10 @@
           </li>
         </ul>
       </li>
+      <li>
+        <a href="./eks-cluster.html#provisioning-a-custom-cluster"><span>Provisioning a custom cluster</span></a>
+      </li>
     </ul>
-  </li>
-  <li>
-    <a href="./eks-cluster.html"><span>Provisiong a custom cluster</span></a>
   </li>
   <li>
     <a href="./change-alias-in-route53.html"><span>Change load balancer alias to the interface IP’s in Route53.</span></a>
@@ -1786,21 +1786,21 @@ terraform apply
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
 terraform workspace new &lt;WorkspaceName&gt;
 terraform apply
-</code></pre></div><h1 id="provisiong-a-custom-cluster">Provisiong a custom cluster</h1>
-<p>If you working on a task that involves changing/adding cluster configuration or components, you can have Concourse execute a clean cluster build for you based off your working infrastructure branch. Refer to the instructions detailed in the Concourse repository <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/README.md#custom-cluster-pipeline">pipelines README</a> for the steps to follow.</p>
-<p>Once you&rsquo;re done with your customised cluster, you can have Concourse delete it for you using the branch flag of the <a href="https://runbooks.cloud-platform.service.justice.gov.uk/delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline">CLI delete-cluster command</a>.</p>
+</code></pre></div><h2 id="provisioning-a-custom-cluster">Provisioning a custom cluster</h2>
+<p>If you&rsquo;re working on a task that involves changing/adding cluster configuration or components, you can have Concourse execute a clean cluster build for you based off your working infrastructure branch. Refer to the instructions detailed in the Concourse repository <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/README.md#custom-cluster-pipeline">pipelines README</a> for the steps to follow.</p>
+<p>Once you&rsquo;re done with your customised cluster, you can pass your infrastructure branch name to the branch flag of the <a href="https://runbooks.cloud-platform.service.justice.gov.uk/delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline">CLI delete-cluster command</a>.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-09-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-01-08">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 March 2024.
+      This page was last reviewed on 8 July 2024.
 
-        It needs to be reviewed again on 18 September 2024
+        It needs to be reviewed again on 8 January 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 September 2024
+      This page was set to be reviewed before 8 January 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
