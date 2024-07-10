@@ -1495,6 +1495,11 @@
       </li>
       <li>
         <a href="./logs-to-soc-cortex-xsiam.html#3-route53-logs"><span>3. Route53 logs</span></a>
+        <ul>
+          <li>
+            <a href="./logs-to-soc-cortex-xsiam.html#3-route53-logs-architecture"><span>Architecture</span></a>
+          </li>
+        </ul>
       </li>
       <li>
         <a href="./logs-to-soc-cortex-xsiam.html#4-eks-logs"><span>4. EKS logs</span></a>
@@ -1719,24 +1724,26 @@
 <p>We have followed Palo Alto&rsquo;s documentation on implementation to allow <a href="https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/Ingest-Network-Flow-Logs-from-Amazon-S3">Cortex XSIAM to injest VPC flowlogs from S3</a>.</p>
 <p>This implementation follows the same architectural pattern as pushing CloudTrail logs above. VPC flowlogs are written to a S3 bucket and triggers event notifications to an SQS queue. Cortex XSIAM then uses the references in these messages to retrieve the logs from the S3 bucket. The same IAM user access keys are used here. The terraform code for this implementation is found in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/sqs.tf">cloud-platform-terraform-infrastructure</a> repository.</p>
 <h2 id="3-route53-logs">3. Route53 logs</h2>
-<p>To be implemented</p>
+<h3 id="3-route53-logs-architecture">Architecture</h3>
+<p>We have followed Palo Alto&rsquo;s documentation on implementation to allow <a href="https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/Ingest-Network-Route-53-Logs-from-Amazon-S3">Cortex XSIAM to injest Route53 from S3</a>.</p>
+<p>Since Route53 <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logs.html">Resolver query logging</a> is VPC bound, we are calling the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-route53-logs">Route53 logs module</a> at the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/main.tf#L114">VPC layer within infrastructure</a> and referencing the S3 bucket for the related SQS resources in the same way we do so for VPC FlowLogs, in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/sqs.tf">cloud-platform-terraform-infrastructure</a> repository.</p>
 <h2 id="4-eks-logs">4. EKS logs</h2>
 <p>To be implemented</p>
 <h2 id="todo">Todo</h2>
 <h3 id="iam-user-access-keys-rotation">IAM User access keys rotation</h3>
 <p>We need put in a mechanism to periodically rotate the IAM User access keys created for Cortex XSIAM to recieve the logs. <a href="https://github.com/ministryofjustice/cloud-platform/issues/5724">Suggestion and issue</a> for this has been raised.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-12-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-01-10">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 June 2024.
+      This page was last reviewed on 10 July 2024.
 
-        It needs to be reviewed again on 18 December 2024
+        It needs to be reviewed again on 10 January 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 December 2024
+      This page was set to be reviewed before 10 January 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
