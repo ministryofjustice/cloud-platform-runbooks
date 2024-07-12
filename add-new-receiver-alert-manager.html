@@ -1702,7 +1702,7 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="add-a-new-alertmanager-receiver-and-a-slack-webhook">Add a new Alertmanager receiver and a slack webhook</h1>
-<p>When Development Teams require to send custom alarms to their own channels the Alertmanager receiver has to be added to the alertmanager.</p>
+<p>When Development Teams require to send custom alarms to their own channels, the Alertmanager receiver has to be added to the alertmanager.</p>
 <h2 id="pre-requisites">Pre-requisites</h2>
 <p>You must have the below details from the development team.</p>
 
@@ -1730,7 +1730,7 @@ Check <a href="https://user-guide.cloud-platform.service.justice.gov.uk/document
 <li><p>Create a PR and merge the changes to master</p></li>
 <li><p>Apply the terraform code changes to the live</p></li>
 </ol>
-<p>Once the changes are applied, provide the <code>severity</code> to the development team requested. Development team have to use the value as severity label when creating all custom application alerts.</p>
+<p>Once the changes are applied, provide the <code>severity</code> to the development team requested. Development teams have to use the value as severity label when creating all custom application alerts.</p>
 <p>An example receiver set and a prometheus rule will look as below</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>{
     severity = "cp-team"
@@ -1758,13 +1758,13 @@ Check <a href="https://user-guide.cloud-platform.service.justice.gov.uk/document
         <span class="na">message</span><span class="pi">:</span> <span class="s">Namespace {{ $labels.namespace }} is using {{ printf "%0.0f" $value}}% of its {{ $labels.resource }} quota.</span>
         <span class="na">runbook_url</span><span class="pi">:</span> <span class="s">https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md###alert-name-kubequotaexceeded</span>
 </code></pre></div><h2 id="information-alerts">Information Alerts</h2>
-<p>AlertManager receivers for slack integration are configured for 2 type of alerts.</p>
+<p>AlertManager receivers for slack integration are configured for 2 types of alerts.</p>
 
 <ol>
-<li>to send a warning upon a alert rule condition is met and a recovery message once the condition is reversed</li>
-<li>to send a information type alert for monitoring non-problem/non-failure events and no recovery message - e.g for rule condition to positively know something happened (like a database refresh, or app deployment etc) which is not of type of problem/failure.</li>
+<li>to send a warning upon an alert rule condition is met and a recovery message once the condition is reversed</li>
+<li>to send an information type alert for monitoring non-problem/non-failure events and no recovery message - e.g for rule condition to positively know something happened (like a database refresh, or app deployment etc) which is not a type of problem/failure.</li>
 </ol>
-<p>All alerts are routed using the severity label set from the prometheus rule. If the severity label matches the keyword <code>info-</code><severity> then it is routed to information type receivers.
+<p>All alerts are routed using the severity label set from the prometheus rule. If the severity label matches the keyword <code>info-</code><severity>, then it is routed to information type receivers.
 Hence, to receive information alert, prepend <code>info-</code> when setting the <code>severity</code> label of the prometheus rule.</p>
 <p>An example receiver set and a prometheus rule will look as below</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>{
@@ -1794,17 +1794,17 @@ Hence, to receive information alert, prepend <code>info-</code> when setting the
         <span class="na">message</span><span class="pi">:</span> <span class="s">Latest backup checker Job completed on Namespace {{ $labels.namespace }}</span>
 </code></pre></div><p>Check the user guide for more details on <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/monitoring-an-app/how-to-create-alarms.html#creating-your-own-custom-alerts">how to setup custom prometheus alerts</a>.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-07-12">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-01-12">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 12 January 2024.
+      This page was last reviewed on 12 July 2024.
 
-        It needs to be reviewed again on 12 July 2024
+        It needs to be reviewed again on 12 January 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 12 July 2024
+      This page was set to be reviewed before 12 January 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
