@@ -426,7 +426,7 @@
         <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -709,6 +709,12 @@
   <li>
     <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
     <ul>
+      <li>
+        <a href="./move-components-module.html#notes-on-the-pipeline"><span>Notes on the pipeline</span></a>
+      </li>
+      <li>
+        <a href="./move-components-module.html#process"><span> Process</span></a>
+      </li>
       <li>
         <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
       </li>
@@ -1706,7 +1712,17 @@
 <p>The aim is to make sure that when a terraform plan is run against both <code>core</code> and <code>compoents</code> after the MTM tool is ran there should be no terraform changes.</p>
 <p>There is a pipeline in Concourse that accepts <code>$CLUSTER_NAME</code>, <code>$MODULE_NAME</code> and <code>$RESOURCE</code> setting these and running the pipeline will migrate that module/resource on the cluster specified. Resources can be passed as a comma seperated string. Getting a list of resources to migrate is a manual process that requires you to read through the terraform files in <code>components</code>, some can be found by tracing back dependencies others should be obvious via there name. The name format for resources follow <code>$resource_type.$resource name</code> so <code>resource &quot;kubernetes_storage_class&quot; &quot;storageclass&quot;</code> becomes <code>kubernetes_storage_class.storageclass</code>, you can double check this by running <code>terraform state list</code>.</p>
 <p>If you need to upgrade the <code>mtm</code> cli you can update the <code>$MTM_VERSION</code> parameter in the pipeline.</p>
-<p>The exact steps should follow:</p>
+<h2 id="notes-on-the-pipeline">Notes on the pipeline</h2>
+<p>The pipeline takes the following arguments:</p>
+
+<ul>
+<li><code>cluster_name</code> - Name of the cluster to target e.g. <code>cp-0001-0001</code>.</li>
+<li><code>module_name</code> - Name of the module to target e.g. <code>cert_manager</code>.</li>
+<li><code>resource</code> - Name of the resource to target e.g. <code>kubectl_manifest.prometheus_operator_crds</code>, accepts a comma separated list for multiple resources.</li>
+<li><code>flagged_resource</code> Name of flagged resource to target, this is used for resources that need to be pulled out of a module, accepts a comma separated list for multiple resources.</li>
+</ul>
+<p>Because of the way concourse variables work, none of the above can be blank. You can pass a dummy string in like <code>module.null</code> and the MTM tool will try and migrated a module/resource that doesn&rsquo;t exist.</p>
+<h2 id="process"> Process</h2>
 
 <ol>
 <li>Notify <code>#cloud-platform</code> that you are pausing concourse pipelines</li>
@@ -1715,7 +1731,7 @@
 <li>Log in to Concourse using <code>fly -t moj-cp login -c https://concourse.cloud-platform.service.justice.gov.uk/</code></li>
 <li>Ensure your in the <code>cloud-platform-terraform-concourse</code> directory.</li>
 <li>Update pipelines with module and/or resources name and cluster name:
-<code>fly -t moj-cp set-pipeline --pipeline migrate-module --config migrate-module.yaml -v cluster_name=cp-0306-0730 -v module=tigera_calico -v resources=kubectl_manifest.calico_crds,http.calico_crds</code></li>
+<code>fly -t moj-cp set-pipeline --pipeline migrate-module --config migrate-module.yaml -v cluster_name=cp-0306-0730 -v module=tigera_calico -v resources=kubectl_manifest.calico_crds,http.calico_crds -v flagged_resources=module.null</code></li>
 <li>Run <code>migrate-module</code> pipeline from the Concourse UI.</li>
 <li>Unpause pipeline environment specific pipeline (e.g. live-2)</li>
 <li>Re-run PR plan - the plan should show &ldquo;No changes. Your infrastructure matches the configuration.&rdquo;</li>
@@ -1729,17 +1745,17 @@
 <p>If for some reason something goes wrong then you can use the backed up state file to overwrite the remote.</p>
 <p>Alternatively all our tf state objects are versioned in S3 so you can restore a previous known working version from the AWS console.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-01-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 April 2024.
+      This page was last reviewed on 18 July 2024.
 
-        It needs to be reviewed again on 3 October 2024
+        It needs to be reviewed again on 18 January 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 October 2024
+      This page was set to be reviewed before 18 January 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
