@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Cloud Platform Team Alliance - Cloud Platform Runbooks</title>
+    <title>Debugging 101 - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-alliance.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-101.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Cloud Platform Team Alliance - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-alliance.html" />
+      <meta name="twitter:title" content="Debugging 101 - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-101.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Cloud Platform Team Alliance" />
+      <meta property="og:title" content="Debugging 101" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/cloud-platform-alliance.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-101.html" />
 
     
   </head>
@@ -1580,7 +1580,7 @@
         </ul>
       </li>
       <li>
-        <a href="./grafana-dashboards.html#grafana-dashboards-troubleshooting"><span>Troubleshooting</span></a>
+        <a href="./grafana-dashboards.html#grafana-dashboards-2-troubleshooting"><span>Troubleshooting</span></a>
         <ul>
           <li>
             <a href="./grafana-dashboards.html#fixing-quot-failed-to-load-dashboard-quot-errors"><span>Fixing “failed to load dashboard” errors</span></a>
@@ -1716,7 +1716,7 @@
     <a href="./debugging-101.html"><span>Debugging 101</span></a>
     <ul>
       <li>
-        <a href="./debugging-101.html#debugging-101-grafana-dashboards"><span>Grafana Dashboards</span></a>
+        <a href="./debugging-101.html#grafana-dashboards"><span>Grafana Dashboards</span></a>
         <ul>
           <li>
             <a href="./debugging-101.html#kubernetes-view-nodes"><span>Kubernetes / View / Nodes</span></a>
@@ -1743,38 +1743,37 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="cloud-platform-team-alliance">Cloud Platform Team Alliance</h1>
-<p>As a team, we regularly discuss and decide on our alliance, and document these openly and publicly.</p>
-<p>Our alliance is as follows (in no particular order):</p>
+            <h1 id="debugging-101">Debugging 101</h1>
+<p>Useful dashboards and searches for debugging issues on the cluster, starting from a high level node view down to pods.</p>
+<h2 id="grafana-dashboards">Grafana Dashboards</h2>
+<h3 id="kubernetes-view-nodes">Kubernetes / View / Nodes</h3>
+<p>https://grafana.live.cloud-platform.service.justice.gov.uk/d/k8s_views_nodes/kubernetes-views-nodes?orgId=1&amp;var-job=node-exporter&amp;var-datasource=prometheus&amp;var-resolution=30s&amp;var-node=ip-172-20-56-77.eu-west-2.compute.internal&amp;var-instance=172.20.56.77:9100&amp;from=now-1h&amp;to=now</p>
+<p>This dashboard is useful for inspecting a node and seeing if there are any pods with excessive resource usage. The dashboard can be filtered by node.</p>
+<h3 id="kubernetes-compute-resources-node-pods">Kubernetes / Compute Resources / Node (Pods)</h3>
+<p>https://grafana.live.cloud-platform.service.justice.gov.uk/d/200ac8fdbfbb74b39aff88118e4d1c2c/kubernetes-compute-resources-node-pods?orgId=1&amp;var-datasource=P5DCFC7561CCDE821&amp;var-cluster=&amp;var-node=ip-172-20-101-196.eu-west-2.compute.internal&amp;var-node=ip-172-20-56-77.eu-west-2.compute.internal&amp;from=now-1h&amp;to=now</p>
+<p>Similar to the first dashboard but focuses on the pods rather than the nodes.</p>
+<h3 id="kubernetes-views-pods">Kubernetes / Views / Pods</h3>
+<p>https://grafana.live.cloud-platform.service.justice.gov.uk/d/k8s_views_pods/kubernetes-views-pods?orgId=1&amp;refresh=30s</p>
+<p>A detailed view of individual pods, can filter based on namespace and refreshes by default every 30 seconds.</p>
+<h3 id="kubernetes-nginx-ingress-controller-nextgen-devops-nirvana2">Kubernetes Nginx Ingress Controller NextGen - DevOps Nirvana2</h3>
+<p>https://grafana.live.cloud-platform.service.justice.gov.uk/d/k8s-nginx-ingress-prometheus-ng2/5178fc76-29af-51b9-83a8-cbab85db37a6?orgId=1&amp;refresh=1m</p>
+<p>This dashboard shows statistics around our ingresses.</p>
 
-<ul>
-<li>Happy Chickens, Happy Eggs</li>
-<li>It is important for us to continuously learn and develop</li>
-<li>We are not afraid to take risks or try new things</li>
-<li>We agree as a team that it&rsquo;s ok to make mistakes</li>
-<li>We are a team that helps each other</li>
-<li>We encourage collaboration from each other</li>
-<li>We encourage feedback from each other</li>
-<li>We give kudos</li>
-<li>We have strong ideas that are loosely held</li>
-<li>We operate a blameless culture</li>
-<li>We call it out when we are not working to our agreed principles</li>
-<li>We will shout about our successes</li>
-<li>Our team is a safe space to raise our concerns and worries</li>
-<li>We will review our alliance when the team changes or every quarter, whichever is sooner</li>
-</ul>
+<blockquote>
+<p>This dashboard is slow to load.</p>
+</blockquote>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-26">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-02-23">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 26 July 2024.
+      This page was last reviewed on 23 August 2024.
 
-        It needs to be reviewed again on 26 October 2024
+        It needs to be reviewed again on 23 February 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 26 October 2024
+      This page was set to be reviewed before 23 February 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1784,8 +1783,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/cloud-platform-alliance.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Cloud+Platform+Team+Alliance%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fcloud-platform-alliance.html%29&amp;labels=bug&amp;title=Re%3A+%27Cloud+Platform+Team+Alliance%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/debugging-101.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Debugging+101%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fdebugging-101.html%29&amp;labels=bug&amp;title=Re%3A+%27Debugging+101%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
