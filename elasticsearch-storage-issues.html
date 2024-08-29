@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Moving components modules into core - Cloud Platform Runbooks</title>
+    <title>Elasticsearch Storage Issues - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/move-components-module.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/elasticsearch-storage-issues.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Moving components modules into core - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/move-components-module.html" />
+      <meta name="twitter:title" content="Elasticsearch Storage Issues - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/elasticsearch-storage-issues.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Moving components modules into core" />
+      <meta property="og:title" content="Elasticsearch Storage Issues" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/move-components-module.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/elasticsearch-storage-issues.html" />
 
     
   </head>
@@ -434,7 +434,7 @@
         <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
-        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-process"><span>Process</span></a>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -721,7 +721,7 @@
         <a href="./move-components-module.html#notes-on-the-pipeline"><span>Notes on the pipeline</span></a>
       </li>
       <li>
-        <a href="./move-components-module.html#process"><span> Process</span></a>
+        <a href="./move-components-module.html#moving-components-modules-into-core-process"><span> Process</span></a>
       </li>
       <li>
         <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
@@ -1722,7 +1722,7 @@
         <a href="./elasticsearch-storage-issues.html#manually-migrating-failed-indexes"><span>Manually migrating failed indexes</span></a>
       </li>
       <li>
-        <a href="./elasticsearch-storage-issues.html#elasticsearch-storage-issues-further-reading"><span>Further Reading</span></a>
+        <a href="./elasticsearch-storage-issues.html#further-reading"><span>Further Reading</span></a>
       </li>
     </ul>
   </li>
@@ -1768,55 +1768,40 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="moving-components-modules-into-core">Moving <code>components</code> modules into <code>core</code></h1>
-<p>In order to migrate a terraform module from <code>components</code> into <code>core</code> there are a number of steps that need to be done in order to make sure the process runs smoothly. From a high level the terraform module needs to be moved and then tested in a test cluster.</p>
-<p>The aim is to make sure that when a terraform plan is run against both <code>core</code> and <code>compoents</code> after the MTM tool is ran there should be no terraform changes.</p>
-<p>There is a pipeline in Concourse that accepts <code>$CLUSTER_NAME</code>, <code>$MODULE_NAME</code> and <code>$RESOURCE</code> setting these and running the pipeline will migrate that module/resource on the cluster specified. Resources can be passed as a comma seperated string. Getting a list of resources to migrate is a manual process that requires you to read through the terraform files in <code>components</code>, some can be found by tracing back dependencies others should be obvious via there name. The name format for resources follow <code>$resource_type.$resource name</code> so <code>resource &quot;kubernetes_storage_class&quot; &quot;storageclass&quot;</code> becomes <code>kubernetes_storage_class.storageclass</code>, you can double check this by running <code>terraform state list</code>.</p>
-<p>If you need to upgrade the <code>mtm</code> cli you can update the <code>$MTM_VERSION</code> parameter in the pipeline.</p>
-<h2 id="notes-on-the-pipeline">Notes on the pipeline</h2>
-<p>The pipeline takes the following arguments:</p>
-
-<ul>
-<li><code>cluster_name</code> - Name of the cluster to target e.g. <code>cp-0001-0001</code>.</li>
-<li><code>module_name</code> - Name of the module to target e.g. <code>cert_manager</code>.</li>
-<li><code>resource</code> - Name of the resource to target e.g. <code>kubectl_manifest.prometheus_operator_crds</code>, accepts a comma separated list for multiple resources.</li>
-<li><code>flagged_resource</code> Name of flagged resource to target, this is used for resources that need to be pulled out of a module, accepts a comma separated list for multiple resources.</li>
-</ul>
-<p>Because of the way concourse variables work, none of the above can be blank. You can pass a dummy string in like <code>module.null</code> and the MTM tool will try and migrated a module/resource that doesn&rsquo;t exist.</p>
-<h2 id="process"> Process</h2>
+            <h1 id="elasticsearch-storage-issues">Elasticsearch Storage Issues</h1>
+<h2 id="hot-warm-node-parity">Hot/Warm Node Parity</h2>
+<p>A way of increasing the storage space for either Hot or Warm nodes is to increase them. If increasing one then the other must be equal as well, for example if upping the Hot nodes to 20 Warm should be upped to 20 as well.</p>
+<p>The number of shards and the nodes should be increased by a multiple of the index with the largest number of shards, further <a href="https://aws.amazon.com/blogs/opensource/open-distro-elasticsearch-shard-allocation/">information</a>.</p>
+<h2 id="manually-migrating-failed-indexes">Manually migrating failed indexes</h2>
+<p>It may be necessary to migrate indexes manually. The process for this is:</p>
 
 <ol>
-<li>Notify <code>#cloud-platform</code> that you are pausing concourse pipelines</li>
-<li>Pause <code>bootstrap</code>, <code>live-2</code>, <code>manager</code> and <code>live</code> pipelines.</li>
-<li>Raise PR with migrated module</li>
-<li>Log in to Concourse using <code>fly -t moj-cp login -c https://concourse.cloud-platform.service.justice.gov.uk/</code></li>
-<li>Ensure your in the <code>cloud-platform-terraform-concourse</code> directory.</li>
-<li>Update pipelines with module and/or resources name and cluster name:
-<code>fly -t moj-cp set-pipeline --pipeline migrate-module --config migrate-module.yaml -v cluster_name=cp-0306-0730 -v module=tigera_calico -v resources=kubectl_manifest.calico_crds,http.calico_crds -v flagged_resources=module.null</code></li>
-<li>Run <code>migrate-module</code> pipeline from the Concourse UI.</li>
-<li>Unpause pipeline environment specific pipeline (e.g. live-2)</li>
-<li>Re-run PR plan - the plan should show &ldquo;No changes. Your infrastructure matches the configuration.&rdquo;</li>
-<li>Re-run step 5-9 with the next environment (e.g. manager)</li>
-<li>Get approval for the PR and merge.</li>
-<li>Un-pause <code>live-2</code> and check for a clean apply</li>
-<li>Repeat 9. with <code>manager</code> and <code>live</code></li>
-<li>Update #cloud-platform informing the team of the completed migration and that pipelines are unpaused.</li>
+<li>Navigate to &ldquo;Policy managed indices&rdquo;</li>
+<li>Find <code>Failed to start **** migration</code></li>
+<li>Copy the index name</li>
+<li>Search &ldquo;Warm&rdquo; indexes and get index size</li>
+<li>Search &ldquo;Cold&rdquo; indexes and get index size</li>
+<li>If the &ldquo;Cold&rdquo; index size is smaller than &ldquo;Warm&rdquo; then it can be deleted</li>
+<li>Delete the index via the devtools <code>DELETE _cold/live_kubernetes_ingress-2024.07.13</code></li>
+<li>Click retry policy</li>
 </ol>
-<h2 id="disaster-recovery">Disaster Recovery</h2>
-<p>If for some reason something goes wrong then you can use the backed up state file to overwrite the remote.</p>
-<p>Alternatively all our tf state objects are versioned in S3 so you can restore a previous known working version from the AWS console.</p>
+<h2 id="further-reading">Further Reading</h2>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-01-18">
+<ul>
+<li><a href="https://runbooks.cloud-platform.service.justice.gov.uk/resolve-opensearch-shard-issues.html">Open search best practices</a></li>
+</ul>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2025-02-28">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 July 2024.
+      This page was last reviewed on 29 August 2024.
 
-        It needs to be reviewed again on 18 January 2025
+        It needs to be reviewed again on 28 February 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 January 2025
+      This page was set to be reviewed before 28 February 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1826,8 +1811,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/move-components-module.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Moving+components+modules+into+core%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fmove-components-module.html%29&amp;labels=bug&amp;title=Re%3A+%27Moving+components+modules+into+core%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/elasticsearch-storage-issues.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Elasticsearch+Storage+Issues%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Felasticsearch-storage-issues.html%29&amp;labels=bug&amp;title=Re%3A+%27Elasticsearch+Storage+Issues%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
