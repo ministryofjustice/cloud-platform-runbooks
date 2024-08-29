@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Tips and Tricks - Cloud Platform Runbooks</title>
+    <title>Investigating blocked ingress spikes - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/investigating-blocked-ingress-spikes.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Tips and Tricks - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html" />
+      <meta name="twitter:title" content="Investigating blocked ingress spikes - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/investigating-blocked-ingress-spikes.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Tips and Tricks" />
+      <meta property="og:title" content="Investigating blocked ingress spikes" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/tips-and-tricks.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/investigating-blocked-ingress-spikes.html" />
 
     
   </head>
@@ -1754,94 +1754,44 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="tips-and-tricks">Tips and Tricks</h1>
-<p>A collection of useful one-liners and code snippets.</p>
-<h2 id="delete-an-rds-database-snapshot">Delete an RDS database snapshot</h2>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span>aws rds delete-db-snapshot <span class="nt">--db-snapshot-identifier</span> cloud-platform-2f8c3c1ceaf0a05d-finalsnapshot
-</code></pre></div><h2 id="check-the-expiration-date-of-the-ssl-certificate-for-a-live-domain">Check the expiration date of the SSL certificate for a live domain</h2>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">$ </span><span class="nb">echo</span> | openssl s_client <span class="nt">-connect</span> google.com:443 | openssl x509 <span class="nt">-noout</span> <span class="nt">-enddate</span>
-<span class="nv">depth</span><span class="o">=</span>1 C <span class="o">=</span> US, O <span class="o">=</span> Google Trust Services, CN <span class="o">=</span> Google Internet Authority G3
-verify error:num<span class="o">=</span>20:unable to get <span class="nb">local </span>issuer certificate
-verify <span class="k">return</span>:0
-DONE
-<span class="nv">notAfter</span><span class="o">=</span>Oct 21 18:23:00 2019 GMT
-</code></pre></div><h2 id="delete-a-quot-stuck-quot-resource">Delete a &ldquo;stuck&rdquo; resource</h2>
-<p>kubectl can freeze with resources in status &ldquo;Terminating&rdquo;, these workarounds can force a cleanup:</p>
-<p>Identify what resources are still present in a namespace:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>ns=my-app ; for api in `kubectl api-resources --verbs=list --namespaced -o name` ; do echo $api ;  kubectl get $api -n $ns ; done
-</code></pre></div><p>If a regular <code>delete</code> does not remove the resource, try</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl delete &lt;resource&gt; --grace-period=0 --force
-</code></pre></div><p>and/or</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl patch &lt;resource&gt; -p '{"metadata":{"finalizers":[]}}' --type=merge
-</code></pre></div><p>Where &ldquo;resource&rdquo; can be namespace, crd, pod etc</p>
-<h2 id="filter-namespaces-by-specific-label-or-annotation">Filter namespaces by specific label or annotation</h2>
-<p>For the label <code>cloud-platform.justice.gov.uk/is-production</code> with value <code>true</code></p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get ns <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span>
-</code></pre></div><p>You can use <code>awk</code> to output specific column</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> | <span class="nb">awk</span> <span class="s1">'{print $1,$2}'</span>
-</code></pre></div><p>To filter namespaces by label and annotation and display as namespace / annotation format</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get namespaces <span class="nt">-l</span><span class="o">=</span>cloud-platform.justice.gov.uk/is-production<span class="o">=</span><span class="nb">true</span> <span class="nt">-ojson</span> | jq <span class="nt">-r</span> <span class="s1">'.items[] | .metadata.name + " / " + .metadata.annotations["cloud-platform.justice.gov.uk/source-code"] '</span>
-</code></pre></div><p>If you need to install <code>jq</code>, do <code>brew install jq</code></p>
-<h2 id="find-all-pods-running-on-a-specific-worker-node">Find all pods running on a specific worker node</h2>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=ip-172-20-80-62.eu-west-2.compute.internal
-</code></pre></div><h2 id="count-pods-running-on-all-nodes">Count pods running on all nodes</h2>
-<p>Paste this into the search field on <a href="https://prometheus.cloud-platform.service.justice.gov.uk">Prometheus</a>:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>max by(node) (max by(instance) (kubelet_running_pod_count{job="kubelet",metrics_path="/metrics"}) * on(instance) group_left(node) kubelet_node_name{job="kubelet",metrics_path="/metrics"})
-</code></pre></div><h2 id="add-more-rss-feeds-to-cloud-platform-rss-channel">Add more RSS feeds to <code>#cloud-platform-rss</code> channel</h2>
-<p><code>/feed subscribe &lt;feed address&gt;</code></p>
-<p>There are more slash commands for rss feed which can be used to list, remove and help. Type <code>/feed help</code> in the #cloud-platform-rss` channel to get more details.</p>
-<p>To validate your feed url, test using the <a href="https://validator.w3.org/feed/">w3c validator</a></p>
-<p>To get the RSS feed url for github projects, use <code>&lt;github repo url&gt;/releases.atom</code></p>
-<p>To add your first feed to a new slack channel, follow steps provided by <a href="https://slack.com/intl/en-gb/help/articles/218688467-Add-RSS-feeds-to-Slac://slack.com/intl/en-gb/help/articles/218688467-Add-RSS-feeds-to-Slack">slack</a></p>
-<h2 id="find-files-which-don-39-t-contain-a-particular-string">Find files which <em>don&rsquo;t</em> contain a particular string</h2>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>for file in $(find * -name '*.erb'); do grep -q last_reviewed_on $file || echo $file; done
-</code></pre></div><h2 id="get-aws-ec2-instance-information-for-a-node">Get AWS EC2 instance information for a node</h2>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws ec2 describe-instances --filters 'Name=private-dns-name,Values=ip-172-20-127-140.eu-west-2.compute.internal'
-</code></pre></div><h2 id="create-a-one-off-job-to-repeat-a-cronjob">Create a one-off job to repeat a cronjob</h2>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl -n concourse-main create job ds-update-orphaned-statefiles --from=cronjob/orphaned-terraform-statefiles
-</code></pre></div><h2 id="hijack-a-concourse-job-container">Hijack a concourse job container</h2>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager hijack -j environments-live/apply-namespace-changes-live
-</code></pre></div><p>You&rsquo;ll be presented with a list of containers to choose from.</p>
-<h2 id="help-when-manually-deleting-aws-resources">Help when manually deleting AWS resources</h2>
-<p>Occasionally you&rsquo;ll need to manually delete AWS components. A neat trick is to use the <a href="https://docs.aws.amazon.com/ARG/latest/userguide/tag-editor.html">AWS Tag Editor</a>.</p>
+            <h1 id="investigating-blocked-ingress-spikes">Investigating blocked ingress spikes</h1>
+<p>Things to look at while investigating a spike in blocked access:</p>
+
+<ol>
+<li>Is the spike isolation to that application? If there is an attack it could be either cluster wide or specifically targeted at a single app.</li>
+<li>Is the ingress using modsec?</li>
+<li><a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-1d,to:now))&amp;_a=(columns:!(_source),filters:!(),index:'8a728bc0-00eb-11ec-9062-27aa363b66a2',interval:auto,query:(language:kuery,query:'%22Access%20denied%20with%20code%20406%22'),sort:!())">Access denied with code 406 in the last 24 hours</a>. Not every user uses the custom <code>406</code> status so this is not a catch all solution.</li>
+<li>Are there any suspect logs in the namespace?</li>
+<li>Is there a wider impact on the platform?
 
 <ul>
-<li>Open the <a href="https://eu-west-1.console.aws.amazon.com/resource-groups/tag-editor/find-resources?region=eu-west-1">Tag Editor</a>.</li>
-<li>Select &ldquo;All Supported Resources&rdquo; from the &ldquo;Resource type&rdquo; drop down.</li>
-<li>Click &ldquo;Search Resources&rdquo;.</li>
-<li>Use the filter to search for a tag, for example a cluster name: <code>cp-0909-1202</code>.</li>
+<li>Has the cluster scaled up due to extra resource usage?</li>
+<li>Are there more 4xx/5xx errors than usual?</li>
+<li>Are we seeing ingress related alarms in #lower-priority-alarms</li>
+</ul></li>
+<li>Note any suspicious IP addresses.</li>
+<li>Has modsec been misconfigured? Further information can be found <a href="https://www.netnea.com/cms/apache-tutorial-7_including-modsecurity-core-rules/">here</a></li>
+</ol>
+<h2 id="communication">Communication</h2>
+<p>It&rsquo;s important to clearly and efficiently communicate between the Cloud Platform team and user. It may be required to call an <a href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-process.html">incident</a>. Where possible keep a record of findings as either part of the a Slack thread or Google document.</p>
+<p>Further issues can be raised in the Cloud Platform issue <a href="https://github.com/ministryofjustice/cloud-platform/issues">tracker</a>.</p>
+<h2 id="other-links">Other Links</h2>
+
+<ul>
+<li><a href="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-101.html">Debugging 101</a></li>
 </ul>
-<p>You&rsquo;ll be presented with all resources with your tag associated, click the link to navigate to each resource and delete as appropriate.</p>
-<h2 id="find-out-why-your-namespace-isn-39-t-deleting">Find out why your namespace isn&rsquo;t deleting</h2>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl api-resources --verbs=list --namespaced -o name \
-| xargs -n 1 kubectl get --show-kind --ignore-not-found -n &lt;namespace-name&gt;
-</code></pre></div><p>It should show you the reason the API doesn&rsquo;t want to delete. For example:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Error from server: conversion webhook for acme.cert-manager.io/v1alpha2, Kind=Order failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
-Error from server: conversion webhook for cert-manager.io/v1alpha2, Kind=CertificateRequest failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
-Error from server: conversion webhook for cert-manager.io/v1alpha2, Kind=Certificate failed: Post https://cert-manager-webhook.cert-manager.svc:443/convert?timeout=30s: service "cert-manager-webhook" not found
-</code></pre></div><h2 id="modsec-false-positives">Modsec false positives</h2>
-<p>When a genuine transaction causes a rule from the Core Rule Set to match in error it is described as a false positive. The <a href="https://coreruleset.org/faq/">OWASP</a> rules are enabled on the ingress-controller level on the dedicated ModSec ingress-controller.
-The common problem with standard OWASP (CRS) is that it gives some <a href="https://coreruleset.org/docs/concepts/false_positives_tuning/">false positive</a> results. The SQL Injection rules in particular are very prone to over alerting, open (issue)[https://github.com/SpiderLabs/owasp-modsecurity-crs/issues/794] related to sql injection.</p>
-<p>Every rule which is defined in the Core Rule Set (CRS) is identified by the ID. False positive rule ID&rsquo;s can be disabled using the example below.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>  annotations:
-    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
-    nginx.ingress.kubernetes.io/modsecurity-snippet: |
-      SecRuleEngine On
-      SecRuleRemoveById 111111
-</code></pre></div><p>Some of the common issues and rules are given <a href="https://stackoverflow.com/questions/33989273/modsecurity-excessive-false-positives/34027786#34027786">here</a></p>
-<p>Note: Turning off these rules completely will reduce the effectiveness of ModSecurity, so users should not use same SecRuleRemoveById&rsquo;s across applications, and before turning off any rules, users should make sure the exceptions apply to their particular use case.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-01-12">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-02-28">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 12 July 2024.
+      This page was last reviewed on 28 August 2024.
 
-        It needs to be reviewed again on 12 January 2025
+        It needs to be reviewed again on 28 February 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 12 January 2025
+      This page was set to be reviewed before 28 February 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1851,8 +1801,8 @@ The common problem with standard OWASP (CRS) is that it gives some <a href="http
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/tips-and-tricks.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Tips+and+Tricks%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Ftips-and-tricks.html%29&amp;labels=bug&amp;title=Re%3A+%27Tips+and+Tricks%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/investigating-blocked-ingress-spikes.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Investigating+blocked+ingress+spikes%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Finvestigating-blocked-ingress-spikes.html%29&amp;labels=bug&amp;title=Re%3A+%27Investigating+blocked+ingress+spikes%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
