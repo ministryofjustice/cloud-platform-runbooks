@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Handling Node Group and Instance Changes - Cloud Platform Runbooks</title>
+    <title>Making changes to EKS node groups, instances types, or launch templates - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
@@ -15,12 +15,12 @@
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Handling Node Group and Instance Changes - Cloud Platform Runbooks" />
+      <meta name="twitter:title" content="Making changes to EKS node groups, instances types, or launch templates - Cloud Platform Runbooks" />
       <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Handling Node Group and Instance Changes" />
+      <meta property="og:title" content="Making changes to EKS node groups, instances types, or launch templates" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html" />
 
@@ -520,16 +520,19 @@
     </ul>
   </li>
   <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
     <ul>
       <li>
-        <a href="./node-group-changes.html#why"><span>Why?</span></a>
-      </li>
-      <li>
-        <a href="./node-group-changes.html#how"><span>How?</span></a>
+        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
         <ul>
           <li>
             <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#useful-commands"><span>Useful commands:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#monitoring-nodes"><span>Monitoring nodes</span></a>
           </li>
         </ul>
       </li>
@@ -776,7 +779,7 @@
             <a href="./monitor-eks-cluster.html#launching-k9s"><span>Launching K9s</span></a>
           </li>
           <li>
-            <a href="./monitor-eks-cluster.html#monitoring-nodes"><span>Monitoring Nodes</span></a>
+            <a href="./monitor-eks-cluster.html#monitoring-with-k9s-monitoring-nodes"><span>Monitoring Nodes</span></a>
           </li>
           <li>
             <a href="./monitor-eks-cluster.html#monitoring-pods"><span>Monitoring Pods</span></a>
@@ -1234,7 +1237,7 @@
         <a href="./recycle-all-nodes.html#recycling-process"><span>Recycling process</span></a>
         <ul>
           <li>
-            <a href="./recycle-all-nodes.html#gotchas"><span>Gotchas</span></a>
+            <a href="./recycle-all-nodes.html#high-level-method"><span>High level method</span></a>
           </li>
         </ul>
       </li>
@@ -1345,13 +1348,13 @@
         <a href="./velero.html#backups"><span>Backups</span></a>
         <ul>
           <li>
-            <a href="./velero.html#backups-why"><span>Why?</span></a>
+            <a href="./velero.html#why"><span>Why?</span></a>
           </li>
           <li>
             <a href="./velero.html#what"><span>What?</span></a>
           </li>
           <li>
-            <a href="./velero.html#backups-how"><span>How?</span></a>
+            <a href="./velero.html#how"><span>How?</span></a>
           </li>
         </ul>
       </li>
@@ -1768,34 +1771,133 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="making-changes-to-eks-node-groups-or-instances-types">Making changes to EKS node groups or instances types</h1>
-<h2 id="why">Why?</h2>
-<p>You may need to make a change to an EKS <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/97768bfd8b4e25df6f415035acac60cf531d88c1/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L60">cluster node group</a> or <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/97768bfd8b4e25df6f415035acac60cf531d88c1/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L43">instance type config</a>. We can&rsquo;t just let terraform apply these changes because terraform doesn&rsquo;t gracefully rollout the old and new nodes. Terraform will bring down all of the old nodes immediately, which will cause outages to users.</p>
-<h2 id="how">How?</h2>
-<p>To avoid bringing down all the nodes at once is to follow these steps:</p>
-
-<ol>
-<li>add a new node group with your <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2657">updated changes</a></li>
-<li>re-run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-account/jobs/terraform-apply">infrastructure-account/terraform-apply</a> pipeline to update the Modsecurity Audit logs cluster to map roles to both old and new node group IAM Role
-This is to avoid losing modsec audit logs from the new node group</li>
-<li>lookup the old node group name (you can find this in the aws gui)</li>
-<li><p>once merged in you can drain the old node group using the command below:</p>
+            <h1 id="making-changes-to-eks-node-groups-instances-types-or-launch-templates">Making changes to EKS node groups, instances types, or launch templates</h1>
+<p>You may need to make a change to an EKS <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/97768bfd8b4e25df6f415035acac60cf531d88c1/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L60">cluster node group</a>, <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/97768bfd8b4e25df6f415035acac60cf531d88c1/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf#L43">instance type config</a>, or <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/e18d678712871ca732a4696cfd77710230523ac3/terraform/aws-accounts/cloud-platform-aws/vpc/eks/templates/user-data-140824.tpl">launch template</a>. <strong>Any of these changes force recycling of all nodes in a node group</strong>.</p>
 
 <blockquote>
-<p>cloud-platform pipeline cordon-and-drain &ndash;cluster-name <cluster_name> &ndash;node-group <old_node_group_name>
-<a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/7851f741e6c180ed868a97d51cec0cf1e109de8d/pipelines/manager/main/cordon-and-drain-nodes.yaml#L50">script source</a> because this command runs remotely in concourse you can&rsquo;t use this command to drain default ng on the manager cluster.</p>
+<p>⚠️ <strong>Warning</strong> ⚠️
+We need to be careful during this process as bringing up too many new nodes at once can cause node-level issues allocating IPs to pods.</p>
+<p>We also can&rsquo;t let terraform apply these changes because terraform doesn&rsquo;t gracefully rollout the old and new nodes. <strong>Terraform will bring down all of the old nodes immediately</strong>, which will cause outages to users.</p>
+</blockquote>
+<h2 id="process-for-recycling-all-nodes-in-a-cluster">Process for recycling all nodes in a cluster</h2>
+<p><strong>Briefly:</strong></p>
+
+<ol>
+<li>Add the new node group - configured with low starting <code>minimum</code> and <code>desired</code> node counts - alongside the existing node groups in code (<em><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2657/files">typically suffixed with the date of the changes</a></em>)
+
+<ul>
+<li>Make sure to amend both default and monitoring if recyling <em>all</em> nodes</li>
+</ul></li>
+<li>Drain the old node group using the <code>cordon-and-drain</code> pipeline and allow the autoscaler to add new nodes to the new node group</li>
+<li>Once workloads have moved over, <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2663/files">remove the old node groups, and update the <code>minimum</code> and <code>desired</code> node counts for the new node group in code</a>.</li>
+</ol>
+<p><strong>In more detail:</strong></p>
+
+<ol>
+<li>Add a new node group with your <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/3296/files">updated changes</a>.</li>
+<li><p>Re-run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-account/jobs/terraform-apply">infrastructure-account/terraform-apply</a> pipeline to update the Modsecurity Audit logs cluster. This maps roles to both old and new node group IAM roles.</p>
+
+<ul>
+<li>This is to avoid losing modsec audit logs from the new node group.</li>
+</ul>
+
+<blockquote>
+<p><strong>Note:</strong></p>
+<p>If recycling multiple clusters, the order is to drain <code>manager</code> <code>default-ng</code> (⚠️ <strong>must</strong> be done from local terminal ⚠️) then <code>monitoring</code>. After that, <code>live-2</code>, then <code>live</code>. Recycle <code>monitoring</code> before <code>default</code>.</p>
 </blockquote></li>
-<li><p>raise a new <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2663">pr deleting</a> the old node group</p></li>
-<li><p>re-run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-account/jobs/terraform-apply">infrastructure-account/terraform-apply</a> pipeline to again to update the Modsecurity Audit logs cluster to map roles with only the new node group IAM Role</p></li>
-<li><p>run the integration tests to ensure the cluster is healthy</p></li>
+<li><p>Lookup the old node group name (you can find this in the aws gui).</p></li>
+<li><p>Cordon and drain the old node group following the instructions below:</p>
+
+<ul>
+<li><p><strong>for the <code>manager</code> cluster, <code>default-ng</code> node group</strong> (<em>These commands will cause concourse to experience a brief outage, as concourse workers move from the old node group to the new node group.</em>):</p>
+
+<ul>
+<li>Set the existing node group&rsquo;s desired and max node number to the current number of nodes, and set the min node number to 1:
+
+<ul>
+<li>This prevents new nodes spinning up in response to nodes being removed</li>
+</ul></li>
+</ul>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">CURRENT_NUM_NODES</span><span class="o">=</span><span class="si">$(</span>kubectl get nodes <span class="nt">-l</span> eks.amazonaws.com/nodegroup<span class="o">=</span><span class="nv">$NODE_GROUP_TO_DRAIN</span> <span class="nt">--no-headers</span> | <span class="nb">wc</span> <span class="nt">-l</span><span class="si">)</span>
+
+aws eks <span class="nt">--region</span> eu-west-2 update-nodegroup-config <span class="se">\</span>
+  <span class="nt">--cluster-name</span> manager <span class="se">\</span>
+  <span class="nt">--nodegroup-name</span> <span class="nv">$NODE_GROUP_TO_DRAIN</span> <span class="se">\</span>
+  <span class="nt">--scaling-config</span> <span class="nv">maxSize</span><span class="o">=</span><span class="nv">$CURRENT_NUM_NODES</span>,desiredSize<span class="o">=</span><span class="nv">$CURRENT_NUM_NODES</span>,minSize<span class="o">=</span>1
+</code></pre></div>
+<ul>
+<li>Kick off the process of draining the node</li>
+</ul>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get pods <span class="nt">--field-selector</span><span class="o">=</span><span class="s2">"status.phase=Failed"</span> <span class="nt">-A</span> <span class="nt">--no-headers</span> <span class="se">\</span>
+  | <span class="nb">awk</span> <span class="s1">'{print $2 " -n " $1}'</span> <span class="se">\</span>
+  | parallel <span class="nt">-j1</span> <span class="nt">--will-cite</span> kubectl delete pod <span class="s2">"{= uq =}"</span>
+
+kubectl get nodes <span class="nt">-l</span> eks.amazonaws.com/nodegroup<span class="o">=</span><span class="nv">$NODE_GROUP_TO_DRAIN</span> <span class="se">\</span>
+  <span class="nt">--sort-by</span><span class="o">=</span>metadata.creationTimestamp <span class="nt">--no-headers</span> <span class="se">\</span>
+  | <span class="nb">awk</span> <span class="s1">'{print $1}'</span> <span class="se">\</span>
+  | parallel <span class="nt">-j1</span> <span class="nt">--keep-order</span> <span class="nt">--delay</span> 300 <span class="nt">--will-cite</span> <span class="se">\</span>
+  cloud-platform cluster recycle-node <span class="nt">--name</span> <span class="o">{}</span> <span class="nt">--skip-version-check</span> <span class="nt">--kubecfg</span> <span class="nv">$KUBECONFIG</span> <span class="nt">--drain-only</span> <span class="nt">--ignore-label</span>
+</code></pre></div>
+<ul>
+<li>Once this command has run and all of the <code>manager</code> cluster node group&rsquo;s nodes have drained, run the command to scale the node group down to 1
+
+<ul>
+<li>This will delete all of the nodes except the most recently drained node, which will be removed in a later step when the node group is deleted in code.</li>
+</ul></li>
+</ul>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  aws eks <span class="nt">--region</span> eu-west-2 update-nodegroup-config <span class="se">\</span>
+    <span class="nt">--cluster-name</span> manager <span class="se">\</span>
+    <span class="nt">--nodegroup-name</span> <span class="nv">$NODE_GROUP_TO_DRAIN</span> <span class="se">\</span>
+    <span class="nt">--scaling-config</span> <span class="nv">maxSize</span><span class="o">=</span>1,desiredSize<span class="o">=</span>1,minSize<span class="o">=</span>1
+</code></pre></div></li>
+<li><p><strong>for all other node groups</strong>:</p></li>
+</ul>
+
+<blockquote>
+<p><strong>Note</strong>
+When making changes to the default node group in <code>live</code>, it&rsquo;s handy to pause the pipelines for each of our environments for the duration of the change.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform pipeline cordon-and-drain <span class="nt">--cluster-name</span> &lt;cluster_name&gt; <span class="nt">--node-group</span> &lt;old_node_group_name&gt;
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Warning</strong> ⚠️
+Because this command runs remotely in concourse, this command can&rsquo;t be used to drain default ng on the manager cluster. It must be run locally while your context is set to the correct cluster.</p>
+</blockquote>
+
+<!-- -->
+
+<blockquote>
+<p><strong>Note:</strong> The above <code>cloud-platform</code> cli command runs <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/7851f741e6c180ed868a97d51cec0cf1e109de8d/pipelines/manager/main/cordon-and-drain-nodes.yaml#L50">this script</a>.</p>
+</blockquote></li>
+<li><p>Raise a new pr <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2663">deleting the old node group</a>.</p></li>
+<li><p>Re-run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-account/jobs/terraform-apply">infrastructure-account/terraform-apply</a> pipeline to again to update the Modsecurity Audit logs cluster to map roles with only the new node group IAM Role.</p></li>
+<li><p>Run the integration tests to ensure the cluster is healthy.</p></li>
 </ol>
 <h3 id="notes">Notes:</h3>
 
 <ul>
-<li>When making changes to the default node group in live, it&rsquo;s handy to pause the pipelines for each of our environments for the duration of the change.</li>
-<li>The <code>cloud-platform pipeline</code> command [cordons-and-drains-nodes] in a given node group waiting 5mins between each drained node.</li>
+<li>The <code>cloud-platform pipeline</code> command [cordons-and-drains-nodes] in a given node group waits 5 minutes between each drained node.</li>
 <li>If you can avoid it try not to fiddle around with the target node group in the aws console for example reducing the desired nodes, aws deletes nodes in an unpredictable way which might cause the pipeline command to fail. Although it is possible if you need to.</li>
 </ul>
+<h3 id="useful-commands">Useful commands:</h3>
+<h4 id="k9s"><a href="https://k9scli.io/"><code>k9s</code></a></h4>
+<p>A useful cli tool to get a good overview of the state of the cluster. Useful commands for monitoring a cluster <a href="https://runbooks.cloud-platform.service.justice.gov.uk/monitor-eks-cluster.html#monitoring-with-k9s">are listed here</a>.</p>
+<h4 id="kubectl"><code>kubectl</code></h4>
+
+<ul>
+<li><code>watch kubectl get nodes --sort-by=.metadata.creationTimestamp</code></li>
+</ul>
+<p>The above command will output all of the nodes like this:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>NAME                                           STATUS   ROLES    AGE     VERSION
+ip-172-20-124-118.eu-west-2.compute.internal   Ready,SchedulingDisabled      &lt;none&gt;   47h     v1.22.15-eks-fb459a0
+ip-172-20-101-81.eu-west-2.compute.internal    Ready,SchedulingDisabled      &lt;none&gt;   47h     v1.22.15-eks-fb459a0
+ip-172-20-119-182.eu-west-2.compute.internal   Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
+ip-172-20-106-20.eu-west-2.compute.internal    Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
+ip-172-20-127-1.eu-west-2.compute.internal     Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
+</code></pre></div><h3 id="monitoring-nodes">Monitoring nodes</h3>
+<p>Where nodes have a status of <code>Ready,SchedulingDisabled</code>, this indicates that the nodes are cordoned off and will no longer schedule pods. Only nodes from the outdated nodes (those with old templates) should adopt this status. Nodes in a <code>Ready</code> state will schedule pods. This should be any &lsquo;old template&rsquo; node that haven&rsquo;t yet been cordoned, or any &lsquo;new template&rsquo; nodes.</p>
+<p>When all nodes have been recycled, all nodes will all have a status of <code>Ready</code>.</p>
+<p>The <code>cordon-and-drain</code> pipeline takes 5 minutes per node, so takes approximately 1 hour per 12 nodes. Expect a process that involves making changes to multiple clusters including <code>live</code> to take a whole day.</p>
 
               <div data-module='page-expiry' data-last-reviewed-on="2024-12-03">
     <div class='page-expiry--not-expired'>
@@ -1818,7 +1920,7 @@ This is to avoid losing modsec audit logs from the new node group</li>
           <aside>
               <ul class="contribution-banner">
                 <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/node-group-changes.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Handling+Node+Group+and+Instance+Changes%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fnode-group-changes.html%29&amp;labels=bug&amp;title=Re%3A+%27Handling+Node+Group+and+Instance+Changes%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Making+changes+to+EKS+node+groups%2C+instances+types%2C+or+launch+templates%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fnode-group-changes.html%29&amp;labels=bug&amp;title=Re%3A+%27Making+changes+to+EKS+node+groups%2C+instances+types%2C+or+launch+templates%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>

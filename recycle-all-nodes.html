@@ -520,16 +520,19 @@
     </ul>
   </li>
   <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups or instances types</span></a>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
     <ul>
       <li>
-        <a href="./node-group-changes.html#why"><span>Why?</span></a>
-      </li>
-      <li>
-        <a href="./node-group-changes.html#how"><span>How?</span></a>
+        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
         <ul>
           <li>
             <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster-useful-commands"><span>Useful commands:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#monitoring-nodes"><span>Monitoring nodes</span></a>
           </li>
         </ul>
       </li>
@@ -776,7 +779,7 @@
             <a href="./monitor-eks-cluster.html#launching-k9s"><span>Launching K9s</span></a>
           </li>
           <li>
-            <a href="./monitor-eks-cluster.html#monitoring-nodes"><span>Monitoring Nodes</span></a>
+            <a href="./monitor-eks-cluster.html#monitoring-with-k9s-monitoring-nodes"><span>Monitoring Nodes</span></a>
           </li>
           <li>
             <a href="./monitor-eks-cluster.html#monitoring-pods"><span>Monitoring Pods</span></a>
@@ -1234,7 +1237,7 @@
         <a href="./recycle-all-nodes.html#recycling-process"><span>Recycling process</span></a>
         <ul>
           <li>
-            <a href="./recycle-all-nodes.html#gotchas"><span>Gotchas</span></a>
+            <a href="./recycle-all-nodes.html#high-level-method"><span>High level method</span></a>
           </li>
         </ul>
       </li>
@@ -1345,13 +1348,13 @@
         <a href="./velero.html#backups"><span>Backups</span></a>
         <ul>
           <li>
-            <a href="./velero.html#backups-why"><span>Why?</span></a>
+            <a href="./velero.html#why"><span>Why?</span></a>
           </li>
           <li>
             <a href="./velero.html#what"><span>What?</span></a>
           </li>
           <li>
-            <a href="./velero.html#backups-how"><span>How?</span></a>
+            <a href="./velero.html#how"><span>How?</span></a>
           </li>
         </ul>
       </li>
@@ -1777,9 +1780,17 @@
 <li>Changes to kubelet environment variables</li>
 </ul>
 <h2 id="recycling-process">Recycling process</h2>
-<p>Avoid letting terraform run EKS level changes because terraform can start by deleting all the current nodes and then recreating them causing an outage to users. Instead, <em>create a new node group</em> through terraform and then cordon and drain the old node group <a href="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html">instructions can be found here</a></p>
-<p>AWS will handle the process of killing the nodes with the old launch configurations and launching new nodes with the latest
-launch configuration. AWS will initially spin up some extra nodes (for around a 60 node cluster it will spin up 8 extra) to provide spaces for pods as old nodes are cordoned, drained and deleted.</p>
+<p>Avoid letting terraform run EKS-level changes because terraform can start by deleting all the current nodes and then recreating them causing an outage to users.</p>
+<h3 id="high-level-method">High level method</h3>
+
+<ol>
+<li>Add the new node group with a low number of nodes alongside the existing node groups in code</li>
+<li>Drain the old node group using the pipeline and allow the autoscaler to bring in new nodes into the new node group</li>
+<li>Once workloads have moved over remove the old node groups from code</li>
+</ol>
+<p><a href="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html">detailed instructions can be found here</a></p>
+<h4 id="useful-commands">Useful commands</h4>
+<p><a href="https://k9scli.io/">k9s</a> is a useful cli tool to get a good overview of the state of the cluster</p>
 
 <ul>
 <li><code>watch kubectl get nodes --sort-by=.metadata.creationTimestamp</code></li>
@@ -1793,86 +1804,19 @@ ip-172-20-106-20.eu-west-2.compute.internal    Ready    &lt;none&gt;   47h     v
 ip-172-20-127-1.eu-west-2.compute.internal     Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
 </code></pre></div><p>Where nodes have the Status &ldquo;Ready,SchedulingDisabled&rdquo; this indicates the nodes which have the old update templates, these are the ones that are cordoned off, whereas those which are &ldquo;Ready&rdquo; are the new nodes with the new update template.</p>
 <p>When all nodes have been recycled they will all have a status of &ldquo;Ready&rdquo;.</p>
-<p>This process can take 3 to 4 hours on a cluster of ~60 nodes, depending on how quickly you resolve the gotchas below.</p>
-<h3 id="gotchas">Gotchas</h3>
-<p>When AWS is draining the old nodes, even after choosing the &ldquo;force update&rdquo; option, it will still respect the <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets">&ldquo;Pod Disruption Budget&rdquo;</a> and will not evict pods if it will break the PDB.</p>
-<p>If a <a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/#pod-disruption-budgets">&ldquo;Pod Disruption Budget&rdquo;</a> is poorly configured, kubernetes can&rsquo;t evict a specific pod. Without manual intervention, this will indefinitely stall the update and the nodes will <strong>not</strong> continue to recycle.
-This will eventually cause the update to stop, wait and then exit, leaving the remaining nodes with the old update template and others with the new update template.</p>
-<p>AWS EKS in some circumstances has even reverted the update and started to drain the new nodes and replace them with the old update template again. So it&rsquo;s important to monitor how the update is going and act when nodes get stuck.</p>
-<p>To resolve the issue:</p>
+<p>This process can take several hours on a cluster of ~60 nodes, depending on how quickly you resolve the gotchas below.</p>
 
-<ol>
-<li><p>Copy below script and save it as <code>delete-pods-in-namespace.sh</code>.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="c">#!/bin/bash</span>
-
-delete_pods<span class="o">()</span> <span class="o">{</span>
-  <span class="nv">NAMESPACE</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'s/\/api\/v1\/namespaces\/(.*)\/pods\/.*/\1/'</span><span class="si">)</span>
-  <span class="nv">POD</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-E</span> <span class="s1">'s/.*\/pods\/(.*)\/eviction\?timeout=.*/\1/'</span><span class="si">)</span>
-
-  <span class="nb">echo</span> <span class="nv">$NAMESPACE</span>
-
-  <span class="nb">echo</span> <span class="nv">$POD</span>
-
-  kubectl delete pod <span class="nt">-n</span> <span class="nv">$NAMESPACE</span> <span class="nv">$POD</span>
-<span class="o">}</span>
-
-<span class="nb">export</span> <span class="nt">-f</span> delete_pods
-
-<span class="nv">TIME_NOW_EPOCH</span><span class="o">=</span><span class="si">$(</span><span class="nb">date</span> +%s<span class="si">)</span>
-
-<span class="nv">START_TIME</span><span class="o">=</span><span class="k">$((</span><span class="nv">$TIME_NOW_EPOCH</span> <span class="o">-</span> <span class="m">180</span><span class="k">))</span>
-
-<span class="nv">CLUSTER_LOG_GROUP</span><span class="o">=</span><span class="nv">$1</span>
-
-<span class="nv">QUERY_ID</span><span class="o">=</span><span class="si">$(</span>aws logs start-query <span class="se">\</span>
-  <span class="nt">--start-time</span> <span class="nv">$START_TIME</span> <span class="se">\</span>
-  <span class="nt">--end-time</span> <span class="nv">$TIME_NOW_EPOCH</span> <span class="se">\</span>
-  <span class="nt">--log-group-name</span> <span class="nv">$CLUSTER_LOG_GROUP</span> <span class="se">\</span>
-  <span class="nt">--query-string</span> <span class="s1">'fields @timestamp, @message | filter @logStream like "kube-apiserver-audit" | filter ispresent(requestURI) | filter objectRef.subresource = "eviction" | filter responseObject.status = "Failure" | display @logStream, requestURI, responseObject.message | stats count(*) as retry by requestURI, requestObject.message'</span> <span class="se">\</span>
-  | jq <span class="nt">-r</span> <span class="s1">'.queryId'</span> <span class="si">)</span>
-
-<span class="nb">sleep </span>2
-
-<span class="nv">RESULTS</span><span class="o">=</span><span class="si">$(</span>aws logs get-query-results <span class="nt">--query-id</span> <span class="nv">$QUERY_ID</span><span class="si">)</span>
-
-<span class="nb">echo</span> <span class="nt">-n</span> <span class="nv">$RESULTS</span> | jq <span class="s1">'.results[]'</span> | <span class="nb">grep</span> <span class="s1">'/api/v1'</span> | <span class="nb">awk</span> <span class="s1">'{ print $2 }'</span> | xargs <span class="nt">-I</span> <span class="o">{}</span> bash <span class="nt">-c</span> <span class="s1">'delete_pods {}'</span>
-
-<span class="nb">exit </span>0
-
-</code></pre></div></li>
-<li><p>Run <code>chmod +x delete-pods-in-namespace.sh</code>.</p></li>
-<li><p>Evict the offending pod by running the below script:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>watch -n 300 ./delete-pods-in-namespace.sh '/aws/eks/&lt;cluster-name&gt;/cluster' &gt; deleted_pods.log
-</code></pre></div><p>The <code>&lt;cluster-name&gt;</code> is the short name of the cluster e.g. <code>cp-2901-1531</code></p></li>
-<li><p>Run <code>tail -f deleted_pods.log</code> in another terminal.</p></li>
-</ol>
-<p>If you want to find the offending pod manually, follow these steps:</p>
-
-<ol>
-<li>Use Cloudwatch Logs &gt; Logs Insights to identify the offending pod</li>
-<li>Select the relevant cluster from the <code>log group</code> drop down</li>
-<li><p>Paste the following query (this will identify which pods have failed to be deleted and how many times deletion has been retried) into the box:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fields @timestamp, @message | filter @logStream like "kube-apiserver-audit" | filter ispresent(requestURI) | filter objectRef.subresource = "eviction" | filter responseObject.status = "Failure" | display @logStream, requestURI, responseObject.message | stats count(*) as retry by requestURI, requestObject.message
-</code></pre></div></li>
-<li><p>If there are results they will have a pattern like this:
-<code>/api/v1/namespaces/$NAMESPACE/pods/$POD_NAME-$POD_ID/eviction?timeout=19s</code></p></li>
-<li><p>You may also go to the <a href="https://eu-west-2.console.aws.amazon.com/cloudwatch/home?region=eu-west-2#dashboards/dashboard/cloud-platform-eks-live-pdb-eviction-status">CloudWatch Dashboard</a> directly to identify the offending pod.</p></li>
-<li><p>You can then run the following command to manually delete the pod
-<code>kubectl delete pod -n $NAMESPACE $POD_NAME-$POD_ID</code></p></li>
-</ol>
-<p>Nodes should continue to recycle and after a few moments there should be one less node with the status &ldquo;Ready,SchedulingDisabled&rdquo;</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2024-12-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-02-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 June 2024.
+      This page was last reviewed on 16 August 2024.
 
-        It needs to be reviewed again on 3 December 2024
+        It needs to be reviewed again on 16 February 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 December 2024
+      This page was set to be reviewed before 16 February 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
