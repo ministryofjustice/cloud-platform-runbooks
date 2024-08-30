@@ -1812,18 +1812,16 @@ We need to be careful during this process as bringing up too many new nodes at o
 <li><p><strong>for the <code>manager</code> cluster, <code>default-ng</code> node group</strong> (<em>These commands will cause concourse to experience a brief outage, as concourse workers move from the old node group to the new node group.</em>):</p>
 
 <ul>
-<li>Set the existing node group&rsquo;s desired and max node number to the current number of nodes, and set the min node number to 1:
+<li>disable auto scaling for the node group:
 
 <ul>
 <li>This prevents new nodes spinning up in response to nodes being removed</li>
 </ul></li>
 </ul>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">CURRENT_NUM_NODES</span><span class="o">=</span><span class="si">$(</span>kubectl get nodes <span class="nt">-l</span> eks.amazonaws.com/nodegroup<span class="o">=</span><span class="nv">$NODE_GROUP_TO_DRAIN</span> <span class="nt">--no-headers</span> | <span class="nb">wc</span> <span class="nt">-l</span><span class="si">)</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">ASG_NAME</span><span class="o">=</span><span class="si">$(</span>aws eks <span class="nt">--region</span> eu-west-2 describe-nodegroup <span class="nt">--cluster-name</span> <span class="nv">$KUBECONFIG_CLUSTER_NAME</span> <span class="nt">--nodegroup-name</span> <span class="nv">$NODE_GROUP_TO_DRAIN</span>  | jq <span class="nt">-r</span> <span class="s2">".nodegroup.resources.autoScalingGroups[0].name"</span><span class="si">)</span>
+aws autoscaling suspend-processes <span class="nt">--auto-scaling-group-name</span> <span class="nv">$ASG_NAME</span>
 
-aws eks <span class="nt">--region</span> eu-west-2 update-nodegroup-config <span class="se">\</span>
-  <span class="nt">--cluster-name</span> manager <span class="se">\</span>
-  <span class="nt">--nodegroup-name</span> <span class="nv">$NODE_GROUP_TO_DRAIN</span> <span class="se">\</span>
-  <span class="nt">--scaling-config</span> <span class="nv">maxSize</span><span class="o">=</span><span class="nv">$CURRENT_NUM_NODES</span>,desiredSize<span class="o">=</span><span class="nv">$CURRENT_NUM_NODES</span>,minSize<span class="o">=</span>1
+aws autoscaling create-or-update-tags <span class="nt">--tags</span> <span class="nv">ResourceId</span><span class="o">=</span><span class="nv">$ASG_NAME</span>,ResourceType<span class="o">=</span>auto-scaling-group,Key<span class="o">=</span>k8s.io/cluster-autoscaler/enabled,Value<span class="o">=</span><span class="nb">false</span>,PropagateAtLaunch<span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
 <ul>
 <li>Kick off the process of draining the node</li>
@@ -1845,7 +1843,9 @@ kubectl get nodes <span class="nt">-l</span> eks.amazonaws.com/nodegroup<span cl
 <li>This will delete all of the nodes except the most recently drained node, which will be removed in a later step when the node group is deleted in code.</li>
 </ul></li>
 </ul>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  aws eks <span class="nt">--region</span> eu-west-2 update-nodegroup-config <span class="se">\</span>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  aws autoscaling resume-processes <span class="nt">--auto-scaling-group-name</span> <span class="nv">$ASG_NAME</span>
+
+  aws eks <span class="nt">--region</span> eu-west-2 update-nodegroup-config <span class="se">\</span>
     <span class="nt">--cluster-name</span> manager <span class="se">\</span>
     <span class="nt">--nodegroup-name</span> <span class="nv">$NODE_GROUP_TO_DRAIN</span> <span class="se">\</span>
     <span class="nt">--scaling-config</span> <span class="nv">maxSize</span><span class="o">=</span>1,desiredSize<span class="o">=</span>1,minSize<span class="o">=</span>1
