@@ -1794,7 +1794,7 @@ We need to be careful during this process as bringing up too many new nodes at o
 <p><strong>In more detail:</strong></p>
 
 <ol>
-<li>Add a new node group with your <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/3296/files">updated changes</a>.</li>
+<li>Add a new node group with your <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/3289/files">updated changes</a>.</li>
 <li><p>Re-run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-account/jobs/terraform-apply">infrastructure-account/terraform-apply</a> pipeline to update the Modsecurity Audit logs cluster. This maps roles to both old and new node group IAM roles.</p>
 
 <ul>
@@ -1867,7 +1867,7 @@ Because this command runs remotely in concourse, this command can&rsquo;t be use
 <!-- -->
 
 <blockquote>
-<p><strong>Note:</strong> The above <code>cloud-platform</code> cli command runs <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/7851f741e6c180ed868a97d51cec0cf1e109de8d/pipelines/manager/main/cordon-and-drain-nodes.yaml#L50">this script</a>.</p>
+<p><strong>Note:</strong> The above <code>cloud-platform</code> cli command runs <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/cordon-and-drain-nodes.yaml#L39">this script</a>.</p>
 </blockquote></li>
 <li><p>Raise a new pr <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/2663">deleting the old node group</a>.</p></li>
 <li><p>Re-run the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-account/jobs/terraform-apply">infrastructure-account/terraform-apply</a> pipeline to again to update the Modsecurity Audit logs cluster to map roles with only the new node group IAM Role.</p></li>
@@ -1899,17 +1899,17 @@ ip-172-20-127-1.eu-west-2.compute.internal     Ready    &lt;none&gt;   47h     v
 <p>When all nodes have been recycled, all nodes will all have a status of <code>Ready</code>.</p>
 <p>The <code>cordon-and-drain</code> pipeline takes 5 minutes per node, so takes approximately 1 hour per 12 nodes. Expect a process that involves making changes to multiple clusters including <code>live</code> to take a whole day.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-12-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-03-13">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 June 2024.
+      This page was last reviewed on 13 September 2024.
 
-        It needs to be reviewed again on 3 December 2024
+        It needs to be reviewed again on 13 March 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 December 2024
+      This page was set to be reviewed before 13 March 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
