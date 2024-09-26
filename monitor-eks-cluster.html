@@ -199,6 +199,9 @@
         <a href="./incident-log.html#q3-2024-july-september"><span>Q3 2024 (July-September)</span></a>
         <ul>
           <li>
+            <a href="./incident-log.html#incident-on-2024-09-20-eks-subnet-route-table-associations-destroyed"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
+          </li>
+          <li>
             <a href="./incident-log.html#incident-on-2024-07-25"><span>Incident on 2024-07-25</span></a>
           </li>
         </ul>
@@ -445,24 +448,21 @@
     <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
   </li>
   <li>
-    <a href="./upgrade-eks-addons.html"><span>Upgrade EKS addons</span></a>
+    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
     <ul>
       <li>
-        <a href="./upgrade-eks-addons.html#listing-available-eks-upgrades"><span>Listing available EKS upgrades</span></a>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-steps"><span>Upgrade Steps</span></a>
         <ul>
           <li>
-            <a href="./upgrade-eks-addons.html#eksctl-install"><span>eksctl Install</span></a>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
           </li>
         </ul>
-      </li>
-      <li>
-        <a href="./upgrade-eks-addons.html#preparing-for-upgrade"><span>Preparing for upgrade</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-addons.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
       </li>
     </ul>
   </li>
@@ -476,19 +476,19 @@
         <a href="./upgrade-eks-cluster.html#creating-cluster-upgrade-github-issues"><span>Creating Cluster Upgrade GitHub Issues</span></a>
       </li>
       <li>
-        <a href="./upgrade-eks-cluster.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps"><span>Upgrade Steps</span></a>
         <ul>
           <li>
             <a href="./upgrade-eks-cluster.html#compatibility-check"><span>Compatibility Check</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-steps-preparing-for-upgrade"><span> Preparing for upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#preparing-for-upgrade"><span> Preparing for upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-steps-starting-the-upgrade"><span>Starting the upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#finishing-the-upgrade"><span>Finishing the upgrade</span></a>
@@ -501,40 +501,24 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
+    <a href="./upgrade-eks-addons.html"><span>Upgrade EKS addons</span></a>
     <ul>
       <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-upgrade-steps"><span>Upgrade Steps</span></a>
+        <a href="./upgrade-eks-addons.html#listing-available-eks-upgrades"><span>Listing available EKS upgrades</span></a>
         <ul>
           <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
+            <a href="./upgrade-eks-addons.html#eksctl-install"><span>eksctl Install</span></a>
           </li>
         </ul>
       </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
-    <ul>
       <li>
-        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
-          </li>
-          <li>
-            <a href="./node-group-changes.html#useful-commands"><span>Useful commands:</span></a>
-          </li>
-          <li>
-            <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster-monitoring-nodes"><span>Monitoring nodes</span></a>
-          </li>
-        </ul>
+        <a href="./upgrade-eks-addons.html#upgrade-eks-addons-preparing-for-upgrade"><span>Preparing for upgrade</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-addons.html#upgrade-eks-addons-starting-the-upgrade"><span>Starting the upgrade</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
       </li>
     </ul>
   </li>
@@ -576,6 +560,25 @@
     </ul>
   </li>
   <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#useful-commands"><span>Useful commands:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster-monitoring-nodes"><span>Monitoring nodes</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
     <ul>
       <li>
@@ -611,6 +614,20 @@
       </li>
       <li>
         <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -685,18 +702,21 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
     <ul>
       <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+        <a href="./move-components-module.html#notes-on-the-pipeline"><span>Notes on the pipeline</span></a>
       </li>
       <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+        <a href="./move-components-module.html#moving-components-modules-into-core-process"><span> Process</span></a>
       </li>
       <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
+        <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
   </li>
   <li>
     <a href="./working-with-tflock.html"><span>What is .terraform.lock.hcl?</span></a>
@@ -713,23 +733,6 @@
         </ul>
       </li>
     </ul>
-  </li>
-  <li>
-    <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
-    <ul>
-      <li>
-        <a href="./move-components-module.html#notes-on-the-pipeline"><span>Notes on the pipeline</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#moving-components-modules-into-core-process"><span> Process</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
   </li>
   <li>
     <a href="./add-nodes-to-the-eks-cluster.html"><span>Add nodes to the AWS EKS cluster</span></a>
@@ -1075,6 +1078,38 @@
     </ul>
   </li>
   <li>
+    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <ul>
+      <li>
+        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
+        <ul>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
+          </li>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./resolve-opensearch-shard-issues.html"><span>Open search best practices</span></a>
     <ul>
       <li>
@@ -1093,30 +1128,6 @@
         <ul>
           <li>
             <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
-    <ul>
-      <li>
-        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
-        <ul>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
-          </li>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
           </li>
         </ul>
       </li>
@@ -1147,14 +1158,6 @@
             <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
       </li>
     </ul>
   </li>
@@ -1259,32 +1262,6 @@
     </ul>
   </li>
   <li>
-    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
-    <ul>
-      <li>
-        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./eks-cluster.html"><span>Provisioning EKS clusters</span></a>
     <ul>
       <li>
@@ -1318,6 +1295,32 @@
       </li>
       <li>
         <a href="./eks-cluster.html#provisioning-a-custom-cluster"><span>Provisioning a custom cluster</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
+    <ul>
+      <li>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
       </li>
     </ul>
   </li>
@@ -1429,37 +1432,6 @@
     </ul>
   </li>
   <li>
-    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
-    <ul>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
-  </li>
-  <li>
     <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
@@ -1496,6 +1468,37 @@
         </ul>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
+    <ul>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
   </li>
   <li>
     <a href="./logs-to-soc-cortex-xsiam.html"><span>Pushing logs to the SOC team</span></a>
@@ -1705,16 +1708,13 @@
     </ul>
   </li>
   <li>
-    <a href="./elasticsearch-storage-issues.html"><span>Elasticsearch Storage Issues</span></a>
+    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
     <ul>
       <li>
-        <a href="./elasticsearch-storage-issues.html#hot-warm-node-parity"><span>Hot/Warm Node Parity</span></a>
+        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
       </li>
       <li>
-        <a href="./elasticsearch-storage-issues.html#manually-migrating-failed-indexes"><span>Manually migrating failed indexes</span></a>
-      </li>
-      <li>
-        <a href="./elasticsearch-storage-issues.html#elasticsearch-storage-issues-further-reading"><span>Further Reading</span></a>
+        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
       </li>
     </ul>
   </li>
@@ -1752,13 +1752,16 @@
     </ul>
   </li>
   <li>
-    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
+    <a href="./elasticsearch-storage-issues.html"><span>Elasticsearch Storage Issues</span></a>
     <ul>
       <li>
-        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
+        <a href="./elasticsearch-storage-issues.html#hot-warm-node-parity"><span>Hot/Warm Node Parity</span></a>
       </li>
       <li>
-        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
+        <a href="./elasticsearch-storage-issues.html#manually-migrating-failed-indexes"><span>Manually migrating failed indexes</span></a>
+      </li>
+      <li>
+        <a href="./elasticsearch-storage-issues.html#elasticsearch-storage-issues-further-reading"><span>Further Reading</span></a>
       </li>
     </ul>
   </li>
