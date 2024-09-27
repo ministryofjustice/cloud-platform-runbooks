@@ -1455,17 +1455,27 @@
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
     <ul>
       <li>
+        <a href="./custom-default-backend.html#background"><span>Background</span></a>
+      </li>
+      <li>
+        <a href="./custom-default-backend.html#creating-your-own-custom-error-page"><span>Creating your own custom error page</span></a>
         <ul>
           <li>
-            <a href="./custom-default-backend.html#background"><span>Background</span></a>
+            <a href="./custom-default-backend.html#1-create-your-docker-image"><span>1. Create your docker image</span></a>
           </li>
           <li>
-            <a href="./custom-default-backend.html#use-platform-level-error-page"><span>Use platform-level error page</span></a>
+            <a href="./custom-default-backend.html#2-creating-a-service-and-deployment"><span>2. Creating a service and deployment</span></a>
           </li>
           <li>
-            <a href="./custom-default-backend.html#not-use-platform-level-error-page"><span>Not use platform-level error page</span></a>
+            <a href="./custom-default-backend.html#3-define-annotations-in-your-ingress-file"><span>3. Define annotations in your ingress file.</span></a>
           </li>
         </ul>
+      </li>
+      <li>
+        <a href="./custom-default-backend.html#use-the-platform-level-error-page"><span>Use the platform-level error page</span></a>
+      </li>
+      <li>
+        <a href="./custom-default-backend.html#serve-all-errors-from-your-custom-default-backend"><span>Serve all errors from your custom default backend</span></a>
       </li>
     </ul>
   </li>
@@ -1775,12 +1785,13 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="custom-default-backend">Custom default-backend</h1>
-<h3 id="background">Background</h3>
-<p>Cloud-Platform created <a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">custom error pages</a> to be used by the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/default-backend">default backend</a> for Nginx ingress-controller. The default backend is the default service that Nginx falls back to if it cannot route a request successfully. When the service in the Ingress rule does not have active endpoints, this ingress controller default-backend service will handle the response by serving the cloud-platform custom default error page.</p>
+<h2 id="background">Background</h2>
+<p>Cloud Platform has created <a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">custom error pages</a> to be used by the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/default-backend">default backend</a> for Nginx ingress-controller. The default backend is the default service that Nginx falls back to if it cannot route a request successfully. When the service in the Ingress rule does not have active endpoints, this ingress controller default-backend service will handle the response by serving the cloud-platform custom default error page.</p>
 <p>However, some applications don’t want to use the cloud-platform custom default error pages from the Nginx ingress controller but need to be served their own custom error pages. This can be achieved by implementing own <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom default backend</a> in a namespace.</p>
-<h4 id="create-custom-error-page">Create custom error page</h4>
-<p>First create a docker image containing custom HTTP error pages using the <a href="https://github.com/kubernetes/ingress-nginx/tree/master/images/custom-error-pages#custom-error-pages">example</a> from the ingress-nginx, or <a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">simplified version</a> of that created by the cloud platform team.</p>
-<h4 id="customised-default-backend">Customised default backend</h4>
+<h2 id="creating-your-own-custom-error-page">Creating your own custom error page</h2>
+<h3 id="1-create-your-docker-image">1. Create your docker image</h3>
+<p>First create a docker image containing custom HTTP error pages using the <a href="https://github.com/kubernetes/ingress-nginx/tree/master/images/custom-error-pages#custom-error-pages">example</a> from the ingress-nginx, or <a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">simplified version</a> created by the cloud platform team.</p>
+<h3 id="2-creating-a-service-and-deployment">2. Creating a service and deployment</h3>
 <p>Using this <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> example from ingress-nginx, create a service and deployment of the error pages container in your namespace.</p>
 <p>To create Deployment and Service manually use this below command:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kubectl -n ${namespace} create -f custom-default-backend.yaml
@@ -1793,9 +1804,9 @@ deployment.apps/nginx-errors   1         1         1         10s
 
 NAME                   TYPE        CLUSTER-IP  EXTERNAL-IP   PORT(S)   AGE
 service/nginx-errors   ClusterIP   10.0.0.12   &lt;none&gt;        80/TCP    10s
-</code></pre></div><h4 id="defining-annotations-in-ingress-file">Defining annotations in Ingress file.</h4>
-<p>Final step is to use an <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">Default Backend</a> annotation in your Ingress. This annotation is of the form <code>nginx.ingress.kubernetes.io/default-backend: &lt;svc name&gt;</code> to specify a custom default backend. This <code>&lt;svc name&gt;</code> is a reference to a service inside of the same namespace in which you are applying this annotation. This annotation overrides the global default backend.</p>
-<p>Default-backend service in the namespace will handle the error responses when both <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation and the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation is set. <code>Custom-http-errors</code> annotation configure which HTTP status codes Nginx should be forwarding to the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a>.</p>
+</code></pre></div><h3 id="3-define-annotations-in-your-ingress-file">3. Define annotations in your ingress file.</h3>
+<p>Final step is to use a <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">Default Backend</a> annotation in your Ingress. The annotation is: <code>nginx.ingress.kubernetes.io/default-backend: &lt;svc name&gt;</code>. The <code>&lt;svc name&gt;</code> is a reference to a service inside of the same namespace in which you are applying this annotation. This annotation overrides the global default backend.</p>
+<p>The default-backend service in the namespace will handle the error responses when both <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation and the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation is set. <code>Custom-http-errors</code> annotation can be configured with HTTP status codes that Nginx should be forwarding to the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a>.</p>
 <p>If custom-http-errors is also specified globally, the custom-http-error values specified in this annotation along with custom default backend will override the global value for the given ingress hostname and path.</p>
 <p>In the example below, custom error pages from <code>custom-default-backend: nginx-errors</code> service will be served for <code>&quot;404,415&quot;</code> errors which is set as <code>custom-http-errors</code> annotation.</p>
 <p>Example Ingress with default-backend and custom-http-errors annotations:</p>
@@ -1825,9 +1836,12 @@ spec:
             name: rubyapp-service
             port:
               number: 4567
-</code></pre></div><p>(Note - Please change the <code>ingress-name</code> and <code>environment-name</code> values in the above example, you can get the <code>environment-name</code> value from your namespace label &ldquo;cloud-platform.justice.gov.uk/environment-name&rdquo;. The <code>colour</code> should be <code>green</code> for ingress in EKS <code>live</code> cluster)</p>
-<h3 id="use-platform-level-error-page">Use platform-level error page</h3>
-<p>Some teams want application&rsquo;s serve their own error&rsquo;s <code>example 404&#39;s</code>, but want to serve cloud platforms custom error page from ingress controller default backend for other error codes like 502,503 and 504, this can be done by using <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation in your ingress for error codes teams want to serve the cloud platforms custom error page.</p>
+</code></pre></div>
+<blockquote>
+<p>Note - Please change the <code>ingress-name</code> and <code>environment-name</code> values in the above example, you can get the <code>environment-name</code> value from your namespace label &ldquo;cloud-platform.justice.gov.uk/environment-name&rdquo;. The <code>colour</code> should be <code>green</code> for ingress in EKS <code>live</code> cluster</p>
+</blockquote>
+<h2 id="use-the-platform-level-error-page">Use the platform-level error page</h2>
+<p>Some teams want their application to serve their own error page for example 404s, but want to serve cloud platforms custom error page from ingress controller default backend for other error codes like 502,503 and 504, this can be done by using <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation in your ingress for error codes teams want to serve the cloud platforms custom error page.</p>
 <p>Example Ingress file to use platform-level error page for custom-http-errors: &ldquo;502,503,504&rdquo;. All other errors except <code>502,503,504</code> will be served from the application error page.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -1850,9 +1864,9 @@ spec:
         backend:
           serviceName: rubyapp-service
           servicePort: 4567
-</code></pre></div><h3 id="not-use-platform-level-error-page">Not use platform-level error page</h3>
-<p>Some teams want application&rsquo;s to serve all errors. It is possible as there is a <a href="https://github.com/kubernetes/ingress-nginx/pull/3344">fix</a> from Nginx-Ingress to cancel out the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a> set to serve cloud platforms custom error page from default backend at ingress controller, by adding the Ingress annotation and setting an error not used in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>.</p>
-<p>If you have <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> set up in your namespace, adding the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation along with <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation with unused error code in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>, will serve custom error page from namespace default-backend service, when the service in the Ingress rule does not have active endpoints.</p>
+</code></pre></div><h2 id="serve-all-errors-from-your-custom-default-backend">Serve all errors from your custom default backend</h2>
+<p>Some teams want applications to serve all errors. It&rsquo;s possible as there is a <a href="https://github.com/kubernetes/ingress-nginx/pull/3344">fix</a> from Nginx-Ingress to cancel out the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a> set to serve cloud platforms custom error page from the default backend, this is done by adding the Ingress annotation and setting an error not used in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>.</p>
+<p>If you have <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> set up in your namespace, adding the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation along with <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation with an unused error code in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>, will serve custom error page from namespace default-backend service, when the service in the Ingress rule does not have active endpoints.</p>
 <p>Example Ingress file to set <code>custom-http-errors: &quot;418&quot;</code> as annotation, which is not used at <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1
 kind: Ingress
