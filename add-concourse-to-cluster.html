@@ -1816,8 +1816,8 @@ terraform plan -var "enable_oidc_associate=false"
 terraform apply -var "enable_oidc_associate=false"
 </code></pre></div>
 <ul>
-<li>Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components</code> directory</a>.
-Amend the following file and remove the count line from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/components.tf#L2">concourse module</a>.</li>
+<li>Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components</code> directory</a>.
+Amend the following file and remove the count line from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components/components.tf#L2">concourse module</a>.</li>
 <li>Apply the terraform module to your test cluster</li>
 </ul>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init

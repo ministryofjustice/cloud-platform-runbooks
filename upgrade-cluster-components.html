@@ -1836,7 +1836,7 @@
 <li><p>Run the integration tests again</p></li>
 <li><p>Once the testing is complete and integration tests are passed, create a PR to be reviewed by the team and have the module unit tests passed.
  After the PR is approved, merge the changes to the main branch of the module and make a release.</p></li>
-<li><p>Change the module release tag in the eks/components folder of <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> and raise a PR.
+<li><p>Change the module release tag in the eks/core/components folder of <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repo</a> and raise a PR.
  Verify the terraform plan from the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-plan-infra-live/">cloud-platform-infrastructure plan pipeline</a> and get it reviewed by the team.</p></li>
 <li><p>Once approved, merge the PR and monitor the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-apply-infra-live">cloud-platform-infrastructure apply pipeline</a> when applying the changes.</p></li>
 <li><p>Run the <code>reporting</code> tests in concourse to ensure live/manager/live-2 are working as expected.</p></li>

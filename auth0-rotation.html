@@ -1798,7 +1798,7 @@ $ terraform taint module.auth0.auth0_client.components
 <p>Apply changes if you are happy with them:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ terraform apply
 </code></pre></div><h2 id="2-apply-changes-within-components-terraform">2) Apply changes within components (terraform)</h2>
-<p>Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a>
+<p>Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components</code> directory</a>
 to ensure changes match resources below, if they do, apply them:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$terraform workspace select live
 $terraform plan
@@ -1818,8 +1818,8 @@ $ kubectl -n monitoring delete pod $GrafanaPodName
 </ul>
 <h2 id="4-update-manager-cluster-within-components-terraform">4) Update Manager cluster within components (terraform)</h2>
 <p>Our pipelines read auth0 credentials from a K8S secret inside the manager cluster. This secret is updated through concourse&rsquo;s TF module variable called <code>tf_provider_auth0_client_secret</code> and <code>tf_provider_auth0_client_id</code> in
-<a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/terraform.tfvars">cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components/terraform.tfvars</a></p>
-<p>Switch to manager cluster and Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a>
+<a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components/terraform.tfvars">cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components/terraform.tfvars</a></p>
+<p>Switch to manager cluster and Execute <code>terraform plan</code> inside <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks</code> directory</a>
 to ensure changes match resources below, if they do, apply them:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ aws eks --region eu-west-2 update-kubeconfig --name manager
 $ terraform workspace select manager

@@ -1819,7 +1819,7 @@ $ aws eks --region eu-west-2 update-kubeconfig --name ${cluster}
 
 </code></pre></div><p>Then, from the root of a checkout of the <code>cloud-platform-infrastructure</code> repository, run
 these commands to destroy all cluster components, and delete the terraform workspace:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ cd terraform/aws-accounts/cloud-platform-aws/vpc/eks/components
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ cd terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components
 $ terraform init
 $ terraform workspace select ${cluster}
 $ terraform destroy
