@@ -442,12 +442,6 @@
     </ul>
   </li>
   <li>
-    <a href="../upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
-  </li>
-  <li>
-    <a href="../upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
-  </li>
-  <li>
     <a href="../upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
     <ul>
       <li>
@@ -521,6 +515,12 @@
         <a href="../upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="../upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
+  </li>
+  <li>
+    <a href="../upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
   </li>
   <li>
     <a href="../upgrade-cluster-components.html"><span>Upgrade cluster components</span></a>
@@ -607,31 +607,6 @@
     </ul>
   </li>
   <li>
-    <a href="../delete-cluster.html"><span>Delete a cluster</span></a>
-    <ul>
-      <li>
-        <a href="../delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
-      </li>
-      <li>
-        <a href="../delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="../upgrade-user-components.html"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="../upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="../upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="../upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="../container-images.html"><span>Container Images used by Cluster Components</span></a>
     <ul>
       <li>
@@ -698,6 +673,31 @@
       </li>
       <li>
         <a href="../container-images.html#velero"><span>velero</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../delete-cluster.html"><span>Delete a cluster</span></a>
+    <ul>
+      <li>
+        <a href="../delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
+      </li>
+      <li>
+        <a href="../delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <ul>
+      <li>
+        <a href="../upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+      </li>
+      <li>
+        <a href="../upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="../upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -1078,18 +1078,10 @@
     </ul>
   </li>
   <li>
-    <a href="../export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <a href="../manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
     <ul>
       <li>
-        <a href="../export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
-        <ul>
-          <li>
-            <a href="../export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
-          </li>
-          <li>
-            <a href="../export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
-          </li>
-        </ul>
+        <a href="../manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -1102,10 +1094,18 @@
     </ul>
   </li>
   <li>
-    <a href="../manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <a href="../export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
     <ul>
       <li>
-        <a href="../manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+        <a href="../export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
+        <ul>
+          <li>
+            <a href="../export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
+          </li>
+          <li>
+            <a href="../export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1372,22 +1372,6 @@
     </ul>
   </li>
   <li>
-    <a href="../get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
-    <ul>
-      <li>
-        <a href="../get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
-        <ul>
-          <li>
-            <a href="../get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
-          </li>
-          <li>
-            <a href="../get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="../access-eks-cluster.html"><span>Access EKS cluster</span></a>
     <ul>
       <li>
@@ -1398,6 +1382,22 @@
           </li>
           <li>
             <a href="../access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
+    <ul>
+      <li>
+        <a href="../get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
+        <ul>
+          <li>
+            <a href="../get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
+          </li>
+          <li>
+            <a href="../get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
           </li>
         </ul>
       </li>
@@ -1428,6 +1428,34 @@
       </li>
       <li>
         <a href="../eks-node-terminal-access.html#access-via-ssh-scp"><span>Access via SSH /SCP</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
+    <ul>
+      <li>
+        <a href="../cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+      </li>
+      <li>
+        <a href="../cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="../cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+      </li>
+      <li>
+        <a href="../cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="../destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="../destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="../destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
   </li>
@@ -1480,35 +1508,29 @@
     </ul>
   </li>
   <li>
-    <a href="../destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="../destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="../destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="../cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
-    <ul>
-      <li>
-        <a href="../cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
-      </li>
-      <li>
-        <a href="../cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="../cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
-      </li>
-      <li>
-        <a href="../cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="../add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
+  </li>
+  <li>
+    <a href="../leavers-guide.html"><span>Leavers Guide</span></a>
+    <ul>
+      <li>
+        <a href="../leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
+        <ul>
+          <li>
+            <a href="../leavers-guide.html#digital-services"><span>Digital Services</span></a>
+          </li>
+          <li>
+            <a href="../leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
+          </li>
+          <li>
+            <a href="../leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="../leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
+      </li>
+    </ul>
   </li>
   <li>
     <a href="../logs-to-soc-cortex-xsiam.html"><span>Pushing logs to the SOC team</span></a>
@@ -1547,28 +1569,6 @@
             <a href="../logs-to-soc-cortex-xsiam.html#iam-user-access-keys-rotation"><span>IAM User access keys rotation</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="../leavers-guide.html"><span>Leavers Guide</span></a>
-    <ul>
-      <li>
-        <a href="../leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
-        <ul>
-          <li>
-            <a href="../leavers-guide.html#digital-services"><span>Digital Services</span></a>
-          </li>
-          <li>
-            <a href="../leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
-          </li>
-          <li>
-            <a href="../leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="../leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
       </li>
     </ul>
   </li>
@@ -1665,9 +1665,6 @@
     </ul>
   </li>
   <li>
-    <a href="../google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="../tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1713,6 +1710,9 @@
         <a href="../tips-and-tricks.html#modsec-false-positives"><span>Modsec false positives</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="../google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
   </li>
   <li>
     <a href="../investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>

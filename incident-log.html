@@ -442,12 +442,6 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
-  </li>
-  <li>
-    <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
-  </li>
-  <li>
     <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
     <ul>
       <li>
@@ -521,6 +515,12 @@
         <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
+  </li>
+  <li>
+    <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
   </li>
   <li>
     <a href="./upgrade-cluster-components.html"><span>Upgrade cluster components</span></a>
@@ -607,31 +607,6 @@
     </ul>
   </li>
   <li>
-    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
-    <ul>
-      <li>
-        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
-      </li>
-      <li>
-        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./container-images.html"><span>Container Images used by Cluster Components</span></a>
     <ul>
       <li>
@@ -698,6 +673,31 @@
       </li>
       <li>
         <a href="./container-images.html#velero"><span>velero</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
+    <ul>
+      <li>
+        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
+      </li>
+      <li>
+        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -1078,18 +1078,10 @@
     </ul>
   </li>
   <li>
-    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
     <ul>
       <li>
-        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
-        <ul>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
-          </li>
-          <li>
-            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
-          </li>
-        </ul>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -1102,10 +1094,18 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
     <ul>
       <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+        <a href="./export-elasticsearch-to-csv.html#workaround"><span>Workaround</span></a>
+        <ul>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#install-es2csv"><span>Install es2csv</span></a>
+          </li>
+          <li>
+            <a href="./export-elasticsearch-to-csv.html#usage"><span>Usage</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1372,22 +1372,6 @@
     </ul>
   </li>
   <li>
-    <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
-    <ul>
-      <li>
-        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
-        <ul>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
-          </li>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./access-eks-cluster.html"><span>Access EKS cluster</span></a>
     <ul>
       <li>
@@ -1398,6 +1382,22 @@
           </li>
           <li>
             <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
+    <ul>
+      <li>
+        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
+        <ul>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
+          </li>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-kibana-entry"><span>Perform a search for the unique-id (obtained from the Kibana entry)</span></a>
           </li>
         </ul>
       </li>
@@ -1428,6 +1428,34 @@
       </li>
       <li>
         <a href="./eks-node-terminal-access.html#access-via-ssh-scp"><span>Access via SSH /SCP</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
+    <ul>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
   </li>
@@ -1480,35 +1508,29 @@
     </ul>
   </li>
   <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
-    <ul>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
+  </li>
+  <li>
+    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
+    <ul>
+      <li>
+        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
+        <ul>
+          <li>
+            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
+      </li>
+    </ul>
   </li>
   <li>
     <a href="./logs-to-soc-cortex-xsiam.html"><span>Pushing logs to the SOC team</span></a>
@@ -1547,28 +1569,6 @@
             <a href="./logs-to-soc-cortex-xsiam.html#iam-user-access-keys-rotation"><span>IAM User access keys rotation</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
-    <ul>
-      <li>
-        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
-        <ul>
-          <li>
-            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
       </li>
     </ul>
   </li>
@@ -1665,9 +1665,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1713,6 +1710,9 @@
         <a href="./tips-and-tricks.html#modsec-false-positives"><span>Modsec false positives</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
   </li>
   <li>
     <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
@@ -1784,13 +1784,15 @@
             <h1 id="incident-log">Incident Log</h1>
 
 <blockquote>
-<p>Use the <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/bin/mean-time-to-repair.rb">mean-time-to-repair.rb</a> script to view performance metrics</p>
+<p>Use the [mean-time-to-repair] go script to view performance metrics</p>
 </blockquote>
+
+<hr>
 <h2 id="q3-2024-july-september">Q3 2024 (July-September)</h2>
 
 <ul>
-<li><strong>Mean Time to Repair</strong>: 3h 8m</li>
-<li><strong>Mean Time to Resolve</strong>: 4h 9m</li>
+<li><strong>Mean Time to Repair</strong>: 1h 39m</li>
+<li><strong>Mean Time to Resolve</strong>: 2h 14m</li>
 </ul>
 <h3 id="incident-on-2024-09-20-eks-subnet-route-table-associations-destroyed">Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</h3>
 
@@ -1884,6 +1886,8 @@
 <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/5930">Investigate fluent-bit &ldquo;failed to flush chunk&rdquo;</a></li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q1-2024-january-april">Q1 2024 (January-April)</h2>
 
 <ul>
@@ -1936,6 +1940,8 @@
 <li>Spike into Amazon Managed Prometheus</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q4-2023-october-december">Q4 2023 (October-December)</h2>
 
 <ul>
@@ -1985,6 +1991,8 @@
 <li>Is taking regular velero backups distrub the ebs read/write and cause the restart</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q3-2023-july-september">Q3 2023 (July-September)</h2>
 
 <ul>
@@ -2168,6 +2176,8 @@
 <li>Add a test/check to ensure the IP address allocation is working as expected <a href="https://github.com/ministryofjustice/cloud-platform/issues/4669">#4669</a></li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q2-2023-april-june">Q2 2023 (April-June)</h2>
 
 <ul>
@@ -2214,10 +2224,12 @@
 <li>Add a runbook for the steps to perform when changing the node instance type</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q1-2023-january-march">Q1 2023 (January-March)</h2>
 
 <ul>
-<li><p><strong>Mean Time to Repair</strong>: 225h 11m</p></li>
+<li><p><strong>Mean Time to Repair</strong>: 225h 10m</p></li>
 <li><p><strong>Mean Time to Resolve</strong>: 225h 28m</p></li>
 </ul>
 <h3 id="incident-on-2023-02-02-10-21-cjs-dashboard-performance">Incident on 2023-02-02 10:21 - CJS Dashboard Performance</h3>
@@ -2376,6 +2388,8 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li>Use IRSA instead of AWS Keys</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q4-2022-october-december">Q4 2022 (October-December)</h2>
 
 <ul>
@@ -2421,6 +2435,8 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li>AWS advise received - ticket raised to investigate potential solutions: <a href="https://app.zenhub.com/workspaces/cloud-platform-team-5ccb0b8a81f66118c983c189/issues/ministryofjustice/cloud-platform/4264">Implementation of notification of Scheduled Instance Retirements - to Slack. Investigate 2 potential AWS solutions#4264</a>.</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q3-2022-july-september">Q3 2022 (July-September)</h2>
 
 <ul>
@@ -2463,11 +2479,13 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li>Mitigaton tickets raised following a post-incident review: https://github.com/ministryofjustice/cloud-platform/issues?q=is%3Aissue+is%3Aopen+post-aws-incident</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q1-2022-january-to-march">Q1 2022 (January to March)</h2>
 
 <ul>
-<li><p><strong>Mean Time to Repair</strong>: 1h 39m</p></li>
-<li><p><strong>Mean Time to Resolve</strong>: 1h 59m</p></li>
+<li><p><strong>Mean Time to Repair</strong>: 1h 05m</p></li>
+<li><p><strong>Mean Time to Resolve</strong>: 1h 24m</p></li>
 </ul>
 <h3 id="incident-on-2022-03-10-11-48-all-ingress-resources-using-apps-live-cloud-platform-urls-showing-certificate-issue">Incident on 2022-03-10 11:48 - All ingress resources using *.apps.live.cloud-platform urls showing certificate issue</h3>
 
@@ -2556,6 +2574,8 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li>Assign someone to be the &lsquo;hammer&rsquo; on Fridays</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q4-2021-october-to-december">Q4 2021 (October to December)</h2>
 
 <ul>
@@ -2597,6 +2617,8 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li>N/A</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q3-2021-july-september">Q3 2021 (July-September)</h2>
 
 <ul>
@@ -2728,6 +2750,8 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li>Fix the pipeline: Before the creation of Terraform resources, add a function in the cli to perform a <code>kubectl context</code> switch to the correct cluster. PR exists</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q2-2021-april-june">Q2 2021 (April-June)</h2>
 
 <ul>
@@ -2809,6 +2833,8 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li>Manager needs to use our PSPs instead of eks-privilege - this has already been done.</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q1-2021-january-march">Q1 2021 (January - March)</h2>
 
 <ul>
@@ -2816,6 +2842,8 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li><p><strong>Mean Time to Resolve</strong>: N/A</p></li>
 </ul>
 <h3 id="no-incidents-declared">No incidents declared</h3>
+
+<hr>
 <h2 id="q4-2020-october-december">Q4 2020 (October - December)</h2>
 
 <ul>
@@ -2855,11 +2883,13 @@ Clean up any other IAM/Access keys not managed via code within the AWS account.<
 <li>Migrate all ingresses back to the default ingress controller</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q3-2020-july-september">Q3 2020 (July - September)</h2>
 
 <ul>
-<li><p><strong>Mean Time To Repair</strong>: 1h 9m</p></li>
-<li><p><strong>Mean Time To Resolve</strong>: 7h 26m</p></li>
+<li><p><strong>Mean Time To Repair</strong>: 59m</p></li>
+<li><p><strong>Mean Time To Resolve</strong>: 7h 13m</p></li>
 </ul>
 <h3 id="incident-on-2020-09-28-13-10-termination-of-nodes-updating-kops-instance-group">Incident on 2020-09-28 13:10 - Termination of nodes updating kops Instance Group.</h3>
 
@@ -3069,11 +3099,13 @@ ttps://docs.google.com/document/d/1kxKwC1B_pnlPbysS0zotbXMKyZcUDmDtnGbEyIHGvgQ/e
 <li>We and AWS are still investigating longer-term and more reliable fixes</li>
 </ul></li>
 </ul>
+
+<hr>
 <h2 id="q2-2020-april-june">Q2 2020 (April - June)</h2>
 
 <ul>
-<li><p><strong>Mean Time To Repair</strong>: 2h 5m</p></li>
-<li><p><strong>Mean Time To Resolve</strong>: 15h 53m</p></li>
+<li><p><strong>Mean Time To Repair</strong>: 2h 49m</p></li>
+<li><p><strong>Mean Time To Resolve</strong>: 7h 12m</p></li>
 </ul>
 <h3 id="incident-on-2020-08-04-17-13">Incident on 2020-08-04 17:13</h3>
 
@@ -3143,6 +3175,8 @@ Compare each resource configuration with the terraform state and applied the cor
 <li><p><strong>Resolution</strong>:
 The Nginx configuration was modified to enable TLSv1, TLSv1.1 and TLSv1.2</p></li>
 </ul>
+
+<hr>
 <h2 id="q1-2020-january-march">Q1 2020 (January - March)</h2>
 
 <ul>
