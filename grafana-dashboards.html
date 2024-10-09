@@ -1785,7 +1785,7 @@
 <h2 id="kubernetes-number-of-pods-per-node">Kubernetes Number of Pods per Node</h2>
 <p>This <a href="https://grafana.live.cloud-platform.service.justice.gov.uk/d/anzGBBJHiz/kubernetes-number-of-pods-per-node?orgId=1">dashboard</a> was created to show the current number of pods per node in the cluster.</p>
 <h3 id="dashboard-layout">Dashboard Layout</h3>
-<p>Each box on the dashboard has the name of the node and the number of pods on the node. This number includes pods with a statuses such as &ldquo;DeadlineExceeded&rdquo; and completed&quot;.</p>
+<p>Each box on the dashboard has the name of the node and the number of pods on the node. This number includes pods with statuses such as &ldquo;DeadlineExceeded&rdquo; and completed&quot;.</p>
 <p>The exception is the <code>Max Pods per Node</code> box. This is a constant number set on creation for the maximum allowed pods per node.</p>
 <p>The current architecture does not allow instance group id to be viewed on the dashboard.</p>
 <p>We currently have 2 instance groups:</p>
@@ -1794,7 +1794,7 @@
 <li>Default worker node group (r6i.2xlarge)</li>
 <li>Monitoring node group (r6i.8xlarge Nodes)</li>
 </ul>
-<p>As the dashboard is set in descending order, the last two boxes are normally from the monitoring Nodes group (2 instances), and the rest are from the default Nodes group.</p>
+<p>As the dashboard is set in descending order, the last two boxes are normally from the monitoring Nodes group (2 instances), and the rest are from the default Node groups.</p>
 <p>You can run the following command to confirm this and get more information about a node:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl describe node &lt;node_name&gt;
 </code></pre></div><h2 id="troubleshooting">Troubleshooting</h2>
@@ -1817,14 +1817,14 @@
 <p>The kibana alert has reported an error similar to:</p>
 
 <blockquote>
-<p>Duplicate Grafana dashboard UID&rsquo;s found</p>
+<p>Duplicate Grafana dashboard UIDs found</p>
 </blockquote>
 <p>To help in identifying the dashboards, you can exec into the Grafana pod as follows:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl exec --stdin --tty prometheus-operator-grafana-xxxxxx-yyyyy --container grafana-sc-dashboard  -- sh
 </code></pre></div><p>Then, cd into the <code>/tmp/dashboards</code> directory, and execute the <code>find</code> command as below:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>cd /tmp/dashboards/
 for i in $(find ./ -type f); do tail $i; done|grep '"uid": '|cut -f2 -d':'|sort|uniq -c|grep -v ' 1 '
-</code></pre></div><p>This will show output any duplicate UIDs and the number of occurrences of each.</p>
+</code></pre></div><p>This will output any duplicate UIDs and the number of occurrences of each.</p>
 <p>i.e.:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>2    "[duplicate-dashboard-uid]",
 ...
@@ -1839,17 +1839,17 @@ for i in $(find ./ -type f); do tail $i; done|grep '"uid": '|cut -f2 -d':'|sort|
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl describe namespace &lt;namespace&gt;
 </code></pre></div><p>Contact the user in the given slack-channel and ask them to fix it. Provide the list of affected dashboards and the error message to help diagnose the issue.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-08">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-01-09">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 8 July 2024.
+      This page was last reviewed on 9 October 2024.
 
-        It needs to be reviewed again on 8 October 2024
+        It needs to be reviewed again on 9 January 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 8 October 2024
+      This page was set to be reviewed before 9 January 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
