@@ -442,6 +442,12 @@
     </ul>
   </li>
   <li>
+    <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
+  </li>
+  <li>
+    <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
+  </li>
+  <li>
     <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
     <ul>
       <li>
@@ -517,10 +523,32 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
-  </li>
-  <li>
-    <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
+    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
   <li>
     <a href="./upgrade-cluster-components.html"><span>Upgrade cluster components</span></a>
@@ -579,30 +607,27 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
+    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
     <ul>
       <li>
-        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
       </li>
       <li>
-        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
+        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
       </li>
       <li>
-        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
       </li>
       <li>
-        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
-          </li>
-        </ul>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -677,29 +702,7 @@
     </ul>
   </li>
   <li>
-    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
-    <ul>
-      <li>
-        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
-      </li>
-      <li>
-        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
-      </li>
-    </ul>
+    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
   </li>
   <li>
     <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
@@ -714,9 +717,6 @@
         <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
       </li>
     </ul>
-  </li>
-  <li>
-    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
   </li>
   <li>
     <a href="./working-with-tflock.html"><span>What is .terraform.lock.hcl?</span></a>
@@ -1086,14 +1086,6 @@
     </ul>
   </li>
   <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./export-elasticsearch-to-csv.html"><span>Export data from Elasticsearch into a CSV file</span></a>
     <ul>
       <li>
@@ -1130,6 +1122,14 @@
             <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
       </li>
     </ul>
   </li>
@@ -1432,34 +1432,6 @@
     </ul>
   </li>
   <li>
-    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
-    <ul>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
@@ -1478,6 +1450,9 @@
         <a href="./joiners-guide.html#access"><span>Access</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
   </li>
   <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
@@ -1508,7 +1483,32 @@
     </ul>
   </li>
   <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
+    <ul>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
+      </li>
+    </ul>
   </li>
   <li>
     <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
@@ -1665,6 +1665,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1708,20 +1711,6 @@
       </li>
       <li>
         <a href="./tips-and-tricks.html#modsec-false-positives"><span>Modsec false positives</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
-    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
-    <ul>
-      <li>
-        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
-      </li>
-      <li>
-        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
       </li>
     </ul>
   </li>
@@ -1772,6 +1761,17 @@
       </li>
     </ul>
   </li>
+  <li>
+    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
+    <ul>
+      <li>
+        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
+      </li>
+      <li>
+        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
+      </li>
+    </ul>
+  </li>
 </ul>
 
 
@@ -1782,10 +1782,10 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="change-load-balancer-alias-to-the-interface-ip-39-s-in-route53">Change load balancer alias to the interface IP&rsquo;s in Route53.</h1>
-<p>This run book is a recovery action to mitigate slow performance of ingress traffic <a href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-log.html#q3-2022-july-september">incident</a> when an interface fails in an availability zone (AZ), clients time out when they attempt to connect to one of unhealthy NLB EIPs</p>
+<p>This runbook is a recovery action to mitigate slow performance of ingress traffic <a href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-log.html#q3-2022-july-september">incident</a> when an interface fails in an availability zone (AZ), clients time out when they attempt to connect to one of the unhealthy NLB EIPs</p>
 <h2 id="request-aws-to-restart-the-health-check">Request AWS to restart the health check</h2>
 <p>AWS confirmed the root cause of the <a href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-log.html#q3-2022-july-september">incident</a> as, “the health checking subsystem did not correctly detect some of your targets as unhealthy, which resulted in clients timing out when they attempted to connect to one of your NLB EIPs&quot;.</p>
-<p>AWS mitigated the impact by restarting the health checking service, which caused the target health to be updated appropriately. Cloud-platform team don&rsquo;t have access to restart the health check service, request AWS to restart it for us.</p>
+<p>AWS mitigated the impact by restarting the health checking service, which caused the target health to be updated appropriately. The cloud-platform team don&rsquo;t have access to restart the health check service; we request AWS to restart it for us.</p>
 <p>If restarting still has not resolved the issue, look at changing the load balancer alias.</p>
 <h2 id="change-load-balancer-alias">Change load balancer alias</h2>
 <p>Steps to change the alias to healthy EIPs</p>
@@ -1800,8 +1800,8 @@
 a76b4f2b1811e4f7589eaca69c4a46c5-b700f2aa70780ce3.elb.eu-west-2.amazonaws.com has address 18.135.71.213
 a76b4f2b1811e4f7589eaca69c4a46c5-b700f2aa70780ce3.elb.eu-west-2.amazonaws.com has address 13.41.209.82
 </code></pre></div><p>2) Find the unhealthy NLB EIP</p>
-<p>Now we have all of the information we need to make a cURL call over to the external load balancer EIPs.</p>
-<p>Run this on 3 EIPs of the NLB. If everything is working correctly it would return OK. If it return &ldquo;Timeout&rdquo;, then it is most likely an unhealthy external load balancer EIP.</p>
+<p>Now, we have all of the information we need to make a cURL call over to the external load balancer EIPs.</p>
+<p>Run this on 3 EIPs of the NLB. If everything works correctly, it would return OK. If it returns &ldquo;Timeout&rdquo;, then it is most likely an unhealthy external load balancer EIP.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>while :; do (curl -o/dev/null -m1 -k -H 'Host: login.yy-0208-0000.cloud-platform.service.justice.gov.uk' https://35.179.65.116 2&gt;/dev/null &amp;&amp; echo "OK") || echo "Timeout" ; sleep 1 ; done
 </code></pre></div><p>3) Change the load balancer alias to the healthy interface IPs in Route53.</p>
 <p>In the Route53 section of the AWS console, Find the &ldquo;A&rdquo; and &ldquo;TXT&rdquo; records of the ingress host in the hosted zone.</p>
@@ -1810,23 +1810,23 @@ a76b4f2b1811e4f7589eaca69c4a46c5-b700f2aa70780ce3.elb.eu-west-2.amazonaws.com.
 
 _external_dns.login.yy-0208-0000.cloud-platform.service.justice.gov.uk  TXT Weighted    100
 "heritage=external-dns,external-dns/owner=yy-0208-0000,external-dns/resource=ingress/kuberos/kuberos"
-</code></pre></div><p>Edit the route53 TXT record and update the owner, set the incorrect owner field, so external-dns couldn&rsquo;t revert the information in the A record.
+</code></pre></div><p>Edit the route53 TXT record and update the owner, set the incorrect owner field, so external-dns can&rsquo;t revert the information in the A record.
 <code>
 &quot;heritage=external-dns,external-dns/owner=yy-CCCC-BBBB,external-dns/resource=ingress/kuberos/kuberos&quot;
 </code></p>
-<p>Edit the &ldquo;A&rdquo; record and uncheck the alias option, add 2 healthy IP&rsquo;s in the value filed and save the record. Repeat this on all the hosts using the affected NLB.</p>
+<p>Edit the &ldquo;A&rdquo; record and uncheck the alias option, add 2 healthy IP&rsquo;s in the value field and save the record. Repeat this on all the hosts using the affected NLB.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-01-16">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 July 2024.
+      This page was last reviewed on 16 October 2024.
 
-        It needs to be reviewed again on 10 October 2024
+        It needs to be reviewed again on 16 January 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 October 2024
+      This page was set to be reviewed before 16 January 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
