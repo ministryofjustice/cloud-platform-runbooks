@@ -1782,15 +1782,15 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="updating-prisoner-content-hub-waf">Updating Prisoner Content Hub WAF</h1>
-<p>Every so often the Prisoner Content Hub require their WAF IP allowlist updating. This is a bespoke job and not fully #gitops</p>
+<p>Every so often, the Prisoner Content Hub require their WAF IP allowlist updating. This is a bespoke job and not fully #gitops</p>
 
 <blockquote>
-<p>Note: When adding an IP range e.g. <code>/28</code> it must start with the first address in the range. <code>10.0.0.50/28</code> is not valid however <code>10.0.0.48/28</code> is since it&rsquo;s the start of the block.</p>
+<p>Note: When adding an IP range e.g. <code>/28</code>, it must start with the first address in the range. <code>10.0.0.50/28</code> is not valid, however <code>10.0.0.48/28</code> is since it&rsquo;s the start of the block.</p>
 </blockquote>
 
 <ol>
 <li>Log in to AWS Console</li>
-<li>Goto Parameter Store - ensure you&rsquo;re in eu-west-2</li>
+<li>Go to Parameter Store - ensure you&rsquo;re in eu-west-2</li>
 <li>Search for &ldquo;prisoner&rdquo;</li>
 <li>Select the correct <code>ip-allow-list</code> parameter store (per environment)</li>
 <li>Add or remove the IP address from the JSON object and save</li>
@@ -1800,17 +1800,17 @@
 <li>Confirm the changes by going to WAF &amp; Shield, select Web ACLs, click on the correct environment, select Rules and search for the IP address.</li>
 </ol>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-19">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-04-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 19 April 2024.
+      This page was last reviewed on 22 October 2024.
 
-        It needs to be reviewed again on 19 October 2024
+        It needs to be reviewed again on 22 April 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 19 October 2024
+      This page was set to be reviewed before 22 April 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

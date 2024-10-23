@@ -1782,9 +1782,9 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="how-to-investigate-external-dns-errors">How to Investigate External-Dns Errors</h1>
-<p>When there are errors in external-dns logs, &ldquo;ErrorsInExternalDNS&rdquo; alert sent to the low priority slack channel.</p>
+<p>When there are errors in external-dns logs, &ldquo;ErrorsInExternalDNS&rdquo; alerts are sent to the low priority slack channel.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
-<p>If we see an ErrorsInExternalDNS alert in low-priority-alerts, this is usually due to a external-dns have an issue to write records to Route-53 for a particual hosted zones.
+<p>If we see an ErrorsInExternalDNS alert in low-priority-alerts, this is usually because an external-dns is unable to write records to Route-53 for a particual hosted zone.
 You can see errors from the external-dns pod by running:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> kube-system external-dns-&lt;pod-id&gt; <span class="nt">-f</span>
 </code></pre></div><h3 id="invalid-change-batch">Invalid Change Batch</h3>
@@ -1800,7 +1800,7 @@ level=error msg="</span>InvalidChangeBatch: <span class="o">[</span>Tried to cre
 resource record <span class="nb">set</span> <span class="o">[</span><span class="nv">name</span><span class="o">=</span><span class="s1">'cluster-thisingress.example.'</span>, <span class="nb">type</span><span class="o">=</span><span class="s1">'TXT'</span><span class="o">]</span> but it already exists]
 
 <span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to submit all changes for the following zones: [/hostedzone/ABCDEFGHIJKLMN /hostedzone/NMLKJIHGFEDCBA]"</span>
-</code></pre></div><p>Identify the ingress causing the error in question and fix the ingress depending upon the error message. We may need to inform users to update their ingress causing the error.</p>
+</code></pre></div><p>Identify the ingress causing the error in question and fix the ingress depending on the error message. We may need to inform users to update the ingress causing the error.</p>
 <p>Follow this <a href="https://aws.amazon.com/premiumsupport/knowledge-center/troubleshoot-route53-resource-record/">troubleshoot guide</a> for common error messages to determine the error&rsquo;s cause and how to troubleshoot it.</p>
 <p>Once the error is cleared, you will see info logs similar to:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"Applying provider record filter for domains: [dev.example. .dev.example.]"</span>
@@ -1809,19 +1809,19 @@ resource record <span class="nb">set</span> <span class="o">[</span><span class=
 </code></pre></div><h3 id="rate-limited-throttled">Rate Limited / Throttled</h3>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"records retrieval failed: failed to list hosted zones: Throttling: Rate exceeded</span><span class="se">\n\t</span><span class="s2">status code: 400, request id: 9df2a-7blah"</span>
 <span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to list resource records sets for zone /hostedzone/BLAH_MOX: Throttling: Rate exceeded</span><span class="se">\n\t</span><span class="s2">status code: 400, request id: 0-9216-435fblah"</span>
-</code></pre></div><p>There isn&rsquo;t much we can do about being rate limited, acknowledge the alert.</p>
+</code></pre></div><p>There isn&rsquo;t much we can do about being rate limited; acknowledge the alert.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-10-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-04-22">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 April 2024.
+      This page was last reviewed on 22 October 2024.
 
-        It needs to be reviewed again on 18 October 2024
+        It needs to be reviewed again on 22 April 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 October 2024
+      This page was set to be reviewed before 22 April 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
