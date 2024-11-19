@@ -1802,17 +1802,15 @@
 <p>If you come across this error, it is possible that the aws ui has incorrectly informed you about the supported version. To figure out which version is supported run the following command:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws eks describe-addon-versions --kubernetes-version=$K8S_VERSION | jq '.addons[] | select(.addonName==$ADDON_NAME) | .addonVersions[] | select(.compatibilities[] | .defaultVersion==true)'
 </code></pre></div><p>this will pull out the default compatible value for the k8s version for your addon.</p>
+<p>You can use the helper script to get the most up-to-date available addon versions for each kubernetes cluster version <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/scripts/addons-upgrade.bash">script here</a></p>
 <h2 id="preparing-for-upgrade">Preparing for upgrade</h2>
 <p>Check the changelog for each of the addons and determine if there are any breaking changes.</p>
 <p>Create a thread in #cloud-platform notifying the team that upgrades are starting and the pipelines will be paused.</p>
 <h2 id="starting-the-upgrade">Starting the upgrade</h2>
 
 <ol>
-<li>Bump the version number in cloud-platform-terraform-eks-add-ons</li>
-<li>Commit changes on a new branch and create a pull request</li>
-<li>Request review from someone on the team</li>
-<li>Merge pull request and create a new release through the Github UI</li>
-<li>Bump the version number of the cloud-platform-terraform-eks-add-ons in cloud-platform-infrastructure</li>
+<li>Run the helper <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/scripts/addons-upgrade.bash">script</a> before</li>
+<li>Bump the version of the addon</li>
 <li>Commit changes on a new branch and create a pull request</li>
 <li>Request review from someone on the team</li>
 <li>Check the terraform plan in concourse and pause the following pipelines:
@@ -1823,17 +1821,18 @@
 <li>infrastructure-manager</li>
 <li>infrastructure-live-2</li>
 </ul></li>
-<li>Create an output of the configuration of a pod before the upgrade. <code>kubectl -n kube-system get pod $addon -oyaml</code> there is also a helper <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/scripts/addons-upgrade.bash">script</a>.</li>
-<li>Merge the pull request</li>
-<li>Unpause an infrastructure pipeline and wait for it to complete</li>
+<li>Create an output of the configuration of a pod before the upgrade. <code>kubectl -n kube-system get pod $addon -oyaml</code> there is also a helper .</li>
+<li>Merge the pull request
+8 Unpause an infrastructure pipeline and wait for it to complete</li>
 <li>While running:
 
 <ul>
 <li>Keep an eye on pods recycling <code>watch -n 1 &quot;kubectl -n kube-system get pods&quot;</code></li>
 <li>Keep an eye on events <code>watch -n 1 &quot;kubectl -n kube-system get events&quot;</code></li>
 </ul></li>
+<li>Run the helper <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/scripts/addons-upgrade.bash">script</a> after</li>
 <li>Run the reporting pipeline on the infrastructure environment</li>
-<li>If everything is green repeat steps 11-14 on each environment.</li>
+<li>If everything is green repeat steps 8 - 11 on each environment.</li>
 </ol>
 <h2 id="finish-the-upgrade">Finish the upgrade</h2>
 <p>Finish up communications and close the thread.</p>
