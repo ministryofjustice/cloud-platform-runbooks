@@ -1822,7 +1822,7 @@ namespace folder still exists in the environments repository (ie no namespace re
 ensure that your environments repository is up to date with the latest changes.</p>
 <p>Locate the PR number for the namespace deletion PR, and execute the following command:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform environment destroy <span class="se">\</span>
-    <span class="nt">--prNumber</span> <span class="o">[</span>namespace-deletion-PR] <span class="se">\</span>
+    <span class="nt">--pr-number</span> <span class="o">[</span>namespace-deletion-PR] <span class="se">\</span>
     <span class="nt">--cluster</span> arn:aws:eks:eu-west-2:754256621582:cluster/live <span class="se">\</span>
     <span class="nt">--kubecfg</span> ~/.kube/config <span class="se">\</span>
     <span class="nt">--clusterdir</span> live.cloud-platform.service.justice.gov.uk <span class="se">\</span>
