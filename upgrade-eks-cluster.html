@@ -1841,6 +1841,10 @@ over to CloudWatch &gt; Log groups &gt; /aws/eks/[cluster-name] and view the <co
 <li>infrastructure-live-2</li>
 <li>infrastructure-manager</li>
 </ul>
+
+<blockquote>
+<p><strong>IMPORTANT:</strong> Add a Pull Request to pause the Dependabot action in the infrastructure repository before pausing as you do not want any changes going through concourse after unpausing the pipeline.</p>
+</blockquote>
 <p>Update <code>cluster.tf</code> in <code>cloud-platform-infrastructure</code> with the version of Kubernetes you are upgrading to.</p>
 <p>Run a <code>tf plan</code> against the cluster your upgrading to check to see if everything is expected, the only changes should be to resources relating to the the version upgrade.</p>
 
@@ -1865,7 +1869,12 @@ This will cause the node to stall the update and the nodes will <strong>not</str
 <h3 id="starting-the-upgrade">Starting the upgrade</h3>
 <p>As with preparing for the upgrade communication is really important, keep the thread in <code>#cloud-platform</code> up to date as much as possible.</p>
 <h4 id="increasing-coredns-pods">Increasing coredns pods</h4>
-<p>To ensure that coredns stays up and running during the cluster upgrade replications should be scaled up to 10.</p>
+<p>To ensure that coredns stays up and running during the cluster upgrade replications should be scaled up to 10. This can be done with the following command:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl scale deployment coredns <span class="nt">--replicas</span><span class="o">=</span>10 <span class="nt">-n</span> kube-system
+</code></pre></div>
+<blockquote>
+<p><strong>NOTE:</strong> This is a temporary measure, double check the deployment for the current replicaset, as you will need this for when you scale back after the completion of the upgrade.</p>
+</blockquote>
 <h4 id="upgrading-the-control-pane">Upgrading the control pane</h4>
 <p>Log in to the AWS console and select the EKS cluster we&rsquo;re going to upgrade.</p>
 <p>In the top right corner there should be a button called <code>Upgrade now</code>, click that and ensure the correct Kubernetes version is selected then press <code>Update</code>.</p>
@@ -1877,7 +1886,7 @@ This will cause the node to stall the update and the nodes will <strong>not</str
 <p>Click <code>Update</code></p>
 <h4 id="upgrading-the-default-node-group">Upgrading the default node group</h4>
 <p>From the cluster control panel select <code>Compute</code> tab.</p>
-<p>Select <code>Upgrade now</code> next to the monitoring node group.</p>
+<p>Select <code>Upgrade now</code> next to the default node group.</p>
 <p>For update strategy select &ldquo;Force update&rdquo;</p>
 <p>Click <code>Update</code></p>
 <p>Once the upgrade has completed notify the Slack channels.</p>
@@ -1893,7 +1902,8 @@ This will cause the node to stall the update and the nodes will <strong>not</str
 <p>If there are no changes for terraform shown in each pipeline then the PR can be merged in.</p>
 <p>Unpause the bootstrap pipeline.</p>
 <p>Scale down the coredns pods.</p>
-<h3 id="finishing-touches">Finishing touches</h3>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl scale deployment coredns <span class="nt">--replicas</span><span class="o">=</span>3 <span class="nt">-n</span> kube-system
+</code></pre></div><h3 id="finishing-touches">Finishing touches</h3>
 <p>The <code>kubectl</code> version in the <code>cloud-platform-cli</code> and <code>cloud-platform-tools-image</code> needs updating to match the current Kubernetes version.</p>
 <p>Documentation used as part of the upgrade should be reviewed and refined if needed.</p>
 
