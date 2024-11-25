@@ -1878,7 +1878,7 @@ resources within all namespaces, networking, monitoring and logging systems.</p>
 <h3 id="losing-the-whole-cluster-restore-process">Restore process</h3>
 <p>Any namespaces over 3 hours old can be recovered using Velero (newer namespaces might not have been backed up before the incident occurred).</p>
 <p>Create the cluster with the <strong>same</strong> name from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/create-cluster.rb">source code</a>
-and provide the exisiting <code>vpc-name</code>. This will link the velero backup locations to the lost cluster.</p>
+and provide the existing <code>vpc-name</code>. This will link the velero backup locations to the lost cluster.</p>
 <p>Find the name of the most recent backup of the <code>allnamespacebackup</code> schedule:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup get
 
@@ -1944,17 +1944,17 @@ No changes. Infrastructure is up-to-date.
 </code></pre></div><p>Sometimes the cause of the alert can be genuine, for instance a volume may have been removed (pod restart during a backup):</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>level=error msg="Error backing up item" backup=velero/velero-allnamespacebackup-20231120090023 error="error getting volume info: rpc error: code = Unknown desc = InvalidVolume.NotFound: The volume 'vol-08d317558ab5bd46b' does not exist.\n\tstatus code: 400
 </code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2024-11-20">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-05-25">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 20 May 2024.
+      This page was last reviewed on 25 November 2024.
 
-        It needs to be reviewed again on 20 November 2024
+        It needs to be reviewed again on 25 May 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 20 November 2024
+      This page was set to be reviewed before 25 May 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

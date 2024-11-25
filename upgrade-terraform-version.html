@@ -1875,10 +1875,10 @@ Here is a snapshot of how our directory looks but this is likely to change:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws-accounts
 ├── cloud-platform-aws
 │   ├── account                  # AWS Account specific configuration.
-│   └── vpc                  # VPC creation. Workspaces for individual clusters
+│   └── vpc                      # VPC creation. Workspaces for individual clusters
 │       ├── eks                  # Holding EKS, workspaces for individual clusters.
-│       │   └── components       # EKS components. Workspaces for individual clusters
-│       └── kops                 # Holding KOPS, workspaces for individual clusters.
+│       │   └── core             # EKS core. Workspaces for individual clusters
+            |   └── components   # EKS components.
 ├── cloud-platform-dsd
 │   └── main.tf
 ├── cloud-platform-ephemeral-test
@@ -1905,17 +1905,17 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 <h4 id="upgrade-the-cloud-platform-cli-image">Upgrade the cloud-platform-cli image</h4>
 <p>Finally, following the successful upgrade to your new Terraform version, upgrade the version of Terraform used in the cloud-platform-cli docker image.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-11-24">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-05-25">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 24 May 2024.
+      This page was last reviewed on 25 November 2024.
 
-        It needs to be reviewed again on 24 November 2024
+        It needs to be reviewed again on 25 May 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 24 November 2024
+      This page was set to be reviewed before 25 May 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
