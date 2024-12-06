@@ -1800,14 +1800,14 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="change-process-in-cloud-platform">Change Process in Cloud Platform</h1>
-<p>The Cloud Platform team implements and encourage an Infrastructure as Code (IaC) methodology to manage the platform. It means every single change is done through code (if you spot something different raise it with us please).</p>
+<p>The Cloud Platform team implements and encourages an Infrastructure as Code (IaC) methodology to manage the platform. It means every single change is done through code (if you spot something different, raise it with us please).</p>
 <p><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure">cloud-platform-infrastructure repository</a> is our main repository where infrastructure gets created and all components fit together. From this repository everything gets linked.</p>
-<p>Mostly all components are Terraform <a href="https://developer.hashicorp.com/terraform/language/modules">modules</a>, and they are managed in their own git repository; you can list all modules <a href="https://github.com/ministryofjustice?q=cloud-platform-terraform&amp;type=&amp;language=">here</a>.</p>
+<p>Mostly all components are Terraform <a href="https://developer.hashicorp.com/terraform/language/modules">modules</a>, and they are managed in their own git repositories; you can list all modules <a href="https://github.com/ministryofjustice?q=cloud-platform-terraform&amp;type=&amp;language=">here</a>.</p>
 <h2 id="making-changes-to-cloud-platform-infrastructure">Making Changes to cloud-platform-infrastructure</h2>
 
 <ol>
 <li>Create a PR which includes the change you want to make. Make sure the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-plan-infra-live/">plan pipeline</a> is happy with the change. It is good practice to link the PR to the issue that describes the change.</li>
-<li>Chase the team to get your PR approved, and if it involves downtime ensure you have communications in place.</li>
+<li>Chase the team to get your PR approved, and if it involves downtime, ensure you have communications in place.</li>
 <li>For certain changes, pausing the infrastructure apply pipelines and running them individually is favourable. If you are pausing bootstrap and infrastructure pipelines, be sure to communicate this in the team slack channel.</li>
 <li>Merge and wait until the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/infrastructure-live/jobs/terraform-apply-infra-live/">apply pipeline</a> applies your change.</li>
 </ol>
@@ -1837,22 +1837,22 @@
 <li>Create a PR and verify the planned changes in the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live">plan pipeline</a>. If you are happy with them, ask a team member for approval.</li>
 <li>Merge PR</li>
 </ol>
-<p>Within the environments repository, we have an end to end process fully automated with pipelines. Once the change is merged, it is going to be automatically applied by the apply pipeline (<a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/apply-live">apply-live</a> and <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/apply-namespace-changes-live/builds/1">apply-namespace-changes-live</a> and if the change is destroying a namespace it will be detected by <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/detect-deleted-namespaces/builds/1">detect-deleted-namespace</a> pipeline.</p>
+<p>Within the environments repository, we have an end to end process fully automated with pipelines. Once the change is merged, it is going to be automatically applied by the apply pipeline (<a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/apply-live">apply-live</a> and <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/apply-namespace-changes-live/builds/1">apply-namespace-changes-live</a> and if the change is destroying a namespace, it will be detected by <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-live/jobs/detect-deleted-namespaces/builds/1">detect-deleted-namespace</a> pipeline.</p>
 <h2 id="communications">Communications</h2>
-<p>If any changes involve downtime we must inform teams about it via Slack (#cloud-platform-update). It is important to include <strong>which services</strong> are going to be down and <strong>for how long</strong>.</p>
-<p>Sometimes teams misinterpret downtimes of Cloud Platform services to involve downtime of <strong>their services</strong>, so it is very important to be precise about the change and it&rsquo;s potential impact.</p>
+<p>If any changes involve downtime, we must inform teams about it via Slack (#cloud-platform-update). It is important to include <strong>which services</strong> are going to be down and <strong>for how long</strong>.</p>
+<p>Sometimes teams misinterpret downtimes of Cloud Platform services to involve downtime of <strong>their services</strong>, so it is very important to be precise about the change and its potential impact.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-12-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-06-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 June 2024.
+      This page was last reviewed on 6 December 2024.
 
-        It needs to be reviewed again on 6 December 2024
+        It needs to be reviewed again on 6 June 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 December 2024
+      This page was set to be reviewed before 6 June 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
