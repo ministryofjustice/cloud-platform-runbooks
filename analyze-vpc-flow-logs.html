@@ -1802,25 +1802,33 @@
             <h1 id="analyze-vpc-flow-logs">Analyze VPC Flow Logs</h1>
 <p>Cloud Platform <code>live-1</code> VPC is connected to various MoJ AWS accounts VPCs using Transit Gateway. In order to debug network connectivity issues
 that are coming to/from Cloud Platform VPC, the VPC flow logs are enabled. These logs are stored in an S3 bucket and can be analyzed using Athena when needed.</p>
-<p>The steps involve a pointy-clicky exercise to generate Athena integration by creating a CloudFormation stack using a template and use that as a datasource in Athena.
-Follow the steps as mentioned in the blog: <a href="https://aws.amazon.com/blogs/networking-and-content-delivery/analyze-vpc-flow-logs-with-point-and-click-amazon-athena-integration/">AWS blog - Analyze VPC Flow Logs with point-and-click Amazon Athena integration</a>.</p>
-<p>Things to note:
-- When creating a CloudFormation template, use the <code>Partition: Daily</code> option. This will create a partition for each day and will make it easier to query the logs for a specific day.
-- Provide Partition start date and end date closer when the issue was observed. The duration is limited to 20 days
-- Create two s3 buckets: one for CloudFormation template and another to store the Athena query results which you will provide when creating the CloudFormation stack.
-- When the flow logs are downloaded and the user has investigated the issue, delete the created s3 buckets for CloudFormation template and Athena query results and the CloudFormation stack.</p>
+<p>The steps involve a pointy-clicky exercise to generate Athena integration by creating a CloudFormation stack using a template and use that as a datasource in Athena.</p>
+<p>Follow the steps as mentioned in the blog: <a href="https://aws.amazon.com/blogs/networking-and-content-delivery/analyze-vpc-flow-logs-with-point-and-click-amazon-athena-integration/">AWS blog - Analyze VPC Flow Logs with point-and-click Amazon Athena integration</a>.</p>
+<p>Things to note:</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2024-12-17">
+<ul>
+<li>When creating a CloudFormation template, use the <code>Partition: Daily</code> option. This will create a partition for each day and will make it easier to query the logs for a specific day.</li>
+<li>Provide Partition start date and end date closer when the issue was observed. The duration is limited to 20 days</li>
+<li>Create two s3 buckets:
+
+<ul>
+<li>one for CloudFormation template</li>
+<li>one to store the Athena query results which you will provide when creating the CloudFormation stack.</li>
+</ul></li>
+<li>When the flow logs are downloaded and the user has investigated the issue, delete the created s3 buckets for CloudFormation template and Athena query results and the CloudFormation stack.</li>
+</ul>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2025-06-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 17 June 2024.
+      This page was last reviewed on 18 December 2024.
 
-        It needs to be reviewed again on 17 December 2024
+        It needs to be reviewed again on 18 June 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 17 December 2024
+      This page was set to be reviewed before 18 June 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
