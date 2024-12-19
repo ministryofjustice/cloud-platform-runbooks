@@ -1993,15 +1993,21 @@ Plan: 7 to add, 0 to change, 0 to destroy.
 
 <ul>
 <li>Navigate to AWS console &gt; switch region to eu-west-1 (not necessary)&gt; cloud-platform-terraform-state/aws-accounts/cloud-platform-aws/vpc/eks/core/components&gt;your-cluster&gt;terraform.tfstate</li>
-<li>download the state file with this command &ndash; aws s3 cp s3://cloud-platform-terraform-state/aws-accounts/cloud-platform-aws/vpc/eks/core/components/your-cluster/terraform.tfstate terraform.tfstate</li>
-<li>Upload the terraform.tfstate file back to the bucket &ndash; aws s3 cp terraform.tfstate s3://cloud-platform-terraform-state/aws-accounts/cloud-platform-aws/vpc/eks/core/components/cp-1712-1719/terraform.tfstate</li>
-<li>Reran terraform plan -target=module.starter-pack and got No changes. Your infrastructure matches the configuration. as indicated in the documentation.</li>
+<li>download the state file:
+<code>
+aws s3 cp s3://cloud-platform-terraform-state/aws-accounts/cloud-platform-aws/vpc/eks/core/components/your-cluster/terraform.tfstate terraform.tfstate
+</code></li>
+<li>Upload the terraform.tfstate file back to the bucket:
+<code>
+aws s3 cp terraform.tfstate s3://cloud-platform-terraform-state/aws-accounts/cloud-platform-aws/vpc/eks/core/components/cp-1712-1719/terraform.tfstate
+</code></li>
+<li>Reranning the command below will generate the feedback beneath it:
+&ldquo;`
+terraform plan -target=module.starter-pack</li>
 </ul>
-<p>Now running terraform plan will show, infrastructure is up-to-date.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan -target=module.starter_pack
-
-No changes. Infrastructure is up-to-date.
-</code></pre></div><h3 id="resolving-a-partiallyfailed-backup-alert">Resolving a PartiallyFailed backup alert</h3>
+<p>No changes. Your infrastructure matches the configuration. Your infrastructure is up-to-date
+&rdquo;`</p>
+<h3 id="resolving-a-partiallyfailed-backup-alert">Resolving a PartiallyFailed backup alert</h3>
 <p>A backup may fail and trigger an alert in <code>lower-priority-alerts</code>. inspect the backup job:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get backup -n velero | grep -C 30 YYYYMMDD
 </code></pre></div><p>You identify the failed backup <code>phase: PartiallyFailed</code> and there will also by an <code>errors</code> field with a count.</p>
