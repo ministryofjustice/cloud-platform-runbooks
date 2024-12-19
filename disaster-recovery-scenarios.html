@@ -901,6 +901,9 @@
           <li>
             <a href="./disaster-recovery-scenarios.html#losing-the-whole-cluster-restore-process"><span>Restore process</span></a>
           </li>
+          <li>
+            <a href="./disaster-recovery-scenarios.html#restoring-a-lost-cluster-to-a-new-one-with-a-different-name"><span>Restoring a Lost Cluster to a New One with a Different Name</span></a>
+          </li>
         </ul>
       </li>
       <li>
@@ -1852,14 +1855,18 @@ velero-backup-00000000000000              Completed   2020-03-30 12:00:37 +0100 
 <p>Restore command:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create &lt;restore-name&gt; --from-backup &lt;backup-name&gt; --include-namespaces &lt;namespace&gt; --wait
 </code></pre></div><p>Example:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create my-namespace-dev-restore --from-backup velero-backup-00000000000000 --include-namespaces my-namespace-dev --wait
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create restore-deployment --from-backup velero-backup-00000000000000 --selector=deployment-name --include-namespaces my-namespace-dev --wait
 </code></pre></div><p>Once completed, you should be able to see the resources recovered:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get deployment/my-deployment-name -n my-namespace-dev
 
 NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/my-deployment-name        1/1       1            1         1m
 
-</code></pre></div><h2 id="losing-the-whole-cluster">Losing the whole cluster</h2>
+</code></pre></div><p>It&rsquo;s also possible to restore multiple objects/components with one command:
+<code>
+velero restore create --from-backup velero-backup-00000000000000 --include-resources component,service --namespace-mappings original-namespace:target-namespace --wait
+</code></p>
+<h2 id="losing-the-whole-cluster">Losing the whole cluster</h2>
 <h3 id="losing-the-whole-cluster-impact">Impact</h3>
 <p>Severity : HIGH</p>
 <p>Likelihood: LOW</p>
@@ -1909,7 +1916,43 @@ velero-allnamespacebackup-00000000000000   Completed   2020-03-30 12:00:37 +0100
 </code></pre></div><p>Check the logs of the restore:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore logs velero-allnamespacebackup-00000000000000-00000000000000
 
-</code></pre></div><h2 id="deleted-terraform-state">Deleted terraform state</h2>
+</code></pre></div><h3 id="restoring-a-lost-cluster-to-a-new-one-with-a-different-name">Restoring a Lost Cluster to a New One with a Different Name</h3>
+<p>To do this:
+    - You need the cluster backup-location of the lost cluster
+    - Lost cluster&rsquo;s backup-location name (it usually comes as <code>default</code>)
+    - Lost cluster&rsquo;s backup name</p>
+<p>Below are the restore steps:
+- unset the backup-location of the new cluster: velero backup-location set &ndash;default=false
+- create a .yaml file that contains details of the old cluster&rsquo;s backup-location in this format:
+apiVersion: velero.io/v1
+kind: BackupStorageLocation
+metadata:
+    name: lost-cluster
+    namespace: velero
+    spec:
+        provider: aws
+    objectStorage:
+        bucket: cloud-platform-velero-backups
+        prefix: cp-0000-0000 #velero backup-location get (from the old cluster)
+    config:
+        region: eu-west-2</p>
+
+<ul>
+<li>kubectl apply -f file-name.yaml</li>
+<li>velero backup-location set lost-cluster &ndash;default=true</li>
+<li>velero restore create &ndash;from-backup velero-allnamespacebackup-timestamp #this refers to the lost cluster&rsquo;s backup name</li>
+<li><p>confirm the restore by:
+confirming the new cluster&rsquo;s default backup-location
+<code>
+running velero backup-location get
+</code></p>
+<p>confirm the new cluster now uses the lost cluster&rsquo;s backup name:
+<code>
+velero backup get
+</code></p></li>
+</ul>
+<p>This is a makeshift for the time being.</p>
+<h2 id="deleted-terraform-state">Deleted terraform state</h2>
 <p>Severity : low</p>
 <p>Likelihood: medium</p>
 <h3 id="deleted-terraform-state-impact">Impact</h3>
@@ -1936,7 +1979,8 @@ your Terraform state and will henceforth be managed by Terraform.
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform apply -target=module.starter_pack.kubernetes_namespace.starter_pack
 
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
-</code></pre></div><h3 id="recovering-more-complex-scenarios">Recovering more complex scenarios</h3>
+</code></pre></div><p>Best to do this in a feature branch.</p>
+<h3 id="recovering-more-complex-scenarios">Recovering more complex scenarios</h3>
 <p>There are scenarios, where terraform state is corrupted or terraform state is removed for the whole module.
 Executing <code>terraform state rm module.starter_pack</code>, will remove all resources in &ldquo;starter_pack&rdquo; module from terraform state.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan -target=module.starter_pack
@@ -1945,6 +1989,14 @@ Plan: 7 to add, 0 to change, 0 to destroy.
 </code></pre></div><p>In this scenario, terraform state can be restored from the remote_state stored in the terraform backend S3 bucket.</p>
 <p>For example <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components">eks/core/components</a> state is stored in &ldquo;aws-accounts/cloud-platform-aws/vpc/eks/core/components&rdquo; s3 bucket as defined <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components/main.tf/#L5-L14">here-eks</a>.</p>
 <p>Access the S3 bucket where the effected terraform state is stored. From the list of terraform.tfstate file versions, identify the file before the state got removed and download as terraform.tfstate. Upload the file again, this will set uploaded file as latest version.</p>
+<h4 id="recovery-steps">Recovery Steps:</h4>
+
+<ul>
+<li>Navigate to AWS console &gt; switch region to eu-west-1 (not necessary)&gt; cloud-platform-terraform-state/aws-accounts/cloud-platform-aws/vpc/eks/core/components&gt;your-cluster&gt;terraform.tfstate</li>
+<li>download the state file with this command &ndash; aws s3 cp s3://cloud-platform-terraform-state/aws-accounts/cloud-platform-aws/vpc/eks/core/components/your-cluster/terraform.tfstate terraform.tfstate</li>
+<li>Upload the terraform.tfstate file back to the bucket &ndash; aws s3 cp terraform.tfstate s3://cloud-platform-terraform-state/aws-accounts/cloud-platform-aws/vpc/eks/core/components/cp-1712-1719/terraform.tfstate</li>
+<li>Reran terraform plan -target=module.starter-pack and got No changes. Your infrastructure matches the configuration. as indicated in the documentation.</li>
+</ul>
 <p>Now running terraform plan will show, infrastructure is up-to-date.</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform plan -target=module.starter_pack
 
@@ -1958,17 +2010,17 @@ No changes. Infrastructure is up-to-date.
 </code></pre></div><p>Sometimes the cause of the alert can be genuine, for instance a volume may have been removed (pod restart during a backup):</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>level=error msg="Error backing up item" backup=velero/velero-allnamespacebackup-20231120090023 error="error getting volume info: rpc error: code = Unknown desc = InvalidVolume.NotFound: The volume 'vol-08d317558ab5bd46b' does not exist.\n\tstatus code: 400
 </code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2025-05-25">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-06-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 25 November 2024.
+      This page was last reviewed on 19 December 2024.
 
-        It needs to be reviewed again on 25 May 2025
+        It needs to be reviewed again on 19 June 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 25 May 2025
+      This page was set to be reviewed before 19 June 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
