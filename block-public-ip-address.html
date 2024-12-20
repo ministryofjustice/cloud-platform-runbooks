@@ -1871,11 +1871,14 @@
       </div><p>The above default rules means all public traffic can hit resources sitting in the subents, including the Network Load Balancer that serves traffic to the nodes on the cluster.</p>
 <h2 id="adding-deny-rules-to-the-public-network-acl">Adding deny rules to the public network ACL</h2>
 <p>If there is a requirement to block traffic from specific a public IP address(es) to be able to hit the cluster (for example in the event of a cyber attack from particular host), we can add deny rules to the public ACL.</p>
-<p>The rules can be added by terraform applying the <code>public-nacl-rules.tf</code> file <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/public-nacl-rules.tf">infratructure repository</a>. The file contains commented out placeholder resources to introduce ingress and egress deny rules.</p>
-<p>Steps to add deny rules:
-1. Pull infrastructure repository
-2. Create a new branch
-3. Uncomment the placeholder code and update the <code>cidr_block</code> with the IP address (or range) you want to block.</p>
+<p>The rules can be added by terraform applying the <code>public-nacl-rules.tf</code> file in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/public-nacl-rules.tf">infratructure repository</a>. The file contains commented out placeholder resources to introduce ingress and egress deny rules.</p>
+<p>Steps to add deny rules:</p>
+
+<ol>
+<li>Pull infrastructure repository</li>
+<li>Create a new branch</li>
+<li>Uncomment the placeholder code and update the <code>cidr_block</code> with the IP address (or range) you want to block.</li>
+</ol>
 <p><strong>N.B</strong> The <code>rule_number</code> needs to be less than <code>100</code> in order for the deny rule to take precedence over the default <em>Allow All</em> rule.</p>
 <p>It should look like the following:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>resource "aws_network_acl_rule" "deny_inbound_1" {
