@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Custom default-backend - Cloud Platform Runbooks</title>
+    <title>Blocking Public IP Address to EKS Clutser - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/custom-default-backend.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/block-public-ip-address.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Custom default-backend - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/custom-default-backend.html" />
+      <meta name="twitter:title" content="Blocking Public IP Address to EKS Clutser - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/block-public-ip-address.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Custom default-backend" />
+      <meta property="og:title" content="Blocking Public IP Address to EKS Clutser" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/custom-default-backend.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/block-public-ip-address.html" />
 
     
   </head>
@@ -563,7 +563,7 @@
     <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
     <ul>
       <li>
-        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+        <a href="./upgrade-terraform-version.html#upgrade-terraform-version-introduction"><span>Introduction</span></a>
       </li>
       <li>
         <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
@@ -1575,7 +1575,7 @@
     <a href="./block-public-ip-address.html"><span>Blocking Public IP Address from EKS Cluster</span></a>
     <ul>
       <li>
-        <a href="./block-public-ip-address.html#blocking-public-ip-address-from-eks-cluster-introduction"><span>Introduction</span></a>
+        <a href="./block-public-ip-address.html#introduction"><span>Introduction</span></a>
       </li>
       <li>
         <a href="./block-public-ip-address.html#adding-deny-rules-to-the-public-network-acl"><span>Adding deny rules to the public network ACL</span></a>
@@ -1813,127 +1813,76 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="custom-default-backend">Custom default-backend</h1>
-<h2 id="background">Background</h2>
-<p>Cloud Platform has created <a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">custom error pages</a> to be used by the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/default-backend">default backend</a> for Nginx ingress-controller. The default backend is the default service that Nginx falls back to if it cannot route a request successfully. When the service in the Ingress rule does not have active endpoints, this ingress controller default-backend service will handle the response by serving the cloud-platform custom default error page.</p>
-<p>However, some applications don’t want to use the cloud-platform custom default error pages from the Nginx ingress controller but need to be served their own custom error pages. This can be achieved by implementing own <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom default backend</a> in a namespace.</p>
-<h2 id="creating-your-own-custom-error-page">Creating your own custom error page</h2>
-<h3 id="1-create-your-docker-image">1. Create your docker image</h3>
-<p>First, create a docker image containing custom HTTP error pages using the <a href="https://github.com/kubernetes/ingress-nginx/tree/master/images/custom-error-pages#custom-error-pages">example</a> from the ingress-nginx, or <a href="https://github.com/ministryofjustice/cloud-platform-custom-error-pages">simplified version</a> created by the cloud platform team.</p>
-<h3 id="2-creating-a-service-and-deployment">2. Creating a service and deployment</h3>
-<p>Using this <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> example from ingress-nginx, create a service and deployment of the error pages container in your namespace.</p>
-<p>To create Deployment and Service manually, use the command below:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kubectl -n ${namespace} create -f custom-default-backend.yaml
-service "nginx-errors" created
-deployment.apps "nginx-errors" created
-</code></pre></div><p>This should have created a Deployment and a Service with the name nginx-errors.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>$ kubectl -n ${namespace} get deploy,svc
-NAME                           DESIRED   CURRENT   READY     AGE
-deployment.apps/nginx-errors   1         1         1         10s
+            <h1 id="blocking-public-ip-address-from-eks-cluster">Blocking Public IP Address from EKS Cluster</h1>
+<h2 id="introduction">Introduction</h2>
+<p>By default, the <a href="https://docs.aws.amazon.com/vpc/latest/userguide/default-network-acl.html">network access control list</a> is configured to allow all traffic to flow in and out of the subnets with which it is associated. Currently in our evironment, the public subnets are associated with network ACL with the following default rules:</p>
+<p><strong>Inbound rules</strong>
+| Rule # | Type             | Protocol | Port range | Source    | Allow/Deny |
+|&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;|
+| 100    | All IPv4 traffic | All      | All        | 0.0.0.0/0 | ALLOW      |
+| *      | All IPv4 traffic | All      | All        | 0.0.0.0/0 | DENY       |</p>
+<p><strong>Outbound rules</strong>
+| Rule number   | Type        | Protocol   | Port range   | Destination     | Allow/Deny  |
+|&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;-|
+| 100           | All traffic | All        | All          | 0.0.0.0/0       | Allow       |
+| *             | All traffic | All        | All          | 0.0.0.0/0       | Deny        |</p>
+<p>The above default rules means all public traffic can hit resources sitting in the subents, including the Network Load Balancer that serves traffic to the nodes on the cluster.</p>
+<h2 id="adding-deny-rules-to-the-public-network-acl">Adding deny rules to the public network ACL</h2>
+<p>If there is a requirement to block traffic from specific a public IP address(es) to be able to hit the cluster (for example in the event of a cyber attack from particular host), we can add deny rules to the public ACL.</p>
+<p>The rules can be added by terraform applying the <code>public-nacl-rules.tf</code> file <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/public-nacl-rules.tf">infratructure repository</a>. The file contains commented out placeholder resources to introduce ingress and egress deny rules.</p>
+<p>Steps to add deny rules:
+1. Pull infrastructure repository
+2. Create a new branch
+3. Uncomment the placeholder code and update the <code>cidr_block</code> with the IP address (or range) you want to block.</p>
+<p><strong>N.B</strong> The <code>rule_number</code> needs to be less than <code>100</code> in order for the deny rule to take precedence over the default <em>Allow All</em> rule.</p>
+<p>It should look like the following:
+&ldquo;`
+resource &quot;aws_network_acl_rule&rdquo; &ldquo;deny_inbound_1&rdquo; {
+  network_acl_id = module.vpc.public_network_acl_id
+  rule_number    = 10
+  egress         = false
+  protocol       = &ldquo;-1&rdquo; # -1 means all protocols
+  rule_action    = &ldquo;deny&rdquo;
+  cidr_block     = &ldquo;##.##.##.##/32&rdquo;
+  from_port      = 0
+  to_port        = 0
+}</p>
+<p>resource &ldquo;aws_network_acl_rule&rdquo; &ldquo;deny_outbound_1&rdquo; {
+  network_acl_id = module.vpc.aws_network_acl.public[0].id
+  rule_number    = 10
+  egress         = true
+  protocol       = &ldquo;-1&rdquo; # -1 means all protocols
+  rule_action    = &ldquo;deny&rdquo;
+  cidr_block     = &ldquo;##.##.##.##/32&rdquo;
+  from_port      = 0
+  to_port        = 0
+}
+&ldquo;`
+4. Raise a PR and merge. The infrastructure pipelines in Concourse will create the new ACL rules in the public network ACL. You can verify the rules have been created by viewing the public network ACL in the AWS console. It will look like the following:</p>
+<p><strong>Inbound rules</strong>
+| Rule number   | Type        | Protocol   | Port range   | Source          | Allow/Deny  |
+|&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;-|
+| 10            | All traffic | All        | All          | ##.##.##.##/32   | Deny        |
+| 100           | All traffic | All        | All          | 0.0.0.0/0       | Allow       |
+| *             | All traffic | All        | All          | 0.0.0.0/0       | Deny        |</p>
+<p><strong>Outbound rules</strong>
+| Rule number   | Type        | Protocol   | Port range   | Destination     | Allow/Deny  |
+|&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;-|
+| 10            | All traffic | All        | All          | ##.##.##.##/32  | Deny        |
+| 100           | All traffic | All        | All          | 0.0.0.0/0       | Allow       |
+| *             | All traffic | All        | All          | 0.0.0.0/0       | Deny        |</p>
 
-NAME                   TYPE        CLUSTER-IP  EXTERNAL-IP   PORT(S)   AGE
-service/nginx-errors   ClusterIP   10.0.0.12   &lt;none&gt;        80/TCP    10s
-</code></pre></div><h3 id="3-define-annotations-in-your-ingress-file">3. Define annotations in your ingress file.</h3>
-<p>Final step is to use a <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">Default Backend</a> annotation in your Ingress. The annotation is: <code>nginx.ingress.kubernetes.io/default-backend: &lt;svc name&gt;</code>. The <code>&lt;svc name&gt;</code> is a reference to a service inside of the same namespace in which you are applying this annotation. This annotation overrides the global default backend.</p>
-<p>The default-backend service in the namespace will handle the error responses when both <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation and the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation is set. <code>Custom-http-errors</code> annotation can be configured with HTTP status codes that Nginx should be forwarding to the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a>.</p>
-<p>If custom-http-errors is also specified globally, the custom-http-error values specified in this annotation along with custom default backend will override the global value for the given ingress hostname and path.</p>
-<p>In the example below, custom error pages from <code>custom-default-backend: nginx-errors</code> service will be served for <code>&quot;404,415&quot;</code> errors which is set as <code>custom-http-errors</code> annotation.</p>
-<p>Example Ingress with default-backend and custom-http-errors annotations:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: helloworld-rubyapp-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/default-backend: nginx-errors
-    nginx.ingress.kubernetes.io/custom-http-errors: "404,415"
-    external-dns.alpha.kubernetes.io/set-identifier: &lt;ingress-name&gt;-&lt;environment-name&gt;-&lt;colour&gt;
-    external-dns.alpha.kubernetes.io/aws-weight: "100"
-spec:
-  ingressClassName: default
-  tls:
-  - hosts:
-    - helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    secretName: secret-cert
-  rules:
-  - host: helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    http:
-      paths:
-      - path: /
-        pathType: ImplementationSpecific
-        backend:
-          service
-            name: rubyapp-service
-            port:
-              number: 4567
-</code></pre></div>
-<blockquote>
-<p>Note - Please change the <code>ingress-name</code> and <code>environment-name</code> values in the above example. You can get the <code>environment-name</code> value from your namespace label &ldquo;cloud-platform.justice.gov.uk/environment-name&rdquo;. The <code>colour</code> should be <code>green</code> for ingress in EKS <code>live</code> cluster</p>
-</blockquote>
-<h2 id="use-the-platform-level-error-page">Use the platform-level error page</h2>
-<p>Some teams want their application to serve their own error page, for example 404s, but want to serve cloud platforms custom error page from ingress controller default backend for other error codes like 502,503 and 504. This can be done by using the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation in your ingress for error codes teams want to serve the cloud platforms custom error page.</p>
-<p>Example Ingress file to use platform-level error page for custom-http-errors: &ldquo;502,503,504&rdquo;. All other errors except <code>502,503,504</code> will be served from the application error page.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: helloworld-rubyapp-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/custom-http-errors: "502,503,504"
-    external-dns.alpha.kubernetes.io/set-identifier: &lt;ingress-name&gt;-&lt;environment-name&gt;-&lt;colour&gt;
-    external-dns.alpha.kubernetes.io/aws-weight: "100"
-spec:
-  tls:
-  - hosts:
-    - helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    secretName: secret-cert
-  rules:
-  - host: helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: rubyapp-service
-          servicePort: 4567
-</code></pre></div><h2 id="serve-all-errors-from-your-custom-default-backend">Serve all errors from your custom default backend</h2>
-<p>Some teams want applications to serve all errors. It&rsquo;s possible as there is a <a href="https://github.com/kubernetes/ingress-nginx/pull/3344">fix</a> from Nginx-Ingress to cancel out the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a> set to serve cloud platforms custom error page from the default backend, this is done by adding the Ingress annotation and setting an error not used in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>.</p>
-<p>If you have <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> set up in your namespace, adding the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation along with <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation with an unused error code in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>, will serve custom error page from namespace default-backend service, when the service in the Ingress rule does not have active endpoints.</p>
-<p>Example Ingress file to set <code>custom-http-errors: &quot;418&quot;</code> as annotation, which is not used at <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: helloworld-rubyapp-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/custom-http-errors: "418"
-    external-dns.alpha.kubernetes.io/set-identifier: &lt;ingress-name&gt;-&lt;environment-name&gt;-&lt;colour&gt;
-    external-dns.alpha.kubernetes.io/aws-weight: "100"
-spec:
-  ingressClassName: default
-  tls:
-  - hosts:
-    - helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    secretName: secret-cert
-  rules:
-  - host: helloworld.rubyapp.cloud-platform.service.justice.gov.uk
-    http:
-      paths:
-      - path: /
-        pathType: ImplementationSpecific
-        backend:
-          service
-            name: rubyapp-service
-            port:
-              number: 4567
-</code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2025-01-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-06-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 October 2024.
+      This page was last reviewed on 19 December 2024.
 
-        It needs to be reviewed again on 16 January 2025
+        It needs to be reviewed again on 19 June 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 January 2025
+      This page was set to be reviewed before 19 June 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1943,8 +1892,8 @@ spec:
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/custom-default-backend.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Custom+default-backend%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fcustom-default-backend.html%29&amp;labels=bug&amp;title=Re%3A+%27Custom+default-backend%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/block-public-ip-address.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Blocking+Public+IP+Address+to+EKS+Clutser%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fblock-public-ip-address.html%29&amp;labels=bug&amp;title=Re%3A+%27Blocking+Public+IP+Address+to+EKS+Clutser%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
