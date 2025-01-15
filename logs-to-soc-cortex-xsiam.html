@@ -1830,7 +1830,7 @@
 <h2 id="1-cloudtrail-logs">1. Cloudtrail logs</h2>
 <h3 id="architecture">Architecture</h3>
 <p>We have followed Palo Alto&rsquo;s documentation on implementation to allow <a href="https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/Ingest-Audit-Logs-from-AWS-Cloud-Trail">Cortex XSIAM to injest logs from Cloudtrail</a>.</p>
-<p>Cloudtrail logs are written to a S3 bucket. The implementation consist of enabling the S3 bucket to trigger event notifications to an SQS queue. An IAM user with access keys has been created to grant Cortex XSIAM to access the SQS queue and recieves these messages. Cortex XSIAM then uses the references in these messages to retrieve the logs from the S3 bucket. The terraform code for this implementation is found in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/sqs.tf">cloud-platform-terraform-infrastructure</a> repository.</p>
+<p>Cloudtrail logs are written to a S3 bucket. The implementation consist of enabling the S3 bucket to trigger event notifications to an SQS queue. An IAM user with access keys has been created to grant Cortex XSIAM to access the SQS queue and receives these messages. Cortex XSIAM then uses the references in these messages to retrieve the logs from the S3 bucket. The terraform code for this implementation is found in the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/account/sqs.tf">cloud-platform-terraform-infrastructure</a> repository.</p>
 <h2 id="2-live-1-vpc-flowlogs">2. <code>live-1</code> VPC FlowLogs</h2>
 <h3 id="2-live-1-vpc-flowlogs-architecture">Architecture</h3>
 <p>We have followed Palo Alto&rsquo;s documentation on implementation to allow <a href="https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/Ingest-Network-Flow-Logs-from-Amazon-S3">Cortex XSIAM to injest VPC flowlogs from S3</a>.</p>
@@ -1843,19 +1843,19 @@
 <p>To be implemented</p>
 <h2 id="todo">Todo</h2>
 <h3 id="iam-user-access-keys-rotation">IAM User access keys rotation</h3>
-<p>We need put in a mechanism to periodically rotate the IAM User access keys created for Cortex XSIAM to recieve the logs. <a href="https://github.com/ministryofjustice/cloud-platform/issues/5724">Suggestion and issue</a> for this has been raised.</p>
+<p>We need put in a mechanism to periodically rotate the IAM User access keys created for Cortex XSIAM to receive the logs. <a href="https://github.com/ministryofjustice/cloud-platform/issues/5724">Suggestion and issue</a> for this has been raised.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-01-10">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-07-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 10 July 2024.
+      This page was last reviewed on 15 January 2025.
 
-        It needs to be reviewed again on 10 January 2025
+        It needs to be reviewed again on 15 July 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 10 January 2025
+      This page was set to be reviewed before 15 July 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
