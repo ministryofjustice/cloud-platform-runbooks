@@ -1834,7 +1834,7 @@ deployment.apps/nginx-errors   1         1         1         10s
 NAME                   TYPE        CLUSTER-IP  EXTERNAL-IP   PORT(S)   AGE
 service/nginx-errors   ClusterIP   10.0.0.12   &lt;none&gt;        80/TCP    10s
 </code></pre></div><h3 id="3-define-annotations-in-your-ingress-file">3. Define annotations in your ingress file.</h3>
-<p>Final step is to use a <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">Default Backend</a> annotation in your Ingress. The annotation is: <code>nginx.ingress.kubernetes.io/default-backend: &lt;svc name&gt;</code>. The <code>&lt;svc name&gt;</code> is a reference to a service inside of the same namespace in which you are applying this annotation. This annotation overrides the global default backend.</p>
+<p>Final step is to use a <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">Default Backend</a> annotation in your Ingress. The annotation is: <code>nginx.ingress.kubernetes.io/default-backend: &lt;svc name&gt;</code>. The <code>&lt;svc name&gt;</code> is a reference to a service inside the same namespace in which you are applying this annotation. This annotation overrides the global default backend.</p>
 <p>The default-backend service in the namespace will handle the error responses when both <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation and the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation is set. <code>Custom-http-errors</code> annotation can be configured with HTTP status codes that Nginx should be forwarding to the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a>.</p>
 <p>If custom-http-errors is also specified globally, the custom-http-error values specified in this annotation along with custom default backend will override the global value for the given ingress hostname and path.</p>
 <p>In the example below, custom error pages from <code>custom-default-backend: nginx-errors</code> service will be served for <code>&quot;404,415&quot;</code> errors which is set as <code>custom-http-errors</code> annotation.</p>
@@ -1894,8 +1894,8 @@ spec:
           serviceName: rubyapp-service
           servicePort: 4567
 </code></pre></div><h2 id="serve-all-errors-from-your-custom-default-backend">Serve all errors from your custom default backend</h2>
-<p>Some teams want applications to serve all errors. It&rsquo;s possible as there is a <a href="https://github.com/kubernetes/ingress-nginx/pull/3344">fix</a> from Nginx-Ingress to cancel out the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a> set to serve cloud platforms custom error page from the default backend, this is done by adding the Ingress annotation and setting an error not used in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>.</p>
-<p>If you have <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> set up in your namespace, adding the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation along with <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation with an unused error code in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>, will serve custom error page from namespace default-backend service, when the service in the Ingress rule does not have active endpoints.</p>
+<p>Some teams want applications to serve all errors. It&rsquo;s possible as there is a <a href="https://github.com/kubernetes/ingress-nginx/pull/3344">fix</a> from Nginx-Ingress to cancel out the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a> set to serve cloud platforms custom error page from the default backend. This is done by adding the Ingress annotation and setting an error not used in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>.</p>
+<p>If you have <a href="https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/customization/custom-errors/custom-default-backend.yaml">custom-default-backend</a> set up in your namespace, adding the <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#default-backend">default-backend</a> annotation along with <a href="https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-http-errors">custom-http-errors</a> annotation with an unused error code in <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a> will serve custom error page from namespace default-backend service when the service in the Ingress rule does not have active endpoints.</p>
 <p>Example Ingress file to set <code>custom-http-errors: &quot;418&quot;</code> as annotation, which is not used at <a href="https://github.com/ministryofjustice/cloud-platform-terraform-ingress-controller/blob/main/templates/values.yaml.tpl#L25">global-custom-http-errors</a>:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -1923,17 +1923,17 @@ spec:
             port:
               number: 4567
 </code></pre></div>
-              <div data-module='page-expiry' data-last-reviewed-on="2025-01-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-04-20">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 October 2024.
+      This page was last reviewed on 20 January 2025.
 
-        It needs to be reviewed again on 16 January 2025
+        It needs to be reviewed again on 20 April 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 January 2025
+      This page was set to be reviewed before 20 April 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
