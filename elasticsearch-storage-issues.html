@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Elasticsearch Storage Issues - Cloud Platform Runbooks</title>
+    <title>OpenSearch Storage Issues - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
@@ -15,12 +15,12 @@
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Elasticsearch Storage Issues - Cloud Platform Runbooks" />
+      <meta name="twitter:title" content="OpenSearch Storage Issues - Cloud Platform Runbooks" />
       <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/elasticsearch-storage-issues.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Elasticsearch Storage Issues" />
+      <meta property="og:title" content="OpenSearch Storage Issues" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/elasticsearch-storage-issues.html" />
 
@@ -195,10 +195,10 @@
 <li><a href="./incidents/index.html"><span>Incident Log</span></a>
 <ul>
   <li>
-    <a href="./incidents/2024-09-20-eks-subnet-route-table.html"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
+    <a href="./incidents/2025-01-13-auth0-credentials.html"><span>Incident on 2025-01-13 - Auth0 Terraform provider credentials exposed</span></a>
   </li>
   <li>
-    <a href="./incidents/2025-01-13-auth0-credentials.html"><span>Incident on 2025-01-13 - Auth0 Terraform provider credentials exposed</span></a>
+    <a href="./incidents/2024-09-20-eks-subnet-route-table.html"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
   </li>
   <li>
     <a href="./incidents/2024-07-25-elasticsearch-logging.html"><span>Incident on 2024-07-25 Elasticsearch no longer receiving logs</span></a>
@@ -302,17 +302,6 @@
 </ul>
 </li>
   <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
-    <ul>
-      <li>
-        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -329,6 +318,17 @@
       </li>
       <li>
         <a href="./changes-in-cloudplatform.html#communications"><span>Communications</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
       </li>
     </ul>
   </li>
@@ -353,6 +353,12 @@
         <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
+  </li>
+  <li>
+    <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
   </li>
   <li>
     <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
@@ -408,12 +414,6 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
-  </li>
-  <li>
-    <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
-  </li>
-  <li>
     <a href="./upgrade-cluster-components.html"><span>Upgrade cluster components</span></a>
     <ul>
       <li>
@@ -451,6 +451,25 @@
     </ul>
   </li>
   <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#useful-commands"><span>Useful commands:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#monitoring-nodes"><span>Monitoring nodes</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
     <ul>
       <li>
@@ -479,21 +498,16 @@
     </ul>
   </li>
   <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
     <ul>
       <li>
-        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
-          </li>
-          <li>
-            <a href="./node-group-changes.html#useful-commands"><span>Useful commands:</span></a>
-          </li>
-          <li>
-            <a href="./node-group-changes.html#monitoring-nodes"><span>Monitoring nodes</span></a>
-          </li>
-        </ul>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -583,23 +597,6 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
-  </li>
-  <li>
     <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
     <ul>
       <li>
@@ -612,6 +609,9 @@
         <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
   </li>
   <li>
     <a href="./working-with-tflock.html"><span>What is .terraform.lock.hcl?</span></a>
@@ -1000,18 +1000,18 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
     <ul>
       <li>
         <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -1254,6 +1254,22 @@
     </ul>
   </li>
   <li>
+    <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
+    <ul>
+      <li>
+        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
+        <ul>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
+          </li>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-opensearch-entry"><span>Perform a search for the unique-id (obtained from the OpenSearch entry)</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./create-custom-cluster.html"><span>Create custom cluster</span></a>
     <ul>
       <li>
@@ -1278,22 +1294,6 @@
           </li>
           <li>
             <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
-    <ul>
-      <li>
-        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
-        <ul>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
-          </li>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-opensearch-entry"><span>Perform a search for the unique-id (obtained from the OpenSearch entry)</span></a>
           </li>
         </ul>
       </li>
@@ -1348,7 +1348,35 @@
     </ul>
   </li>
   <li>
+    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
+    <ul>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
+  </li>
+  <li>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <ul>
+      <li>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
+      </li>
+    </ul>
   </li>
   <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
@@ -1379,30 +1407,24 @@
     </ul>
   </li>
   <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
+    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
     <ul>
       <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
+        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
+        <ul>
+          <li>
+            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
+          </li>
+        </ul>
       </li>
       <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
-    <ul>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
+        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
       </li>
     </ul>
   </li>
@@ -1454,28 +1476,6 @@
             <a href="./logs-to-soc-cortex-xsiam.html#iam-user-access-keys-rotation"><span>IAM User access keys rotation</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
-    <ul>
-      <li>
-        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
-        <ul>
-          <li>
-            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
       </li>
     </ul>
   </li>
@@ -1622,18 +1622,7 @@
     <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
   </li>
   <li>
-    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
-    <ul>
-      <li>
-        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
-      </li>
-      <li>
-        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./elasticsearch-storage-issues.html"><span>Elasticsearch Storage Issues</span></a>
+    <a href="./elasticsearch-storage-issues.html"><span>OpenSearch Storage Issues</span></a>
     <ul>
       <li>
         <a href="./elasticsearch-storage-issues.html#hot-warm-node-parity"><span>Hot/Warm Node Parity</span></a>
@@ -1643,6 +1632,17 @@
       </li>
       <li>
         <a href="./elasticsearch-storage-issues.html#further-reading"><span>Further Reading</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1669,13 +1669,13 @@
     </ul>
   </li>
   <li>
-    <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
+    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
     <ul>
       <li>
-        <ul>
-          <li>
-          </li>
-        </ul>
+        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
+      </li>
+      <li>
+        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
       </li>
     </ul>
   </li>
@@ -1688,7 +1688,7 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="elasticsearch-storage-issues">Elasticsearch Storage Issues</h1>
+            <h1 id="opensearch-storage-issues">OpenSearch Storage Issues</h1>
 <h2 id="hot-warm-node-parity">Hot/Warm Node Parity</h2>
 <p>A way of increasing the storage space for either Hot or Warm nodes is to increase them. If increasing one then the other must be equal as well, for example if upping the Hot nodes to 20 Warm should be upped to 20 as well.</p>
 <p>The number of shards and the nodes should be increased by a multiple of the index with the largest number of shards, further <a href="https://aws.amazon.com/blogs/opensource/open-distro-elasticsearch-shard-allocation/">information</a>.</p>
@@ -1711,17 +1711,17 @@
 <li><a href="https://runbooks.cloud-platform.service.justice.gov.uk/resolve-opensearch-shard-issues.html">Open search best practices</a></li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-02-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-08-14">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 29 August 2024.
+      This page was last reviewed on 14 February 2025.
 
-        It needs to be reviewed again on 28 February 2025
+        It needs to be reviewed again on 14 August 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 February 2025
+      This page was set to be reviewed before 14 August 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1732,7 +1732,7 @@
           <aside>
               <ul class="contribution-banner">
                 <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/elasticsearch-storage-issues.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Elasticsearch+Storage+Issues%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Felasticsearch-storage-issues.html%29&amp;labels=bug&amp;title=Re%3A+%27Elasticsearch+Storage+Issues%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27OpenSearch+Storage+Issues%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Felasticsearch-storage-issues.html%29&amp;labels=bug&amp;title=Re%3A+%27OpenSearch+Storage+Issues%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
