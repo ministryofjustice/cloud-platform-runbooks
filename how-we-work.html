@@ -124,7 +124,10 @@
         <a href="./how-we-work.html#the-board-tickets"><span>The Board / Tickets</span></a>
         <ul>
           <li>
-            <a href="./how-we-work.html#adding-tickets"><span>Adding tickets</span></a>
+            <a href="./how-we-work.html#running-out-of-tickets-mid-sprint"><span>Running out of tickets mid sprint</span></a>
+          </li>
+          <li>
+            <a href="./how-we-work.html#adding-tickets-to-the-backlog"><span>Adding tickets to the backlog</span></a>
           </li>
           <li>
             <a href="./how-we-work.html#making-changes-to-code"><span>Making changes to code</span></a>
@@ -141,12 +144,9 @@
             <a href="./how-we-work.html#the-hammer-of-justice"><span>The 🔨 Hammer of Justice</span></a>
           </li>
           <li>
-            <a href="./how-we-work.html#support-squad-support-tickets"><span>Support Tickets</span></a>
+            <a href="./how-we-work.html#secondary-support"><span>Secondary Support</span></a>
           </li>
         </ul>
-      </li>
-      <li>
-        <a href="./how-we-work.html#documentation"><span>Documentation</span></a>
       </li>
     </ul>
   </li>
@@ -1713,7 +1713,7 @@ Our team ceremonies include: daily stand up at 10:30am on Google Meet, planning 
 <a href="https://insidegovuk.blog.gov.uk/2018/05/03/firebreaks-on-gov-uk/">find out more about firebreaks on GOV.UK</a></p>
 <h2 id="story">Story</h2>
 <p>Stories/Tickets are an item of work and should have enough information that all team members know what is required. When creating a new ticket, please use the appropriate template for a <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/ISSUE_TEMPLATE/cloud-platform-support-request.md">support request</a> <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/ISSUE_TEMPLATE/cloud-platform-story-template.md">story</a> or <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/ISSUE_TEMPLATE/cloud-platform-firebreak-template.md">firebreak story</a>.</p>
-<p>Stories are estimated with story points based on <strong>complexity</strong> during planning using the fibonacci sequence. Voting is done in the open by show of fingers.</p>
+<p>Stories are estimated with story points based on <strong>complexity</strong> during planning using the fibonacci sequence. Voting is done by everyone entering their scores into the call chat window at the same time, scores are then discussed to reach a consensus.</p>
 <h3 id="story-points">Story points</h3>
 <div class="table-container">
         <table>
@@ -1737,19 +1737,30 @@ Our team ceremonies include: daily stand up at 10:30am on Google Meet, planning 
 <td style="text-align: left">This is too big, it will have to be broken down.</td>
 </tr>
         </table>
-      </div><h2 id="the-board-tickets">The Board / Tickets</h2>
-<p>We use a kanban process to manage our backlog of work on this <a href="https://github.com/orgs/ministryofjustice/projects/65">Github Project board</a>, which aggregates GitHub Issues from the various CP team repositories.</p>
+      </div><p>We generally score spikes as a 5, we do not score bugs or support tickets unless they are moved in to general ticketed work.</p>
+<h2 id="the-board-tickets">The Board / Tickets</h2>
+<p>We use a Scrum process to manage our backlog of work on this <a href="https://github.com/orgs/ministryofjustice/projects/65">Github Project board</a>, which aggregates GitHub Issues from the various CP team repositories.</p>
 <p>During the sprint, the process of getting work done should look like this:</p>
 
 <ul>
 <li>Assign the topmost ticket (i.e. github issue) of the &ldquo;This Sprint&rdquo; column to yourself, and move it to the &ldquo;In Progress&rdquo; column</li>
-<li>Let the team know what you&rsquo;re working on by posting in the <code>#cloud-platform</code> slack channel</li>
 <li>Create a new branch in each affected github repository and make whatever changes are necessary</li>
 <li>Raise a pull request (PR), and get at least one other CP team member to review your changes (two reviews are required for infrastructure PRs).</li>
 <li>After your PR has been approved, merge it and, if necessary, apply your changes using terraform or whatever else is required to apply your change to our infrastructure</li>
-<li>Close the github issue, and move on to the next ticket</li>
+<li>Move the ticket into review for another team member to review.</li>
+<li>Once reviewed, move the github issue to done, and move on to the next ticket</li>
+<li>If you cannot work on a ticket as you are waiting on someone else, move the ticket to blocked and start work or help on another ticket.</li>
 </ul>
-<h3 id="adding-tickets">Adding tickets</h3>
+<h3 id="running-out-of-tickets-mid-sprint">Running out of tickets mid sprint</h3>
+<p>If there are no more tickets in Todo to pick up:</p>
+
+<ul>
+<li>Ask in stand up or the team channel if anyone needs any help or pairing, the priority should always be to finish all tickets in sprint before bringing anything else in</li>
+<li>Do any mandatory learning or use your 10% time</li>
+<li>Help the support team with their tasks, such as dependabot or document reviews</li>
+<li>If everything above is done, discuss with the team bringing more work into sprint (do not bring things into sprint without asking)</li>
+</ul>
+<h3 id="adding-tickets-to-the-backlog">Adding tickets to the backlog</h3>
 <p>Anyone in the team is encouraged to add new tickets at any time. So if you think of something we ought to do, please <a href="https://github.com/ministryofjustice/cloud-platform/issues/new/choose">raise a ticket</a> for it.</p>
 <h4 id="support-tickets">Support tickets</h4>
 <p>If the time spent working on a non-ticketed issue or request <em>such as from the &lsquo;#ask-cloud-platform&rsquo; channel</em>, is more than 15 minutes:</p>
@@ -1801,10 +1812,12 @@ Our team ceremonies include: daily stand up at 10:30am on Google Meet, planning 
 <blockquote>
 <p>Anyone can (and should) respond to queries in <code>#ask-cloud-platform</code>, and review PRs. You don&rsquo;t have to be the Hammer to help.</p>
 </blockquote>
-<h4 id="backlog-tickets">Backlog Tickets</h4>
-<p>Working on tickets in the backlog when you&rsquo;re the Hammer is not advised. The constant context switching makes it hard to get significant work done,
+<h4 id="sprint-tickets">Sprint Tickets</h4>
+<p>Do not work on tickets in the sprint when you&rsquo;re the Hammer. The constant context switching makes it hard to get significant work done,
 and there is also the risk that questions go unanswered and PRs get blocked waiting for review because you&rsquo;re head down in a problem and don&rsquo;t notice them.</p>
-<h3 id="support-squad-support-tickets">Support Tickets</h3>
+<h3 id="secondary-support">Secondary Support</h3>
+<p>The secondary support role is to cover other support work (not covered by the Hammer) and to support the Hammer where needed.</p>
+<h4 id="secondary-support-support-tickets">Support Tickets</h4>
 <p>Support tickets are created by users of Cloud Platform for various reasons. These can be anything from</p>
 
 <ul>
@@ -1817,24 +1830,24 @@ and there is also the risk that questions go unanswered and PRs get blocked wait
 a member of the support team and should be finished in a day or two.</p>
 <p>If the ticket involves some investigation work, then this can be assigned to a support squad member in the same sprint, or discussed in backlog refinement and added to the following sprint.</p>
 <p>When working on support ticket, ensure that the ticket is updated with the progress and the user is informed.</p>
-<h2 id="documentation">Documentation</h2>
+<h4 id="documentation">Documentation</h4>
 <p>Most of our user-facing documentation is in the <a href="https://user-guide.cloud-platform.service.justice.gov.uk">user guide</a>, and documentation for the team is in the <a href="https://runbooks.cloud-platform.service.justice.gov.uk">runbooks</a> site.</p>
 <p>There are also a lot of important <code>README.md</code> files like <a href="https://github.com/ministryofjustice/cloud-platform#ministry-of-justice-cloud-platform-master-repo">this one</a>, especially for our terraform modules.
 We also have code samples like <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/blob/main/examples/rds-postgresql.tf">this</a> for each of our terraform modules.</p>
 <p>It is important to keep all of this up to date as the underlying code changes, so please remember to factor this in when estimating and working on tickets.</p>
 <p><a href="https://reports.cloud-platform.service.justice.gov.uk/documentation">This page</a> hosts a list of documents which are overdue for review. Please feel free to review any of the documents listed, and raise a PR making any updates (including updating the <code>last_reviewed_on</code> date).</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-03-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-08-25">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 December 2024.
+      This page was last reviewed on 25 February 2025.
 
-        It needs to be reviewed again on 16 March 2025
+        It needs to be reviewed again on 25 August 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 March 2025
+      This page was set to be reviewed before 25 August 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
