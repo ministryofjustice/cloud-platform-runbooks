@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Upgrade Terraform Version - Cloud Platform Runbooks</title>
+    <title>RDS Snapshot Restoration - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/rds-snapshots.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Upgrade Terraform Version - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
+      <meta name="twitter:title" content="RDS Snapshot Restoration - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rds-snapshots.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Upgrade Terraform Version" />
+      <meta property="og:title" content="RDS Snapshot Restoration" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/rds-snapshots.html" />
 
     
   </head>
@@ -962,7 +962,7 @@
     <a href="./manually-delete-namespace-resources.html"><span>Manually Delete Namespace Resources</span></a>
     <ul>
       <li>
-        <a href="./manually-delete-namespace-resources.html#prerequisites"><span>Prerequisites</span></a>
+        <a href="./manually-delete-namespace-resources.html#manually-delete-namespace-resources-prerequisites"><span>Prerequisites</span></a>
       </li>
       <li>
         <a href="./manually-delete-namespace-resources.html#environment-variables"><span>Environment Variables</span></a>
@@ -1019,7 +1019,7 @@
     <a href="./rds-snapshots.html"><span>RDS Snapshots</span></a>
     <ul>
       <li>
-        <a href="./rds-snapshots.html#rds-snapshots-prerequisites"><span>Prerequisites</span></a>
+        <a href="./rds-snapshots.html#prerequisites"><span>Prerequisites</span></a>
       </li>
       <li>
         <a href="./rds-snapshots.html#considerations"><span>Considerations</span></a>
@@ -1765,137 +1765,297 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="upgrade-terraform-version">Upgrade Terraform Version</h1>
-<h2 id="introduction">Introduction</h2>
-<p>The intention of this document is to provide you with a method to upgrade the Terraform version used in state across the MoJ Cloud Platform. This document won&rsquo;t go into detail on how to perform each task, as each upgrade will require different levels of attention.</p>
-<h2 id="recommendations">Recommendations</h2>
+            <h1 id="rds-snapshots">RDS Snapshots</h1>
+<p>RDS snapshots have multiple purposes: migrations, backups, etc. When RDS DB instances are created using the <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance">Cloud Platform RDS terraform module</a>, an IAM user account is created for management purposes. This user can create, delete, copy, and restore RDS snapshots.</p>
+<p>This team runbook provides technical guidance for testing and verifying the RDS snapshot restoration process.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before performing an RDS restore from snapshot:</p>
+
+<ol>
+<li>Ensure you have AWS CLI access with appropriate permissions</li>
+<li>Verify the existence of snapshots for the target database</li>
+<li>Identify the correct DB instance identifier</li>
+<li>Check any existing snapshots with potential naming conflicts</li>
+</ol>
+<h2 id="considerations">Considerations</h2>
 
 <ul>
-<li>Install <a href="https://github.com/tfutils/tfenv">tfenv</a> to allow you to switch between Terraform versions.</li>
+<li>The amount of manual snapshots per AWS account is limited, so it&rsquo;s important to cleanup old snapshots</li>
+<li>Daily snapshots are provided &ldquo;out of the box&rdquo;, and <strong>do not count</strong> towards the &ldquo;Manual Snapshots&rdquo; total</li>
+<li>Managing snapshots is the teams&rsquo; responsibility (as are snapshot restores), so teams are responsible for cleaning up unneeded manual snapshots in order to avoid hitting our AWS account limits</li>
 </ul>
-<h2 id="caveats">Caveats</h2>
-<p>This document was originally written following the Terraform 0.13 to 0.14 upgrade, it&rsquo;s worth noting this was the best course of action for that particular upgrade. Over time this document will evolve and the process of upgrading will improve.</p>
-<h2 id="how-to-perform-the-upgrade-divide-and-conquer">How to perform the upgrade - divide and conquer</h2>
-<p>As the Cloud Platform team have decided to use a <a href="https://patrickleet.medium.com/mono-repo-or-multi-repo-why-choose-one-when-you-can-have-both-e9c77bd0c668">multi-repository</a> approach to Terraform modules it means we have a large distributed code base you&rsquo;ll be required to amend. This section of the guide will suggest an approach to break this work down and tackle it section by section. At a high level we have two Terraform state monoliths managed within the same state bucket:</p>
+<h2 id="restoring-live-services-from-an-rds-db-snapshot">Restoring live services from an RDS DB snapshot</h2>
+<p>If you want to restore your production RDS DB instance from a previous snapshot, either because the database is corrupted or the whole database was deleted, here is the procedure:</p>
+<h3 id="1-get-the-database-instance-identifier">1. Get the Database Instance Identifier</h3>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws rds describe-db-instances <span class="nt">--query</span> <span class="s1">'DBInstances[*].[DBInstanceIdentifier]'</span> <span class="nt">--output</span> text
+</code></pre></div><p>Or, alternatively:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>cloud-platform decode-secret <span class="nt">-n</span> &lt;your namespace&gt; <span class="nt">-s</span> &lt;the secret storing your RDS details&gt;
+</code></pre></div><p>Look for a line like this in the output:</p>
+<div class="highlight"><pre class="highlight json" tabindex="0"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"rds_instance_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cloud-platform-abcdefghij.abcdefghijkl.eu-west-2.rds.amazonaws.com"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><p>The <code>db-instance-identifier</code> is the <code>cloud-platform-abcdefghij</code> part.</p>
+<p>For more detailed information about a specific instance:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws rds describe-db-instances <span class="nt">--db-instance-identifier</span> &lt;db-instance-identifier&gt;
+</code></pre></div><p>Example output will include critical information:</p>
+<div class="highlight"><pre class="highlight json" tabindex="0"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"DBInstanceIdentifier"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cloud-platform-klmno12345"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"DBInstanceClass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"db.t4g.micro"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Engine"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mysql"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"DBInstanceStatus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"available"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"MasterUsername"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cpuser123"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"DBName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dbexample123"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Endpoint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"Address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cloud-platform-klmno12345.cdwm328dlye6.eu-west-2.rds.amazonaws.com"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"Port"</span><span class="p">:</span><span class="w"> </span><span class="mi">3306</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"HostedZoneId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Z1TTGA775OQIYO"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"AllocatedStorage"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"InstanceCreateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-02-18T15:32:07.509000+00:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"PreferredBackupWindow"</span><span class="p">:</span><span class="w"> </span><span class="s2">"03:29-03:59"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"BackupRetentionPeriod"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id="2-list-available-snapshots">2. List Available Snapshots</h3>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws rds describe-db-snapshots <span class="nt">--db-instance-identifier</span> &lt;db-instance-identifier&gt; <span class="nt">--query</span> <span class="s1">'DBSnapshots[*].[DBSnapshotIdentifier,SnapshotCreateTime]'</span> <span class="nt">--output</span> text
+</code></pre></div><p>This will list all available snapshots for the specified database along with their creation timestamps.</p>
+<h3 id="5-add-skip-file-to-pause-pipeline">5. Add SKIP_FILE to Pause Pipeline</h3>
+<p><strong>Important:</strong> Before making any changes to the RDS configuration, you must first create a PR to add a SKIP_FILE:</p>
 
 <ul>
-<li>Cloud Platform Environments (referred to as &ldquo;Environments&rdquo; throughout this document). This holds tenant (user) state, things like a Kubernetes namespace or RDS instance.</li>
-<li>Cloud Platform Infrastructure (referred to as &ldquo;Infrastructure&rdquo; throughout this document). This state represents everything required to build an MoJ Cloud Platform Kubernetes cluster, and it&rsquo;s accompanying components.</li>
+<li>Create a PR to add an <code>APPLY_PIPELINE_SKIP_THIS_NAMESPACE</code> file at the root of the namespace</li>
+<li>Merged it</li>
+<li>Update your local repo with the latest changes from main branch</li>
 </ul>
-<p>Each of the sections above require individual action, outlined below.</p>
-<p>Note - Not all Terraform upgrades require you to make a change to the code base.</p>
-<h3 id="before-the-upgrade">Before the upgrade</h3>
-<p>There are three recommended tasks required before upgrading Terraform.</p>
-<h4 id="check-for-warnings-and-notices">Check for warnings and notices</h4>
-<p>Terraform is good at warning end users of deprecations in future releases. Check the output of a Terraform init/validation/plan for messages of deprecations of resources that will disappear in future releases. For example, this message appeared in our Environments apply pipeline:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>Warning: Interpolation-only expressions are deprecated
+<p>This ensures the pipeline doesn&rsquo;t try to apply changes while you&rsquo;re in the middle of the restoration process.</p>
+<h3 id="4-create-a-test-database-with-sample-data-for-testing">4. Create a Test Database with Sample Data (For Testing)</h3>
+<p>Before proceeding with any live restoration, it&rsquo;s recommended to test the process:</p>
+<h4 id="3-1-seed-test-data-process">3.1 Seed Test Data Process</h4>
 
-  on .terraform/modules/example_team_es/main.tf line 104, <span class="k">in </span>data <span class="s2">"aws_iam_policy_document"</span> <span class="s2">"elasticsearch_role_snapshot_policy"</span>:
-</code></pre></div><p>It is recommended to act on these messages and look for how and why it&rsquo;s being deprecated.</p>
-<h4 id="read-the-release-notes-carefully">Read the release notes carefully</h4>
-<p>This sounds simple enough but it is vitally important you understand what <a href="https://github.com/hashicorp/terraform/blob/main/CHANGELOG.md">changes</a> are being made to your Terraform state.</p>
-<h4 id="remove-any-test-clusters">Remove any test clusters</h4>
-<p>After upgrading to a new version of Terraform you don&rsquo;t want test clusters lying around using the old version. Remove any test clusters before upgrading the Infrastructure state.</p>
-<h3 id="environments-state-files">Environments state files</h3>
-<p>The <a href="https://github.com/ministryofjustice/cloud-platform-environments">cloud-platform-environments</a> repository contains directories for every namespace in the MoJ Cloud Platform, for each namespace there is a single Terraform state file stored in an S3 bucket. As there are so many state files it is recommended to perform the following:</p>
-<h4 id="use-the-quot-apply-quot-pipeline">Use the &ldquo;apply&rdquo; pipeline</h4>
-<p>We currently use a <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform/jobs/apply-live">concourse pipeline</a> to <code>terraform init/apply</code> everything in the cloud-platform-environments GitHub repository. This pipeline has a number of environment variables that allow it to communicate with the state bucket and amend the necessary state file. Use this pipeline to make amendments to any state in this repository.</p>
-<h4 id="upgrade-the-tools-image">Upgrade the tools image</h4>
-<p>Add your new Terraform version to the <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">cloud-platform-tools</a> image along with the old version. This will allow you to run both versions simultaneously. You can see how this has been achieved <a href="https://github.com/ministryofjustice/cloud-platform-tools-image/commit/9d042e2fe2a5e15e992e9dbbd403fafd3098c10d">previously</a>.</p>
-<h4 id="add-conditional-logic">Add conditional logic</h4>
-<p>Add an if statement to the apply library that checks the version outlined in each <code>versions.tf</code> file in a namespace. Previously, this was achieved by simply making the <code>terraform</code> command <a href="https://github.com/ministryofjustice/cloud-platform-environments/pull/4366/files">variable</a>. This conditional logic allows you to upgrade the state slowly, ensuring you don&rsquo;t have issues in non-production namespaces before you upgrade production.</p>
-<h4 id="upgrade-all-terraform-modules">Upgrade all Terraform modules</h4>
-<p>Not all Terraform upgrades require this, but in 0.12 and 0.13 you were required to change some syntax in your code base. This can be a fairly tricky task as we maintain over 50 Terraform modules. Terraform does provide a <code>terraform upgrade</code> tool if a syntax change is required, but this will need to be executed against all modules and a new release created. This can be tedious if performed manually so there is some <a href="https://github.com/ministryofjustice/cloud-platform-terraform-upgrade">Go code</a> that does this on your behalf.</p>
-<p>Using the example of upgrading to Terraform 0.13, the following was executed:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-git-xargs
-go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span>
-</code></pre></div><p>The code will pull down every repository in the &ldquo;ministryofjustice&rdquo; organisation with the name that contains &ldquo;cloud-platform-terraform&rdquo; and run the command &ldquo;terraform 0.13upgrade&rdquo;. It will then commit and create a Pull Request against each repository using your GitHub credentials.</p>
-<p>This will result in a Pull Request output similar to the one outlined <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/pull/85/files">here</a>.</p>
-<p>Once all the Pull Requests have been reviewed, merge them into main and create a new release.</p>
-<p>Note: Terraform will release an <a href="https://www.terraform.io/docs/cli/commands/0.13upgrade">upgrade</a> command for each release that contains syntax changes, in the example above 0.13upgrade was used to create a more detailed <code>versions.tf</code>.</p>
-<h4 id="upgrade-a-test-namespace">Upgrade a test namespace</h4>
-<p>It is difficult to test an upgrade on the Environments state, this is the best way to do so, with examples.</p>
+<ol>
+<li>Create a port-forward pod to establish connection with the RDS database:</li>
+</ol>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>   kubectl <span class="nt">-n</span> &lt;namespace&gt; run <span class="nt">-it</span> <span class="nt">--rm</span> <span class="nt">--image</span><span class="o">=</span>mysql:5.7 mysql-client <span class="nt">--</span> bash
+</code></pre></div>
+<ol>
+<li>Connect to the RDS database:</li>
+</ol>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>   mysql <span class="nt">-h127</span>.0.0.1 <span class="nt">-P3306</span> <span class="nt">-u</span>&lt;username&gt; <span class="nt">-p</span>&lt;password&gt;
+</code></pre></div><p>Example:
+   <code>bash
+   mysql -h127.0.0.1 -P3306 -ucpuser123 -pmysecretpassword
+</code></p>
+
+<ol>
+<li>Select your database:</li>
+</ol>
+<div class="highlight"><pre class="highlight sql" tabindex="0"><code>   <span class="n">USE</span> <span class="o">&lt;</span><span class="n">database_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div><p>Example:
+   <code>sql
+   USE dbexample123;
+</code></p>
+
+<ol>
+<li>Create a test table:</li>
+</ol>
+<div class="highlight"><pre class="highlight sql" tabindex="0"><code>   <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">restore_test</span> <span class="p">(</span>
+     <span class="n">id</span> <span class="nb">INT</span> <span class="n">AUTO_INCREMENT</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+     <span class="n">info</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+   <span class="p">);</span>
+</code></pre></div>
+<ol>
+<li>Seed test data:</li>
+</ol>
+<div class="highlight"><pre class="highlight sql" tabindex="0"><code>   <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">restore_test</span> <span class="p">(</span><span class="n">info</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'Test entry 1'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'Test entry 2'</span><span class="p">);</span>
+</code></pre></div>
+<ol>
+<li>Verify data insertion:</li>
+</ol>
+<div class="highlight"><pre class="highlight sql" tabindex="0"><code>   <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">restore_test</span><span class="p">;</span>
+</code></pre></div><h4 id="3-2-create-a-manual-snapshot">3.2 Create a Manual Snapshot</h4>
+<p>Before making any changes, create a manual snapshot as a safety measure:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws rds create-db-snapshot <span class="se">\</span>
+  <span class="nt">--db-instance-identifier</span> &lt;db-instance-identifier&gt; <span class="se">\</span>
+  <span class="nt">--db-snapshot-identifier</span> &lt;custom-identifier-with-date&gt;
+</code></pre></div><h3 id="5-verify-storage-configuration">5. Verify Storage Configuration</h3>
+<p>Check the current storage allocation settings for the database:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws rds describe-db-instances <span class="nt">--db-instance-identifier</span> &lt;db-instance-identifier&gt;
+</code></pre></div><p>Note the <code>AllocatedStorage</code> and <code>MaxAllocatedStorage</code> values. By default, these are set to 20GB and 500GB respectively if not explicitly defined in the module.</p>
+<h3 id="6-modify-the-rds-module-for-restoration">6. Modify the RDS Module for Restoration</h3>
+<p>Create a PR to modify the RDS module in the <code>rds.tf</code> file to include:</p>
+<div class="highlight"><pre class="highlight hcl" tabindex="0"><code><span class="nx">module</span> <span class="s2">"example_team_rds"</span> <span class="p">{</span>
+  <span class="nx">source</span> <span class="p">=</span> <span class="s2">"github.com/ministryofjustice/cloud-platform-terraform-rds-instance?ref=5.1"</span>
+  <span class="c1"># ... other parameters ...</span>
+  <span class="nx">snapshot_identifier</span> <span class="p">=</span> <span class="s2">"&lt;your-snapshot-identifier&gt;"</span>
+  <span class="c1"># ... other parameters ...</span>
+<span class="p">}</span>
+</code></pre></div><p><strong>Important:</strong> When using a snapshot for restoration, do not attempt to change storage parameters at the same time. The RDS instance will adopt the storage configuration from the snapshot.</p>
+<p>It is crucial to retain other original settings associated with the DB instance when restoring from the snapshot. Details such as <code>db-engine-version</code>, <code>db-engine</code>, <code>rds-family</code> must be the same as the original instance when the snapshot was taken.</p>
+<p><strong>Do not merge this PR yet</strong> - there are additional steps required first.</p>
+<h3 id="7-rename-the-current-database-instance-before-merging">7. Rename the Current Database Instance Before Merging</h3>
+<p>As a Cloud Platform team member handling this restoration request:</p>
+
+<ol>
+<li>Identify the DB instance identifier provided by the user requesting the restoration</li>
+<li>Rename the current database in the AWS console:
 
 <ul>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/ad452137912a667c67c6ed065209eb2a92b85a7e#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Create</a> a test namespace in the cloud-platform-environments repository called <code>abdundance-namespace-dev</code> (will probably be the first namespace applied).</li>
-<li>Add every resource available using the release before the Terraform upgrade work above, i.e. RDS, S3 (a full list can be found <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/README.md#our-core-repos">here</a>).</li>
-<li>Create a pull request and then merge to main.</li>
-</ul>
-<p>When the above resources are successfully built:</p>
+<li>Navigate to AWS Console → RDS → Databases</li>
+<li>Select the target database</li>
+<li>Choose &ldquo;Modify&rdquo;</li>
+<li>Append <code>.old</code> or a similar suffix to the DB instance identifier</li>
+<li>Apply the change immediately</li>
+</ul></li>
+<li>Once the DB has been renamed, merge the PR with the RDS changes once approved.</li>
+</ol>
+<p>This process preserves the database endpoint and credentials when the new instance is created from the snapshot.</p>
+<h3 id="8-handle-final-snapshot-conflicts">8. Handle Final Snapshot Conflicts</h3>
+<p>The pipeline may fail due to final snapshot name conflicts. This occurs because Terraform attempts to create a final snapshot with the same name during recreation.</p>
+<p><strong>Why This Happens:</strong></p>
+
+<ol>
+<li>When you delete an RDS instance, AWS/Terraform automatically names the final snapshot as <code>{db-instance-identifier}-finalsnapshot</code>.</li>
+</ol>
+<p>Example: If your DB instance is named <code>mydb</code>, the final snapshot becomes <code>mydb-finalsnapshot</code>.</p>
+
+<ol>
+<li>Conflict Scenario:
 
 <ul>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/2769a63f88117865440e60abe5ee0dc6e64e0761#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Bump</a> all of your resources to the latest, containing the Terraform upgrade.</li>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/2298836af43290e0bdb8020ffd2033703260fc51#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Change</a> the version in versions.tf in the cloud-platform-environments to reflect the new version.</li>
-<li>Create a Pull Request against main.</li>
-<li>Monitor possible changes in the plan. It should require no changes.</li>
-<li>If you&rsquo;re happy with the output of the plan pipeline, merge it into main.</li>
-</ul>
-<h4 id="upgrade-all-non-production-namespaces">Upgrade all non-production namespaces</h4>
-<p>When you&rsquo;re happy to begin upgrading users namespaces run the upgrade command against the cloud-platform-environments repository or upgrade all namespaces manually.</p>
-<p>If you decide to use the tool above then perform the following:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
-go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-environments"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span> <span class="nt">--no-commit</span>
-<span class="nb">cd </span>repositories
-</code></pre></div><p>The <code>no-commit</code> argument pulls down the required repository and stores it in a directory called &lsquo;repositories&rsquo;, it then runs the upgrade against all namespaces but doesn&rsquo;t commit the changes. You&rsquo;ll want to pick and choose which namespaces to commit to ensure you&rsquo;re happy. I&rsquo;d recommend creating a new branch and commiting the non-production namespaces only, i.e. any namespace that isn&rsquo;t &ldquo;-prod&rdquo;.</p>
-<p>Create a pull request against main and watch the plan pipeline once more. Again this should be clean.</p>
-<p>If the plan applies no changes and you&rsquo;re happy, merge this into main.</p>
-<h4 id="upgrade-all-production-namespaces">Upgrade all production namespaces</h4>
-<p>Perform the above on all production namespaces.</p>
-<h4 id="tidying-up">Tidying up</h4>
-<p>When all namespaces in the cloud-platform-environments repository are using the new version of Terraform you can begin to clean-up any changes you&rsquo;ve made.</p>
+<li>You delete <code>mydb</code> → Final snapshot <code>mydb-finalsnapshot</code> is created.</li>
+<li>Later, you create a new <code>mydb</code> instance, modify it, and try to delete it again.</li>
+<li>Terraform/AWS attempts to create <code>mydb-finalsnapshot</code> again → Conflict.</li>
+</ul></li>
+</ol>
+<p>If the pipeline fails with the error <code>DBSnapshotAlreadyExists</code>, execute:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>aws rds delete-db-snapshot <span class="nt">--db-snapshot-identifier</span> &lt;db-instance-identifier&gt;-finalsnapshot
+</code></pre></div><p>Then rerun the failed pipeline.</p>
+<h2 id="expected-timeline-and-status-changes">Expected Timeline and Status Changes</h2>
+<p><strong>Total downtime:</strong> ~26 minutes from <code>Deleting</code> to <code>Available</code>. This may vary depending on how much data is being restored.</p>
+<h2 id="verification-after-restoration">Verification After Restoration</h2>
+<p>Once the new DB instance is restored and available, verify that the data has been successfully restored:</p>
+
+<ol>
+<li>Create a port-forward pod to establish connection with the restored RDS database:</li>
+</ol>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>   kubectl <span class="nt">-n</span> &lt;namespace&gt; run <span class="nt">-it</span> <span class="nt">--rm</span> <span class="nt">--image</span><span class="o">=</span>mysql:5.7 mysql-client <span class="nt">--</span> bash
+</code></pre></div>
+<ol>
+<li>Connect to the database to verify data restoration:</li>
+</ol>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>   mysql <span class="nt">-h</span> <span class="nv">$DB_HOST</span> <span class="nt">-u</span> <span class="nv">$DB_USERNAME</span> <span class="nt">-p</span><span class="nv">$DB_PASSWORD</span> <span class="nv">$DB_NAME</span>
+</code></pre></div><p>Or use a direct connection:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>   mysql <span class="nt">-h127</span>.0.0.1 <span class="nt">-P3306</span> <span class="nt">-u</span>&lt;username&gt; <span class="nt">-p</span>&lt;password&gt;
+</code></pre></div>
+<ol>
+<li>Run basic queries to confirm data accessibility:</li>
+</ol>
+<div class="highlight"><pre class="highlight sql" tabindex="0"><code>   <span class="k">SHOW</span> <span class="n">DATABASES</span><span class="p">;</span>
+   <span class="n">USE</span> <span class="o">&lt;</span><span class="n">database_name</span><span class="o">&gt;</span><span class="p">;</span>
+   <span class="k">SHOW</span> <span class="n">TABLES</span><span class="p">;</span>
+   <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">restore_test</span><span class="p">;</span>  <span class="o">#</span> <span class="k">Check</span> <span class="n">if</span> <span class="n">test</span> <span class="k">data</span> <span class="k">is</span> <span class="n">present</span>
+</code></pre></div>
+<ol>
+<li>Verify the connection string remains the same:</li>
+</ol>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>   cloud-platform decode-secret <span class="nt">-n</span> &lt;your namespace&gt; <span class="nt">-s</span> &lt;the secret storing your RDS details&gt;
+</code></pre></div><p>Look for the <code>rds_instance_endpoint</code> value and confirm it matches the original endpoint.</p>
+<h2 id="version-downgrade-limitations-and-process">Version Downgrade Limitations and Process</h2>
+<h3 id="important-version-downgrades-cannot-be-done-in-place">Important: Version Downgrades Cannot Be Done In-Place</h3>
+<p>AWS does not support downgrading a database to an earlier version on the same instance. For example, if a database has been upgraded from PostgreSQL 16.3 to 17, it cannot be downgraded back to 16.3 using the standard snapshot restoration process outlined above.</p>
+<h3 id="example-of-a-failed-downgrade-scenario">Example of a Failed Downgrade Scenario</h3>
+<p>The following failed scenario was observed and documented:</p>
+
+<ol>
+<li>User had upgraded their RDS from PostgreSQL 16.3 to 17</li>
+<li>User wanted to restore back to 16.3 using the process:
 
 <ul>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-tools-image/commit/3827ea89a95cf78146812a0275b40f3c2d20ed21">Remove</a> the multiple Terraform binaries from the cloud-platform-tools image, leaving only the new version.</li>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/b11b0372fe71289e51739395664355014df0e655">Remove</a> the conditional logic in the apply library.</li>
-</ul>
-<h3 id="infrastructure-state-files">Infrastructure state files</h3>
-<p>The Infrastructure state we have in the Cloud Platform is structured in a tree related to its dependency,
-so for example, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components">components</a> state (in the output below) relies heavily on the directory above and so on.
-Here is a snapshot of how our directory looks but this is likely to change:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws-accounts
-├── cloud-platform-aws
-│   ├── account                  # AWS Account specific configuration.
-│   └── vpc                      # VPC creation. Workspaces for individual clusters
-│       ├── eks                  # Holding EKS, workspaces for individual clusters.
-│       │   └── core             # EKS core. Workspaces for individual clusters
-            |   └── components   # EKS components.
-├── cloud-platform-dsd
-│   └── main.tf
-├── cloud-platform-ephemeral-test
-│   ├── account
-│   └── vpc
-│       ├── eks
-│       │   └── components
-└── README.md
-</code></pre></div><h4 id="where-to-start">Where to start</h4>
-<p>Because of the structure outlined above, it&rsquo;s best to start at the components layer and work in.</p>
-<h4 id="run-terraform-init-validate">Run terraform init/validate</h4>
-<p>Using a tool such as tf-switch, switch to your new version and perform the command <code>terraform init -backend=false</code>. The output of this command will give you a general idea of what needs to change before your perform the upgrade. the <code>-backend=false</code> ensures the state isn&rsquo;t touched.</p>
-<h4 id="infrastructure-state-files-upgrade-all-terraform-modules">Upgrade all Terraform modules</h4>
-<p>Like the Environments, you need to ensure all Terraform modules will work with the new Terraform version. If there is a syntax change, it&rsquo;s recommended to run the <code>terraform upgrade</code> command on all repositories that contain &ldquo;cloud-platform-terraform&rdquo;. Either perform this manually or:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
-go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"&lt;insert upgrade command here&gt;"</span>
-</code></pre></div><p>Which will perform the upgrade command on each repository containing &ldquo;cloud-platform-terraform&rdquo; in the name and then create a Pull Request.</p>
-<h4 id="ensure-all-quot-third-party-quot-modules-conform">Ensure all &ldquo;third-party&rdquo; modules conform</h4>
-<p>We use a number of third party Terraform modules (modules we don&rsquo;t control), these mainly belong to AWS, so it&rsquo;s important that you update the version of these modules and ensure it works with the Terraform version you&rsquo;re upgrading to. <a href="https://github.com/ministryofjustice/cloud-platform-terraform-monitoring/commit/ce9fb73249775c8efe09020d3db7c96ccb9ef251">Here&rsquo;s</a> an example of a change to a third party module.</p>
-<h4 id="perform-terraform-init-validate-manually">Perform terraform init/validate manually</h4>
-<p>With all the leg work complete, you can now perform a Terraform upgrade. We do have a pipeline that can do this on your behalf but I&rsquo;d recommend manually performing a <code>terraform init &amp;&amp; terraform apply</code>.</p>
-<h4 id="work-inwards">Work inwards</h4>
-<p>When you complete the upgrade on the directory/state you&rsquo;ve chosen, e.g. components, then you can work on the directory above and perform the same steps as outlined.</p>
-<h4 id="upgrade-the-cloud-platform-cli-image">Upgrade the cloud-platform-cli image</h4>
-<p>Finally, following the successful upgrade to your new Terraform version, upgrade the version of Terraform used in the cloud-platform-cli docker image.</p>
+<li>Found an older snapshot identifier from before the upgrade</li>
+<li>Raised PR with the snapshot identifier</li>
+<li>Manually renamed the database in the console</li>
+<li>Merged the PR</li>
+</ul></li>
+</ol>
+<p><strong>What actually happened:</strong>
+* Terraform apply reverted the manual rename
+* Started deleting the database, which also deleted all automatic snapshots
+* First apply pipeline failed with a parameter group error
+* Second attempt failed because the snapshot no longer existed (deleted during first apply)</p>
+<h3 id="correct-process-for-version-downgrades">Correct Process for Version Downgrades</h3>
+<p>To properly downgrade an RDS database to a previous version:</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-05-25">
+<ol>
+<li>Take a snapshot of the current database to preserve it (in case restoration is needed later):</li>
+</ol>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>   aws rds create-db-snapshot <span class="se">\</span>
+     <span class="nt">--db-instance-identifier</span> &lt;current-db-instance-identifier&gt; <span class="se">\</span>
+     <span class="nt">--db-snapshot-identifier</span> &lt;current-version-snapshot-name&gt;
+</code></pre></div>
+<ol>
+<li><p>Create a new database instance with:</p>
+
+<ul>
+<li>A different identifier than the current database</li>
+<li>Engine version matching the snapshot you want to restore from</li>
+<li>RDS family matching the snapshot you want to restore from</li>
+<li>All other configuration parameters consistent with the source of the snapshot</li>
+</ul></li>
+<li><p>In the terraform module:</p></li>
+</ol>
+<div class="highlight"><pre class="highlight hcl" tabindex="0"><code>   <span class="nx">module</span> <span class="s2">"example_team_rds"</span> <span class="p">{</span>
+     <span class="nx">source</span>               <span class="p">=</span> <span class="s2">"github.com/ministryofjustice/cloud-platform-terraform-rds-instance?ref=5.1"</span>
+     <span class="c1"># ... other parameters ...</span>
+     <span class="nx">db_instance_identifier</span> <span class="p">=</span> <span class="s2">"&lt;new-instance-name&gt;"</span>  <span class="c1"># Must be different from current DB</span>
+     <span class="nx">db_engine_version</span>      <span class="p">=</span> <span class="s2">"16.3"</span>  <span class="c1"># Earlier version</span>
+     <span class="nx">rds_family</span>             <span class="p">=</span> <span class="s2">"postgres16"</span>  <span class="c1"># Family matching earlier version</span>
+     <span class="nx">snapshot_identifier</span>    <span class="p">=</span> <span class="s2">"&lt;old-version-snapshot&gt;"</span>
+     <span class="c1"># ... other parameters ...</span>
+   <span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> This approach requires a cutover as the new database will have a different endpoint and connection string.</p>
+</blockquote>
+<p>After verifying the new downgraded database works properly, the old one can be deleted if needed.</p>
+<h2 id="known-issues-and-solutions">Known Issues and Solutions</h2>
+<h3 id="final-snapshot-naming-conflicts">Final Snapshot Naming Conflicts</h3>
+<p><strong>Issue:</strong> The pipeline fails because it cannot create a final snapshot with the same name as an existing snapshot.</p>
+<p><strong>Error Message:</strong> <code>DBSnapshotAlreadyExists</code></p>
+<p><strong>Solution:</strong>
+- Delete the conflicting snapshot manually:</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>  aws rds delete-db-snapshot <span class="nt">--db-snapshot-identifier</span> &lt;db-instance-identifier&gt;-finalsnapshot
+</code></pre></div><h3 id="engine-version-conflicts">Engine Version Conflicts</h3>
+<p><strong>Issue:</strong> Sometimes the pipeline throws an error: <code>InvalidParameterCombination: Cannot upgrade mariadb from 10.4.13 to 10.4.8</code></p>
+<p><strong>Solution:</strong>
+This will happen if AWS upgraded the minor version automatically and terraform stored the exact db_engine_version in its state.</p>
+<p>To fix this, change the <code>db_engine_version</code> in your <code>rds.tf</code> from <code>10.4</code> to the one AWS upgraded to, in this case <code>10.4.13</code>, and repeat the previous steps again.</p>
+<p>Once the terraform apply is successful, and the new DB instance has been created, revert the changes made for <code>db_engine_version</code>.</p>
+<h3 id="read-replica-issues">Read Replica Issues</h3>
+<p><strong>Issue:</strong> If there is an RDS read replica for the DB instance that is being restored, Terraform will throw the error: <code>Error: cannot elect new source database for replication</code></p>
+<p><strong>Solution:</strong>
+Set <code>count = 0</code> or comment out the read replica code (and any Kubernetes secrets relating to the read replica) before restoration. After successful restoration, re-enable the DB read replica code by setting <code>count = 1</code> or uncommenting the code.</p>
+<p>Note that the read replica will have a new database identifier once it is recreated.</p>
+<h2 id="metrics-and-observations">Metrics and Observations</h2>
+<p>Based on our testing:</p>
+
+<ul>
+<li><strong>Downtime:</strong> Expect ~26 minutes of database unavailability. This may vary depending on how much data is being restored.</li>
+<li><strong>Connection String:</strong> Remains unchanged after restoration (provided the restore is on the same database instance)</li>
+<li><strong>Storage Configuration:</strong> Inherits from the snapshot</li>
+<li><strong>Final Snapshots:</strong> May require manual cleanup to prevent pipeline failures</li>
+<li><strong>Status Progression:</strong> Follows predictable pattern: <code>Deleting</code> → <code>Creating</code> → <code>Modifying</code> → <code>Rebooting</code> → <code>Backing-up</code> → <code>Modifying</code> → <code>Available</code></li>
+</ul>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2025-09-03">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 25 November 2024.
+      This page was last reviewed on 3 March 2025.
 
-        It needs to be reviewed again on 25 May 2025
+        It needs to be reviewed again on 3 September 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 25 May 2025
+      This page was set to be reviewed before 3 September 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1905,8 +2065,8 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/upgrade-terraform-version.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Upgrade+Terraform+Version%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fupgrade-terraform-version.html%29&amp;labels=bug&amp;title=Re%3A+%27Upgrade+Terraform+Version%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/rds-snapshots.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27RDS+Snapshot+Restoration%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Frds-snapshots.html%29&amp;labels=bug&amp;title=Re%3A+%27RDS+Snapshot+Restoration%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
