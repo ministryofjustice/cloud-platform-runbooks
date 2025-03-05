@@ -1766,7 +1766,7 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="recycle-all-nodes">Recycle-all-nodes</h1>
-<p>When a launch template is updated, this will cause all of the nodes to recycle. Reasons to update the launch configuration are most likely to revolve around editing the <code>User data</code> script, which is ran when a node is booted. Reasons to edit User data include:</p>
+<p>When a launch template is updated, this will cause all the nodes to recycle. Reasons to update the launch configuration are most likely to revolve around editing the <code>User data</code> script, which is ran when a node is booted. Reasons to edit User data include:</p>
 
 <ul>
 <li>Changes to docker auth credentials</li>
@@ -1778,13 +1778,13 @@
 <h3 id="high-level-method">High level method</h3>
 
 <ol>
-<li>Add the new node group with a low number of nodes alongside the existing node groups in code</li>
-<li>Drain the old node group using the pipeline and allow the autoscaler to bring in new nodes into the new node group</li>
-<li>Once workloads have moved over remove the old node groups from code</li>
+<li>Add the new node group with a low number of nodes alongside the existing node groups in code.</li>
+<li>Drain the old node group using the pipeline and allow the autoscaler to bring in new nodes into the new node group.</li>
+<li>Once workloads have moved over, remove the old node groups from code.</li>
 </ol>
-<p><a href="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html">detailed instructions can be found here</a></p>
+<p><a href="https://runbooks.cloud-platform.service.justice.gov.uk/node-group-changes.html">Detailed instructions can be found here</a>.</p>
 <h4 id="useful-commands">Useful commands</h4>
-<p><a href="https://k9scli.io/">k9s</a> is a useful cli tool to get a good overview of the state of the cluster</p>
+<p><a href="https://k9scli.io/">k9s</a> is a useful cli tool to get a good overview of the state of the cluster.</p>
 
 <ul>
 <li><code>watch kubectl get nodes --sort-by=.metadata.creationTimestamp</code></li>
@@ -1796,21 +1796,21 @@ ip-172-20-101-81.eu-west-2.compute.internal    Ready,SchedulingDisabled      &lt
 ip-172-20-119-182.eu-west-2.compute.internal   Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
 ip-172-20-106-20.eu-west-2.compute.internal    Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
 ip-172-20-127-1.eu-west-2.compute.internal     Ready    &lt;none&gt;   47h     v1.22.15-eks-fb459a0
-</code></pre></div><p>Where nodes have the Status &ldquo;Ready,SchedulingDisabled&rdquo; this indicates the nodes which have the old update templates, these are the ones that are cordoned off, whereas those which are &ldquo;Ready&rdquo; are the new nodes with the new update template.</p>
-<p>When all nodes have been recycled they will all have a status of &ldquo;Ready&rdquo;.</p>
+</code></pre></div><p>Where nodes have the Status &ldquo;Ready,SchedulingDisabled&rdquo;, this indicates the nodes which have the old update templates. These are the ones that are cordoned off, whereas those which are &ldquo;Ready&rdquo; are the new nodes with the new update template.</p>
+<p>When all nodes have been recycled, they will all have a status of &ldquo;Ready&rdquo;.</p>
 <p>This process can take several hours on a cluster of ~60 nodes, depending on how quickly you resolve the gotchas below.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-02-16">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-09-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 August 2024.
+      This page was last reviewed on 4 March 2025.
 
-        It needs to be reviewed again on 16 February 2025
+        It needs to be reviewed again on 4 September 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 February 2025
+      This page was set to be reviewed before 4 September 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

@@ -1769,7 +1769,7 @@
 <p>Things to look at while investigating a spike in blocked access:</p>
 
 <ol>
-<li>Is the spike isolation to that application? If there is an attack it could be either cluster wide or specifically targeted at a single app.</li>
+<li>Is the spike isolated to that application? If there is an attack, it could either be cluster-wide or targeted at a single app.</li>
 <li>Is the ingress using modsec?</li>
 <li><a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-1d,to:now))&amp;_a=(columns:!(_source),filters:!(),index:'8a728bc0-00eb-11ec-9062-27aa363b66a2',interval:auto,query:(language:kuery,query:'%22Access%20denied%20with%20code%20406%22'),sort:!())">Access denied with code 406 in the last 24 hours</a>. Not every user uses the custom <code>406</code> status so this is not a catch all solution.</li>
 <li>Are there any suspect logs in the namespace?</li>
@@ -1778,7 +1778,7 @@
 <ul>
 <li>Has the cluster scaled up due to extra resource usage?</li>
 <li>Are there more 4xx/5xx errors than usual?</li>
-<li>Are we seeing ingress related alarms in #lower-priority-alarms</li>
+<li>Are we seeing ingress-related alarms in #lower-priority-alarms</li>
 </ul></li>
 <li>Note any suspicious IP addresses.</li>
 <li>Has modsec been misconfigured? Further information can be found <a href="https://www.netnea.com/cms/apache-tutorial-7_including-modsecurity-core-rules/">here</a></li>
@@ -1792,17 +1792,17 @@
 <li><a href="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-101.html">Debugging 101</a></li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-02-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-09-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 August 2024.
+      This page was last reviewed on 4 March 2025.
 
-        It needs to be reviewed again on 28 February 2025
+        It needs to be reviewed again on 4 September 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 February 2025
+      This page was set to be reviewed before 4 September 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

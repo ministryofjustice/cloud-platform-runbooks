@@ -1786,8 +1786,8 @@ In order to allow the traffic to flow, a new route needs to be added to VPC&rsqu
 <p>Example: The Analytical Platform(AP) wants to access the Cloud Platform&rsquo;s (CP) VPC.</p>
 
 <ul>
-<li>Both are attached the the TGW</li>
-<li>The CP route-table should contain a route with the AP VPC&rsquo;s CIDR block as a destination, but with the TGW ID as a target.</li>
+<li>Both are attached to the TGW</li>
+<li>The CP route-table should contain a route with the AP&rsquo;s VPC CIDR block as a destination, but with the TGW ID as a target.</li>
 <li>The same needs to be done on the AP&rsquo;s VPC, to route back to CP.</li>
 </ul>
 <h2 id="making-the-change">Making the change</h2>
@@ -1807,17 +1807,17 @@ Only an admin of the cloud-platform (<code>moj-cp</code>) is able to run that co
 We decided not to add this for now as there are no requirements for any routing from live-2 VPC to the MoJ Transition Gateway. Also live-2 is planned for decommission.
 If there is a requirement for this, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/add-live-2-tgw-routes">add-live-2-tgw-routes branch</a> shows the code that needs to be applied.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-03-03">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-09-04">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 3 September 2024.
+      This page was last reviewed on 4 March 2025.
 
-        It needs to be reviewed again on 3 March 2025
+        It needs to be reviewed again on 4 September 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 3 March 2025
+      This page was set to be reviewed before 4 September 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
