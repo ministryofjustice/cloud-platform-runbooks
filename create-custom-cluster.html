@@ -1768,32 +1768,32 @@
             <h1 id="create-custom-cluster">Create custom cluster</h1>
 <p>In concourse we have the ability to create custom clusters based of whichever branch you specify.</p>
 <p>First we need to update the pipeline config with our branch, you need to run the following command from the <code>cloud-platform-terraform-concourse</code> repo root folder.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t moj-cp set-pipeline --pipeline custom-cluster  --config pipelines/manager/main/custom-cluster.yaml -v branch_name=migrate-eks-csi
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager set-pipeline --pipeline custom-cluster  --config pipelines/manager/main/custom-cluster.yaml -v branch_name=migrate-eks-csi
 </code></pre></div><p>From here you can then kick off the build from the concourse UI.</p>
 <h2 id="deleting-your-custom-cluster">Deleting your custom cluster</h2>
 <p>Our delete pipeline allows you to specify the <code>branch_name</code> in the config so to do this you run:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t moj-cp set-pipeline --pipeline delete-cluster --config pipelines/manager/main/delete-cluster.yaml -v branch_name=migrate-eks-csi -v cluster_name=tp-0000-0000
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager set-pipeline --pipeline delete-cluster --config pipelines/manager/main/delete-cluster.yaml -v branch_name=migrate-eks-csi -v cluster_name=tp-0000-0000
 </code></pre></div><p>You need to pass both <code>branch_name</code> and <code>cluster_name</code> to the command.</p>
 <h2 id="rerunning-stages-in-the-create-custom-cluster-pipeline"> Rerunning stages in the create custom cluster pipeline</h2>
 <p>If you need to re-run a plan or apply at any stage after the cluster has been created you can do this by running the following:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t moj-cp set-pipeline --pipeline custom-cluster  --config pipelines/manager/main/custom-cluster.yaml -v branch_name=migrate-eks-csi -v cluster_name=tp-0000-0000
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager set-pipeline --pipeline custom-cluster  --config pipelines/manager/main/custom-cluster.yaml -v branch_name=migrate-eks-csi -v cluster_name=tp-0000-0000
 </code></pre></div><p>Then you can select the step in the pipeline that you&rsquo;d like to re-run.</p>
 <h2 id="run-integration-tests-against-custom-cluster">Run integration tests against custom cluster</h2>
 <p>You can also use the <code>custom-integration-tests</code> job within the <code>custom-cluster</code> pipeline to execute the go integration test suite against a cluster of your choice:</p>
 <p><code>fly -t manager set-pipeline -p custom-cluster -c pipelines/manager/main/custom-cluster.yaml -v branch_name=&lt;SOME-OTHER-BRANCH&gt; -v cluster_name=&lt;YOUR-TEST-CLUSTER-NAME&gt;</code></p>
 <p>And then trigger a new build in <code>custom-integration-tests</code> job view.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-05-27">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-09-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 November 2024.
+      This page was last reviewed on 6 March 2025.
 
-        It needs to be reviewed again on 27 May 2025
+        It needs to be reviewed again on 6 September 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 May 2025
+      This page was set to be reviewed before 6 September 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
