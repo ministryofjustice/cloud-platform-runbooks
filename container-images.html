@@ -507,7 +507,7 @@
             <a href="./container-images.html#check-current-components-images-versions"><span>Check current components images versions</span></a>
           </li>
           <li>
-            <a href="./container-images.html#latest-version-for-k8s-1-29"><span>Latest version for k8s 1.29</span></a>
+            <a href="./container-images.html#latest-version-for-k8s-1-30"><span>Latest version for k8s 1.30</span></a>
           </li>
           <li>
             <a href="./container-images.html#latest-version-available"><span>Latest version available</span></a>
@@ -1771,8 +1771,11 @@
 <h3 id="check-current-components-images-versions">Check current components images versions</h3>
 <p>To grab the current image versions for all containers within components namespace pods, you can run the following command:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl get pods <span class="nt">-n</span> <span class="o">[</span>NAMESPACE] <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'</span> | <span class="nb">sort</span>
-</code></pre></div><h3 id="latest-version-for-k8s-1-29">Latest version for k8s 1.29</h3>
-<p>The latest versions of some of the components might not be compatible with k8s 1.29. For this, click the link to check the Compatibility Matrix</p>
+</code></pre></div><p>or run the following script:</p>
+<p><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/scripts/container_versions.bash">container_versions.bash</a></p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>./container_versions.bash <span class="o">[</span>NAMESPACE]
+</code></pre></div><h3 id="latest-version-for-k8s-1-30">Latest version for k8s 1.30</h3>
+<p>The latest versions of some of the components might not be compatible with k8s 1.30. For this, click the link to check the Compatibility Matrix</p>
 <h3 id="latest-version-available">Latest version available</h3>
 <p>That&rsquo;s the latest version available in the public repository. Update the version when there is a new release. You can find the latest version by clicking on the link or by checking the
 <a href="https://reports.cloud-platform.service.justice.gov.uk/helm_whatup">reports</a> page</p>
@@ -1790,7 +1793,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1807,7 +1810,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1848,7 +1851,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1877,7 +1880,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1894,7 +1897,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1906,7 +1909,7 @@
 </tr>
         </table>
       </div><h2 id="gatekeeper-system">gatekeeper-system</h2>
-<p>| container image | urgency | latest version for k8s 1.29 | latest version available | latest helm chart |
+<p>| container image | urgency | latest version for k8s 1.30 | latest version available | latest helm chart |
 |-|-|-|-|-r
 | openpolicyagent/gatekeeper:v3.15.1: | 🟠 | v3.17.1 | <a href="https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.17.1">v3.17.1</a> | <a href="https://github.com/open-policy-agent/gatekeeper/releases/tag/v3.17.1">v3.17.1</a> |</p>
 <h2 id="ingress-controllers">ingress-controllers</h2>
@@ -1915,7 +1918,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1950,51 +1953,51 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
-<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon-k8s-cni:v1.19.0-eksbuild.1</td>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon-k8s-cni:v1.19.3-eksbuild.1</td>
 <td>🟢</td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.19.0-eksbuild.1</a></td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.19.0-eksbuild.1</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.19.3-eksbuild.1</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html">v1.19.3-eksbuild.1</a></td>
 <td>n/a</td>
 </tr><tr>
-<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon/aws-network-policy-agent:v1.1.2</td>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/amazon/aws-network-policy-agent::v1.2.0</td>
 <td>🟢</td>
-<td><a href="https://github.com/aws/aws-network-policy-agent/releases/tag/v1.1.4">v1.1.4</a></td>
-<td><a href="https://github.com/aws/aws-network-policy-agent/releases/tag/v1.1.4">v1.1.4</a></td>
+<td><a href="https://github.com/aws/aws-network-policy-agent/releases/tag/v1.2.0">v1.2.0</a></td>
+<td><a href="https://github.com/aws/aws-network-policy-agent/releases/tag/v1.2.0">v1.2.0</a></td>
 <td>n/a</td>
 </tr><tr>
-<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/coredns:v1.11.3-eksbuild.2</td>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/coredns:v1.11.4-eksbuild.2</td>
 <td>🟢</td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">v1.11.3-eksbuild.2</a></td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">v1.11.3-eksbuild.9</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">v1.11.4-eksbuild.2</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html">v1.11.4-eksbuild.2</a></td>
 <td>n/a</td>
 </tr><tr>
-<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/kube-proxy:v1.29.10-eksbuild.3</td>
+<td>602401143452.dkr.ecr.eu-west-2.amazonaws.com/eks/kube-proxy:v1.30.9-minimal-eksbuild.3</td>
 <td>🟢</td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html#managing-kube-proxy-images">v1.29.10-eksbuild.3</a></td>
-<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">v1.31.1-minimal-eksbuild.2</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html#managing-kube-proxy-images">v1.30.9-minimal-eksbuild.3</a></td>
+<td><a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html">v1.32.0-eksbuild.2</a></td>
 <td>n/a</td>
 </tr><tr>
-<td>docker.io/bitnami/external-dns:0.13.4-debian-11-r14</td>
+<td>docker.io/bitnami/external-dns:0.15.1-debian-12-r1</td>
 <td>🟠</td>
 <td>v0.15.x</td>
-<td><a href="https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.15.0">v0.15.x</a></td>
-<td><a href="https://github.com/bitnami/charts/blob/main/bitnami/external-dns/Chart.yaml#L11">v0.15.x</a></td>
+<td><a href="https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.16.1">v0.16.x</a></td>
+<td><a href="https://github.com/kubernetes-sigs/external-dns/releases/tag/v0.16.1">v0.16.x</a></td>
 </tr><tr>
-<td>registry.k8s.io/autoscaling/cluster-autoscaler:v1.28.5</td>
+<td>registry.k8s.io/autoscaling/cluster-autoscaler:v1.30.4</td>
 <td>🟢</td>
-<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.29.4">v1.29.4</a></td>
-<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.31.0">v1.31.0</a></td>
-<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-chart-9.38.0">9.38.0</a></td>
+<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.30.4">v1.30.x</a></td>
+<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-1.32.1">v1.32.1</a></td>
+<td><a href="https://github.com/kubernetes/autoscaler/releases/tag/cluster-autoscaler-chart-9.46.3">9.46.3</a></td>
 </tr><tr>
 <td>registry.k8s.io/descheduler/descheduler:v0.31.0</td>
 <td>🟢</td>
-<td><a href="https://github.com/kubernetes-sigs/descheduler?tab=readme-ov-file#%EF%B8%8F--documentation-versions-by-release">v0.31.x</a></td>
-<td><a href="https://github.com/kubernetes-sigs/descheduler/releases/tag/v0.31.0">v0.31.0</a></td>
-<td><a href="https://github.com/kubernetes-sigs/descheduler/releases/tag/descheduler-helm-chart-0.32.0">0.32.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/descheduler?tab=readme-ov-file#%EF%B8%8F--documentation-versions-by-release">v0.32.x</a></td>
+<td><a href="https://github.com/kubernetes-sigs/descheduler/releases/tag/v0.32.2">v0.32.2</a></td>
+<td><a href="https://github.com/kubernetes-sigs/descheduler/releases/tag/descheduler-helm-chart-0.32.2">0.32.2</a></td>
 </tr><tr>
 <td>registry.k8s.io/metrics-server/metrics-server:v0.7.1</td>
 <td>🟢</td>
@@ -2009,15 +2012,15 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
-<td>public.ecr.aws/ebs-csi-driver/aws-ebs-csi-driver:v1.29.1</td>
+<td>public.ecr.aws/ebs-csi-driver/aws-ebs-csi-driver:v1.30.0</td>
 <td>🟠</td>
-<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases">v1.37.0</a></td>
-<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.37.0">v1.37.0</a></td>
-<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.37.0">2.37.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases">v1.41.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/v1.41.0">v1.41.0</a></td>
+<td><a href="https://github.com/kubernetes-sigs/aws-ebs-csi-driver/releases/tag/helm-chart-aws-ebs-csi-driver-2.41.0">2.41.0</a></td>
 </tr><tr>
 <td>public.ecr.aws/eks-distro/kubernetes-csi/external-attacher:v4.5.0-eks-1-29-7</td>
 <td>🟠</td>
@@ -2056,7 +2059,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2098,7 +2101,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2115,7 +2118,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2132,7 +2135,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2227,7 +2230,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2250,7 +2253,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2267,7 +2270,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2290,7 +2293,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.29</th>
+<th>latest version for k8s 1.30</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2302,17 +2305,17 @@
 </tr>
         </table>
       </div>
-              <div data-module='page-expiry' data-last-reviewed-on="2025-07-21">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-09-21">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 21 January 2025.
+      This page was last reviewed on 21 March 2025.
 
-        It needs to be reviewed again on 21 July 2025
+        It needs to be reviewed again on 21 September 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 21 July 2025
+      This page was set to be reviewed before 21 September 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

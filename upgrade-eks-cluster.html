@@ -507,7 +507,7 @@
             <a href="./container-images.html#check-current-components-images-versions"><span>Check current components images versions</span></a>
           </li>
           <li>
-            <a href="./container-images.html#latest-version-for-k8s-1-29"><span>Latest version for k8s 1.29</span></a>
+            <a href="./container-images.html#latest-version-for-k8s-1-30"><span>Latest version for k8s 1.30</span></a>
           </li>
           <li>
             <a href="./container-images.html#latest-version-available"><span>Latest version available</span></a>
@@ -1851,9 +1851,12 @@ This will cause the node to stall the update and the nodes will <strong>not</str
 <h4 id="increasing-coredns-pods">Increasing coredns pods</h4>
 <p>To ensure that coredns stays up and running during the cluster upgrade replications should be scaled up to 10. This can be done with the following command:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl scale deployment coredns <span class="nt">--replicas</span><span class="o">=</span>10 <span class="nt">-n</span> kube-system
+</code></pre></div><h4 id="scale-down-autoscaler-and-descheduler">Scale down Autoscaler and Descheduler</h4>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl scale deployment cluster-autoscaler-aws-cluster-autoscaler <span class="nt">--replicas</span><span class="o">=</span>0 <span class="nt">-n</span> kube-system
+kubectl scale deployment descheduler <span class="nt">--replicas</span><span class="o">=</span>0 <span class="nt">-n</span> kube-system
 </code></pre></div>
 <blockquote>
-<p><strong>NOTE:</strong> This is a temporary measure, double check the deployment for the current replicaset, as you will need this for when you scale back after the completion of the upgrade.</p>
+<p><strong>NOTE:</strong> These are temporary measures, double check the deployments for the current replicasets, as you will need this for when you scale back after the completion of the upgrade.</p>
 </blockquote>
 <h4 id="upgrading-the-control-pane">Upgrading the control pane</h4>
 <p>Log in to the AWS console and select the EKS cluster we&rsquo;re going to upgrade.</p>
@@ -1883,6 +1886,9 @@ This will cause the node to stall the update and the nodes will <strong>not</str
 <p>Unpause the bootstrap pipeline.</p>
 <p>Scale down the coredns pods.</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl scale deployment coredns <span class="nt">--replicas</span><span class="o">=</span>3 <span class="nt">-n</span> kube-system
+</code></pre></div><p>Scale up the Autoscaler and Descheduler</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl scale deployment cluster-autoscaler-aws-cluster-autoscaler <span class="nt">--replicas</span><span class="o">=</span>1 <span class="nt">-n</span> kube-system
+kubectl scale deployment descheduler <span class="nt">--replicas</span><span class="o">=</span>1 <span class="nt">-n</span> kube-system
 </code></pre></div><h3 id="finishing-touches">Finishing touches</h3>
 <p>The <code>kubectl</code> version in the <code>cloud-platform-cli</code> and <code>cloud-platform-tools-image</code> needs updating to match the current Kubernetes version.</p>
 <p>Documentation used as part of the upgrade should be reviewed and refined if needed.</p>
