@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes - Cloud Platform Runbooks</title>
+    <title>Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 - Desheduler attempted to reschedule all pods on cordoned nodes simultaneously - Cloud Platform Runbooks</title>
 
     <link href="../stylesheets/manifest.css" rel="stylesheet" />
 
@@ -15,12 +15,12 @@
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes - Cloud Platform Runbooks" />
+      <meta name="twitter:title" content="Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 - Desheduler attempted to reschedule all pods on cordoned nodes simultaneously - Cloud Platform Runbooks" />
       <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incidents/2025-03-18-aws-eks-upgrade-to-1-30.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes" />
+      <meta property="og:title" content="Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 - Desheduler attempted to reschedule all pods on cordoned nodes simultaneously" />
       <meta property="og:type" content="object" />
       <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incidents/2025-03-18-aws-eks-upgrade-to-1-30.html" />
 
@@ -1778,26 +1778,34 @@
 </ul></li>
 <li><p><strong>Time to repair</strong>: 1h 37m</p></li>
 <li><p><strong>Time to resolve</strong>: 2d 1h 29m</p></li>
-<li><p><strong>Identified</strong>: User reported outages on production services</p></li>
-<li><p><strong>Impact</strong>: User workloads were disrupted, causing outages on production services.</p></li>
-<li><p><strong>Context</strong>:
-2025-03-18 09:36: Users reported that their pods were getting terminated and not automatically restarting in both production and non-production environments.</p></li>
-</ul>
-<p>2025-03-18 09:50: Cloud Platform team began investigating the root cause.
-2025-03-18 10:03: Cloud Platform team declared this as an incident.
-2025-03-18 10:15: Initial mitigation efforts began:
-Removed the cordon annotation to allow pods to be rescheduled.
-Deleted some stuck 1.30 version nodes to force recreation.
-2025-03-18 10:40: Pods began recovering, and services were operational.
-2025-03-18 11:13: Raised AWS Production system down Support Ticket (Case ID: 174229643100496).
-2025-03-18 11:34: A new node group with 20 nodes running version 1.30 was added to the live cluster to stabilize workloads and ensure redundancy.
-2025-03-18 11:50: Began cordoning all the old 1.29 nodes to facilitate a smoother upgrade transition and ensure workload stability.
-2025-03-18 12:10: Began draining the old 1.29 nodes to gracefully migrate workloads to the new 1.30 nodes.
-2025-03-18 16:16: All nodes were running version 1.30. The upgrade had been successfully completed on AWS.
-2025-03-18 16:28: Cloud Platform team informed users that all nodes are now running version 1.30 and that cleanup work will be performed on 2025-03-19 morning. The incident will remain open until all cleanup tasks are completed.
-2025-03-20 12:09: The Team Confirmed the incident was resolved and all cleanup tasks were completed.</p>
+<li><p><strong>Identified</strong>:</p>
 
 <ul>
+<li>Via automated infrastructure alerts and users reported outages on production services</li>
+</ul></li>
+<li><p><strong>Impact</strong>:</p>
+
+<ul>
+<li>User workloads were disrupted, causing outages on production services.</li>
+</ul></li>
+<li><p><strong>Context</strong>:</p>
+
+<ul>
+<li>2025-03-18 09:36: Users reported that their pods were getting terminated and not automatically restarting in both production and non-production environments.</li>
+<li>2025-03-18 09:50: Cloud Platform team began investigating the root cause.</li>
+<li>2025-03-18 10:03: Cloud Platform team declared this as an incident.</li>
+<li>2025-03-18 10:15: Initial mitigation efforts began:</li>
+<li>Removed the cordon annotation to allow pods to be rescheduled.</li>
+<li>Deleted some stuck 1.30 version nodes to force recreation.</li>
+<li>2025-03-18 10:40: Pods began recovering, and services were operational.</li>
+<li>2025-03-18 11:13: Raised AWS Production system down Support Ticket (Case ID: 174229643100496).</li>
+<li>2025-03-18 11:34: A new node group with 20 nodes running version 1.30 was added to the live cluster to stabilize workloads and ensure redundancy.</li>
+<li>2025-03-18 11:50: Began cordoning all the old 1.29 nodes to facilitate a smoother upgrade transition and ensure workload stability.</li>
+<li>2025-03-18 12:10: Began draining the old 1.29 nodes to gracefully migrate workloads to the new 1.30 nodes.</li>
+<li>2025-03-18 16:16: All nodes were running version 1.30. The upgrade had been successfully completed on AWS.</li>
+<li>2025-03-18 16:28: Cloud Platform team informed users that all nodes are now running version 1.30 and that cleanup work will be performed on 2025-03-19 morning. The incident will remain open until all cleanup tasks are completed.</li>
+<li>2025-03-20 12:09: The Team Confirmed the incident was resolved and all cleanup tasks were completed.</li>
+</ul></li>
 <li><p><strong>Resolution</strong>:</p>
 
 <ul>
@@ -1824,7 +1832,7 @@ Deleted some stuck 1.30 version nodes to force recreation.
           <aside>
               <ul class="contribution-banner">
                 <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/incidents/2025-03-18-aws-eks-upgrade-to-1-30.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Incident+on+2025-03-18+-+AWS+EKS+Upgrade+to+1.30+Desheduler+kill+pods+on+Cordon+Nodes%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fincidents%2F2025-03-18-aws-eks-upgrade-to-1-30.html%29&amp;labels=bug&amp;title=Re%3A+%27Incident+on+2025-03-18+-+AWS+EKS+Upgrade+to+1.30+Desheduler+kill+pods+on+Cordon+Nodes%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Incident+on+2025-03-18+-+AWS+EKS+Upgrade+to+1.30+-+Desheduler+attempted+to+reschedule+all+pods+on+cordoned+nodes+simultaneously%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fincidents%2F2025-03-18-aws-eks-upgrade-to-1-30.html%29&amp;labels=bug&amp;title=Re%3A+%27Incident+on+2025-03-18+-+AWS+EKS+Upgrade+to+1.30+-+Desheduler+attempted+to+reschedule+all+pods+on+cordoned+nodes+simultaneously%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
