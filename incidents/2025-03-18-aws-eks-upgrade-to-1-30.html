@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Incident on 2023-11-01 - Prometheus restarted several times which resulted in missing metrics - Cloud Platform Runbooks</title>
+    <title>Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes - Cloud Platform Runbooks</title>
 
     <link href="../stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/incidents/2023-11-01-prometheus-restarted.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/incidents/2025-03-18-aws-eks-upgrade-to-1-30.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Incident on 2023-11-01 - Prometheus restarted several times which resulted in missing metrics - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incidents/2023-11-01-prometheus-restarted.html" />
+      <meta name="twitter:title" content="Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incidents/2025-03-18-aws-eks-upgrade-to-1-30.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Incident on 2023-11-01 - Prometheus restarted several times which resulted in missing metrics" />
+      <meta property="og:title" content="Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incidents/2023-11-01-prometheus-restarted.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incidents/2025-03-18-aws-eks-upgrade-to-1-30.html" />
 
     
   </head>
@@ -1765,47 +1765,56 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="incident-on-2023-11-01-prometheus-restarted-several-times-which-resulted-in-missing-metrics">Incident on 2023-11-01 - Prometheus restarted several times which resulted in missing metrics</h1>
+            <h1 id="incident-on-2025-03-18-aws-eks-upgrade-to-1-30-desheduler-kill-pods-on-cordon-nodes">Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes</h1>
 
 <ul>
 <li><p><strong>Key events</strong></p>
 
 <ul>
-<li>First detected: 2023-11-01 10:15</li>
-<li>Incident declared: 2023-11-01 10:41</li>
-<li>Repaired: 2023-11-03 14:38</li>
-<li>Resolved 2023-11-03 14:38</li>
+<li>First detected 22025-03-18 09:36</li>
+<li>Incident declared 2025-03-18 10:03</li>
+<li>Repaired 2025-03-18 10:40</li>
+<li>Resolved 2025-03-20 12:09</li>
 </ul></li>
-<li><p><strong>Time to repair</strong>: 35h 36m</p></li>
-<li><p><strong>Time to resolve</strong>: 35h 36m</p></li>
-<li><p><strong>Identified</strong>: <a href="https://mojdt.slack.com/archives/C8PF51AT0/p1698833753414539">PagerDuty High Priority alert from Pingdom that Prometheus - live healthcheck is DOWN</a></p></li>
-<li><p><strong>Impact</strong>: Prometheus is not Available. The Cloud Platform lose the monitoring for a period of time.</p></li>
-<li><p><strong>Context</strong>:</p>
+<li><p><strong>Time to repair</strong>: 1h 37m</p></li>
+<li><p><strong>Time to resolve</strong>: 2d 1h 29m</p></li>
+<li><p><strong>Identified</strong>: User reported outages on production services</p></li>
+<li><p><strong>Impact</strong>: User workloads were disrupted, causing outages on production services.</p></li>
+<li><p><strong>Context</strong>:
+2025-03-18 09:36: Users reported that their pods were getting terminated and not automatically restarting in both production and non-production environments.</p></li>
+</ul>
+<p>2025-03-18 09:50: Cloud Platform team began investigating the root cause.
+2025-03-18 10:03: Cloud Platform team declared this as an incident.
+2025-03-18 10:15: Initial mitigation efforts began:
+Removed the cordon annotation to allow pods to be rescheduled.
+Deleted some stuck 1.30 version nodes to force recreation.
+2025-03-18 10:40: Pods began recovering, and services were operational.
+2025-03-18 11:13: Raised AWS Production system down Support Ticket (Case ID: 174229643100496).
+2025-03-18 11:34: A new node group with 20 nodes running version 1.30 was added to the live cluster to stabilize workloads and ensure redundancy.
+2025-03-18 11:50: Began cordoning all the old 1.29 nodes to facilitate a smoother upgrade transition and ensure workload stability.
+2025-03-18 12:10: Began draining the old 1.29 nodes to gracefully migrate workloads to the new 1.30 nodes.
+2025-03-18 16:16: All nodes were running version 1.30. The upgrade had been successfully completed on AWS.
+2025-03-18 16:28: Cloud Platform team informed users that all nodes are now running version 1.30 and that cleanup work will be performed on 2025-03-19 morning. The incident will remain open until all cleanup tasks are completed.
+2025-03-20 12:09: The Team Confirmed the incident was resolved and all cleanup tasks were completed.</p>
 
 <ul>
-<li>2023-11-01 10:15: PagerDuty High Priority alert from Pingdom that Prometheus - live healthcheck is DOWN. Team acknowledged and checked the state of the Prometheus server.</li>
-<li>2023-11-01 10:41: PagerDuty for Prometheus alerted 3rd time in a row in just few minutes interval. Incident declared</li>
-<li>2023-11-01 10:41: Prometheus pod has restarted and the prometheus container is starting</li>
-<li>2023-11-01 10:41: Prometheus logs shows there are numerous Evaluation rule failed</li>
-<li>2023-11-01 10:41: Events in monitoring namespace recorded Readiness Probe failed for Prometheus</li>
-<li>2023-11-01 12:35: Team enabled debug log level for prometheus to understand the issue</li>
-<li>2023-11-03 16:01: After investigating the logs, team found that one possible root cause might be the readiness Probe failure prior to the restart of prometheus. Hence team increased the readiness probe timeout</li>
-<li>2023-11-03 16:01: Incident repaired and resolved.</li>
-</ul></li>
 <li><p><strong>Resolution</strong>:</p>
 
 <ul>
-<li>Team identified that the readiness probe was failing and the prometheus was restarted.</li>
-<li>Increased the readiness probe timeout from 3 to 6 seconds to avoid the restart of prometheus</li>
+<li>To mitigate the issue and restore normal operations, the team first removed the cordon annotation to allow pods to be rescheduled</li>
+<li>Add a new node group with 20 nodes running version 1.30 was deployed manually, ensuring redundancy and workload distribution.</li>
+<li>The team cordoned all old 1.29 nodes to facilitate a smooth transition and prevent scheduling issues.</li>
+<li>Finally, the team drained all old 1.29 nodes, gracefully migrating workloads to the newly added 1.30 nodes.</li>
 </ul></li>
 <li><p><strong>Review actions</strong>:</p>
 
 <ul>
-<li>Team discussed about having closer inspection and try to identify these kind of failures earlier</li>
-<li>Investigate if the ingestion of data to the database too big or long</li>
-<li>Is executing some queries make prometheus work harder and stop responding to the readiness probe</li>
-<li>Any other services which is probing prometheus that triggers the restart</li>
-<li>Is taking regular velero backups distrub the ebs read/write and cause the restart</li>
+<li>The team then raised an AWS Production System Down Support Ticket to escalate the issue and seek further guidance (Case ID: 174229643100496).</li>
+<li>Document a runbook for emergency scaling of a new node group to ensure quick recovery in case of unexpected capacity shortages.</li>
+<li>Create a ticket to alert on ASG and Kube nodes imbalance</li>
+<li>Spike a ticket into desheduler to review the configuration to understand why it is throwing pods off Cordon nodes and apply a fix where possible</li>
+<li>Create a ticket for alert on pending pod count spikes</li>
+<li>Got guidance from AWS support to ensure that the team is aware of how to query control-plane logs to identify the root cause of similar issues in the future.</li>
 </ul></li>
 </ul>
 
@@ -1814,8 +1823,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/incidents/2023-11-01-prometheus-restarted.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Incident+on+2023-11-01+-+Prometheus+restarted+several+times+which+resulted+in+missing+metrics%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fincidents%2F2023-11-01-prometheus-restarted.html%29&amp;labels=bug&amp;title=Re%3A+%27Incident+on+2023-11-01+-+Prometheus+restarted+several+times+which+resulted+in+missing+metrics%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/incidents/2025-03-18-aws-eks-upgrade-to-1-30.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Incident+on+2025-03-18+-+AWS+EKS+Upgrade+to+1.30+Desheduler+kill+pods+on+Cordon+Nodes%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fincidents%2F2025-03-18-aws-eks-upgrade-to-1-30.html%29&amp;labels=bug&amp;title=Re%3A+%27Incident+on+2025-03-18+-+AWS+EKS+Upgrade+to+1.30+Desheduler+kill+pods+on+Cordon+Nodes%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
