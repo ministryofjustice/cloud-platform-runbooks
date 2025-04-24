@@ -1807,7 +1807,11 @@ Please check the changelogs for the terraform-aws-eks module, the EKS version an
 </ul>
 <h2 id="creating-cluster-upgrade-github-issues">Creating Cluster Upgrade GitHub Issues</h2>
 <p>In order to help maintain a clear process for steps to follow in carrying out a cluster upgrade, we have an <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/ISSUE_TEMPLATE/cloud-platform-k8s-upgrade-template.md">issue template</a> which is used by <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/cmd/create-upgrade-issues/main.go">this script</a> to create individual issues for each step of the upgrade process. As you work through these issues, its helpful to review and update the template where necessary to ensure it remains relevant for future upgrades.</p>
-<h2 id="upgrade-steps">Upgrade Steps</h2>
+<p>steps:
+1. create a new issue in the <a href="https://github.com/ministryofjustice/cloud-platform/issues/new?template=cloud-platform-k8s-upgrade-template.md">cloud-platform</a> repository using the template
+2. run the script to create the upgrade issues remember to get the Cloud Platform Actions application Private Key, App ID and Installation ID these can be found in 1Password and in the <code>cloud-platform-actions</code> application settings.</p>
+<div class="highlight"><pre class="highlight shell" tabindex="0"><code>go run main.go <span class="nt">--issue</span> &lt;template issue number&gt; <span class="nt">--upgrade-version</span> &lt;version&gt;
+</code></pre></div><h2 id="upgrade-steps">Upgrade Steps</h2>
 <h3 id="compatibility-check">Compatibility Check</h3>
 <p>The following areas need to be looked into to determine if there&rsquo;s any additional preparation work to do:</p>
 
