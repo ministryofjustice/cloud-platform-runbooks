@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Creating a live-like Cluster - Cloud Platform Runbooks</title>
+    <title>Identifying and Managing Untagged AWS Resources - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/creating-a-live-like.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/finops-tagging.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Creating a live-like Cluster - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/creating-a-live-like.html" />
+      <meta name="twitter:title" content="Identifying and Managing Untagged AWS Resources - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/finops-tagging.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Creating a live-like Cluster" />
+      <meta property="og:title" content="Identifying and Managing Untagged AWS Resources" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/creating-a-live-like.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/finops-tagging.html" />
 
     
   </head>
@@ -328,7 +328,7 @@
     <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
     <ul>
       <li>
-        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
+        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
         <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
@@ -354,7 +354,7 @@
             <a href="./upgrade-eks-cluster.html#preparing-for-upgrade"><span> Preparing for upgrade</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-steps-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
@@ -1224,7 +1224,7 @@
     <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
     <ul>
       <li>
-        <a href="./creating-a-live-like.html#pre-requisites"><span>Pre-requisites</span></a>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
         <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
@@ -1236,7 +1236,7 @@
         <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
       </li>
       <li>
-        <a href="./creating-a-live-like.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
       </li>
       <li>
         <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
@@ -1388,7 +1388,7 @@
     <a href="./eks-node-terminal-access.html"><span>Terminal access to EKS managed nodes</span></a>
     <ul>
       <li>
-        <a href="./eks-node-terminal-access.html#overview"><span>Overview</span></a>
+        <a href="./eks-node-terminal-access.html#terminal-access-to-eks-managed-nodes-overview"><span>Overview</span></a>
       </li>
       <li>
         <a href="./eks-node-terminal-access.html#terminal-access-to-eks-managed-nodes-pre-requisites"><span>Pre-requisites</span></a>
@@ -1702,7 +1702,7 @@
     <a href="./finops-tagging.html"><span>Identifying and Managing Untagged AWS Resources</span></a>
     <ul>
       <li>
-        <a href="./finops-tagging.html#identifying-and-managing-untagged-aws-resources-overview"><span>Overview</span></a>
+        <a href="./finops-tagging.html#overview"><span>Overview</span></a>
       </li>
       <li>
         <a href="./finops-tagging.html#step-by-step-process"><span>Step-by-Step Process</span></a>
@@ -1806,112 +1806,114 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="creating-a-live-like-cluster">Creating a live-like cluster</h1>
-<p>When testing cluster upgrades, it is useful to test the procedure which is as close to the live cluster as possible. The following steps will update an existing test cluster
-to the configuration similar to the live cluster.</p>
-<h2 id="pre-requisites">Pre-requisites</h2>
+            <h1 id="identifying-and-managing-untagged-aws-resources">Identifying and Managing Untagged AWS Resources</h1>
+<h2 id="overview">Overview</h2>
+<p>In our AWS account, some resources are missing the mandatory <code>business-unit</code> tag. These untagged resources contribute to unallocated spend, which can be identified using AWS Cost Explorer.</p>
+<p>You can refer to the <a href="https://us-east-1.console.aws.amazon.com/costmanagement/home#/cost-explorer?chartStyle=GROUP&amp;costAggregate=netUnblendedCost&amp;endDate=2025-02-28&amp;excludeForecasting=false&amp;filter=%5B%7B%22dimension%22:%7B%22id%22:%22TagKey%22,%22displayValue%22:%22Tag%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22%22,%22displayValue%22:%22No%20tag%20key:%20business-unit%22%7D%5D,%22growableValue%22:%7B%22value%22:%22business-unit%22,%22displayValue%22:%22business-unit%22%7D%7D,%7B%22dimension%22:%7B%22id%22:%22Service%22,%22displayValue%22:%22Service%22%7D,%22operator%22:%22EXCLUDES%22,%22values%22:%5B%7B%22value%22:%22Tax%22,%22displayValue%22:%22Tax%22%7D,%7B%22value%22:%22Savings%20Plans%20for%20AWS%20Compute%20usage%22,%22displayValue%22:%22Savings%20Plans%20for%20%20Compute%20usage%22%7D,%7B%22value%22:%22AWS%20Support%20(Enterprise)%22,%22displayValue%22:%22Support%20(Enterprise)%22%7D%5D%7D,%7B%22dimension%22:%7B%22id%22:%22CostCategoryName%22,%22displayValue%22:%22Cost%20category%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%5D,%22growableValue%22:%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%7D%5D&amp;futureRelativeRange=CUSTOM&amp;granularity=Monthly&amp;groupBy=%5B%22Service%22%5D&amp;historicalRelativeRange=CUSTOM&amp;reportName=New%20cost%20and%20usage%20report&amp;showOnlyUncategorized=false&amp;showOnlyUntagged=false&amp;startDate=2025-02-01&amp;usageAggregate=undefined&amp;useNormalizedUnits=false">Cost Explorer report</a> to view untagged spend based on missing <code>business-unit</code> tags. (You can adjust the date range in the report as needed.)</p>
+<p>To maintain accurate cost allocation, we need to identify and tag these resources wherever possible.</p>
+<p>Refer to the <a href="https://technical-guidance.service.justice.gov.uk/documentation/standards/documenting-infrastructure-owners.html">MoJ Technical Guidance on tagging requirements</a> for more information.</p>
+
+<blockquote>
+<p>Note: Missing mandatory tagging can sometimes be case by case, depending on the resource and its ownership. This runbook serves as a general guideline for approaching untagged resources.</p>
+</blockquote>
+<h2 id="step-by-step-process">Step-by-Step Process</h2>
+<h3 id="1-identify-untagged-resources-by-type">1. Identify untagged resources by type</h3>
+<p>We handle each resource type individually based on the &ldquo;Service&rdquo; field in the Cost Explorer report (e.g. ECR, RDS, S3, CloudWatch, etc.).</p>
 
 <ul>
-<li>a test cluster created using the <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/create-cluster">cluster build pipeline</a> or manually</li>
-</ul>
-<h2 id="setting-cluster-size-to-match-live">Setting cluster size to match Live</h2>
-
-<ol>
-<li>Set the node group desired size to 60 (check the live cluster for up-to-date number) in the AWS console under Compute</li>
-<li>Set the node_groups_count to same as live cluster (60) and default_ng_min_count to 60 in <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf">terraform/aws-accounts/cloud-platform-aws/vpc/eks/cluster.tf</a></li>
-<li>Copy the node_size values from live to default, currently <code>[&quot;r6i.2xlarge&quot;, &quot;r6i.xlarge&quot;, &quot;r5.2xlarge&quot;]</code></li>
-<li>Copy the monitoring_node_size values from live to default, currently <code>[&quot;r6i.8xlarge&quot;, &quot;r5a.2xlarge&quot;]</code></li>
-<li>Ensure that your Terraform workspace matches your cluster name</li>
-<li>Run <code>terraform plan</code> and confirm that your changes are correct</li>
-<li>Run <code>terraform apply</code> to apply the changes to your test cluster</li>
-</ol>
-<h2 id="installing-live-components-and-test-applications">Installing live components and test applications</h2>
-
-<ol>
-<li>In <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components">terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components</a> enable the following components:
+<li>Use the AWS Tag Editor to filter for resources missing the <code>business-unit</code> tag.
 
 <ul>
-<li>cluster_autoscaler</li>
-<li>large_nodegroup</li>
-<li>kibana_proxy</li>
-<li>ecr_exporter</li>
-<li>cloudwatch_exporter</li>
-<li>velero</li>
+<li>Example query: <a href="https://eu-west-2.console.aws.amazon.com/resource-groups/tag-editor/find-resources?region=eu-west-2#query=regions:!%28eu-west-2,eu-west-1%29,resourceTypes:!%28%27AWS::KMS::Key%27%29,tagFilters:!%28%28key:business-unit,values:!%28%27%28not%20tagged%29%27%29%29%29,type:TAG_EDITOR_1_0">Tag Editor Search</a></li>
 </ul></li>
-</ol>
-
-<blockquote>
-<p>To find components that are enabled in live but not in test you can search for <code>lookup(local.live_workspace, terraform.workspace, false)</code> in <code>components.tf</code>.</p>
-</blockquote>
-
-<ol>
-<li>Add the <code>starter_pack_count = 40</code> variable to the starter_pack module</li>
-</ol>
-
-<blockquote>
-<p>Sometimes terraform will error out with an unclear error message. This is usually due to a low default <code>ulimit</code>. To fix this, you can set <code>ulimit -n 2048</code></p>
-</blockquote>
-
-<ol>
-<li>Run <code>terraform plan</code> and confirm that your changes are correct</li>
-<li>Run <code>terraform apply</code> to apply the changes to your test cluster</li>
-<li>You may need to run <code>plan</code> and <code>apply</code> again as the starter pack addons don&rsquo;t like to be installed all at once</li>
-</ol>
-<h2 id="upgrading-a-live-like-test-cluster">Upgrading a live-like test cluster</h2>
-<p>See documentation for upgrading a <a href="upgrade-eks-cluster.html">cluster</a>.</p>
-<h2 id="monitoring-the-upgrade">Monitoring the upgrade</h2>
-
-<ul>
-<li>Setup pingdom alerts for starter-pack helloworld and multi-container app</li>
+<li>Search by region and resource type.</li>
+<li>This will help identify which resources are missing required tags.</li>
 </ul>
 
 <blockquote>
-<p>When nodes recycle, it&rsquo;s possible that the multi-container app will break giving false positives.</p>
+<p>Note: While we primarily use the <code>eu-west-2</code> region, some resources may be deployed in <code>eu-west-1</code> or even in US regions. Always check carefully across regions to ensure no untagged resources are missed.</p>
 </blockquote>
+<p>Once identified:</p>
 
 <ul>
-<li><p>Useful command liners</p>
+<li>Determine whether the resource belongs to us or to a user.</li>
+<li>If it belongs to us, update the relevant Terraform code to apply the missing tag.
 
 <ul>
-<li><code>watch -n 1 &quot;kubectl get events&quot;</code> - get all Kubernetes events</li>
-<li><code>watch -n 1 &quot;kubectl get pods -A | grep ContainerStatusUnknown&quot;</code> - get all containers in &ldquo;ContainerStatusUnknown&rdquo; state</li>
-<li><code>watch -n 1 &quot;kubectl get pods -A | grep Error&quot;</code> - get all containers in &ldquo;Error&rdquo; state</li>
-<li><code>watch -n 1 &quot;kubectl get nodes --sort-by=\&quot;.metadata.creationTimestamp\&quot;&quot;</code> - get all nodes and sort by create timestamp</li>
+<li>(<a href="https://github.com/ministryofjustice/cloud-platform/issues/6957">Example ticket here</a>)</li>
 </ul></li>
-<li><p>Useful third party tools</p>
+<li>If it belongs to a user, contact them and ask them to add the required tag.</li>
+<li>In some cases, the tag might be missing in our Terraform modules.
 
 <ul>
-<li><a href="https://k9scli.io/">K9s</a></li>
-<li><a href="https://github.com/stern/stern">Stern</a></li>
+<li>If so, update the module, test it, and bump the module in the <code>cloud-platform-environment</code> repository.</li>
+<li>(<a href="https://github.com/ministryofjustice/cloud-platform/issues/6965">Example ticket here</a>)</li>
 </ul></li>
 </ul>
-<p>You may refer to <a href="monitor-eks-cluster.html">Monitor EKS Cluster</a> section for more details.</p>
-<h2 id="final-tests">Final Tests</h2>
+<h3 id="2-investigate-services-not-visible-in-tag-editor">2. Investigate services not visible in Tag Editor</h3>
+<p>Some services do not appear in Tag Editor (e.g. Amazon Kendra). In such cases:</p>
 
-<ol>
-<li>Run <code>make run-tests</code> from the root cloud-platform-infrastructure repository</li>
-<li>Update <code>cluster.tf</code> <code>cluster_version</code> to match version upgraded to</li>
-<li>Run <code>terraform plan</code> to ensure there are no unexpected changes</li>
-<li>Go to <code>component</code> layer and scale up and down the <code>starter_pack</code> module to ensure <code>terraform apply</code> can run smoothly</li>
-</ol>
-<h2 id="tearing-down">Tearing down</h2>
+<ul>
+<li>Navigate to the service directly in the AWS Console.</li>
+<li>Manually check each resource to confirm whether the <code>business-unit</code> tag is present.</li>
+<li>Determine ownership (ours or the user&rsquo;s).</li>
+<li>Either update the code or contact the user to apply the tag.
 
-<ol>
-<li>Run the delete cluster pipeline</li>
-<li>Remove pingdom checks</li>
-</ol>
+<ul>
+<li>(<a href="https://github.com/ministryofjustice/cloud-platform/issues/6970">Example ticket here</a>)</li>
+</ul></li>
+</ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-10-16">
+<blockquote>
+<p>Note: These services may also be deployed outside our primary <code>eu-west-2</code> region. Be sure to check other regions such as eu-west-1 or even US regions if needed.</p>
+</blockquote>
+<h3 id="3-exceptions-organisation-level-resources">3. Exceptions – organisation-level resources</h3>
+<p>Some AWS services are inherited from the organisation level and not created directly in our account, so we cannot tag them manually.</p>
+<p>Examples include:</p>
+
+<ul>
+<li>Detective</li>
+<li>GuardDuty</li>
+<li>Inspector</li>
+<li>Config</li>
+<li>Security Hub</li>
+<li>Cost Explorer</li>
+</ul>
+<p>These can remain untagged for now, as they are managed and tagged at the organisation level.</p>
+<h3 id="4-verifying-the-change">4. Verifying the Change</h3>
+<p>Once tagging changes have been applied, you can verify them in two ways and focus your checks on the service which you took action:</p>
+
+<ul>
+<li><p>Via Cost Explorer:</p>
+
+<ul>
+<li>Use the same <a href="https://us-east-1.console.aws.amazon.com/costmanagement/home#/cost-explorer?chartStyle=GROUP&amp;costAggregate=netUnblendedCost&amp;endDate=2025-02-28&amp;excludeForecasting=false&amp;filter=%5B%7B%22dimension%22:%7B%22id%22:%22TagKey%22,%22displayValue%22:%22Tag%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22%22,%22displayValue%22:%22No%20tag%20key:%20business-unit%22%7D%5D,%22growableValue%22:%7B%22value%22:%22business-unit%22,%22displayValue%22:%22business-unit%22%7D%7D,%7B%22dimension%22:%7B%22id%22:%22Service%22,%22displayValue%22:%22Service%22%7D,%22operator%22:%22EXCLUDES%22,%22values%22:%5B%7B%22value%22:%22Tax%22,%22displayValue%22:%22Tax%22%7D,%7B%22value%22:%22Savings%20Plans%20for%20AWS%20Compute%20usage%22,%22displayValue%22:%22Savings%20Plans%20for%20%20Compute%20usage%22%7D,%7B%22value%22:%22AWS%20Support%20(Enterprise)%22,%22displayValue%22:%22Support%20(Enterprise)%22%7D%5D%7D,%7B%22dimension%22:%7B%22id%22:%22CostCategoryName%22,%22displayValue%22:%22Cost%20category%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%5D,%22growableValue%22:%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%7D%5D&amp;futureRelativeRange=CUSTOM&amp;granularity=Monthly&amp;groupBy=%5B%22Service%22%5D&amp;historicalRelativeRange=CUSTOM&amp;reportName=New%20cost%20and%20usage%20report&amp;showOnlyUncategorized=false&amp;showOnlyUntagged=false&amp;startDate=2025-02-01&amp;usageAggregate=undefined&amp;useNormalizedUnits=false">Cost Explorer report</a> to confirm that the change has taken effect — the untagged cost for that service should now be reduced or even drop to zero.</li>
+<li>When a tag is applied during the day, the cost for that day would be split between tagged and untagged entries.</li>
+<li>For a clearer view of the impact, check the Cost Explorer report <strong>two days after</strong> the change.
+
+<ul>
+<li>For example, if the tag was applied on Monday, check the report on <strong>Wednesday</strong> to see the full charges for <strong>Tuesday</strong>.</li>
+</ul></li>
+</ul></li>
+<li><p>Via Tag Editor:</p>
+
+<ul>
+<li>Return to the AWS Tag Editor and filter by region and resource type to confirm that the <code>business-unit</code> tag has been applied. This helps ensure that the resource is now properly tagged and visible in your tagging reports.</li>
+</ul></li>
+</ul>
+<p>If untagged cost remains in Cost Explorer, or resources are still showing as untagged in Tag Editor, repeat steps <strong>1–2</strong>: re-check the tagging, investigate ownership, and take appropriate action — such as fixing Terraform code, manually applying the missing tag, or contacting the responsible team — then verify again.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2025-11-06">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 16 April 2025.
+      This page was last reviewed on 6 May 2025.
 
-        It needs to be reviewed again on 16 October 2025
+        It needs to be reviewed again on 6 November 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 16 October 2025
+      This page was set to be reviewed before 6 November 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1921,8 +1923,8 @@ to the configuration similar to the live cluster.</p>
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/creating-a-live-like.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Creating+a+live-like+Cluster%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fcreating-a-live-like.html%29&amp;labels=bug&amp;title=Re%3A+%27Creating+a+live-like+Cluster%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/finops-tagging.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Identifying+and+Managing+Untagged+AWS+Resources%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Ffinops-tagging.html%29&amp;labels=bug&amp;title=Re%3A+%27Identifying+and+Managing+Untagged+AWS+Resources%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
