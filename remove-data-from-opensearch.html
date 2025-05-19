@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Remove data from Elasticsearch - Cloud Platform Runbooks</title>
+    <title>Remove data from OpenSearch - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-opensearch.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Remove data from Elasticsearch - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html" />
+      <meta name="twitter:title" content="Remove data from OpenSearch - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-opensearch.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Remove data from Elasticsearch" />
+      <meta property="og:title" content="Remove data from OpenSearch" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-elasticsearch.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/remove-data-from-opensearch.html" />
 
     
   </head>
@@ -195,13 +195,13 @@
 <li><a href="./incidents/index.html"><span>Incident Log</span></a>
 <ul>
   <li>
-    <a href="./incidents/2024-09-20-eks-subnet-route-table.html"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
-  </li>
-  <li>
     <a href="./incidents/2025-01-13-auth0-credentials.html"><span>Incident on 2025-01-13 - Auth0 Terraform provider credentials exposed</span></a>
   </li>
   <li>
     <a href="./incidents/2025-03-18-aws-eks-upgrade-to-1-30.html"><span>Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes</span></a>
+  </li>
+  <li>
+    <a href="./incidents/2024-09-20-eks-subnet-route-table.html"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
   </li>
   <li>
     <a href="./incidents/2024-07-25-elasticsearch-logging.html"><span>Incident on 2024-07-25 Elasticsearch no longer receiving logs</span></a>
@@ -305,6 +305,17 @@
 </ul>
 </li>
   <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -325,13 +336,43 @@
     </ul>
   </li>
   <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
     <ul>
       <li>
-        <a href="./add-concourse-to-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-eks-addons.html"><span>Upgrade EKS addons</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-eks-addons.html#listing-available-eks-upgrades"><span>Listing available EKS upgrades</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-eks-addons.html#eksctl-install"><span>eksctl Install</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./upgrade-eks-addons.html#preparing-for-upgrade"><span>Preparing for upgrade</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-addons.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
       </li>
     </ul>
   </li>
@@ -345,19 +386,19 @@
         <a href="./upgrade-eks-cluster.html#creating-cluster-upgrade-github-issues"><span>Creating Cluster Upgrade GitHub Issues</span></a>
       </li>
       <li>
-        <a href="./upgrade-eks-cluster.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps"><span>Upgrade Steps</span></a>
         <ul>
           <li>
             <a href="./upgrade-eks-cluster.html#compatibility-check"><span>Compatibility Check</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#preparing-for-upgrade"><span> Preparing for upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps-preparing-for-upgrade"><span> Preparing for upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps-starting-the-upgrade"><span>Starting the upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#finishing-the-upgrade"><span>Finishing the upgrade</span></a>
@@ -374,47 +415,6 @@
   </li>
   <li>
     <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
-  </li>
-  <li>
-    <a href="./upgrade-eks-addons.html"><span>Upgrade EKS addons</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-eks-addons.html#listing-available-eks-upgrades"><span>Listing available EKS upgrades</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-eks-addons.html#eksctl-install"><span>eksctl Install</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="./upgrade-eks-addons.html#upgrade-eks-addons-preparing-for-upgrade"><span>Preparing for upgrade</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-addons.html#upgrade-eks-addons-starting-the-upgrade"><span>Starting the upgrade</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-upgrade-steps"><span>Upgrade Steps</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
   </li>
   <li>
     <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
@@ -597,9 +597,6 @@
     </ul>
   </li>
   <li>
-    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
-  </li>
-  <li>
     <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
     <ul>
       <li>
@@ -628,6 +625,9 @@
         </ul>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
   </li>
   <li>
     <a href="./add-nodes-to-the-eks-cluster.html"><span>Add nodes to the AWS EKS cluster</span></a>
@@ -976,6 +976,53 @@
     </ul>
   </li>
   <li>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./remove-data-from-opensearch.html"><span>Remove data from OpenSearch</span></a>
+    <ul>
+      <li>
+        <a href="./remove-data-from-opensearch.html#stop-the-breach-first"><span>Stop the breach first</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#things-to-know"><span>Things to know</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#get-yourself-access"><span>Get yourself access</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#build-your-query"><span>Build your query</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#delete-by-query"><span>Delete by query</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#the-below-section-requires-a-rewrite-for-opensearch"><span>—– THE BELOW SECTION REQUIRES A REWRITE FOR OPENSEARCH —–</span></a>
+        <ul>
+          <li>
+            <a href="./remove-data-from-opensearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./rds-snapshots.html"><span>RDS Snapshots</span></a>
     <ul>
       <li>
@@ -1053,42 +1100,6 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./remove-data-from-elasticsearch.html"><span>Remove data from Elasticsearch</span></a>
-    <ul>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#stop-the-breach-first"><span>Stop the breach first</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#things-to-know"><span>Things to know</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#get-yourself-access"><span>Get yourself access</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#build-your-query"><span>Build your query</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#delete-by-query"><span>Delete by query</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
-        <ul>
-          <li>
-            <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./resolve-opensearch-shard-issues.html"><span>Open search best practices</span></a>
     <ul>
       <li>
@@ -1109,14 +1120,6 @@
             <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
       </li>
     </ul>
   </li>
@@ -1331,18 +1334,16 @@
     </ul>
   </li>
   <li>
-    <a href="./access-eks-cluster.html"><span>Access EKS cluster</span></a>
+    <a href="./create-custom-cluster.html"><span>Create custom cluster</span></a>
     <ul>
       <li>
-        <a href="./access-eks-cluster.html#access-eks-cluster-pre-requisites"><span>Pre-requisites</span></a>
-        <ul>
-          <li>
-            <a href="./access-eks-cluster.html#create-kubeconfig-using-aws-command"><span>Create kubeconfig using aws command</span></a>
-          </li>
-          <li>
-            <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
-          </li>
-        </ul>
+        <a href="./create-custom-cluster.html#deleting-your-custom-cluster"><span>Deleting your custom cluster</span></a>
+      </li>
+      <li>
+        <a href="./create-custom-cluster.html#rerunning-stages-in-the-create-custom-cluster-pipeline"><span> Rerunning stages in the create custom cluster pipeline</span></a>
+      </li>
+      <li>
+        <a href="./create-custom-cluster.html#run-integration-tests-against-custom-cluster"><span>Run integration tests against custom cluster</span></a>
       </li>
     </ul>
   </li>
@@ -1363,16 +1364,18 @@
     </ul>
   </li>
   <li>
-    <a href="./create-custom-cluster.html"><span>Create custom cluster</span></a>
+    <a href="./access-eks-cluster.html"><span>Access EKS cluster</span></a>
     <ul>
       <li>
-        <a href="./create-custom-cluster.html#deleting-your-custom-cluster"><span>Deleting your custom cluster</span></a>
-      </li>
-      <li>
-        <a href="./create-custom-cluster.html#rerunning-stages-in-the-create-custom-cluster-pipeline"><span> Rerunning stages in the create custom cluster pipeline</span></a>
-      </li>
-      <li>
-        <a href="./create-custom-cluster.html#run-integration-tests-against-custom-cluster"><span>Run integration tests against custom cluster</span></a>
+        <a href="./access-eks-cluster.html#access-eks-cluster-pre-requisites"><span>Pre-requisites</span></a>
+        <ul>
+          <li>
+            <a href="./access-eks-cluster.html#create-kubeconfig-using-aws-command"><span>Create kubeconfig using aws command</span></a>
+          </li>
+          <li>
+            <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1405,29 +1408,6 @@
     </ul>
   </li>
   <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
-  </li>
-  <li>
-    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
-    <ul>
-      <li>
-        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#access"><span>Access</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
     <ul>
       <li>
@@ -1454,6 +1434,9 @@
         <a href="./custom-default-backend.html#serve-all-errors-from-your-custom-default-backend"><span>Serve all errors from your custom default backend</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
   </li>
   <li>
     <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
@@ -1484,24 +1467,22 @@
     </ul>
   </li>
   <li>
-    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
+    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
-        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
-        <ul>
-          <li>
-            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
-          </li>
-        </ul>
+        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
       </li>
       <li>
-        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
+        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
+      </li>
+      <li>
+        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
+      </li>
+      <li>
+        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
+      </li>
+      <li>
+        <a href="./joiners-guide.html#access"><span>Access</span></a>
       </li>
     </ul>
   </li>
@@ -1553,6 +1534,28 @@
       </li>
       <li>
         <a href="./block-public-ip-address.html#adding-deny-rules-to-the-public-network-acl"><span>Adding deny rules to the public network ACL</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
+    <ul>
+      <li>
+        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
+        <ul>
+          <li>
+            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
       </li>
     </ul>
   </li>
@@ -1699,6 +1702,47 @@
     </ul>
   </li>
   <li>
+    <a href="./elasticsearch-storage-issues.html"><span>OpenSearch Storage Issues</span></a>
+    <ul>
+      <li>
+        <a href="./elasticsearch-storage-issues.html#hot-warm-node-parity"><span>Hot/Warm Node Parity</span></a>
+      </li>
+      <li>
+        <a href="./elasticsearch-storage-issues.html#manually-migrating-failed-indexes"><span>Manually migrating failed indexes</span></a>
+      </li>
+      <li>
+        <a href="./elasticsearch-storage-issues.html#opensearch-storage-issues-further-reading"><span>Further Reading</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./cert-manager-errors.html"><span>How to Investigate cert-manager Errors</span></a>
+    <ul>
+      <li>
+        <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting"><span>Troubleshooting</span></a>
+        <ul>
+          <li>
+            <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting-invalid-change-batch"><span>Invalid Change Batch</span></a>
+          </li>
+          <li>
+            <a href="./cert-manager-errors.html#current-fix"><span>Current fix</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./finops-tagging.html"><span>Identifying and Managing Untagged AWS Resources</span></a>
     <ul>
       <li>
@@ -1756,47 +1800,6 @@
       </li>
     </ul>
   </li>
-  <li>
-    <a href="./cert-manager-errors.html"><span>How to Investigate cert-manager Errors</span></a>
-    <ul>
-      <li>
-        <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting"><span>Troubleshooting</span></a>
-        <ul>
-          <li>
-            <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting-invalid-change-batch"><span>Invalid Change Batch</span></a>
-          </li>
-          <li>
-            <a href="./cert-manager-errors.html#current-fix"><span>Current fix</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./elasticsearch-storage-issues.html"><span>OpenSearch Storage Issues</span></a>
-    <ul>
-      <li>
-        <a href="./elasticsearch-storage-issues.html#hot-warm-node-parity"><span>Hot/Warm Node Parity</span></a>
-      </li>
-      <li>
-        <a href="./elasticsearch-storage-issues.html#manually-migrating-failed-indexes"><span>Manually migrating failed indexes</span></a>
-      </li>
-      <li>
-        <a href="./elasticsearch-storage-issues.html#opensearch-storage-issues-further-reading"><span>Further Reading</span></a>
-      </li>
-    </ul>
-  </li>
 </ul>
 
 
@@ -1806,47 +1809,29 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="remove-data-from-elasticsearch">Remove data from Elasticsearch</h1>
-<p>This runbook aims to guide you through purging specific logs/data from Elasticsearch.</p>
-<p>Let&rsquo;s assume in this guide that we are trying to delete all logs of the  <code>my-namespace-production</code> namespace, from the 01/02/2022</p>
+            <h1 id="remove-data-from-opensearch">Remove data from OpenSearch</h1>
+<p>This runbook aims to guide you through purging specific logs/data from OpenSearch.</p>
+<p>Let&rsquo;s assume in this guide that we are trying to delete all logs of the  <code>my-namespace-production</code> namespace, from the 01/02/2025.</p>
 <h2 id="stop-the-breach-first">Stop the breach first</h2>
-<p>If you&rsquo;re removing data from Elasticsearch, this is presumably because sensitive information has been logged by mistake.
+<p>If you&rsquo;re removing data from OpenSearch, this is presumably because sensitive information has been logged by mistake.
 Please ensure that the underlying problem has been fixed, and no more sensitive data is going to be logged by the same
 application, before spending time removing what&rsquo;s already there.</p>
 <h2 id="things-to-know">Things to know</h2>
 <p>An important thing to understand is the difference between an index and a document.
 An index contains documents. In our case, documents are log entries.</p>
-<p>The current logging strategy is to have one index per day, containing all the daily logs.
-All application logs are sent to that daily index, ex:  <code>kubernetes_cluster-2021.02.01</code>
-If you want your query to cover all log data stored in the Elasticsearch cluster, you can use an expression like <code>kubernetes_cluster-2*</code></p>
+<p>The current logging strategy is to have one index per day, containing all the daily logs.</p>
+<p>All application logs are sent to that daily index, ex:  <code>live_kubernetes_cluster-2025.02.01</code>.</p>
+<p>If you want your query to cover all log data stored in the OpenSearch cluster, you can use an expression like <code>live_kubernetes_cluster-2*</code>.</p>
 <p>Although it is possible to delete a whole index with a curator job, this guide will only cover the deletion of specific documents.</p>
-
-<blockquote>
-<p>Running <code>curl</code> queries has to be done from within the live-1 VPC</p>
-</blockquote>
 <h2 id="get-yourself-access">Get yourself access</h2>
-<p>Since https://github.com/ministryofjustice/cloud-platform-infrastructure/pull/1852, <code>delete</code> operations are blocked, to enable temporarily for this operation, add your IP to the &ldquo;Security configuration&rdquo; policy, eg</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "*"
-      },
-      "Action": "es:*",
-      "Resource": "arn:aws:es:eu-west-2:123456789012:domain/cloud-platform-live/*",
-      "Condition": {
-        "IpAddress": {
-          "aws:SourceIp": "1.2.3.4"
-        }
-      }
-    }
-</code></pre></div><p>then, access Kibana from the direct link not via the OIDC proxy.</p>
+<p>Cloud Platform team members have access to the required IAM permissions to carry out the following commands from work devices. You&rsquo;ll just need to authenticate as usual with <code>aws sso login</code>.</p>
+<p>We&rsquo;ll be making use of <code>curl</code> and <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html">AWS Sigv4</a> to authenticate our requests to OpenSearch. You can take a look at this <a href="https://code.dblock.org/2022/07/11/making-sigv4-authenticated-requests-to-managed-opensearch.html">guide</a> on how to build <code>curl</code> requests. Alternatively, you can install <a href="https://formulae.brew.sh/formula/awscurl">awscurl</a>, which provides a wrapper around <code>curl</code> that handles the signing for you. We&rsquo;ll use this for snippets below.</p>
 <h2 id="build-your-query">Build your query</h2>
 <p>It is possible to reuse the body of a <code>search</code> query for a <code>delete</code> query.</p>
 <p>Therefore, if we narrow down a search query to exactly what we want to delete, we&rsquo;ve done most of the work.</p>
-<p>Kibana offers a <a href="https://kibana.cloud-platform.service.justice.gov.uk/_plugin/kibana/app/kibana#/dev_tools/console">webconsole</a> to test queries.</p>
+<p>OpenSearch offers a <a href="https://app-logs.cloud-platform.service.justice.gov.uk/_dashboards/app/dev_tools#/console">webconsole</a> to test queries.</p>
 <p>A standard query is :</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>GET /live_kubernetes_cluster-2022.02.01/_search
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>GET /live_kubernetes_cluster-2025.02.01/_search
 {
   "query": {
     "match": {
@@ -1856,99 +1841,106 @@ If you want your query to cover all log data stored in the Elasticsearch cluster
 }
 </code></pre></div>
 <blockquote>
-<p>Important note: <code>.keyword</code> forces elasticsearch to only return exact matches. Without it, you may end up deleting more than you wish</p>
+<p>Important note: <code>.keyword</code> forces OpenSearch to only return exact matches. Without it, you may end up deleting more than you wish</p>
 </blockquote>
-<p>As a <code>curl</code> command, the query above would translate to:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XGET "https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2022.02.01/_search" -H 'Content-Type: application/json' -d'
-{
-  "query": {
-    "match": {
-      "kubernetes.namespace_name.keyword": "my-namespace-production"
+<p>As an <code>awscurl</code> command, the query above would translate to:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>awscurl --service es \
+  --region eu-west-2 \
+  -XGET "https://search-cp-live-app-logs-jywwr7het3xzoh5t7ajar4ho3m.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2025.02.01/_search" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": {
+      "match": {
+        "kubernetes.namespace_name.keyword": "my-namespace-production"
+      }
     }
-  }
-}'
+  }'
 </code></pre></div><p>Once the result of the search query exactly fits what you want to delete, carry on to the next step.</p>
 <h2 id="delete-by-query">Delete by query</h2>
 <p>A <code>POST</code> request against the <code>_delete_by_query</code> endpoint will delete all documents matching the query in the request&rsquo;s body.</p>
 <p>If we want to delete all logs from the <code>my-namespace-production</code> from 01/02/2021:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>    curl -XPOST \
-        https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2022.02.01/_delete_by_query?pretty \
-        -H 'Content-Type: application/json' \
-        -d'{"query":{"match":{"kubernetes.namespace_name.keyword": "my-namespace-production"}}}'
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>awscurl --service es \
+  --region eu-west-2 \
+  -XPOST "https://search-cp-live-app-logs-jywwr7het3xzoh5t7ajar4ho3m.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2025.02.01/_delete_by_query" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": {
+      "match": {
+        "kubernetes.namespace_name.keyword": "my-namespace-production"
+      }
+    }
+  }'
 </code></pre></div><p>Here again, <code>.keyword</code> is essential.</p>
-
-<blockquote>
-<p>To run the <code>curl</code> commands, you can <code>exec</code> into any of the pods(eg. fluentd-es) inside the cluster. You may have to install <code>curl</code></p>
-</blockquote>
-<p>After executing the commands and removing the data, make sure to delete the pod as it will contain the search results of sensitve data
-you have queried using <code>curl</code>. A fluentd pod will be recreated automatically.</p>
 <h2 id="removing-specific-logs-filtered-by-phrase">Removing specific logs filtered by phrase</h2>
 <p>If you want to delete log entries which contain a certain phrase, you can use the queries below.</p>
 <p>Searching for the phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>
-curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2*/_search?pretty \
--H 'Content-Type: application/json' -d'
-{
-  "query": {
-    "bool": {
-      "must": [],
-      "filter": [
-        {
-          "multi_match": {
-            "type": "phrase",
-            "query": "What is your name?",
-            "lenient": true
-          }
-        },
-        {
-          "range": {
-            "@timestamp": {
-              "format": "strict_date_optional_time",
-              "gte": "2020-06-13T12:19:24.804Z",
-              "lte": "2020-07-14T15:19:24.804Z"
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>awscurl --service es \
+  --region eu-west-2 \
+  -XGET "https://search-cp-live-app-logs-jywwr7het3xzoh5t7ajar4ho3m.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2*/_search" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": {
+      "bool": {
+        "must": [],
+        "filter": [
+          {
+            "multi_match": {
+              "type": "phrase",
+              "query": "What is your name?",
+              "lenient": true
+            }
+          },
+          {
+            "range": {
+              "@timestamp": {
+                "format": "strict_date_optional_time",
+                "gte": "2025-03-13T12:19:24.804Z",
+                "lte": "2025-04-14T15:19:24.804Z"
+              }
             }
           }
-        }
-      ],
-      "should": [],
-      "must_not": []
+        ],
+        "should": [],
+        "must_not": []
+      }
     }
-  }
-}'
+  }'
 
-</code></pre></div><p>Deleting the log entries which have the phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>curl</code> command would look like this:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XPOST https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2*/_delete_by_query?pretty \
--H 'Content-Type: application/json' -d'
-{
-  "query": {
-    "bool": {
-      "must": [],
-      "filter": [
-        {
-          "multi_match": {
-            "type": "phrase",
-            "query": "What is your name?",
-            "lenient": true
-          }
-        },
-        {
-          "range": {
-            "@timestamp": {
-              "format": "strict_date_optional_time",
-              "gte": "2020-06-13T12:19:24.804Z",
-              "lte": "2020-07-14T15:19:24.804Z"
+</code></pre></div><p>Deleting the log entries which have the phrase &ldquo;What is your name?&rdquo; between certain dates, the <code>awscurl</code> command would look like this:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>awscurl --service es \
+  --region eu-west-2 \
+  -XPOST "https://search-cp-live-app-logs-jywwr7het3xzoh5t7ajar4ho3m.eu-west-2.es.amazonaws.com/live_kubernetes_cluster-2*/_delete_by_query" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": {
+      "bool": {
+        "must": [],
+        "filter": [
+          {
+            "multi_match": {
+              "type": "phrase",
+              "query": "What is your name?",
+              "lenient": true
+            }
+          },
+          {
+            "range": {
+              "@timestamp": {
+                "format": "strict_date_optional_time",
+                "gte": "2025-03-13T12:19:24.804Z",
+                "lte": "2025-04-14T15:19:24.804Z"
+              }
             }
           }
-        }
-      ],
-      "should": [],
-      "must_not": []
+        ],
+        "should": [],
+        "must_not": []
+      }
     }
-  }
-}'
+  }'
 
-</code></pre></div><p>If you have complex search patterns used in kibana which you want to delete,
- - narrow down the kibana search in the webconsole
+</code></pre></div><p>If you have complex search patterns used in OpenSearch which you want to delete,
+ - narrow down the search in the webconsole
  - click on &ldquo;Inspect&rdquo;
  - In the popup search window, click on the tab &ldquo;Request&rdquo;
  - Copy and paste the object which mentions <code>&quot;query&quot;: {</code> to the above curl command and modify dates as needed</p>
@@ -1956,6 +1948,7 @@ curl -XGET https://search-cloud-platform-live-dibidbfud3uww3lpxnhj2jdws4.eu-west
 <blockquote>
 <p>If you are searching for phrases which contain single-quote characters, those will need special handling when adding the phrases to the query</p>
 </blockquote>
+<h2 id="the-below-section-requires-a-rewrite-for-opensearch">&mdash;&ndash; THE BELOW SECTION REQUIRES A REWRITE FOR OPENSEARCH &mdash;&ndash;</h2>
 <h3 id="deleting-documents-stored-in-warm-storage">Deleting documents stored in warm storage</h3>
 <p>The documents can only be deleted from indices that are in hot storage. Currently past 14 days data are in hot storage.
 Once the indices are moved to warm/cold storage, you cannot delete particular documents as they are set as read-only.
@@ -1965,22 +1958,22 @@ You can move the indices from warm to hot storage and then delete the documents.
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>POST _ultrawarm/migration/live_kubernetes_ingress-2023.03.02/_hot
 </code></pre></div><p>This will move the index to hot storage. You can check the status of the migration using the following command</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>GET _ultrawarm/migration/live_kubernetes_ingress-2023.03.02
-</code></pre></div><p>Once the migration is complete, you can delete the documents using the procedure mentioned at the <a href="remove-data-from-elasticsearch.html#delete-by-query">beginning of this runbook</a>.</p>
+</code></pre></div><p>Once the migration is complete, you can delete the documents using the procedure mentioned at the <a href="remove-data-from-opensearch.html#delete-by-query">beginning of this runbook</a>.</p>
 <p>Once the documents are deleted, you can move the indices back to warm storage using the following command</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>POST _ultrawarm/migration/live_kubernetes_ingress-2023.03.02/_warm
 </code></pre></div><p><strong>NOTE:</strong> If you are planning to move a lot of warm indices to hot, make sure you have enough storage in hot storage.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-11-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2025-11-19">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 May 2025.
+      This page was last reviewed on 19 May 2025.
 
-        It needs to be reviewed again on 6 November 2025
+        It needs to be reviewed again on 19 November 2025
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 November 2025
+      This page was set to be reviewed before 19 November 2025
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1990,8 +1983,8 @@ You can move the indices from warm to hot storage and then delete the documents.
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/remove-data-from-elasticsearch.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Remove+data+from+Elasticsearch%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fremove-data-from-elasticsearch.html%29&amp;labels=bug&amp;title=Re%3A+%27Remove+data+from+Elasticsearch%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/remove-data-from-opensearch.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Remove+data+from+OpenSearch%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fremove-data-from-opensearch.html%29&amp;labels=bug&amp;title=Re%3A+%27Remove+data+from+OpenSearch%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>

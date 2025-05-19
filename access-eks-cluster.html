@@ -195,13 +195,13 @@
 <li><a href="./incidents/index.html"><span>Incident Log</span></a>
 <ul>
   <li>
-    <a href="./incidents/2024-09-20-eks-subnet-route-table.html"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
-  </li>
-  <li>
     <a href="./incidents/2025-01-13-auth0-credentials.html"><span>Incident on 2025-01-13 - Auth0 Terraform provider credentials exposed</span></a>
   </li>
   <li>
     <a href="./incidents/2025-03-18-aws-eks-upgrade-to-1-30.html"><span>Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes</span></a>
+  </li>
+  <li>
+    <a href="./incidents/2024-09-20-eks-subnet-route-table.html"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
   </li>
   <li>
     <a href="./incidents/2024-07-25-elasticsearch-logging.html"><span>Incident on 2024-07-25 Elasticsearch no longer receiving logs</span></a>
@@ -305,6 +305,17 @@
 </ul>
 </li>
   <li>
+    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <ul>
+      <li>
+        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./changes-in-cloudplatform.html"><span>Change Process in Cloud Platform</span></a>
     <ul>
       <li>
@@ -325,13 +336,43 @@
     </ul>
   </li>
   <li>
-    <a href="./add-concourse-to-cluster.html"><span>Add Concourse to a test cluster</span></a>
+    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
     <ul>
       <li>
-        <a href="./add-concourse-to-cluster.html#add-concourse-to-a-test-cluster-pre-requisites"><span>Pre-requisites</span></a>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
       </li>
       <li>
-        <a href="./add-concourse-to-cluster.html#process"><span>Process</span></a>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-eks-addons.html"><span>Upgrade EKS addons</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-eks-addons.html#listing-available-eks-upgrades"><span>Listing available EKS upgrades</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-eks-addons.html#eksctl-install"><span>eksctl Install</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./upgrade-eks-addons.html#preparing-for-upgrade"><span>Preparing for upgrade</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-addons.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
       </li>
     </ul>
   </li>
@@ -345,19 +386,19 @@
         <a href="./upgrade-eks-cluster.html#creating-cluster-upgrade-github-issues"><span>Creating Cluster Upgrade GitHub Issues</span></a>
       </li>
       <li>
-        <a href="./upgrade-eks-cluster.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps"><span>Upgrade Steps</span></a>
         <ul>
           <li>
             <a href="./upgrade-eks-cluster.html#compatibility-check"><span>Compatibility Check</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#preparing-for-upgrade"><span> Preparing for upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps-preparing-for-upgrade"><span> Preparing for upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps-starting-the-upgrade"><span>Starting the upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#finishing-the-upgrade"><span>Finishing the upgrade</span></a>
@@ -374,47 +415,6 @@
   </li>
   <li>
     <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
-  </li>
-  <li>
-    <a href="./upgrade-eks-addons.html"><span>Upgrade EKS addons</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-eks-addons.html#listing-available-eks-upgrades"><span>Listing available EKS upgrades</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-eks-addons.html#eksctl-install"><span>eksctl Install</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="./upgrade-eks-addons.html#upgrade-eks-addons-preparing-for-upgrade"><span>Preparing for upgrade</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-addons.html#upgrade-eks-addons-starting-the-upgrade"><span>Starting the upgrade</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-upgrade-steps"><span>Upgrade Steps</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
   </li>
   <li>
     <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
@@ -597,9 +597,6 @@
     </ul>
   </li>
   <li>
-    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
-  </li>
-  <li>
     <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
     <ul>
       <li>
@@ -628,6 +625,9 @@
         </ul>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
   </li>
   <li>
     <a href="./add-nodes-to-the-eks-cluster.html"><span>Add nodes to the AWS EKS cluster</span></a>
@@ -976,6 +976,53 @@
     </ul>
   </li>
   <li>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./remove-data-from-opensearch.html"><span>Remove data from OpenSearch</span></a>
+    <ul>
+      <li>
+        <a href="./remove-data-from-opensearch.html#stop-the-breach-first"><span>Stop the breach first</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#things-to-know"><span>Things to know</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#get-yourself-access"><span>Get yourself access</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#build-your-query"><span>Build your query</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#delete-by-query"><span>Delete by query</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#the-below-section-requires-a-rewrite-for-opensearch"><span>—– THE BELOW SECTION REQUIRES A REWRITE FOR OPENSEARCH —–</span></a>
+        <ul>
+          <li>
+            <a href="./remove-data-from-opensearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./rds-snapshots.html"><span>RDS Snapshots</span></a>
     <ul>
       <li>
@@ -1053,42 +1100,6 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./remove-data-from-elasticsearch.html"><span>Remove data from Elasticsearch</span></a>
-    <ul>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#stop-the-breach-first"><span>Stop the breach first</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#things-to-know"><span>Things to know</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#get-yourself-access"><span>Get yourself access</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#build-your-query"><span>Build your query</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#delete-by-query"><span>Delete by query</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-elasticsearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
-        <ul>
-          <li>
-            <a href="./remove-data-from-elasticsearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./resolve-opensearch-shard-issues.html"><span>Open search best practices</span></a>
     <ul>
       <li>
@@ -1109,14 +1120,6 @@
             <a href="./resolve-opensearch-shard-issues.html#verify-you-39-re-connected-to-the-api"><span>Verify you’re connected to the api</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
       </li>
     </ul>
   </li>
@@ -1331,18 +1334,16 @@
     </ul>
   </li>
   <li>
-    <a href="./access-eks-cluster.html"><span>Access EKS cluster</span></a>
+    <a href="./create-custom-cluster.html"><span>Create custom cluster</span></a>
     <ul>
       <li>
-        <a href="./access-eks-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
-        <ul>
-          <li>
-            <a href="./access-eks-cluster.html#create-kubeconfig-using-aws-command"><span>Create kubeconfig using aws command</span></a>
-          </li>
-          <li>
-            <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
-          </li>
-        </ul>
+        <a href="./create-custom-cluster.html#deleting-your-custom-cluster"><span>Deleting your custom cluster</span></a>
+      </li>
+      <li>
+        <a href="./create-custom-cluster.html#rerunning-stages-in-the-create-custom-cluster-pipeline"><span> Rerunning stages in the create custom cluster pipeline</span></a>
+      </li>
+      <li>
+        <a href="./create-custom-cluster.html#run-integration-tests-against-custom-cluster"><span>Run integration tests against custom cluster</span></a>
       </li>
     </ul>
   </li>
@@ -1363,16 +1364,18 @@
     </ul>
   </li>
   <li>
-    <a href="./create-custom-cluster.html"><span>Create custom cluster</span></a>
+    <a href="./access-eks-cluster.html"><span>Access EKS cluster</span></a>
     <ul>
       <li>
-        <a href="./create-custom-cluster.html#deleting-your-custom-cluster"><span>Deleting your custom cluster</span></a>
-      </li>
-      <li>
-        <a href="./create-custom-cluster.html#rerunning-stages-in-the-create-custom-cluster-pipeline"><span> Rerunning stages in the create custom cluster pipeline</span></a>
-      </li>
-      <li>
-        <a href="./create-custom-cluster.html#run-integration-tests-against-custom-cluster"><span>Run integration tests against custom cluster</span></a>
+        <a href="./access-eks-cluster.html#pre-requisites"><span>Pre-requisites</span></a>
+        <ul>
+          <li>
+            <a href="./access-eks-cluster.html#create-kubeconfig-using-aws-command"><span>Create kubeconfig using aws command</span></a>
+          </li>
+          <li>
+            <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1405,29 +1408,6 @@
     </ul>
   </li>
   <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
-  </li>
-  <li>
-    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
-    <ul>
-      <li>
-        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#access"><span>Access</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
     <ul>
       <li>
@@ -1454,6 +1434,9 @@
         <a href="./custom-default-backend.html#serve-all-errors-from-your-custom-default-backend"><span>Serve all errors from your custom default backend</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
   </li>
   <li>
     <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
@@ -1484,24 +1467,22 @@
     </ul>
   </li>
   <li>
-    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
+    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
-        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
-        <ul>
-          <li>
-            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
-          </li>
-        </ul>
+        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
       </li>
       <li>
-        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
+        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
+      </li>
+      <li>
+        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
+      </li>
+      <li>
+        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
+      </li>
+      <li>
+        <a href="./joiners-guide.html#access"><span>Access</span></a>
       </li>
     </ul>
   </li>
@@ -1553,6 +1534,28 @@
       </li>
       <li>
         <a href="./block-public-ip-address.html#adding-deny-rules-to-the-public-network-acl"><span>Adding deny rules to the public network ACL</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
+    <ul>
+      <li>
+        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
+        <ul>
+          <li>
+            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
       </li>
     </ul>
   </li>
@@ -1699,6 +1702,47 @@
     </ul>
   </li>
   <li>
+    <a href="./elasticsearch-storage-issues.html"><span>OpenSearch Storage Issues</span></a>
+    <ul>
+      <li>
+        <a href="./elasticsearch-storage-issues.html#hot-warm-node-parity"><span>Hot/Warm Node Parity</span></a>
+      </li>
+      <li>
+        <a href="./elasticsearch-storage-issues.html#manually-migrating-failed-indexes"><span>Manually migrating failed indexes</span></a>
+      </li>
+      <li>
+        <a href="./elasticsearch-storage-issues.html#opensearch-storage-issues-further-reading"><span>Further Reading</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./cert-manager-errors.html"><span>How to Investigate cert-manager Errors</span></a>
+    <ul>
+      <li>
+        <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting"><span>Troubleshooting</span></a>
+        <ul>
+          <li>
+            <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting-invalid-change-batch"><span>Invalid Change Batch</span></a>
+          </li>
+          <li>
+            <a href="./cert-manager-errors.html#current-fix"><span>Current fix</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
+    <ul>
+      <li>
+        <ul>
+          <li>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./finops-tagging.html"><span>Identifying and Managing Untagged AWS Resources</span></a>
     <ul>
       <li>
@@ -1753,47 +1797,6 @@
             <a href="./debugging-101.html#kubernetes-nginx-ingress-controller-nextgen-devops-nirvana2"><span>Kubernetes Nginx Ingress Controller NextGen - DevOps Nirvana2</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./cert-manager-errors.html"><span>How to Investigate cert-manager Errors</span></a>
-    <ul>
-      <li>
-        <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting"><span>Troubleshooting</span></a>
-        <ul>
-          <li>
-            <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting-invalid-change-batch"><span>Invalid Change Batch</span></a>
-          </li>
-          <li>
-            <a href="./cert-manager-errors.html#current-fix"><span>Current fix</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
-    <ul>
-      <li>
-        <ul>
-          <li>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./elasticsearch-storage-issues.html"><span>OpenSearch Storage Issues</span></a>
-    <ul>
-      <li>
-        <a href="./elasticsearch-storage-issues.html#hot-warm-node-parity"><span>Hot/Warm Node Parity</span></a>
-      </li>
-      <li>
-        <a href="./elasticsearch-storage-issues.html#manually-migrating-failed-indexes"><span>Manually migrating failed indexes</span></a>
-      </li>
-      <li>
-        <a href="./elasticsearch-storage-issues.html#opensearch-storage-issues-further-reading"><span>Further Reading</span></a>
       </li>
     </ul>
   </li>
