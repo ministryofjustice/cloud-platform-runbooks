@@ -1833,7 +1833,7 @@
 </code></pre></div><h4 id="error-error-creating-eks-add-on-cluster-name-addon-name-invalidparameterexception-addon-version-specified-is-not-supported">Error: error creating EKS Add-On (cluster-name:addon-name): InvalidParameterException: Addon version specified is not supported</h4>
 <p>If you come across this error, it is possible that the aws ui has incorrectly informed you about the supported version. To figure out which version is supported run the following command:</p>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws eks describe-addon-versions --kubernetes-version=$K8S_VERSION | jq '.addons[] | select(.addonName==$ADDON_NAME) | .addonVersions[] | select(.compatibilities[] | .defaultVersion==true)'
-</code></pre></div><p>this will pull out the default compatible value for the k8s version for your addon.</p>
+</code></pre></div><p>This will pull out the default compatible value for the k8s version for your addon.</p>
 <p>You can use the helper script to get the most up-to-date available addon versions for each kubernetes cluster version <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/scripts/addons-upgrade.bash">script here</a></p>
 <h2 id="preparing-for-upgrade">Preparing for upgrade</h2>
 <p>Check the changelog for each of the addons and determine if there are any breaking changes.</p>
@@ -1870,17 +1870,17 @@
 <p>Finish up communications and close the thread.</p>
 <p>Finally, ensure that all add-on underlying image versions are updated in the <a href="https://runbooks.cloud-platform.service.justice.gov.uk/container-images.html">Container Images used by Cluster Components</a> runbook</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-06-24">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-01-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 24 December 2024.
+      This page was last reviewed on 15 July 2025.
 
-        It needs to be reviewed again on 24 June 2025
+        It needs to be reviewed again on 15 January 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 24 June 2025
+      This page was set to be reviewed before 15 January 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

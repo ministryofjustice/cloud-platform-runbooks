@@ -1819,7 +1819,7 @@
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="how-to-investigate-prometheusoperatorreconcile-errors">How to Investigate PrometheusOperatorReconcile Errors</h1>
 <p>When you see a <code>PrometheusOperatorReconcile</code> alert in the <code>#lower-priority-alarms</code> channel, it means that the Prometheus Operator is unable to reconcile the state of the Prometheus resources in the cluster.
-This means some of the prometheus rules or alerts are having issues and has not applied fine.</p>
+This means some of the prometheus rules or alerts are having issues and have not applied fine.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p>Check the logs of the Prometheus Operator pod to see if there are any errors:</p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> monitoring prometheus-operator-kube-p-operator-&lt;pod-id&gt; <span class="nt">-f</span>
@@ -1829,23 +1829,23 @@ component=prometheusoperator msg="Invalid rule" err="group
 \"XXX-elasticache\", rule 1, \"elasticache-enginecpu-utilisation\":
 annotation \"message\": template: __alert_elasticache-enginecpu-utilisation:1:
 undefined variable \"$clusterId\""
-</code></pre></div><p>This could stops Prometheus from sending out alerts to certain channels and stops changes/new ones being created. You may also see an alert
+</code></pre></div><p>This could stop Prometheus from sending out alerts to certain channels and stops changes/new ones being created. You may also see an alert
 <a href="https://mojdt.slack.com/archives/C8QR5FQRX/p1718608823815629">PrometheusErrorSendingAlertsToSomeAlertmanagers</a> if that was the case.</p>
 <p>You will need to fix the erroring PrometheusRule.</p>
 <p>If the rule is not configured in <a href="https://github.com/ministryofjustice/cloud-platform-environments">cloud-platform-environments</a> repository,
 find the namespace that rule is applied and get the team slack-channel or the last person who made a change and inform them to fix the rule.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-06-18">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-01-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 18 December 2024.
+      This page was last reviewed on 15 July 2025.
 
-        It needs to be reviewed again on 18 June 2025
+        It needs to be reviewed again on 15 January 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 18 June 2025
+      This page was set to be reviewed before 15 January 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>

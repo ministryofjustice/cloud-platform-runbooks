@@ -1818,7 +1818,7 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="opensearch-modsec-setup">OpenSearch modsec setup</h1>
-<p>We have introduced an OpenSearch dashboard which collects all modsec logs and has document level security enabled. This means users can only access the logs for the github team they are in <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/networking/modsecurity.html">see here for more details</a>. With this feature in place users can self serve and access their own modsec logs. In the case of a rare error and logs aren&rsquo;t flowing to OpenSearch, then you must use the instructions below to access modsec logs on behalf of the user.</p>
+<p>We have introduced an OpenSearch dashboard which collects all modsec logs and has document-level security enabled. This means users can only access the logs for the github team they are in <a href="https://user-guide.cloud-platform.service.justice.gov.uk/documentation/networking/modsecurity.html">see here for more details</a>. With this feature in place users can self serve and access their own modsec logs. In the case of a rare error and logs aren&rsquo;t flowing to OpenSearch, then you must use the instructions below to access modsec logs on behalf of the user.</p>
 <h2 id="get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch">Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</h2>
 <p>In the event that audit logs have failed to ship to OpenSearch, you&rsquo;ll need to fetch this information from the pod that generated the log.</p>
 <h3 id="how-do-i-check-the-audit-log">How do I check the audit log</h3>
@@ -1856,17 +1856,17 @@ $ for k in `kubectl -n ingress-controllers get pods | grep modsec01-nx-controlle
 </code></pre></div><p>If you want to send the log data to a user, make sure you filter the data specific to that application and encrypt the file.
 From mac, you can use gpgkeychain to encrypt the file using the receiver&rsquo;s public key before sending it to the user.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-05-27">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-01-15">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 27 November 2024.
+      This page was last reviewed on 15 July 2025.
 
-        It needs to be reviewed again on 27 May 2025
+        It needs to be reviewed again on 15 January 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 27 May 2025
+      This page was set to be reviewed before 15 January 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
