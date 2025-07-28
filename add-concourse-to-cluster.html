@@ -1853,7 +1853,7 @@ terraform apply -var "enable_oidc_associate=false"
 </code></pre></div>
 <ul>
 <li>Go to <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components"><code>cloud-platform-infrastructure/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components</code> directory</a>.
-Amend the following file and remove the count line from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components/components.tf#L2">concourse module</a>.</li>
+Amend the following file and remove the count line from the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components/concourse.tf">concourse module</a>.</li>
 <li>Apply the terraform module to your test cluster</li>
 </ul>
 <div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>terraform init
@@ -1896,17 +1896,17 @@ to deploy the first pipeline into your test cluster and not the one under <code>
 </ul>
 <p>If your pipeline requires secrets, such as AWS credentials, you need to define those as kubernetes secrets in the <code>concourse-main</code> namespace (or <code>concourse-&lt;team name&gt;</code> if you&rsquo;re using a different concourse team, rather than <code>main</code>)</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-11-01">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-01-28">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 1 May 2025.
+      This page was last reviewed on 28 July 2025.
 
-        It needs to be reviewed again on 1 November 2025
+        It needs to be reviewed again on 28 January 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 1 November 2025
+      This page was set to be reviewed before 28 January 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
