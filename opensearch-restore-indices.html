@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Identifying and Managing Untagged AWS Resources - Cloud Platform Runbooks</title>
+    <title>OpenSearch Log Restore Runbook - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/finops-tagging.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/opensearch-restore-indices.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Identifying and Managing Untagged AWS Resources - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/finops-tagging.html" />
+      <meta name="twitter:title" content="OpenSearch Log Restore Runbook - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/opensearch-restore-indices.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Identifying and Managing Untagged AWS Resources" />
+      <meta property="og:title" content="OpenSearch Log Restore Runbook" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/finops-tagging.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/opensearch-restore-indices.html" />
 
     
   </head>
@@ -1143,7 +1143,7 @@
         <a href="./opensearch-restore-indices.html#option-2-restoring-large-volumes-of-logs-via-concourse-pipeline-automation"><span>Option 2: Restoring Large Volumes of Logs via Concourse Pipeline Automation</span></a>
         <ul>
           <li>
-            <a href="./opensearch-restore-indices.html#option-2-restoring-large-volumes-of-logs-via-concourse-pipeline-automation-overview"><span>Overview</span></a>
+            <a href="./opensearch-restore-indices.html#overview"><span>Overview</span></a>
           </li>
         </ul>
       </li>
@@ -1775,7 +1775,7 @@
     <a href="./finops-tagging.html"><span>Identifying and Managing Untagged AWS Resources</span></a>
     <ul>
       <li>
-        <a href="./finops-tagging.html#overview"><span>Overview</span></a>
+        <a href="./finops-tagging.html#identifying-and-managing-untagged-aws-resources-overview"><span>Overview</span></a>
       </li>
       <li>
         <a href="./finops-tagging.html#step-by-step-process"><span>Step-by-Step Process</span></a>
@@ -1846,114 +1846,123 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="identifying-and-managing-untagged-aws-resources">Identifying and Managing Untagged AWS Resources</h1>
-<h2 id="overview">Overview</h2>
-<p>In our AWS account, some resources are missing the mandatory <code>business-unit</code> tag. These untagged resources contribute to unallocated spend, which can be identified using AWS Cost Explorer.</p>
-<p>You can refer to the <a href="https://us-east-1.console.aws.amazon.com/costmanagement/home#/cost-explorer?chartStyle=GROUP&amp;costAggregate=netUnblendedCost&amp;endDate=2025-02-28&amp;excludeForecasting=false&amp;filter=%5B%7B%22dimension%22:%7B%22id%22:%22TagKey%22,%22displayValue%22:%22Tag%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22%22,%22displayValue%22:%22No%20tag%20key:%20business-unit%22%7D%5D,%22growableValue%22:%7B%22value%22:%22business-unit%22,%22displayValue%22:%22business-unit%22%7D%7D,%7B%22dimension%22:%7B%22id%22:%22Service%22,%22displayValue%22:%22Service%22%7D,%22operator%22:%22EXCLUDES%22,%22values%22:%5B%7B%22value%22:%22Tax%22,%22displayValue%22:%22Tax%22%7D,%7B%22value%22:%22Savings%20Plans%20for%20AWS%20Compute%20usage%22,%22displayValue%22:%22Savings%20Plans%20for%20%20Compute%20usage%22%7D,%7B%22value%22:%22AWS%20Support%20(Enterprise)%22,%22displayValue%22:%22Support%20(Enterprise)%22%7D%5D%7D,%7B%22dimension%22:%7B%22id%22:%22CostCategoryName%22,%22displayValue%22:%22Cost%20category%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%5D,%22growableValue%22:%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%7D%5D&amp;futureRelativeRange=CUSTOM&amp;granularity=Monthly&amp;groupBy=%5B%22Service%22%5D&amp;historicalRelativeRange=CUSTOM&amp;reportName=New%20cost%20and%20usage%20report&amp;showOnlyUncategorized=false&amp;showOnlyUntagged=false&amp;startDate=2025-02-01&amp;usageAggregate=undefined&amp;useNormalizedUnits=false">Cost Explorer report</a> to view untagged spend based on missing <code>business-unit</code> tags. (You can adjust the date range in the report as needed.)</p>
-<p>To maintain accurate cost allocation, we need to identify and tag these resources wherever possible.</p>
-<p>Refer to the <a href="https://technical-guidance.service.justice.gov.uk/documentation/standards/documenting-infrastructure-owners.html">MoJ Technical Guidance on tagging requirements</a> for more information.</p>
+            <h1 id="opensearch-log-restore-runbook">OpenSearch Log Restore Runbook</h1>
+<p>This runbook explains how to restore cold indices logs in OpenSearch as part of our Index State Management (ISM) policy.</p>
+<h2 id="log-availability-in-opensearch">Log Availability in OpenSearch</h2>
+<p>Our OpenSearch Index State Management (ISM) policy is configured as follows:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>Hot to Warm: after 1 day
+Warm to Cold: after 30 days
+Cold to Delete: after 366 days
+</code></pre></div><h3 id="what-does-this-mean">What does this mean</h3>
+<p>Logs stored in hot and warm indices are fully visible in the OpenSearch console. As a result, logs from the past 30 days are available by default.</p>
+<p>However, cold indices are not searchable in the console - this is expected behavior. Logs are stored in cold storage for long-term retention and cost efficiency.</p>
+<p>To access logs older than 30 days, we need to manually migrate the relevant cold indices back to the warm tier, which makes them searchable again.</p>
+<p>There are two ways to restore logs from cold storage, depending on the volume of log required.</p>
+<h2 id="option-1-restoring-cold-indices-to-warm-via-console">Option 1: Restoring Cold Indices to Warm via Console</h2>
+<p>If only a few days of logs are needed, you can restore them manually using the OpenSearch UI:</p>
 
-<blockquote>
-<p>Note: Missing mandatory tagging can sometimes be case by case, depending on the resource and its ownership. This runbook serves as a general guideline for approaching untagged resources.</p>
-</blockquote>
-<h2 id="step-by-step-process">Step-by-Step Process</h2>
-<h3 id="1-identify-untagged-resources-by-type">1. Identify untagged resources by type</h3>
-<p>We handle each resource type individually based on the &ldquo;Service&rdquo; field in the Cost Explorer report (e.g. ECR, RDS, S3, CloudWatch, etc.).</p>
+<ol>
+<li> Navigate to: <code>Index Management</code> → <code>Cold Indexes</code> tab.</li>
+<li><p>Find the required index, and click <code>Move to warm</code>.</p>
+<p><a href="./images/opensearch-log-console-restore-1.png" rel="noopener noreferrer"><img src="images/opensearch-log-console-restore-1.png" alt="opensearch move cold index to warm 1" /></a></p></li>
+<li><p>Click <code>Move index</code></p>
+<p><a href="./images/opensearch-log-console-restore-2.png" rel="noopener noreferrer"><img src="images/opensearch-log-console-restore-2.png" alt="opensearch move cold index to warm 2" /></a></p></li>
+<li><p>After log investigation is complete and the logs are no longer needed, move the warm index back to cold from the <code>Warm Indexes</code> tab.</p>
+<p><a href="./images/opensearch-log-console-restore-3.png" rel="noopener noreferrer"><img src="images/opensearch-log-console-restore-3.png" alt="opensearch move cold index to warm 3" /></a></p></li>
+<li><p>Choose <code>Calculate from timestamp field</code> , select <code>@timestamp</code>, then click <code>Move index</code>.</p>
+<p><a href="./images/opensearch-log-console-restore-4.png" rel="noopener noreferrer"><img src="images/opensearch-log-console-restore-4.png" alt="opensearch move cold index to warm 4" /></a></p></li>
+</ol>
+<p>This method is suitable for restoring small batches of logs or ad-hoc investigations.</p>
+<h2 id="caution-with-large-restore">Caution with Large Restore</h2>
+<p>Restoring large numbers of cold indices:</p>
 
 <ul>
-<li>Use the AWS Tag Editor to filter for resources missing the <code>business-unit</code> tag.
-
-<ul>
-<li>Example query: <a href="https://eu-west-2.console.aws.amazon.com/resource-groups/tag-editor/find-resources?region=eu-west-2#query=regions:!%28eu-west-2,eu-west-1%29,resourceTypes:!%28%27AWS::KMS::Key%27%29,tagFilters:!%28%28key:business-unit,values:!%28%27%28not%20tagged%29%27%29%29%29,type:TAG_EDITOR_1_0">Tag Editor Search</a></li>
-</ul></li>
-<li>Search by region and resource type.</li>
-<li>This will help identify which resources are missing required tags.</li>
+<li>Adds load to the OpenSearch cluster</li>
+<li>Increases hot instance resource usage</li>
+<li>May impact live OpenSearch cluster performance for other users</li>
 </ul>
-
-<blockquote>
-<p>Note: While we primarily use the <code>eu-west-2</code> region, some resources may be deployed in <code>eu-west-1</code> or even in US regions. Always check carefully across regions to ensure no untagged resources are missed.</p>
-</blockquote>
-<p>Once identified:</p>
-
-<ul>
-<li>Determine whether the resource belongs to us or to a user.</li>
-<li>If it belongs to us, update the relevant Terraform code to apply the missing tag.
+<p>For large restore operations, use the automation method below.</p>
+<h2 id="option-2-restoring-large-volumes-of-logs-via-concourse-pipeline-automation">Option 2: Restoring Large Volumes of Logs via Concourse Pipeline Automation</h2>
+<p>For large-scale log restores, we use <strong>Concourse pipeline automation</strong> to restore logs into a <strong>separate, non-production</strong> OpenSearch cluster to avoid load on the live environment.</p>
+<h3 id="overview">Overview</h3>
+<p>We maintain <strong>two pipelines</strong>:</p>
+<h4 id="snapshot-creation-on-the-live-opensearch-pipeline">Snapshot Creation on the Live OpenSearch <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/opensearch.yaml#L164">pipeline</a></h4>
 
 <ul>
-<li>(<a href="https://github.com/ministryofjustice/cloud-platform/issues/6957">Example ticket here</a>)</li>
-</ul></li>
-<li>If it belongs to a user, contact them and ask them to add the required tag.</li>
-<li>In some cases, the tag might be missing in our Terraform modules.
-
-<ul>
-<li>If so, update the module, test it, and bump the module in the <code>cloud-platform-environment</code> repository.</li>
-<li>(<a href="https://github.com/ministryofjustice/cloud-platform/issues/6965">Example ticket here</a>)</li>
-</ul></li>
+<li>Reads from a maintained source index file in S3</li>
+<li>Migrates cold indices to warm.</li>
+<li>Takes snapshots to an S3 snapshot repository.</li>
+<li>Tags completed snapshots with a <code>snapshot-taken-</code> prefix.</li>
+<li>Moves indices back to cold.</li>
 </ul>
-<h3 id="2-investigate-services-not-visible-in-tag-editor">2. Investigate services not visible in Tag Editor</h3>
-<p>Some services do not appear in Tag Editor (e.g. Amazon Kendra). In such cases:</p>
+<h4 id="snapshot-restore-on-a-separate-opensearch-pipeline">Snapshot Restore on a Separate OpenSearch <a href="https://github.com/ministryofjustice/cloud-platform-terraform-concourse/blob/main/pipelines/manager/main/opensearch.yaml#L192">pipeline</a></h4>
 
 <ul>
-<li>Navigate to the service directly in the AWS Console.</li>
-<li>Manually check each resource to confirm whether the <code>business-unit</code> tag is present.</li>
-<li>Determine ownership (ours or the user&rsquo;s).</li>
-<li>Either update the code or contact the user to apply the tag.
-
-<ul>
-<li>(<a href="https://github.com/ministryofjustice/cloud-platform/issues/6970">Example ticket here</a>)</li>
-</ul></li>
+<li>Restores the snapshots using the same source list.</li>
+<li>Skips indices already marked as restored.</li>
+<li>Sets replicas to <code>0</code> for speed and cost-efficiency.</li>
+<li>Waits for shard recovery and green index health.</li>
+<li>Moves the index to the warm tier.</li>
 </ul>
+<h2 id="usage-guide">Usage Guide</h2>
+<p>Taking OpenSearch snapshots can take <strong>30+ minutes per index</strong> depending on shard size and data volume. Follow this process:</p>
 
-<blockquote>
-<p>Note: These services may also be deployed outside our primary <code>eu-west-2</code> region. Be sure to check other regions such as eu-west-1 or even US regions if needed.</p>
-</blockquote>
-<h3 id="3-exceptions-organisation-level-resources">3. Exceptions – organisation-level resources</h3>
-<p>Some AWS services are inherited from the organisation level and not created directly in our account, so we cannot tag them manually.</p>
-<p>Examples include:</p>
-
-<ul>
-<li>Detective</li>
-<li>GuardDuty</li>
-<li>Inspector</li>
-<li>Config</li>
-<li>Security Hub</li>
-<li>Cost Explorer</li>
-</ul>
-<p>These can remain untagged for now, as they are managed and tagged at the organisation level.</p>
-<h3 id="4-verifying-the-change">4. Verifying the Change</h3>
-<p>Once tagging changes have been applied, you can verify them in two ways and focus your checks on the service which you took action:</p>
+<ol>
+<li>Prepare the restore OpenSearch if needed</li>
+<li><p>On the <strong>restore OpenSearch</strong>, perform the following setup (if not already done):</p>
 
 <ul>
-<li><p>Via Cost Explorer:</p>
-
-<ul>
-<li>Use the same <a href="https://us-east-1.console.aws.amazon.com/costmanagement/home#/cost-explorer?chartStyle=GROUP&amp;costAggregate=netUnblendedCost&amp;endDate=2025-02-28&amp;excludeForecasting=false&amp;filter=%5B%7B%22dimension%22:%7B%22id%22:%22TagKey%22,%22displayValue%22:%22Tag%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22%22,%22displayValue%22:%22No%20tag%20key:%20business-unit%22%7D%5D,%22growableValue%22:%7B%22value%22:%22business-unit%22,%22displayValue%22:%22business-unit%22%7D%7D,%7B%22dimension%22:%7B%22id%22:%22Service%22,%22displayValue%22:%22Service%22%7D,%22operator%22:%22EXCLUDES%22,%22values%22:%5B%7B%22value%22:%22Tax%22,%22displayValue%22:%22Tax%22%7D,%7B%22value%22:%22Savings%20Plans%20for%20AWS%20Compute%20usage%22,%22displayValue%22:%22Savings%20Plans%20for%20%20Compute%20usage%22%7D,%7B%22value%22:%22AWS%20Support%20(Enterprise)%22,%22displayValue%22:%22Support%20(Enterprise)%22%7D%5D%7D,%7B%22dimension%22:%7B%22id%22:%22CostCategoryName%22,%22displayValue%22:%22Cost%20category%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%5D,%22growableValue%22:%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%7D%5D&amp;futureRelativeRange=CUSTOM&amp;granularity=Monthly&amp;groupBy=%5B%22Service%22%5D&amp;historicalRelativeRange=CUSTOM&amp;reportName=New%20cost%20and%20usage%20report&amp;showOnlyUncategorized=false&amp;showOnlyUntagged=false&amp;startDate=2025-02-01&amp;usageAggregate=undefined&amp;useNormalizedUnits=false">Cost Explorer report</a> to confirm that the change has taken effect — the untagged cost for that service should now be reduced or even drop to zero.</li>
-<li>When a tag is applied during the day, the cost for that day would be split between tagged and untagged entries.</li>
-<li>For a clearer view of the impact, check the Cost Explorer report <strong>two days after</strong> the change.
-
-<ul>
-<li>For example, if the tag was applied on Monday, check the report on <strong>Wednesday</strong> to see the full charges for <strong>Tuesday</strong>.</li>
+<li>Update the cluster name (but not domain ARN) <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/b7ea4300b4183e2701ae100e3a3e0a5469404962/terraform/aws-accounts/cloud-platform-aws/account/app-opensearch-snapshot-s3.tf#L4">here</a></li>
+<li><p>In Security roles, add the following IAM user to the <code>all_access</code> role:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>arn:aws:iam::754256621582:user/cloud-platform/manager-concourse
+</code></pre></div></li>
+<li><p>Register the S3 snapshot repository:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>curl -XPUT -L \
+  --user "$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY" \
+  -H "x-amz-security-token: $AWS_SESSION_TOKEN" \
+  -H "Content-Type: application/json" \
+  --aws-sigv4 "aws:amz:eu-west-2:es" \
+  &lt;new-restore-opensearch-endpoint&gt;/_snapshot/cp-live-app-logs-snapshot-s3-repository \
+  -d '{
+      "type": "s3",
+      "settings": {
+          "bucket": "cp-live-app-logs-snapshot-s3-repository",
+          "region": "eu-west-2",
+          "role_arn": "arn:aws:iam::754256621582:role/cp-live-app-logs-snapshot-s3-role"
+      }
+}'
+</code></pre></div></li>
 </ul></li>
-</ul></li>
-<li><p>Via Tag Editor:</p>
+<li><p>Update the S3 source index list and cleanup the restored tracking file before running the snapshot pipeline.</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>s3://cloud-platform-concourse-environments-live-reports/opensearch-snapshots/source-index-list.txt
+s3://cloud-platform-concourse-environments-live-reports/opensearch-snapshots/snapshot-restored.txt
+</code></pre></div></li>
+<li><p>Update the restore OpenSearch endpoint <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/main/scripts/opensearch/snapshots/restore_snapshots/restore_snapshot.sh#L13">here</a> if needed</p></li>
+<li><p>Unpause the <code>live-opensearch-takes-snapshot</code>  and <code>separate-opensearch-restores-snapshot</code> pipeline</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager unpause-job -j opensearch/live-opensearch-takes-snapshot
+fly -t manager unpause-job -j opensearch/separate-opensearch-restores-snapshot
+</code></pre></div></li>
+<li><p>Trigger <code>live-opensearch-takes-snapshot</code> on Concourse.</p></li>
+<li><p>Wait for some batch of snapshots to complete.</p></li>
+<li><p>Trigger <code>separate-opensearch-restores-snapshot</code> on Concourse.</p></li>
+<li><p>Pause the pipelines once the restore is complete:</p>
+<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>fly -t manager pause-job -j opensearch/live-opensearch-takes-snapshot
+fly -t manager pause-job -j opensearch/separate-opensearch-restores-snapshot
+</code></pre></div></li>
+<li><p>After log investigation is complete and the logs are no longer needed, clean up any temporary resources (e.g., snapshots, restored indices in the restore cluster, and snapshot tracking files on S3).</p></li>
+</ol>
 
-<ul>
-<li>Return to the AWS Tag Editor and filter by region and resource type to confirm that the <code>business-unit</code> tag has been applied. This helps ensure that the resource is now properly tagged and visible in your tagging reports.</li>
-</ul></li>
-</ul>
-<p>If untagged cost remains in Cost Explorer, or resources are still showing as untagged in Tag Editor, repeat steps <strong>1–2</strong>: re-check the tagging, investigate ownership, and take appropriate action — such as fixing Terraform code, manually applying the missing tag, or contacting the responsible team — then verify again.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2025-11-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-02-01">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 May 2025.
+      This page was last reviewed on 1 August 2025.
 
-        It needs to be reviewed again on 6 November 2025
+        It needs to be reviewed again on 1 February 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 November 2025
+      This page was set to be reviewed before 1 February 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1963,8 +1972,8 @@
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/finops-tagging.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Identifying+and+Managing+Untagged+AWS+Resources%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Ffinops-tagging.html%29&amp;labels=bug&amp;title=Re%3A+%27Identifying+and+Managing+Untagged+AWS+Resources%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/opensearch-restore-indices.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27OpenSearch+Log+Restore+Runbook%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fopensearch-restore-indices.html%29&amp;labels=bug&amp;title=Re%3A+%27OpenSearch+Log+Restore+Runbook%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
