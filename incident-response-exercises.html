@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Velero - Cluster backups and disaster recovery - Cloud Platform Runbooks</title>
+    <title>Incident Response Exercises - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/velero.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/incident-response-exercises.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Velero - Cluster backups and disaster recovery - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/velero.html" />
+      <meta name="twitter:title" content="Incident Response Exercises - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incident-response-exercises.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Velero - Cluster backups and disaster recovery" />
+      <meta property="og:title" content="Incident Response Exercises" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/velero.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/incident-response-exercises.html" />
 
     
   </head>
@@ -1863,85 +1863,34 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="velero-cluster-backups-and-disaster-recovery">Velero - Cluster backups and disaster recovery</h1>
-<p>Velero is an open source tool to safely backup and restore, perform disaster recovery, and migrate Kubernetes cluster resources and persistent volumes.</p>
-<p>Velero consists of:</p>
+            <h1 id="incident-response-exercises">Incident Response Exercises</h1>
+<p>Cloud Platform regularly runs incident response exercises to test the team&rsquo;s ability to respond to incidents effectively. These exercises help ensure that the team is prepared for real-world scenarios and can handle incidents in a timely and efficient manner.</p>
+<h2 id="running-an-incident-response-exercise">Running an Incident Response Exercise</h2>
+<p>Incident response exercises are run with the aid of the Panda Cyber team. To book in an exercise contact Panda Cyber via their Slack channel <code>#ask-panda-cyber</code>.</p>
+<h2 id="frequency">Frequency</h2>
+<p>Incident response exercises are run at least annually. When this document comes up for review, the Cloud Platform team will check that an incident response exercise has been run in the last 12 months, if not a new exercise will be scheduled.</p>
+<h2 id="location-of-exercise-reviews">Location of Exercise Reviews</h2>
+<p>Exercise reviews and recommendations are stored in the Cloud Platform team Security folder.</p>
+<h2 id="exercise-scenarios">Exercise Scenarios</h2>
+<p>The scenarios for incident response exercises are designed by the Panda Cyber team to simulate real-world incidents that the Cloud Platform team may encounter. These scenarios can include, but are not limited to:
+ - Leaked credentials
+ - Phishing attacks
+ - DDos attacks
+ - Service outages
+ - Data loss incidents
+ - Security breaches</p>
 
-<ul>
-<li>A server that runs on your cluster</li>
-<li>A command-line client that runs locally</li>
-</ul>
-<h4 id="velero-cli-install">Velero CLI Install:</h4>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>brew install velero
-</code></pre></div><p>Velero is installed on all clusters as part of the cloud-platform-components install. The module is installed by <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/blob/058f7a0808f856413397f8752bc6297b8ad588b1/terraform/cloud-platform-components/velero.tf">this section</a> of the code.</p>
-<p>Velero is installed in <code>namespace:velero</code> using helm. The chart used can be found <a href="https://github.com/vmware-tanzu/helm-charts/tree/main/charts/velero">here</a></p>
-<p>You can verify the Velero server pod is installed and running using the kubectl get pods command:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl get pods -n velero
-</code></pre></div><p>All backups are are stored in an S3 bucket for 30 days. To view the backup location, run the following command:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero get backup-locations
-</code></pre></div><p>The output will show the bucket name and corresponding prefix.</p>
-<h2 id="backups">Backups</h2>
-<h3 id="why">Why?</h3>
-<p>There are hundreds of reasons why you need to backup parts and/or your full cluster, a few high level reasons are:</p>
-
-<ul>
-<li>The cluster can not be recovered back to a fully working state after a failed upgrade</li>
-<li>A user accidentally deletes a resource or namespace</li>
-<li>Losing or corrupted persistent storage (EBS Volume)</li>
-</ul>
-<h3 id="what">What?</h3>
-<p>Velero can be used to back up as little as a single resource type to the whole cluster (all namespaces and resources).</p>
-<p>StatefulSets, including corresponding persistent volumes, are backed up together, unlike stateless applications, it is not possible to easily get an application restored when it has persistent data.</p>
-<p>Velero <strong>does not</strong> backup the Kubernetes state stored in etcd. It is highly recommended that a specific backup solution is used for etcd and its relevant certificates in addition to Velero.</p>
-<h3 id="how">How?</h3>
-<p>It is possible to create manual backups as well as scheduled ones.</p>
-<h4 id="manual-backups">Manual backups</h4>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup create my-app-backup01 --include-namespaces home
-</code></pre></div><p>The above command will create a backup called <code>my-app-backup01</code> and will backup all resources within the <code>home</code> namespace.</p>
-<p>If you accidentally deleted <code>namespace:home</code>, you can recover the namespace and all resources by running the following command:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create --from-backup my-app-backup01
-</code></pre></div><h4 id="scheduled-backups">Scheduled backups</h4>
-<p>Currently there is one scheduled backup created as part of the default install.
-This schedule is called <code>velero-allnamespacebackup</code>. This backup includes all namespaces, resources and persistent volumes (EBS) associated with StatefulSets.
-The Schedule is set to run every 3 hours.</p>
-<p>To view all stored backups within the cluster, run the following command:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero get backups
-</code></pre></div><p>It is also possible to restore (and exclude) specific namespaces and resources from a velero-allnamespace backup. Below are examples of restoring a specific namespace and resource:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero restore create --from-backup velero-allnamespacebackup --include-namespaces monitoring
-velero restore create --from-backup velero-allnamespacebackup --include-resource prometheusrules
-
-</code></pre></div><p>In a disaster recovery scenario, scheduled backups continue to backup, this may create backups with incorrect config. Instead of stopping individual scheduled jobs, it is recommended to change the storage location access mode to <code>ReadOnly</code>. To do this, you require the storage location name. The following command will give you the storage location name and current access mode:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero get backup-locations
-</code></pre></div><p>Then running the below:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl patch backupstoragelocation &lt;STORAGE LOCATION NAME&gt; \
-    --namespace velero \
-    --type merge \
-    --patch '{"spec":{"accessMode":"ReadOnly"}}'
-</code></pre></div><p>Once the disaster recovery scenario is resolved, you can set storage location mode back to <code>ReadWrite</code> using the following command:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>kubectl patch backupstoragelocation &lt;STORAGE LOCATION NAME&gt; \
-       --namespace velero \
-       --type merge \
-       --patch '{"spec":{"accessMode":"ReadWrite"}}'
-</code></pre></div><h4 id="point-cluster-b-to-to-backup-folder-of-cluster-a">Point Cluster B to to backup folder of Cluster A</h4>
-<p>It is possible to restore resources from backups from another cluster. You need to add a new Backup Storage Location and Volume Snapshot Location within the primary cluster pointing it to the backup cluster folder you want to restore from.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup-location create &lt;location-name&gt; --provider aws --bucket &lt;bucket-name&gt; --prefix &lt;clusterprefix&gt;  --access-mode=ReadOnly
-</code></pre></div><div class="highlight"><pre class="highlight plaintext" tabindex="0"><code> velero snapshot-location create &lt;location-name&gt; --provider aws
-</code></pre></div><p>At this point, when you execute <code>velero backups get</code> you will see 2 different locations under the storage location column.</p>
-<p>If you want to create normal backups with 2 different storage locations configured, you either have to set one of the locatons as default or add <code>--volume-snapshot-locations</code> to your backup command.</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>velero backup create &lt;backup-name&gt; --volume-snapshot-locations &lt;location-name&gt;
-</code></pre></div><p>Click <a href="https://velero.io/docs/v1.6/">here</a> for the official Velero documentation.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2026-01-28">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-08-18">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 28 July 2025.
+      This page was last reviewed on 18 August 2025.
 
-        It needs to be reviewed again on 28 January 2026
+        It needs to be reviewed again on 18 August 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 28 January 2026
+      This page was set to be reviewed before 18 August 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1951,8 +1900,8 @@ velero restore create --from-backup velero-allnamespacebackup --include-resource
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/velero.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Velero+-+Cluster+backups+and+disaster+recovery%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fvelero.html%29&amp;labels=bug&amp;title=Re%3A+%27Velero+-+Cluster+backups+and+disaster+recovery%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/incident-response-exercises.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Incident+Response+Exercises%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fincident-response-exercises.html%29&amp;labels=bug&amp;title=Re%3A+%27Incident+Response+Exercises%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
