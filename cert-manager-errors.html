@@ -195,7 +195,7 @@
 <li><a href="./incidents/index.html"><span>Incident Log</span></a>
 <ul>
   <li>
-    <a href="./incidents/2024-09-20-eks-subnet-route-table.html"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
+    <a href="./incidents/2025-01-13-auth0-credentials.html"><span>Incident on 2025-01-13 - Auth0 Terraform provider credentials exposed</span></a>
   </li>
   <li>
     <a href="./incidents/2025-03-18-aws-eks-upgrade-to-1-30.html"><span>Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes</span></a>
@@ -204,7 +204,7 @@
     <a href="./incidents/2025-07-23-multiple-secrets-leaked-to-public.html"><span>Incident on 2025-07-23 - Multiple secrets leaked to public</span></a>
   </li>
   <li>
-    <a href="./incidents/2025-01-13-auth0-credentials.html"><span>Incident on 2025-01-13 - Auth0 Terraform provider credentials exposed</span></a>
+    <a href="./incidents/2024-09-20-eks-subnet-route-table.html"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
   </li>
   <li>
     <a href="./incidents/2024-07-25-elasticsearch-logging.html"><span>Incident on 2024-07-25 Elasticsearch no longer receiving logs</span></a>
@@ -339,10 +339,23 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
-  </li>
-  <li>
-    <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
+    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </li>
   <li>
     <a href="./upgrade-eks-cluster.html"><span>Upgrade EKS cluster</span></a>
@@ -354,7 +367,7 @@
         <a href="./upgrade-eks-cluster.html#creating-cluster-upgrade-github-issues"><span>Creating Cluster Upgrade GitHub Issues</span></a>
       </li>
       <li>
-        <a href="./upgrade-eks-cluster.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps"><span>Upgrade Steps</span></a>
         <ul>
           <li>
             <a href="./upgrade-eks-cluster.html#compatibility-check"><span>Compatibility Check</span></a>
@@ -379,6 +392,12 @@
     </ul>
   </li>
   <li>
+    <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
+  </li>
+  <li>
+    <a href="./upgrade-AMI-version.html"><span>Recycle all nodes</span></a>
+  </li>
+  <li>
     <a href="./upgrade-eks-addons.html"><span>Upgrade EKS addons</span></a>
     <ul>
       <li>
@@ -397,53 +416,6 @@
       </li>
       <li>
         <a href="./upgrade-eks-addons.html#finish-the-upgrade"><span>Finish the upgrade</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-upgrade-steps"><span>Upgrade Steps</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -498,6 +470,34 @@
           </li>
           <li>
             <a href="./node-group-changes.html#monitoring-nodes"><span>Monitoring nodes</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-terraform-version.html#introduction"><span>Introduction</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#recommendations"><span>Recommendations</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#caveats"><span>Caveats</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-terraform-version.html#how-to-perform-the-upgrade-divide-and-conquer"><span>How to perform the upgrade - divide and conquer</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-terraform-version.html#before-the-upgrade"><span>Before the upgrade</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#environments-state-files"><span>Environments state files</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
       </li>
@@ -596,23 +596,6 @@
     </ul>
   </li>
   <li>
-    <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
-    <ul>
-      <li>
-        <a href="./move-components-module.html#notes-on-the-pipeline"><span>Notes on the pipeline</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#moving-components-modules-into-core-process"><span> Process</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
-  </li>
-  <li>
     <a href="./working-with-tflock.html"><span>What is .terraform.lock.hcl?</span></a>
     <ul>
       <li>
@@ -625,6 +608,23 @@
             <a href="./working-with-tflock.html#commiting-changes-to-the-lock-file"><span>Commiting changes to the lock file</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
+  </li>
+  <li>
+    <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
+    <ul>
+      <li>
+        <a href="./move-components-module.html#notes-on-the-pipeline"><span>Notes on the pipeline</span></a>
+      </li>
+      <li>
+        <a href="./move-components-module.html#moving-components-modules-into-core-process"><span> Process</span></a>
+      </li>
+      <li>
+        <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
       </li>
     </ul>
   </li>
@@ -975,10 +975,49 @@
     </ul>
   </li>
   <li>
+    <a href="./remove-data-from-opensearch.html"><span>Remove data from OpenSearch</span></a>
+    <ul>
+      <li>
+        <a href="./remove-data-from-opensearch.html#stop-the-breach-first"><span>Stop the breach first</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#things-to-know"><span>Things to know</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#get-yourself-access"><span>Get yourself access</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#build-your-query"><span>Build your query</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#delete-by-query"><span>Delete by query</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
+      </li>
+      <li>
+        <a href="./remove-data-from-opensearch.html#the-below-section-requires-a-rewrite-for-opensearch"><span>—– THE BELOW SECTION REQUIRES A REWRITE FOR OPENSEARCH —–</span></a>
+        <ul>
+          <li>
+            <a href="./remove-data-from-opensearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
     <ul>
       <li>
         <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
       </li>
     </ul>
   </li>
@@ -1033,45 +1072,6 @@
       </li>
       <li>
         <a href="./opensearch-restore-indices.html#usage-guide"><span>Usage Guide</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./remove-data-from-opensearch.html"><span>Remove data from OpenSearch</span></a>
-    <ul>
-      <li>
-        <a href="./remove-data-from-opensearch.html#stop-the-breach-first"><span>Stop the breach first</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-opensearch.html#things-to-know"><span>Things to know</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-opensearch.html#get-yourself-access"><span>Get yourself access</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-opensearch.html#build-your-query"><span>Build your query</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-opensearch.html#delete-by-query"><span>Delete by query</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-opensearch.html#removing-specific-logs-filtered-by-phrase"><span>Removing specific logs filtered by phrase</span></a>
-      </li>
-      <li>
-        <a href="./remove-data-from-opensearch.html#the-below-section-requires-a-rewrite-for-opensearch"><span>—– THE BELOW SECTION REQUIRES A REWRITE FOR OPENSEARCH —–</span></a>
-        <ul>
-          <li>
-            <a href="./remove-data-from-opensearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
-          </li>
-        </ul>
       </li>
     </ul>
   </li>
@@ -1253,32 +1253,6 @@
     </ul>
   </li>
   <li>
-    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
-    <ul>
-      <li>
-        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
-      </li>
-      <li>
-        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./eks-cluster.html"><span>Provisioning EKS clusters</span></a>
     <ul>
       <li>
@@ -1312,6 +1286,32 @@
       </li>
       <li>
         <a href="./eks-cluster.html#provisioning-a-custom-cluster"><span>Provisioning a custom cluster</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./creating-a-live-like.html"><span>Creating a live-like cluster</span></a>
+    <ul>
+      <li>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#setting-cluster-size-to-match-live"><span>Setting cluster size to match Live</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#installing-live-components-and-test-applications"><span>Installing live components and test applications</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#upgrading-a-live-like-test-cluster"><span>Upgrading a live-like test cluster</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#creating-a-live-like-cluster-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#final-tests"><span>Final Tests</span></a>
+      </li>
+      <li>
+        <a href="./creating-a-live-like.html#tearing-down"><span>Tearing down</span></a>
       </li>
     </ul>
   </li>
@@ -1363,22 +1363,6 @@
     </ul>
   </li>
   <li>
-    <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
-    <ul>
-      <li>
-        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
-        <ul>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
-          </li>
-          <li>
-            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-opensearch-entry"><span>Perform a search for the unique-id (obtained from the OpenSearch entry)</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./create-custom-cluster.html"><span>Create custom cluster</span></a>
     <ul>
       <li>
@@ -1389,6 +1373,23 @@
       </li>
       <li>
         <a href="./create-custom-cluster.html#run-integration-tests-against-custom-cluster"><span>Run integration tests against custom cluster</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./incident-response-exercises.html"><span>Incident Response Exercises</span></a>
+    <ul>
+      <li>
+        <a href="./incident-response-exercises.html#running-an-incident-response-exercise"><span>Running an Incident Response Exercise</span></a>
+      </li>
+      <li>
+        <a href="./incident-response-exercises.html#frequency"><span>Frequency</span></a>
+      </li>
+      <li>
+        <a href="./incident-response-exercises.html#location-of-exercise-reviews"><span>Location of Exercise Reviews</span></a>
+      </li>
+      <li>
+        <a href="./incident-response-exercises.html#exercise-scenarios"><span>Exercise Scenarios</span></a>
       </li>
     </ul>
   </li>
@@ -1409,19 +1410,18 @@
     </ul>
   </li>
   <li>
-    <a href="./incident-response-exercises.html"><span>Incident Response Exercises</span></a>
+    <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
     <ul>
       <li>
-        <a href="./incident-response-exercises.html#running-an-incident-response-exercise"><span>Running an Incident Response Exercise</span></a>
-      </li>
-      <li>
-        <a href="./incident-response-exercises.html#frequency"><span>Frequency</span></a>
-      </li>
-      <li>
-        <a href="./incident-response-exercises.html#location-of-exercise-reviews"><span>Location of Exercise Reviews</span></a>
-      </li>
-      <li>
-        <a href="./incident-response-exercises.html#exercise-scenarios"><span>Exercise Scenarios</span></a>
+        <a href="./get-audit-log-from-modsec.html#get-an-audit-log-from-modsec-when-fluent-bit-is-not-pushing-to-opensearch"><span>Get an audit log from modsec (when fluent-bit is not pushing to OpenSearch)</span></a>
+        <ul>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#how-do-i-check-the-audit-log"><span>How do I check the audit log</span></a>
+          </li>
+          <li>
+            <a href="./get-audit-log-from-modsec.html#perform-a-search-for-the-unique-id-obtained-from-the-opensearch-entry"><span>Perform a search for the unique-id (obtained from the OpenSearch entry)</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1454,24 +1454,15 @@
     </ul>
   </li>
   <li>
-    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
+    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
     <ul>
       <li>
-        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
       </li>
       <li>
-        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
-      </li>
-      <li>
-        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
+        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
-  </li>
-  <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
   </li>
   <li>
     <a href="./custom-default-backend.html"><span>Custom default-backend</span></a>
@@ -1502,17 +1493,6 @@
     </ul>
   </li>
   <li>
-    <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
-    <ul>
-      <li>
-        <a href="./destroy-concourse-build-data.html#destroy-concourse-build-data-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
@@ -1531,6 +1511,26 @@
         <a href="./joiners-guide.html#access"><span>Access</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
+    <ul>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#quick-introduction"><span>Quick introduction</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#transit-gateway"><span>Transit Gateway</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#making-the-change"><span>Making the change</span></a>
+      </li>
+      <li>
+        <a href="./cloud-platform-to-tgw.html#adding-routes-from-live-2-vpc-to-moj-transit-gateway"><span>Adding routes from live-2 VPC to MoJ Transit Gateway</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
   </li>
   <li>
     <a href="./block-public-ip-address.html"><span>Blocking Public IP Address from EKS Cluster</span></a>
@@ -1706,9 +1706,6 @@
     </ul>
   </li>
   <li>
-    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
-  </li>
-  <li>
     <a href="./tips-and-tricks.html"><span>Tips and Tricks</span></a>
     <ul>
       <li>
@@ -1756,6 +1753,9 @@
     </ul>
   </li>
   <li>
+    <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
+  </li>
+  <li>
     <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
     <ul>
       <li>
@@ -1767,29 +1767,27 @@
     </ul>
   </li>
   <li>
-    <a href="./cert-manager-errors.html"><span>How to Investigate cert-manager Errors</span></a>
+    <a href="./finops-tagging.html"><span>Identifying and Managing Untagged AWS Resources</span></a>
     <ul>
       <li>
-        <a href="./cert-manager-errors.html#troubleshooting"><span>Troubleshooting</span></a>
+        <a href="./finops-tagging.html#identifying-and-managing-untagged-aws-resources-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./finops-tagging.html#step-by-step-process"><span>Step-by-Step Process</span></a>
         <ul>
           <li>
-            <a href="./cert-manager-errors.html#invalid-change-batch"><span>Invalid Change Batch</span></a>
+            <a href="./finops-tagging.html#1-identify-untagged-resources-by-type"><span>1. Identify untagged resources by type</span></a>
           </li>
           <li>
-            <a href="./cert-manager-errors.html#current-fix"><span>Current fix</span></a>
+            <a href="./finops-tagging.html#2-investigate-services-not-visible-in-tag-editor"><span>2. Investigate services not visible in Tag Editor</span></a>
+          </li>
+          <li>
+            <a href="./finops-tagging.html#3-exceptions-organisation-level-resources"><span>3. Exceptions – organisation-level resources</span></a>
+          </li>
+          <li>
+            <a href="./finops-tagging.html#4-verifying-the-change"><span>4. Verifying the Change</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
-    <ul>
-      <li>
-        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
-      </li>
-      <li>
-        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
       </li>
     </ul>
   </li>
@@ -1830,27 +1828,29 @@
     </ul>
   </li>
   <li>
-    <a href="./finops-tagging.html"><span>Identifying and Managing Untagged AWS Resources</span></a>
+    <a href="./cert-manager-errors.html"><span>How to Investigate cert-manager Errors</span></a>
     <ul>
       <li>
-        <a href="./finops-tagging.html#identifying-and-managing-untagged-aws-resources-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./finops-tagging.html#step-by-step-process"><span>Step-by-Step Process</span></a>
+        <a href="./cert-manager-errors.html#troubleshooting"><span>Troubleshooting</span></a>
         <ul>
           <li>
-            <a href="./finops-tagging.html#1-identify-untagged-resources-by-type"><span>1. Identify untagged resources by type</span></a>
+            <a href="./cert-manager-errors.html#invalid-change-batch"><span>Invalid Change Batch</span></a>
           </li>
           <li>
-            <a href="./finops-tagging.html#2-investigate-services-not-visible-in-tag-editor"><span>2. Investigate services not visible in Tag Editor</span></a>
-          </li>
-          <li>
-            <a href="./finops-tagging.html#3-exceptions-organisation-level-resources"><span>3. Exceptions – organisation-level resources</span></a>
-          </li>
-          <li>
-            <a href="./finops-tagging.html#4-verifying-the-change"><span>4. Verifying the Change</span></a>
+            <a href="./cert-manager-errors.html#current-fix"><span>Current fix</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
+    <ul>
+      <li>
+        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
+      </li>
+      <li>
+        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
       </li>
     </ul>
   </li>
