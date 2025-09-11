@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>How to Investigate External-Dns Errors - Cloud Platform Runbooks</title>
+    <title>Debug and Recycle Node with error loading seccomp filter errno 524 - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/debug-recycle-seccomp-errno-524.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="How to Investigate External-Dns Errors - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html" />
+      <meta name="twitter:title" content="Debug and Recycle Node with error loading seccomp filter errno 524 - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/debug-recycle-seccomp-errno-524.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="How to Investigate External-Dns Errors" />
+      <meta property="og:title" content="Debug and Recycle Node with error loading seccomp filter errno 524" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/external-dns-error.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/debug-recycle-seccomp-errno-524.html" />
 
     
   </head>
@@ -1866,47 +1866,33 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="how-to-investigate-external-dns-errors">How to Investigate External-Dns Errors</h1>
-<p>When there are errors in external-dns logs, &ldquo;ErrorsInExternalDNS&rdquo; alerts are sent to the low priority slack channel.</p>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<p>If we see an ErrorsInExternalDNS alert in low-priority-alerts, this is usually because an external-dns is unable to write records to Route-53 for a particual hosted zone.
-You can see errors from the external-dns pod by running:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>kubectl logs <span class="nt">-n</span> kube-system external-dns-&lt;pod-id&gt; <span class="nt">-f</span>
-</code></pre></div><h3 id="invalid-change-batch">Invalid Change Batch</h3>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [RDATA character limit of 32000 exceeded.]"</span>
+            <h1 id="debug-and-recycle-node-with-error-loading-seccomp-filter-errno-524">Debug and Recycle Node with error loading seccomp filter errno: 524</h1>
 
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [RRSet with DNS name _external_dns.development.moj.service.justice.gov.uk., type TXT cannot be created as other RRSets exist with the same name and type.,
-RRSet with DNS name development.moj.service.justice.gov.uk., type A cannot be created as other RRSets exist with the same name and type.]"</span>
+<ol>
+<li>Identify from OpenSearch which is the node with the <a href="https://app-logs.cloud-platform.service.justice.gov.uk/_dashboards/app/data-explorer/discover#?_a=(discover:(columns:!(_source),isDirty:!f,sort:!()),metadata:(indexPattern:'6c27ca40-6bbe-11ef-8007-3f25c14a7648',view:discover))&amp;_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-3h,to:now))&amp;_q=(filters:!(),query:(language:kuery,query:'errno%20524'))">problem</a>.</li>
+<li>SSM into the node.</li>
+<li>Run <code>sudo bash /etc/eks/log-collector-script/eks-log-collector.sh</code> this will take a few minutes to complete.</li>
+<li>From the AWS signin console grab your static keys.</li>
+<li>Paste them into the SSM session when the log collector has finished.</li>
+<li>Run <code>aws s3 cp /var/log/$LOGOUTPUT s3://cloud-platform-node-debug</code>.</li>
+<li>Confirm that the debug logs are in the S3 bucket.</li>
+<li>Exit the SSM session.</li>
+<li>Run <code>export AWS_SDK_LOAD_CONFIG=1</code> - this is a temporary fix for the <code>cloud-platform</code> cli.</li>
+<li>Run <code>cloud-platform cluster recycle-node -n $NODE</code>.</li>
+<li>You may need to force kill some pods if they&rsquo;ve set a disruption budget.</li>
+</ol>
 
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"InvalidChangeBatch: [Tried to delete resource record set [name='_external_dns.test.live.cloud-platform.service.justice.gov.uk.', type='TXT', set-identifier='test-live-1'] but it was not found,
-Tried to delete resource record set [name='test.live.cloud-platform.service.justice.gov.uk.', type='A', set-identifier='test-live-1'] but it was not found]
-
-level=error msg="</span>InvalidChangeBatch: <span class="o">[</span>Tried to create resource record <span class="nb">set</span> <span class="o">[</span><span class="nv">name</span><span class="o">=</span><span class="s1">'cluster-cname-thisingress.example.'</span>, <span class="nb">type</span><span class="o">=</span><span class="s1">'TXT'</span><span class="o">]</span> but it already exists, Tried to create
-resource record <span class="nb">set</span> <span class="o">[</span><span class="nv">name</span><span class="o">=</span><span class="s1">'cluster-thisingress.example.'</span>, <span class="nb">type</span><span class="o">=</span><span class="s1">'TXT'</span><span class="o">]</span> but it already exists]
-
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to submit all changes for the following zones: [/hostedzone/ABCDEFGHIJKLMN /hostedzone/NMLKJIHGFEDCBA]"</span>
-</code></pre></div><p>Identify the ingress causing the error in question and fix the ingress depending on the error message. We may need to inform users to update the ingress causing the error.</p>
-<p>Follow this <a href="https://aws.amazon.com/premiumsupport/knowledge-center/troubleshoot-route53-resource-record/">troubleshoot guide</a> for common error messages to determine the error&rsquo;s cause and how to troubleshoot it.</p>
-<p>Once the error is cleared, you will see info logs similar to:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"Applying provider record filter for domains: [dev.example. .dev.example.]"</span>
-<span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"Desired change: CREATE cluster-a-new.dev.example TXT [Id: /hostedzone/ZZZ]"</span>
-<span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">"All records are already up to date"</span>
-</code></pre></div><h3 id="rate-limited-throttled">Rate Limited / Throttled</h3>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code><span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"records retrieval failed: failed to list hosted zones: Throttling: Rate exceeded</span><span class="se">\n\t</span><span class="s2">status code: 400, request id: 9df2a-7blah"</span>
-<span class="nv">level</span><span class="o">=</span>error <span class="nv">msg</span><span class="o">=</span><span class="s2">"failed to list resource records sets for zone /hostedzone/BLAH_MOX: Throttling: Rate exceeded</span><span class="se">\n\t</span><span class="s2">status code: 400, request id: 0-9216-435fblah"</span>
-</code></pre></div><p>There isn&rsquo;t much we can do about being rate limited; acknowledge the alert.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2025-11-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-03-11">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 May 2025.
+      This page was last reviewed on 11 September 2025.
 
-        It needs to be reviewed again on 6 November 2025
+        It needs to be reviewed again on 11 March 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 November 2025
+      This page was set to be reviewed before 11 March 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -1916,8 +1902,8 @@ resource record <span class="nb">set</span> <span class="o">[</span><span class=
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/external-dns-error.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27How+to+Investigate+External-Dns+Errors%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fexternal-dns-error.html%29&amp;labels=bug&amp;title=Re%3A+%27How+to+Investigate+External-Dns+Errors%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/debug-recycle-seccomp-errno-524.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Debug+and+Recycle+Node+with+error+loading+seccomp+filter+errno+524%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fdebug-recycle-seccomp-errno-524.html%29&amp;labels=bug&amp;title=Re%3A+%27Debug+and+Recycle+Node+with+error+loading+seccomp+filter+errno+524%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
