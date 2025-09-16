@@ -1872,6 +1872,8 @@
 <li>Identify from OpenSearch which is the node with the <a href="https://app-logs.cloud-platform.service.justice.gov.uk/_dashboards/app/data-explorer/discover#?_a=(discover:(columns:!(_source),isDirty:!f,sort:!()),metadata:(indexPattern:'6c27ca40-6bbe-11ef-8007-3f25c14a7648',view:discover))&amp;_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-3h,to:now))&amp;_q=(filters:!(),query:(language:kuery,query:'errno%20524'))">problem</a>.</li>
 <li>SSM into the node.</li>
 <li>Run <code>sudo bash /etc/eks/log-collector-script/eks-log-collector.sh</code> this will take a few minutes to complete.</li>
+<li>Confirm the bpf limit by running <code>sudo cat /proc/sys/net/core/bpf_jit_limit</code>.</li>
+<li>Get the current bpg number by running <code>sudo cat /proc/vmallocinfo | grep bpf_jit | awk &#39;{s+=$2} END {print s}&#39;</code> record these in a slack message attached to the alarm.</li>
 <li>From the AWS signin console grab your static keys.</li>
 <li>Paste them into the SSM session when the log collector has finished.</li>
 <li>Run <code>aws s3 cp /var/log/$LOGOUTPUT s3://cloud-platform-node-debug</code>.</li>
