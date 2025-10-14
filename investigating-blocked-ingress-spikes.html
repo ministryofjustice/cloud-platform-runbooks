@@ -130,7 +130,7 @@
             <a href="./how-we-work.html#adding-tickets-to-the-backlog"><span>Adding tickets to the backlog</span></a>
           </li>
           <li>
-            <a href="./how-we-work.html#making-changes-to-code"><span>Making changes to code</span></a>
+            <a href="./how-we-work.html#development-principles"><span>Development Principles</span></a>
           </li>
           <li>
             <a href="./how-we-work.html#reviewing-merging-prs"><span>Reviewing/Merging PRs</span></a>
@@ -138,7 +138,7 @@
         </ul>
       </li>
       <li>
-        <a href="./how-we-work.html#support-squad"><span>Support Squad</span></a>
+        <a href="./how-we-work.html#support-rota"><span>Support rota</span></a>
         <ul>
           <li>
             <a href="./how-we-work.html#the-hammer-of-justice"><span>The 🔨 Hammer of Justice</span></a>
@@ -195,16 +195,16 @@
 <li><a href="./incidents/index.html"><span>Incident Log</span></a>
 <ul>
   <li>
-    <a href="./incidents/2025-01-13-auth0-credentials.html"><span>Incident on 2025-01-13 - Auth0 Terraform provider credentials exposed</span></a>
-  </li>
-  <li>
     <a href="./incidents/2025-03-18-aws-eks-upgrade-to-1-30.html"><span>Incident on 2025-03-18 - AWS EKS Upgrade to 1.30 Desheduler kill pods on Cordon Nodes</span></a>
   </li>
   <li>
-    <a href="./incidents/2025-07-23-multiple-secrets-leaked-to-public.html"><span>Incident on 2025-07-23 - Multiple secrets leaked to public</span></a>
+    <a href="./incidents/2025-01-13-auth0-credentials.html"><span>Incident on 2025-01-13 - Auth0 Terraform provider credentials exposed</span></a>
   </li>
   <li>
     <a href="./incidents/2024-09-20-eks-subnet-route-table.html"><span>Incident on 2024-09-20 - EKS Subnet Route Table Associations destroyed</span></a>
+  </li>
+  <li>
+    <a href="./incidents/2025-07-23-multiple-secrets-leaked-to-public.html"><span>Incident on 2025-07-23 - Multiple secrets leaked to public</span></a>
   </li>
   <li>
     <a href="./incidents/2024-07-25-elasticsearch-logging.html"><span>Incident on 2024-07-25 Elasticsearch no longer receiving logs</span></a>
@@ -339,25 +339,6 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-steps"><span>Upgrade Steps</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
   </li>
   <li>
@@ -395,25 +376,63 @@
         <a href="./upgrade-eks-cluster.html#creating-cluster-upgrade-github-issues"><span>Creating Cluster Upgrade GitHub Issues</span></a>
       </li>
       <li>
-        <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps"><span>Upgrade Steps</span></a>
+        <a href="./upgrade-eks-cluster.html#upgrade-steps"><span>Upgrade Steps</span></a>
         <ul>
           <li>
             <a href="./upgrade-eks-cluster.html#compatibility-check"><span>Compatibility Check</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps-preparing-for-upgrade"><span> Preparing for upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#upgrade-steps-preparing-for-upgrade"><span> Preparing for upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps-starting-the-upgrade"><span>Starting the upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#upgrade-steps-starting-the-upgrade"><span>Starting the upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#finishing-the-upgrade"><span>Finishing the upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#finishing-touches"><span>Finishing touches</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-upgrade-steps"><span>Upgrade Steps</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#useful-commands"><span>Useful commands:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#monitoring-nodes"><span>Monitoring nodes</span></a>
           </li>
         </ul>
       </li>
@@ -457,25 +476,6 @@
     </ul>
   </li>
   <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
-    <ul>
-      <li>
-        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
-          </li>
-          <li>
-            <a href="./node-group-changes.html#useful-commands"><span>Useful commands:</span></a>
-          </li>
-          <li>
-            <a href="./node-group-changes.html#monitoring-nodes"><span>Monitoring nodes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./upgrade-terraform-version.html"><span>Upgrade Terraform Version</span></a>
     <ul>
       <li>
@@ -500,6 +500,31 @@
             <a href="./upgrade-terraform-version.html#infrastructure-state-files"><span>Infrastructure state files</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
+    <ul>
+      <li>
+        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
+      </li>
+      <li>
+        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
       </li>
     </ul>
   </li>
@@ -571,46 +596,10 @@
     </ul>
   </li>
   <li>
-    <a href="./delete-cluster.html"><span>Delete a cluster</span></a>
-    <ul>
-      <li>
-        <a href="./delete-cluster.html#delete-the-cluster-with-concourse-delete-cluster-pipeline"><span>Delete the cluster with Concourse delete-cluster pipeline</span></a>
-      </li>
-      <li>
-        <a href="./delete-cluster.html#delete-an-eks-cluster-manually"><span>Delete an EKS cluster manually</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./upgrade-user-components.html"><span>Upgrade user components</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-user-components.html#making-changes-to-your-module"><span>Making changes to your module</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#semantic-versioning-and-release"><span>Semantic Versioning and release</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-user-components.html#upgrading-a-user-component-in-environments"><span>Upgrading a user component in environments</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
-    <ul>
-      <li>
-        <a href="./move-components-module.html#notes-on-the-pipeline"><span>Notes on the pipeline</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#moving-components-modules-into-core-process"><span> Process</span></a>
-      </li>
-      <li>
-        <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
+  </li>
+  <li>
+    <a href="./debug-recycle-seccomp-errno-524.html"><span>Debug and Recycle Node with error loading seccomp filter errno: 524</span></a>
   </li>
   <li>
     <a href="./working-with-tflock.html"><span>What is .terraform.lock.hcl?</span></a>
@@ -629,7 +618,18 @@
     </ul>
   </li>
   <li>
-    <a href="./debug-recycle-seccomp-errno-524.html"><span>Debug and Recycle Node with error loading seccomp filter errno: 524</span></a>
+    <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
+    <ul>
+      <li>
+        <a href="./move-components-module.html#notes-on-the-pipeline"><span>Notes on the pipeline</span></a>
+      </li>
+      <li>
+        <a href="./move-components-module.html#moving-components-modules-into-core-process"><span> Process</span></a>
+      </li>
+      <li>
+        <a href="./move-components-module.html#disaster-recovery"><span>Disaster Recovery</span></a>
+      </li>
+    </ul>
   </li>
   <li>
     <a href="./add-nodes-to-the-eks-cluster.html"><span>Add nodes to the AWS EKS cluster</span></a>
@@ -873,6 +873,33 @@
     </ul>
   </li>
   <li>
+    <a href="./deleting-rds-options-groups.html"><span>Deleting RDS Option Group Error</span></a>
+    <ul>
+      <li>
+        <a href="./deleting-rds-options-groups.html#problem-description"><span>Problem Description</span></a>
+        <ul>
+          <li>
+            <a href="./deleting-rds-options-groups.html#scenario-1-deleting-option-group-before-rds-instance"><span>Scenario 1: Deleting Option Group Before RDS Instance</span></a>
+          </li>
+          <li>
+            <a href="./deleting-rds-options-groups.html#scenario-2-deleting-option-group-after-rds-instance"><span>Scenario 2: Deleting Option Group After RDS Instance</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./deleting-rds-options-groups.html#resolution-steps"><span>Resolution Steps</span></a>
+        <ul>
+          <li>
+            <a href="./deleting-rds-options-groups.html#for-scenario-1"><span>For Scenario 1:</span></a>
+          </li>
+          <li>
+            <a href="./deleting-rds-options-groups.html#for-scenario-2"><span>For Scenario 2:</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./aws-leaked-credentials.html"><span>AWS Compromised Credentials</span></a>
     <ul>
       <li>
@@ -1009,14 +1036,6 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./rds-snapshots.html"><span>RDS Snapshots</span></a>
     <ul>
       <li>
@@ -1094,32 +1113,10 @@
     </ul>
   </li>
   <li>
-    <a href="./opensearch-restore-indices.html"><span>OpenSearch Log Restore Runbook</span></a>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
     <ul>
       <li>
-        <a href="./opensearch-restore-indices.html#log-availability-in-opensearch"><span>Log Availability in OpenSearch</span></a>
-        <ul>
-          <li>
-            <a href="./opensearch-restore-indices.html#what-does-this-mean"><span>What does this mean</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="./opensearch-restore-indices.html#option-1-restoring-cold-indices-to-warm-via-console"><span>Option 1: Restoring Cold Indices to Warm via Console</span></a>
-      </li>
-      <li>
-        <a href="./opensearch-restore-indices.html#caution-with-large-restore"><span>Caution with Large Restore</span></a>
-      </li>
-      <li>
-        <a href="./opensearch-restore-indices.html#option-2-restoring-large-volumes-of-logs-via-concourse-pipeline-automation"><span>Option 2: Restoring Large Volumes of Logs via Concourse Pipeline Automation</span></a>
-        <ul>
-          <li>
-            <a href="./opensearch-restore-indices.html#overview"><span>Overview</span></a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="./opensearch-restore-indices.html#usage-guide"><span>Usage Guide</span></a>
+        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
       </li>
     </ul>
   </li>
@@ -1148,10 +1145,40 @@
     </ul>
   </li>
   <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
     <ul>
       <li>
-        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./opensearch-restore-indices.html"><span>OpenSearch Log Restore Runbook</span></a>
+    <ul>
+      <li>
+        <a href="./opensearch-restore-indices.html#log-availability-in-opensearch"><span>Log Availability in OpenSearch</span></a>
+        <ul>
+          <li>
+            <a href="./opensearch-restore-indices.html#what-does-this-mean"><span>What does this mean</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./opensearch-restore-indices.html#option-1-restoring-cold-indices-to-warm-via-console"><span>Option 1: Restoring Cold Indices to Warm via Console</span></a>
+      </li>
+      <li>
+        <a href="./opensearch-restore-indices.html#caution-with-large-restore"><span>Caution with Large Restore</span></a>
+      </li>
+      <li>
+        <a href="./opensearch-restore-indices.html#option-2-restoring-large-volumes-of-logs-via-concourse-pipeline-automation"><span>Option 2: Restoring Large Volumes of Logs via Concourse Pipeline Automation</span></a>
+        <ul>
+          <li>
+            <a href="./opensearch-restore-indices.html#overview"><span>Overview</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./opensearch-restore-indices.html#usage-guide"><span>Usage Guide</span></a>
       </li>
     </ul>
   </li>
@@ -1366,20 +1393,6 @@
     </ul>
   </li>
   <li>
-    <a href="./create-custom-cluster.html"><span>Create custom cluster</span></a>
-    <ul>
-      <li>
-        <a href="./create-custom-cluster.html#deleting-your-custom-cluster"><span>Deleting your custom cluster</span></a>
-      </li>
-      <li>
-        <a href="./create-custom-cluster.html#rerunning-stages-in-the-create-custom-cluster-pipeline"><span> Rerunning stages in the create custom cluster pipeline</span></a>
-      </li>
-      <li>
-        <a href="./create-custom-cluster.html#run-integration-tests-against-custom-cluster"><span>Run integration tests against custom cluster</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./incident-response-exercises.html"><span>Incident Response Exercises</span></a>
     <ul>
       <li>
@@ -1393,6 +1406,22 @@
       </li>
       <li>
         <a href="./incident-response-exercises.html#exercise-scenarios"><span>Exercise Scenarios</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./access-eks-cluster.html"><span>Access EKS cluster</span></a>
+    <ul>
+      <li>
+        <a href="./access-eks-cluster.html#access-eks-cluster-pre-requisites"><span>Pre-requisites</span></a>
+        <ul>
+          <li>
+            <a href="./access-eks-cluster.html#create-kubeconfig-using-aws-command"><span>Create kubeconfig using aws command</span></a>
+          </li>
+          <li>
+            <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1413,18 +1442,16 @@
     </ul>
   </li>
   <li>
-    <a href="./access-eks-cluster.html"><span>Access EKS cluster</span></a>
+    <a href="./create-custom-cluster.html"><span>Create custom cluster</span></a>
     <ul>
       <li>
-        <a href="./access-eks-cluster.html#access-eks-cluster-pre-requisites"><span>Pre-requisites</span></a>
-        <ul>
-          <li>
-            <a href="./access-eks-cluster.html#create-kubeconfig-using-aws-command"><span>Create kubeconfig using aws command</span></a>
-          </li>
-          <li>
-            <a href="./access-eks-cluster.html#create-kubeconfig-manually-using-a-template"><span>Create kubeconfig manually using a template</span></a>
-          </li>
-        </ul>
+        <a href="./create-custom-cluster.html#deleting-your-custom-cluster"><span>Deleting your custom cluster</span></a>
+      </li>
+      <li>
+        <a href="./create-custom-cluster.html#rerunning-stages-in-the-create-custom-cluster-pipeline"><span> Rerunning stages in the create custom cluster pipeline</span></a>
+      </li>
+      <li>
+        <a href="./create-custom-cluster.html#run-integration-tests-against-custom-cluster"><span>Run integration tests against custom cluster</span></a>
       </li>
     </ul>
   </li>
@@ -1485,26 +1512,6 @@
     </ul>
   </li>
   <li>
-    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
-    <ul>
-      <li>
-        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
-      </li>
-      <li>
-        <a href="./joiners-guide.html#access"><span>Access</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./destroy-concourse-build-data.html"><span>Destroy Concourse Build Data</span></a>
     <ul>
       <li>
@@ -1514,6 +1521,9 @@
         <a href="./destroy-concourse-build-data.html#steps-to-remove-the-build-data"><span>Steps to remove the build data</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
   </li>
   <li>
     <a href="./cloud-platform-to-tgw.html"><span>Adding a route to connect to the MOJ Transit Gateway</span></a>
@@ -1533,38 +1543,22 @@
     </ul>
   </li>
   <li>
-    <a href="./add-new-opa-policy.html"><span>Open Policy Agent policies</span></a>
-  </li>
-  <li>
-    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
+    <a href="./joiners-guide.html"><span>Onboarding into the Cloud Platform Team</span></a>
     <ul>
       <li>
-        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
-        <ul>
-          <li>
-            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
-          </li>
-          <li>
-            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
-          </li>
-        </ul>
+        <a href="./joiners-guide.html#people-team"><span>People Team</span></a>
       </li>
       <li>
-        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./block-public-ip-address.html"><span>Blocking Public IP Address from EKS Cluster</span></a>
-    <ul>
-      <li>
-        <a href="./block-public-ip-address.html#blocking-public-ip-address-from-eks-cluster-introduction"><span>Introduction</span></a>
+        <a href="./joiners-guide.html#service-desk"><span>Service Desk</span></a>
       </li>
       <li>
-        <a href="./block-public-ip-address.html#adding-deny-rules-to-the-public-network-acl"><span>Adding deny rules to the public network ACL</span></a>
+        <a href="./joiners-guide.html#sit-down-with-dm"><span>Sit down with DM</span></a>
+      </li>
+      <li>
+        <a href="./joiners-guide.html#cloud-platform-team"><span>Cloud Platform team</span></a>
+      </li>
+      <li>
+        <a href="./joiners-guide.html#access"><span>Access</span></a>
       </li>
     </ul>
   </li>
@@ -1613,6 +1607,39 @@
             <a href="./logs-to-soc-cortex-xsiam.html#iam-user-access-keys-rotation"><span>IAM User access keys rotation</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./block-public-ip-address.html"><span>Blocking Public IP Address from EKS Cluster</span></a>
+    <ul>
+      <li>
+        <a href="./block-public-ip-address.html#blocking-public-ip-address-from-eks-cluster-introduction"><span>Introduction</span></a>
+      </li>
+      <li>
+        <a href="./block-public-ip-address.html#adding-deny-rules-to-the-public-network-acl"><span>Adding deny rules to the public network ACL</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./leavers-guide.html"><span>Leavers Guide</span></a>
+    <ul>
+      <li>
+        <a href="./leavers-guide.html#revoking-access"><span>Revoking Access</span></a>
+        <ul>
+          <li>
+            <a href="./leavers-guide.html#digital-services"><span>Digital Services</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#aws-accounts"><span>AWS Accounts</span></a>
+          </li>
+          <li>
+            <a href="./leavers-guide.html#other-3rd-party-accounts-access-removal"><span>Other 3rd Party Accounts access removal</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="./leavers-guide.html#line-manager-actions"><span>Line manager actions</span></a>
       </li>
     </ul>
   </li>
@@ -1759,36 +1786,27 @@
     <a href="./google-search-indexing.html"><span>Google Search Console and Indexing</span></a>
   </li>
   <li>
-    <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
+    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
     <ul>
       <li>
-        <ul>
-          <li>
-          </li>
-        </ul>
+        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
+      </li>
+      <li>
+        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
       </li>
     </ul>
   </li>
   <li>
-    <a href="./finops-tagging.html"><span>Identifying and Managing Untagged AWS Resources</span></a>
+    <a href="./cert-manager-errors.html"><span>How to Investigate cert-manager Errors</span></a>
     <ul>
       <li>
-        <a href="./finops-tagging.html#identifying-and-managing-untagged-aws-resources-overview"><span>Overview</span></a>
-      </li>
-      <li>
-        <a href="./finops-tagging.html#step-by-step-process"><span>Step-by-Step Process</span></a>
+        <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting"><span>Troubleshooting</span></a>
         <ul>
           <li>
-            <a href="./finops-tagging.html#1-identify-untagged-resources-by-type"><span>1. Identify untagged resources by type</span></a>
+            <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting-invalid-change-batch"><span>Invalid Change Batch</span></a>
           </li>
           <li>
-            <a href="./finops-tagging.html#2-investigate-services-not-visible-in-tag-editor"><span>2. Investigate services not visible in Tag Editor</span></a>
-          </li>
-          <li>
-            <a href="./finops-tagging.html#3-exceptions-organisation-level-resources"><span>3. Exceptions – organisation-level resources</span></a>
-          </li>
-          <li>
-            <a href="./finops-tagging.html#4-verifying-the-change"><span>4. Verifying the Change</span></a>
+            <a href="./cert-manager-errors.html#current-fix"><span>Current fix</span></a>
           </li>
         </ul>
       </li>
@@ -1831,29 +1849,38 @@
     </ul>
   </li>
   <li>
-    <a href="./cert-manager-errors.html"><span>How to Investigate cert-manager Errors</span></a>
+    <a href="./finops-tagging.html"><span>Identifying and Managing Untagged AWS Resources</span></a>
     <ul>
       <li>
-        <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting"><span>Troubleshooting</span></a>
+        <a href="./finops-tagging.html#identifying-and-managing-untagged-aws-resources-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./finops-tagging.html#step-by-step-process"><span>Step-by-Step Process</span></a>
         <ul>
           <li>
-            <a href="./cert-manager-errors.html#how-to-investigate-cert-manager-errors-troubleshooting-invalid-change-batch"><span>Invalid Change Batch</span></a>
+            <a href="./finops-tagging.html#1-identify-untagged-resources-by-type"><span>1. Identify untagged resources by type</span></a>
           </li>
           <li>
-            <a href="./cert-manager-errors.html#current-fix"><span>Current fix</span></a>
+            <a href="./finops-tagging.html#2-investigate-services-not-visible-in-tag-editor"><span>2. Investigate services not visible in Tag Editor</span></a>
+          </li>
+          <li>
+            <a href="./finops-tagging.html#3-exceptions-organisation-level-resources"><span>3. Exceptions – organisation-level resources</span></a>
+          </li>
+          <li>
+            <a href="./finops-tagging.html#4-verifying-the-change"><span>4. Verifying the Change</span></a>
           </li>
         </ul>
       </li>
     </ul>
   </li>
   <li>
-    <a href="./investigating-blocked-ingress-spikes.html"><span>Investigating blocked ingress spikes</span></a>
+    <a href="./add-a-new-runbook.html"><span>Add a new runbook</span></a>
     <ul>
       <li>
-        <a href="./investigating-blocked-ingress-spikes.html#communication"><span>Communication</span></a>
-      </li>
-      <li>
-        <a href="./investigating-blocked-ingress-spikes.html#other-links"><span>Other Links</span></a>
+        <ul>
+          <li>
+          </li>
+        </ul>
       </li>
     </ul>
   </li>
@@ -1893,17 +1920,17 @@
 <li><a href="https://runbooks.cloud-platform.service.justice.gov.uk/debugging-101.html">Debugging 101</a></li>
 </ul>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-09-04">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-04-07">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 4 March 2025.
+      This page was last reviewed on 7 October 2025.
 
-        It needs to be reviewed again on 4 September 2025
+        It needs to be reviewed again on 7 April 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 4 September 2025
+      This page was set to be reviewed before 7 April 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
