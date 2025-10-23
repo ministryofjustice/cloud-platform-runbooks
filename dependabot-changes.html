@@ -5,24 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>Upgrade Terraform Version - Cloud Platform Runbooks</title>
+    <title>Dependabot changes - Cloud Platform Runbooks</title>
 
     <link href="stylesheets/manifest.css" rel="stylesheet" />
 
-    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html">
+    <link rel="canonical" href="https://runbooks.cloud-platform.service.justice.gov.uk/dependabot-changes.html">
 
       <meta name="robots" content="noindex" />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:domain" content="runbooks.cloud-platform.service.justice.gov.uk" />
       <meta name="twitter:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
-      <meta name="twitter:title" content="Upgrade Terraform Version - Cloud Platform Runbooks" />
-      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
+      <meta name="twitter:title" content="Dependabot changes - Cloud Platform Runbooks" />
+      <meta name="twitter:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/dependabot-changes.html" />
 
       <meta property="og:image" content="https://runbooks.cloud-platform.service.justice.gov.uk/images/govuk-large.png" />
       <meta property="og:site_name" content="Cloud Platform Runbooks" />
-      <meta property="og:title" content="Upgrade Terraform Version" />
+      <meta property="og:title" content="Dependabot changes" />
       <meta property="og:type" content="object" />
-      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/upgrade-terraform-version.html" />
+      <meta property="og:url" content="https://runbooks.cloud-platform.service.justice.gov.uk/dependabot-changes.html" />
 
     
   </head>
@@ -991,7 +991,7 @@
     <a href="./manually-delete-namespace-resources.html"><span>Manually Delete Namespace Resources</span></a>
     <ul>
       <li>
-        <a href="./manually-delete-namespace-resources.html#prerequisites"><span>Prerequisites</span></a>
+        <a href="./manually-delete-namespace-resources.html#manually-delete-namespace-resources-prerequisites"><span>Prerequisites</span></a>
       </li>
       <li>
         <a href="./manually-delete-namespace-resources.html#environment-variables"><span>Environment Variables</span></a>
@@ -1388,7 +1388,7 @@
     <a href="./dependabot-changes.html"><span>Dependabot changes</span></a>
     <ul>
       <li>
-        <a href="./dependabot-changes.html#dependabot-changes-prerequisites"><span>Prerequisites</span></a>
+        <a href="./dependabot-changes.html#prerequisites"><span>Prerequisites</span></a>
       </li>
       <li>
         <a href="./dependabot-changes.html#steps"><span>Steps</span></a>
@@ -1904,137 +1904,73 @@
 
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
-            <h1 id="upgrade-terraform-version">Upgrade Terraform Version</h1>
-<h2 id="introduction">Introduction</h2>
-<p>The intention of this document is to provide you with a method to upgrade the Terraform version used in state across the MoJ Cloud Platform. This document won&rsquo;t go into detail on how to perform each task, as each upgrade will require different levels of attention.</p>
-<h2 id="recommendations">Recommendations</h2>
+            <h1 id="dependabot-changes">Dependabot changes</h1>
+<p>This runbook describes the steps to take when a Dependabot PR is opened.</p>
+<h2 id="prerequisites">Prerequisites</h2>
 
 <ul>
-<li>Install <a href="https://github.com/tfutils/tfenv">tfenv</a> to allow you to switch between Terraform versions.</li>
+<li>Familiarity with Git and GitHub</li>
+<li>Access to the repository where the PR is opened</li>
+<li>Understanding of the changes proposed by Dependabot</li>
+<li>Knowledge of the project&rsquo;s testing and deployment processes</li>
 </ul>
-<h2 id="caveats">Caveats</h2>
-<p>This document was originally written following the Terraform 0.13 to 0.14 upgrade, it&rsquo;s worth noting this was the best course of action for that particular upgrade. Over time this document will evolve and the process of upgrading will improve.</p>
-<h2 id="how-to-perform-the-upgrade-divide-and-conquer">How to perform the upgrade - divide and conquer</h2>
-<p>As the Cloud Platform team have decided to use a <a href="https://patrickleet.medium.com/mono-repo-or-multi-repo-why-choose-one-when-you-can-have-both-e9c77bd0c668">multi-repository</a> approach to Terraform modules, it means we have a large distributed code base you&rsquo;ll be required to amend. This section of the guide will suggest an approach to break this work down and tackle it section by section. At a high level, we have two Terraform state monoliths managed within the same state bucket:</p>
+<h2 id="steps">Steps</h2>
+
+<ol>
+<li><p><strong>Review the PR</strong>: Open the Dependabot PR and review the changes proposed. Check for:</p>
 
 <ul>
-<li>Cloud Platform Environments (referred to as &ldquo;Environments&rdquo; throughout this document). This holds tenant (user) state, things like a Kubernetes namespace or RDS instance.</li>
-<li>Cloud Platform Infrastructure (referred to as &ldquo;Infrastructure&rdquo; throughout this document). This state represents everything required to build an MoJ Cloud Platform Kubernetes cluster, and it&rsquo;s accompanying components.</li>
-</ul>
-<p>Each of the sections above require individual action, outlined below.</p>
-<p>Note - Not all Terraform upgrades require you to make a change to the code base.</p>
-<h3 id="before-the-upgrade">Before the upgrade</h3>
-<p>There are three recommended tasks required before upgrading Terraform.</p>
-<h4 id="check-for-warnings-and-notices">Check for warnings and notices</h4>
-<p>Terraform is good at warning end users of deprecations in future releases. Check the output of a Terraform init/validation/plan for messages of deprecations of resources that will disappear in future releases. For example, this message appeared in our Environments apply pipeline:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>Warning: Interpolation-only expressions are deprecated
-
-  on .terraform/modules/example_team_es/main.tf line 104, <span class="k">in </span>data <span class="s2">"aws_iam_policy_document"</span> <span class="s2">"elasticsearch_role_snapshot_policy"</span>:
-</code></pre></div><p>It is recommended to act on these messages and look for how and why it&rsquo;s being deprecated.</p>
-<h4 id="read-the-release-notes-carefully">Read the release notes carefully</h4>
-<p>This sounds simple enough but it is vitally important you understand what <a href="https://github.com/hashicorp/terraform/blob/main/CHANGELOG.md">changes</a> are being made to your Terraform state.</p>
-<h4 id="remove-any-test-clusters">Remove any test clusters</h4>
-<p>After upgrading to a new version of Terraform you don&rsquo;t want test clusters lying around using the old version. Remove any test clusters before upgrading the Infrastructure state.</p>
-<h3 id="environments-state-files">Environments state files</h3>
-<p>The <a href="https://github.com/ministryofjustice/cloud-platform-environments">cloud-platform-environments</a> repository contains directories for every namespace in the MoJ Cloud Platform, for each namespace there is a single Terraform state file stored in an S3 bucket. As there are so many state files, it is recommended to perform the following:</p>
-<h4 id="use-the-quot-apply-quot-pipeline">Use the &ldquo;apply&rdquo; pipeline</h4>
-<p>We currently use a <a href="https://concourse.cloud-platform.service.justice.gov.uk/teams/main/pipelines/environments-terraform/jobs/apply-live">concourse pipeline</a> to <code>terraform init/apply</code> everything in the cloud-platform-environments GitHub repository. This pipeline has a number of environment variables that allow it to communicate with the state bucket and amend the necessary state file. Use this pipeline to make amendments to any state in this repository.</p>
-<h4 id="upgrade-the-tools-image">Upgrade the tools image</h4>
-<p>Add your new Terraform version to the <a href="https://github.com/ministryofjustice/cloud-platform-tools-image">cloud-platform-tools</a> image along with the old version. This will allow you to run both versions simultaneously. You can see how this has been achieved <a href="https://github.com/ministryofjustice/cloud-platform-tools-image/commit/9d042e2fe2a5e15e992e9dbbd403fafd3098c10d">previously</a>.</p>
-<h4 id="add-conditional-logic">Add conditional logic</h4>
-<p>Add an if statement to the apply library that checks the version outlined in each <code>versions.tf</code> file in a namespace. Previously, this was achieved by simply making the <code>terraform</code> command <a href="https://github.com/ministryofjustice/cloud-platform-environments/pull/4366/files">variable</a>. This conditional logic allows you to upgrade the state slowly, ensuring you don&rsquo;t have issues in non-production namespaces before you upgrade production.</p>
-<h4 id="upgrade-all-terraform-modules">Upgrade all Terraform modules</h4>
-<p>Not all Terraform upgrades require this, but in 0.12 and 0.13 you were required to change some syntax in your code base. This can be a fairly tricky task as we maintain over 50 Terraform modules. Terraform does provide a <code>terraform upgrade</code> tool if a syntax change is required, but this will need to be executed against all modules and a new release created. This can be tedious if performed manually so there is some <a href="https://github.com/ministryofjustice/cloud-platform-terraform-upgrade">Go code</a> that does this on your behalf.</p>
-<p>Using the example of upgrading to Terraform 0.13, the following was executed:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-git-xargs
-go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span>
-</code></pre></div><p>The code will pull down every repository in the &ldquo;ministryofjustice&rdquo; organisation with the name that contains &ldquo;cloud-platform-terraform&rdquo; and run the command &ldquo;terraform 0.13upgrade&rdquo;. It will then commit and create a Pull Request against each repository using your GitHub credentials.</p>
-<p>This will result in a Pull Request output similar to the one outlined <a href="https://github.com/ministryofjustice/cloud-platform-terraform-rds-instance/pull/85/files">here</a>.</p>
-<p>Once all the Pull Requests have been reviewed, merge them into main and create a new release.</p>
-<p>Note: Terraform will release an <a href="https://www.terraform.io/docs/cli/commands/0.13upgrade">upgrade</a> command for each release that contains syntax changes, in the example above 0.13upgrade was used to create a more detailed <code>versions.tf</code>.</p>
-<h4 id="upgrade-a-test-namespace">Upgrade a test namespace</h4>
-<p>It is difficult to test an upgrade on the Environments state, this is the best way to do so, with examples.</p>
+<li>The version bump and its implications</li>
+<li>Any breaking changes or deprecations in the new version</li>
+<li>Compatibility with existing code</li>
+<li>If this is a GitHub action version bump make sure its using the SHA and not a tag or branch name.</li>
+</ul></li>
+<li><p><strong>Check for security advisories</strong>: If the PR is related to a security update, review the associated security advisory to understand the vulnerability being addressed.</p></li>
+<li><p><strong>Run tests</strong>: Ensure that all automated tests pass with the new dependency version. This may involve:</p>
 
 <ul>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/ad452137912a667c67c6ed065209eb2a92b85a7e#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Create</a> a test namespace in the cloud-platform-environments repository called <code>abdundance-namespace-dev</code> (will probably be the first namespace applied).</li>
-<li>Add every resource available using the release before the Terraform upgrade work above, i.e. RDS, S3 (a full list can be found <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/README.md#our-core-repos">here</a>).</li>
-<li>Create a pull request and then merge to main.</li>
-</ul>
-<p>When the above resources are successfully built:</p>
+<li>Running unit tests</li>
+<li>Running integration tests</li>
+<li>Running end-to-end tests</li>
+</ul></li>
+<li><p><strong>Manual testing</strong>: If applicable, perform manual testing to ensure that the application behaves as expected with the updated dependency.</p></li>
+<li><p><strong>Merging the PR</strong>: If all tests pass and you are satisfied with the changes:</p>
 
 <ul>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/2769a63f88117865440e60abe5ee0dc6e64e0761#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Bump</a> all of your resources to the latest, containing the Terraform upgrade.</li>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/2298836af43290e0bdb8020ffd2033703260fc51#diff-b3457cb07a4d137eb78293d179b3344d1446bc9a0573b85f37639163029eaa07">Change</a> the version in versions.tf in the cloud-platform-environments to reflect the new version.</li>
-<li>Create a Pull Request against main.</li>
-<li>Monitor possible changes in the plan. It should require no changes.</li>
-<li>If you&rsquo;re happy with the output of the plan pipeline, merge it into main.</li>
-</ul>
-<h4 id="upgrade-all-non-production-namespaces">Upgrade all non-production namespaces</h4>
-<p>When you&rsquo;re happy to begin upgrading users namespaces, run the upgrade command against the cloud-platform-environments repository or upgrade all namespaces manually.</p>
-<p>If you decide to use the tool above, then perform the following:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
-go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-environments"</span> <span class="nt">-c</span> <span class="s2">"terraform 0.13upgrade"</span> <span class="nt">--no-commit</span>
-<span class="nb">cd </span>repositories
-</code></pre></div><p>The <code>no-commit</code> argument pulls down the required repository and stores it in a directory called &lsquo;repositories&rsquo;, it then runs the upgrade against all namespaces but doesn&rsquo;t commit the changes. You&rsquo;ll want to pick and choose which namespaces to commit to ensure you&rsquo;re happy. I&rsquo;d recommend creating a new branch and commiting the non-production namespaces only, i.e. any namespace that isn&rsquo;t &ldquo;-prod&rdquo;.</p>
-<p>Create a pull request against main and watch the plan pipeline once more. Again this should be clean.</p>
-<p>If the plan applies no changes and you&rsquo;re happy, merge this into main.</p>
-<h4 id="upgrade-all-production-namespaces">Upgrade all production namespaces</h4>
-<p>Perform the above on all production namespaces.</p>
-<h4 id="tidying-up">Tidying up</h4>
-<p>When all namespaces in the cloud-platform-environments repository are using the new version of Terraform you can begin to clean-up any changes you&rsquo;ve made.</p>
+<li>Merge the PR using the appropriate method (e.g., squash and merge, rebase and merge).</li>
+<li>Ensure that the PR is merged into the correct branch (e.g., main).</li>
+</ul></li>
+<li><p><strong>Post-merge actions</strong>:
+[!important] Once merged into main some repositories will require extra steps to deploy the changes into production image:</p></li>
+</ol>
+<p><strong><em>Golang repositories scripts</em></strong>
+    - cloud-platform-cli:
+      - you will need to create a new release to trigger the build and deployment process.
+    - cloud-platform-hammer-bot:
+      - you will need to create a new release to trigger the build and deployment process.
+    - cloud-platform-custom-error-pages:
+      - you will need to create a new release.
+      - update the release version in the ingress-controller module and create a new release.
+      - update the ingress module in the infrastructure repository and push the change through the pipeline to update live.
+    - cloud-platform-automation:
+      - you will need to create a new release for the changes.
+      - once the release is done, you will need to update the release version in the pipelines where these scripts are used.
+    - cloud-platform-go-get-module:
+      - you will need to create a new release to trigger the build and deployment process.
+    - check-terraform-modules-are-latest:
+      - once merged to main these changes will be automatically take effect as the action pulls from main.</p>
 
-<ul>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-tools-image/commit/3827ea89a95cf78146812a0275b40f3c2d20ed21">Remove</a> the multiple Terraform binaries from the cloud-platform-tools image, leaving only the new version.</li>
-<li><a href="https://github.com/ministryofjustice/cloud-platform-environments/commit/b11b0372fe71289e51739395664355014df0e655">Remove</a> the conditional logic in the apply library.</li>
-</ul>
-<h3 id="infrastructure-state-files">Infrastructure state files</h3>
-<p>The Infrastructure state we have in the Cloud Platform is structured in a tree related to its dependency,
-so for example, the <a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/terraform/aws-accounts/cloud-platform-aws/vpc/eks/core/components">components</a> state (in the output below) relies heavily on the directory above and so on.
-Here is a snapshot of how our directory looks but this is likely to change:</p>
-<div class="highlight"><pre class="highlight plaintext" tabindex="0"><code>aws-accounts
-├── cloud-platform-aws
-│   ├── account                  # AWS Account specific configuration.
-│   └── vpc                      # VPC creation. Workspaces for individual clusters
-│       ├── eks                  # Holding EKS, workspaces for individual clusters.
-│       │   └── core             # EKS core. Workspaces for individual clusters
-            |   └── components   # EKS components.
-├── cloud-platform-dsd
-│   └── main.tf
-├── cloud-platform-ephemeral-test
-│   ├── account
-│   └── vpc
-│       ├── eks
-│       │   └── components
-└── README.md
-</code></pre></div><h4 id="where-to-start">Where to start</h4>
-<p>Because of the structure outlined above, it&rsquo;s best to start at the components layer and work in.</p>
-<h4 id="run-terraform-init-validate">Run terraform init/validate</h4>
-<p>Using a tool such as tf-switch, switch to your new version and perform the command <code>terraform init -backend=false</code>. The output of this command will give you a general idea of what needs to change before you perform the upgrade. the <code>-backend=false</code> ensures the state isn&rsquo;t touched.</p>
-<h4 id="infrastructure-state-files-upgrade-all-terraform-modules">Upgrade all Terraform modules</h4>
-<p>Like the Environments, you need to ensure all Terraform modules will work with the new Terraform version. If there is a syntax change, it&rsquo;s recommended to run the <code>terraform upgrade</code> command on all repositories that contain &ldquo;cloud-platform-terraform&rdquo;. Either perform this manually or:</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>git clone https://github.com/ministryofjustice/cloud-platform-terraform-upgrade
-go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</span> <span class="nt">-r</span> <span class="s2">"cloud-platform-terraform"</span> <span class="nt">-c</span> <span class="s2">"&lt;insert upgrade command here&gt;"</span>
-</code></pre></div><p>Which will perform the upgrade command on each repository containing &ldquo;cloud-platform-terraform&rdquo; in the name and then create a Pull Request.</p>
-<h4 id="ensure-all-quot-third-party-quot-modules-conform">Ensure all &ldquo;third-party&rdquo; modules conform</h4>
-<p>We use a number of third party Terraform modules (modules we don&rsquo;t control), these mainly belong to AWS, so it&rsquo;s important that you update the version of these modules and ensure it works with the Terraform version you&rsquo;re upgrading to. <a href="https://github.com/ministryofjustice/cloud-platform-terraform-monitoring/commit/ce9fb73249775c8efe09020d3db7c96ccb9ef251">Here&rsquo;s</a> an example of a change to a third party module.</p>
-<h4 id="perform-terraform-init-validate-manually">Perform terraform init/validate manually</h4>
-<p>With all the leg work complete, you can now perform a Terraform upgrade. We do have a pipeline that can do this on your behalf but I&rsquo;d recommend manually performing a <code>terraform init &amp;&amp; terraform apply</code>.</p>
-<h4 id="work-inwards">Work inwards</h4>
-<p>When you complete the upgrade on the directory/state you&rsquo;ve chosen, e.g. components, then you can work on the directory above and perform the same steps as outlined.</p>
-<h4 id="upgrade-the-cloud-platform-cli-image">Upgrade the cloud-platform-cli image</h4>
-<p>Finally, following the successful upgrade to your new Terraform version, upgrade the version of Terraform used in the cloud-platform-cli docker image.</p>
-
-              <div data-module='page-expiry' data-last-reviewed-on="2026-01-15">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-10-21">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 July 2025.
+      This page was last reviewed on 21 October 2025.
 
-        It needs to be reviewed again on 15 January 2026
+        It needs to be reviewed again on 21 October 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 January 2026
+      This page was set to be reviewed before 21 October 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
@@ -2044,8 +1980,8 @@ go run main.go <span class="nt">-o</span> <span class="s2">"ministryofjustice"</
 
           <aside>
               <ul class="contribution-banner">
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/upgrade-terraform-version.html.md.erb">View source</a></li>
-                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Upgrade+Terraform+Version%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fupgrade-terraform-version.html%29&amp;labels=bug&amp;title=Re%3A+%27Upgrade+Terraform+Version%27">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/runbooks/source/dependabot-changes.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/cloud-platform/issues/new?body=Problem+with+%27Dependabot+changes%27+%28https%3A%2F%2Frunbooks.cloud-platform.service.justice.gov.uk%2Fdependabot-changes.html%29&amp;labels=bug&amp;title=Re%3A+%27Dependabot+changes%27">Report problem</a></li>
                 <li><a href="https://github.com/ministryofjustice/cloud-platform">GitHub Repo</a></li>
               </ul>
           </aside>
