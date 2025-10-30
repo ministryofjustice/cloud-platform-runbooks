@@ -1961,7 +1961,6 @@
 <h2 id="access">Access</h2>
 
 <ul>
-<li>Access to required Cloud Platform AWS account(s)</li>
 <li>Protect against accidentally pushing secrets to GitHub, using <a href="https://github.com/awslabs/git-secrets">git-secrets</a></li>
 </ul>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>brew <span class="nb">install </span>git-secrets
@@ -1969,17 +1968,19 @@ git secrets <span class="nt">--install</span> ~/.git-templates/git-secrets
 git config <span class="nt">--global</span> init.templateDir ~/.git-templates/git-secrets
 </code></pre></div>
 <ul>
-<li>Github access - (to be done by new starter)
+<li>Github access
 
 <ul>
+<li>New starter to login using <a href="https://github.com/orgs/ministryofjustice/sso">SSO</a></li>
 <li>Explain github for RBAC</li>
+<li>Add to <a href="https://github.com/orgs/ministryofjustice/teams/webops">WebOps</a> and <a href="https://github.com/orgs/ministryofjustice/teams/cloud-platform-engineers">cloud-platform-engineers</a> team</li>
 </ul></li>
 <li>Invite as an admin on <a href="https://auth0.com/docs/authenticate/login">justice-cloud-platform - Auth0</a>
 
 <ul>
 <li>(Switch to &lsquo;justice-cloud-platform tenant, then use the drop-down and select &ldquo;Invite an admin&rdquo;)</li>
 </ul></li>
-<li>New starter github user to be added to MOJ github organisation and WebOps team</li>
+<li>Access to required Cloud Platform AWS account(s) via AWS SSO</li>
 <li>Add to <a href="https://ministryofjustice.1password.eu/">MoJ 1Password</a></li>
 <li>Authenticate to live cluster
 
@@ -1995,21 +1996,21 @@ git config <span class="nt">--global</span> init.templateDir ~/.git-templates/gi
 <ul>
 <li><a href="https://github.com/ministryofjustice/cloud-platform-environments">environments repo</a></li>
 <li><a href="https://github.com/ministryofjustice/cloud-platform-infrastructure/tree/main/.git-crypt/keys/default/0">infrastructure repo</a></li>
+<li>Instructions can be found in this <a href="rotate-git-crypt-key.html">runbook</a></li>
 </ul></li>
 </ul>
-<p>*Set up access to AWS via SSO</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2026-04-07">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-04-30">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 7 October 2025.
+      This page was last reviewed on 30 October 2025.
 
-        It needs to be reviewed again on 7 April 2026
+        It needs to be reviewed again on 30 April 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 7 April 2026
+      This page was set to be reviewed before 30 April 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform">#cloud-platform</a>.
       This might mean the content is out of date.
     </div>
