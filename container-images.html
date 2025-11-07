@@ -538,7 +538,7 @@
             <a href="./container-images.html#check-current-components-images-versions"><span>Check current components images versions</span></a>
           </li>
           <li>
-            <a href="./container-images.html#latest-version-for-k8s-1-31"><span>Latest version for k8s 1.31</span></a>
+            <a href="./container-images.html#latest-version-for-k8s-1-32"><span>Latest version for k8s 1.32</span></a>
           </li>
           <li>
             <a href="./container-images.html#latest-version-available"><span>Latest version available</span></a>
@@ -1913,8 +1913,8 @@
 </code></pre></div><p>or run the following script:</p>
 <p><a href="https://github.com/ministryofjustice/cloud-platform/blob/main/scripts/container_versions.bash">container_versions.bash</a></p>
 <div class="highlight"><pre class="highlight shell" tabindex="0"><code>./container_versions.bash <span class="o">[</span>NAMESPACE]
-</code></pre></div><h3 id="latest-version-for-k8s-1-31">Latest version for k8s 1.31</h3>
-<p>The latest versions of some of the components might not be compatible with k8s 1.31. For this, click the link to check the Compatibility Matrix</p>
+</code></pre></div><h3 id="latest-version-for-k8s-1-32">Latest version for k8s 1.32</h3>
+<p>The latest versions of some of the components might not be compatible with k8s 1.32. For this, click the link to check the Compatibility Matrix</p>
 <h3 id="latest-version-available">Latest version available</h3>
 <p>That&rsquo;s the latest version available in the public repository. Update the version when there is a new release. You can find the latest version by clicking on the link or by checking the
 <a href="https://reports.cloud-platform.service.justice.gov.uk/helm_whatup">reports</a> page</p>
@@ -1932,7 +1932,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1950,7 +1950,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -1991,7 +1991,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2020,7 +2020,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2037,7 +2037,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2054,7 +2054,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2071,7 +2071,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2107,7 +2107,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2148,7 +2148,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2165,7 +2165,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2183,9 +2183,15 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
+</tr><tr>
+<td>docker.io/grafana/grafana:11.5.2</td>
+<td>🟢</td>
+<td>v11.5.2</td>
+<td><a href="https://github.com/grafana/grafana/releases/tag/v11.5.2">v11.5.2</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/releases/tag/kube-prometheus-stack-79.4.0">79.4.0</a></td>
 </tr><tr>
 <td>ministryofjustice/prometheus-ecr-exporter:0.2.0</td>
 <td>🟢</td>
@@ -2205,11 +2211,47 @@
 <td><a href="https://github.com/oauth2-proxy/oauth2-proxy/releases/tag/v7.10.0">v7.10.0</a></td>
 <td><a href="https://github.com/oauth2-proxy/manifests/releases/tag/oauth2-proxy-7.14.2">7.14.12</a></td>
 </tr><tr>
-<td>quay.io/prometheus-operator/prometheus-operator:v0.78.1</td>
+<td>quay.io/prometheus/alertmanager:v0.28.1</td>
 <td>🟢</td>
-<td>v0.78.1</td>
-<td><a href="https://github.com/prometheus-operator/prometheus-operator/releases/tag/v0.78.1">v0.78.1</a></td>
-<td><a href="https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/Chart.yaml#L34">75.15.0</a></td>
+<td>v0.28.1</td>
+<td><a href="https://github.com/prometheus/alertmanager/releases/tag/v0.28.1">v0.28.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/releases/tag/kube-prometheus-stack-79.4.0">79.4.0</a></td>
+</tr><tr>
+<td>quay.io/prometheus/node-exporter:v1.9.0</td>
+<td>🟢</td>
+<td>v1.9.0</td>
+<td><a href="https://github.com/prometheus/node_exporter/releases/tag/v1.9.0">v1.9.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/releases/tag/kube-prometheus-stack-79.4.0">79.4.0</a></td>
+</tr><tr>
+<td>quay.io/prometheus/prometheus:v3.2.1</td>
+<td>🟢</td>
+<td>v3.2.1</td>
+<td><a href="https://github.com/prometheus/prometheus/releases/tag/v3.2.1">v3.2.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/releases/tag/kube-prometheus-stack-79.4.0">79.4.0</a></td>
+</tr><tr>
+<td>quay.io/prometheus-operator/prometheus-config-reloader:v0.80.1</td>
+<td>🟢</td>
+<td>v0.80.1</td>
+<td><a href="https://github.com/prometheus-operator/prometheus-operator/releases/tag/v0.80.1">v0.80.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/releases/tag/kube-prometheus-stack-79.4.0">79.4.0</a></td>
+</tr><tr>
+<td>quay.io/prometheus-operator/prometheus-operator:v0.80.1</td>
+<td>🟢</td>
+<td>v0.80.1</td>
+<td><a href="https://github.com/prometheus-operator/prometheus-operator/releases/tag/v0.80.1">v0.80.1</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/releases/tag/kube-prometheus-stack-79.4.0">79.4.0</a></td>
+</tr><tr>
+<td>quay.io/kiwigrid/k8s-sidecar:1.30.0</td>
+<td>🟢</td>
+<td>v1.30.0</td>
+<td><a href="https://github.com/kiwigrid/k8s-sidecar/releases/tag/1.30.0">v1.30.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/releases/tag/kube-prometheus-stack-79.4.0">79.4.0</a></td>
+</tr><tr>
+<td>registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.15.0</td>
+<td>🟢</td>
+<td>v2.15.0</td>
+<td><a href="https://github.com/kubernetes/kube-state-metrics/releases/tag/v2.15.0">v2.15.0</a></td>
+<td><a href="https://github.com/prometheus-community/helm-charts/releases/tag/kube-prometheus-stack-79.4.0">79.4.0</a></td>
 </tr><tr>
 <td>quay.io/thanos/thanos:v0.36.1</td>
 <td>🟢</td>
@@ -2224,7 +2266,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2248,7 +2290,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2265,7 +2307,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
@@ -2288,7 +2330,7 @@
           <tr>
 <th>container image</th>
 <th>urgency</th>
-<th>latest version for k8s 1.31</th>
+<th>latest version for k8s 1.32</th>
 <th>latest version available</th>
 <th>latest helm chart</th>
 </tr><tr>
