@@ -1929,12 +1929,15 @@ Please check the changelogs for the terraform-aws-eks module, the EKS version an
 <li><p>Run <a href="https://github.com/doitintl/kube-no-trouble">kubent</a> against cluster to find deprecated APIs.</p></li>
 </ul>
 <h2 id="creating-cluster-upgrade-github-issues">Creating Cluster Upgrade GitHub Issues</h2>
-<p>In order to help maintain a clear process for steps to follow in carrying out a cluster upgrade, we have an <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/.github/ISSUE_TEMPLATE/cloud-platform-k8s-upgrade-template.md">issue template</a> which is used by <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/cmd/create-upgrade-issues/main.go">this script</a> to create individual issues for each step of the upgrade process. As you work through these issues, its helpful to review and update the template where necessary to ensure it remains relevant for future upgrades.</p>
+<p>In order to help maintain a clear process for steps to follow in carrying out a cluster upgrade, we have an <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/cmd/create-upgrade-issues/template/cloud-platform-k8s-upgrade-template.md">issue template</a> which is used by <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/cmd/create-upgrade-issues/main.go">this script</a> to create individual issues for each step of the upgrade process. As you work through these issues, its helpful to review and update the template where necessary to ensure it remains relevant for future upgrades.</p>
 <p>steps:
-1. create a new issue in the <a href="https://github.com/ministryofjustice/cloud-platform/issues/new?template=cloud-platform-k8s-upgrade-template.md">cloud-platform</a> repository using the template
-2. run the script to create the upgrade issues remember to get the Cloud Platform Actions application Private Key, App ID and Installation ID these can be found in 1Password and in the <code>cloud-platform-actions</code> application settings.</p>
-<div class="highlight"><pre class="highlight shell" tabindex="0"><code>go run main.go <span class="nt">--issue</span> &lt;template issue number&gt; <span class="nt">--upgrade-version</span> &lt;version&gt;
-</code></pre></div><h2 id="upgrade-steps">Upgrade Steps</h2>
+1. Go to the Kubernetes Upgrade Issues Action in the <a href="https://github.com/ministryofjustice/cloud-platform/actions/workflows/k8s-upgrade-tickets.yaml">cloud-platform repo</a>
+2. Click on &ldquo;Run workflow&rdquo;
+3. Enter the required inputs:
+   - Cluster name (e.g. eks-live)
+   - Target Kubernetes version (e.g. 1.24)
+4. Click &ldquo;Run workflow&rdquo; to create the issues.</p>
+<h2 id="upgrade-steps">Upgrade Steps</h2>
 <h3 id="compatibility-check">Compatibility Check</h3>
 <p>The following areas need to be looked into to determine if there&rsquo;s any additional preparation work to do:</p>
 
@@ -2036,17 +2039,17 @@ kubectl scale deployment descheduler <span class="nt">--replicas</span><span cla
 <p>The <code>kubectl</code> version in the <code>cloud-platform-cli</code> and <code>cloud-platform-tools-image</code> needs updating to match the current Kubernetes version.</p>
 <p>Documentation used as part of the upgrade should be reviewed and refined if needed.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2026-01-15">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-05-17">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 15 July 2025.
+      This page was last reviewed on 17 November 2025.
 
-        It needs to be reviewed again on 15 January 2026
+        It needs to be reviewed again on 17 May 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform-notify">#cloud-platform-notify</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 15 January 2026
+      This page was set to be reviewed before 17 May 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform-notify">#cloud-platform-notify</a>.
       This might mean the content is out of date.
     </div>
