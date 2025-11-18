@@ -1930,13 +1930,21 @@ Please check the changelogs for the terraform-aws-eks module, the EKS version an
 </ul>
 <h2 id="creating-cluster-upgrade-github-issues">Creating Cluster Upgrade GitHub Issues</h2>
 <p>In order to help maintain a clear process for steps to follow in carrying out a cluster upgrade, we have an <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/cmd/create-upgrade-issues/template/cloud-platform-k8s-upgrade-template.md">issue template</a> which is used by <a href="https://github.com/ministryofjustice/cloud-platform/blob/main/cmd/create-upgrade-issues/main.go">this script</a> to create individual issues for each step of the upgrade process. As you work through these issues, its helpful to review and update the template where necessary to ensure it remains relevant for future upgrades.</p>
-<p>steps:
-1. Go to the Kubernetes Upgrade Issues Action in the <a href="https://github.com/ministryofjustice/cloud-platform/actions/workflows/k8s-upgrade-tickets.yaml">cloud-platform repo</a>
-2. Click on &ldquo;Run workflow&rdquo;
-3. Enter the required inputs:
-   - Cluster name (e.g. eks-live)
-   - Target Kubernetes version (e.g. 1.24)
-4. Click &ldquo;Run workflow&rdquo; to create the issues.</p>
+<p>steps:</p>
+
+<ol>
+<li><p>Go to the Kubernetes Upgrade Issues Action in the <a href="https://github.com/ministryofjustice/cloud-platform/actions/workflows/k8s-upgrade-tickets.yaml">cloud-platform repo</a></p></li>
+<li><p>Click on &ldquo;Run workflow&rdquo;</p></li>
+<li><p>Enter the required inputs:</p></li>
+</ol>
+
+<ul>
+<li>Target Kubernetes version (e.g. 1.24)</li>
+</ul>
+
+<ol>
+<li>Click &ldquo;Run workflow&rdquo; to create the issues.</li>
+</ol>
 <h2 id="upgrade-steps">Upgrade Steps</h2>
 <h3 id="compatibility-check">Compatibility Check</h3>
 <p>The following areas need to be looked into to determine if there&rsquo;s any additional preparation work to do:</p>
