@@ -1909,7 +1909,7 @@
 <p>In our AWS account, some resources are missing the mandatory <code>business-unit</code> tag. These untagged resources contribute to unallocated spend, which can be identified using AWS Cost Explorer.</p>
 <p>You can refer to the <a href="https://us-east-1.console.aws.amazon.com/costmanagement/home#/cost-explorer?chartStyle=GROUP&amp;costAggregate=netUnblendedCost&amp;endDate=2025-02-28&amp;excludeForecasting=false&amp;filter=%5B%7B%22dimension%22:%7B%22id%22:%22TagKey%22,%22displayValue%22:%22Tag%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22%22,%22displayValue%22:%22No%20tag%20key:%20business-unit%22%7D%5D,%22growableValue%22:%7B%22value%22:%22business-unit%22,%22displayValue%22:%22business-unit%22%7D%7D,%7B%22dimension%22:%7B%22id%22:%22Service%22,%22displayValue%22:%22Service%22%7D,%22operator%22:%22EXCLUDES%22,%22values%22:%5B%7B%22value%22:%22Tax%22,%22displayValue%22:%22Tax%22%7D,%7B%22value%22:%22Savings%20Plans%20for%20AWS%20Compute%20usage%22,%22displayValue%22:%22Savings%20Plans%20for%20%20Compute%20usage%22%7D,%7B%22value%22:%22AWS%20Support%20(Enterprise)%22,%22displayValue%22:%22Support%20(Enterprise)%22%7D%5D%7D,%7B%22dimension%22:%7B%22id%22:%22CostCategoryName%22,%22displayValue%22:%22Cost%20category%22%7D,%22operator%22:%22INCLUDES%22,%22values%22:%5B%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%5D,%22growableValue%22:%7B%22value%22:%22Cloud%20Platform%22,%22displayValue%22:%22Cloud%20Platform%22%7D%7D%5D&amp;futureRelativeRange=CUSTOM&amp;granularity=Monthly&amp;groupBy=%5B%22Service%22%5D&amp;historicalRelativeRange=CUSTOM&amp;reportName=New%20cost%20and%20usage%20report&amp;showOnlyUncategorized=false&amp;showOnlyUntagged=false&amp;startDate=2025-02-01&amp;usageAggregate=undefined&amp;useNormalizedUnits=false">Cost Explorer report</a> to view untagged spend based on missing <code>business-unit</code> tags. (You can adjust the date range in the report as needed.)</p>
 <p>To maintain accurate cost allocation, we need to identify and tag these resources wherever possible.</p>
-<p>Refer to the <a href="https://technical-guidance.service.justice.gov.uk/documentation/standards/documenting-infrastructure-owners.html">MoJ Technical Guidance on tagging requirements</a> for more information.</p>
+<p>Refer to the <a href="https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/finops-and-greenops-at-moj/standards/tagging.html">MoJ Technical Guidance on tagging requirements</a> for more information.</p>
 
 <blockquote>
 <p>Note: Missing mandatory tagging can sometimes be case by case, depending on the resource and its ownership. This runbook serves as a general guideline for approaching untagged resources.</p>
@@ -2001,17 +2001,17 @@
 </ul>
 <p>If untagged cost remains in Cost Explorer, or resources are still showing as untagged in Tag Editor, repeat steps <strong>1–2</strong>: re-check the tagging, investigate ownership, and take appropriate action — such as fixing Terraform code, manually applying the missing tag, or contacting the responsible team — then verify again.</p>
 
-              <div data-module='page-expiry' data-last-reviewed-on="2025-11-06">
+              <div data-module='page-expiry' data-last-reviewed-on="2026-05-24">
     <div class='page-expiry--not-expired'>
-      This page was last reviewed on 6 May 2025.
+      This page was last reviewed on 24 November 2025.
 
-        It needs to be reviewed again on 6 November 2025
+        It needs to be reviewed again on 24 May 2026
         by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform-notify">#cloud-platform-notify</a>
         .
     </div>
 
     <div class='page-expiry--expired'>
-      This page was set to be reviewed before 6 November 2025
+      This page was set to be reviewed before 24 May 2026
        by the page owner <a href="https://mojdt.slack.com/messages/cloud-platform-notify">#cloud-platform-notify</a>.
       This might mean the content is out of date.
     </div>
