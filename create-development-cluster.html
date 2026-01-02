@@ -1454,9 +1454,14 @@
   </li>
   <li>
     <a href="./create-development-cluster.html"><span>Creating a development cluster</span></a>
-  </li>
-  <li>
-    <a href="./create-development-cluster.html"><span>Destroying your cluster</span></a>
+    <ul>
+      <li>
+        <a href="./create-development-cluster.html#deploying-a-new-cluster"><span>Deploying a new cluster</span></a>
+      </li>
+      <li>
+        <a href="./create-development-cluster.html#destroying-your-cluster"><span>Destroying your cluster</span></a>
+      </li>
+    </ul>
   </li>
   <li>
     <a href="./create-development-cluster.html"><span> Amending the cluster with Terraform</span></a>
@@ -1914,21 +1919,22 @@
         <div class="app-pane__content toc-open-disabled" aria-label="Content" tabindex="0">
           <main id="content" class="technical-documentation" data-module="anchored-headings">
             <h1 id="creating-a-development-cluster">Creating a development cluster</h1>
+<h2 id="deploying-a-new-cluster">Deploying a new cluster</h2>
 
 <ol>
 <li>Navigate to the <a href="https://github.com/ministryofjustice/cloud-platform-github-workflows/actions/workflows/development-cluster-deploy.yml">Deploy Development Cluster GitHub Actions workflow</a></li>
-<li>Click on the <code>Run workflow</code> button</li>
-<li>Select the action - <code>deploy</code></li>
+<li>Click on the <code>Run workflow</code> button.</li>
+<li>Select the action - <code>deploy</code>.</li>
 <li>If you wish to specify a custom cluster name, enter it in the <code>cluster_name</code> field. If you leave this as the default, a name will be generated for you in the format <code>cp-DDMM-HHMM</code>.</li>
 <li>Click the green <code>Run workflow</code> button to start the process.</li>
 <li>You can find your cluster name in the Set Cluster Name job once the workflow has started.</li>
 </ol>
-<h1 id="destroying-your-cluster">Destroying your cluster</h1>
+<h2 id="destroying-your-cluster">Destroying your cluster</h2>
 
 <ol>
-<li>Navigate to the <a href="https://github.com/ministryofjustice/cloud-platform-github-workflows/actions/workflows/development-cluster-deploy.yml">Deploy Development Cluster GitHub Actions workflow</a></li>
-<li>Click on the <code>Run workflow</code> button</li>
-<li>Select the action - <code>destroy</code></li>
+<li>Navigate to the <a href="https://github.com/ministryofjustice/cloud-platform-github-workflows/actions/workflows/development-cluster-deploy.yml">Deploy Development Cluster GitHub Actions workflow</a>.</li>
+<li>Click on the <code>Run workflow</code> button.</li>
+<li>Select the action - <code>destroy</code>.</li>
 <li>Enter your cluster name in the <code>cluster_name</code> field.</li>
 <li>Click the green <code>Run workflow</code> button to start the process.</li>
 </ol>
@@ -1937,9 +1943,9 @@
 <ol>
 <li>Clone the <a href="https://github.com/ministryofjustice/modernisation-platform-environments">Modernisation Platform Environements repository</a>.</li>
 <li>Run the <a href="https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/terraform/environments/cloud-platform-non-live/scripts/dev-cluster-files.sh">dev-cluster-files.sh</a> script, passing in your cluster name as an argument.</li>
-<li>This will Terraform in <code>terraform/environments/cloud-platform-non-live/tmp/</code> for your clusterl</li>
+<li>This will create Terraform in <code>terraform/environments/cloud-platform-non-live/tmp/</code> for your cluster.</li>
 <li>Make any changes you need to the Terraform files and run the Terraform locally.</li>
-<li>Note: If you run the deploy cluster workflow again it will overwrite any changes you have made.</li>
+<li>Note: If you run the deploy cluster workflow again passing in your cluster name it will overwrite any changes you have made locally.</li>
 <li>The tmp folder can be deleted when you are finished with your cluster.</li>
 </ol>
 
