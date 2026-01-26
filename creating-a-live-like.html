@@ -342,6 +342,25 @@
     </ul>
   </li>
   <li>
+    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
+    <ul>
+      <li>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
+      </li>
+      <li>
+        <a href="./upgrade-eks-terraform-module.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <ul>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
+          </li>
+          <li>
+            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./upgrade-AMI-version.html"><span>Upgrade AMI Version</span></a>
   </li>
   <li>
@@ -357,7 +376,7 @@
         <a href="./upgrade-eks-cluster.html#creating-cluster-upgrade-github-issues"><span>Creating Cluster Upgrade GitHub Issues</span></a>
       </li>
       <li>
-        <a href="./upgrade-eks-cluster.html#upgrade-steps"><span>Upgrade Steps</span></a>
+        <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps"><span>Upgrade Steps</span></a>
         <ul>
           <li>
             <a href="./upgrade-eks-cluster.html#compatibility-check"><span>Compatibility Check</span></a>
@@ -366,7 +385,7 @@
             <a href="./upgrade-eks-cluster.html#preparing-for-upgrade"><span> Preparing for upgrade</span></a>
           </li>
           <li>
-            <a href="./upgrade-eks-cluster.html#upgrade-steps-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
+            <a href="./upgrade-eks-cluster.html#upgrade-eks-cluster-upgrade-steps-monitoring-the-upgrade"><span>Monitoring the upgrade</span></a>
           </li>
           <li>
             <a href="./upgrade-eks-cluster.html#starting-the-upgrade"><span>Starting the upgrade</span></a>
@@ -404,44 +423,6 @@
     </ul>
   </li>
   <li>
-    <a href="./upgrade-eks-terraform-module.html"><span>Upgrade EKS Terraform Module</span></a>
-    <ul>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-pre-requisites"><span>Pre-requisites</span></a>
-      </li>
-      <li>
-        <a href="./upgrade-eks-terraform-module.html#upgrade-eks-terraform-module-upgrade-steps"><span>Upgrade Steps</span></a>
-        <ul>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-no-breaking-changes"><span>Upgrade with no breaking changes</span></a>
-          </li>
-          <li>
-            <a href="./upgrade-eks-terraform-module.html#upgrade-with-breaking-changes"><span>Upgrade with breaking changes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
-    <ul>
-      <li>
-        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
-        <ul>
-          <li>
-            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
-          </li>
-          <li>
-            <a href="./node-group-changes.html#useful-commands"><span>Useful commands:</span></a>
-          </li>
-          <li>
-            <a href="./node-group-changes.html#monitoring-nodes"><span>Monitoring nodes</span></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./upgrade-cluster-components.html"><span>Upgrade cluster components</span></a>
     <ul>
       <li>
@@ -470,6 +451,25 @@
           </li>
           <li>
             <a href="./upgrade-cluster-components.html#performing-the-upgrade"><span>Performing the upgrade</span></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./node-group-changes.html"><span>Making changes to EKS node groups, instances types, or launch templates</span></a>
+    <ul>
+      <li>
+        <a href="./node-group-changes.html#process-for-recycling-all-nodes-in-a-cluster"><span>Process for recycling all nodes in a cluster</span></a>
+        <ul>
+          <li>
+            <a href="./node-group-changes.html#notes"><span>Notes:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#useful-commands"><span>Useful commands:</span></a>
+          </li>
+          <li>
+            <a href="./node-group-changes.html#monitoring-nodes"><span>Monitoring nodes</span></a>
           </li>
         </ul>
       </li>
@@ -596,9 +596,6 @@
     </ul>
   </li>
   <li>
-    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
-  </li>
-  <li>
     <a href="./debug-recycle-seccomp-errno-524.html"><span>Debug and Recycle Node with error loading seccomp filter errno: 524</span></a>
   </li>
   <li>
@@ -616,6 +613,9 @@
         </ul>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./updating-prisoner-content-hub-waf.html"><span>Updating Prisoner Content Hub WAF</span></a>
   </li>
   <li>
     <a href="./move-components-module.html"><span>Moving components modules into core</span></a>
@@ -1005,14 +1005,6 @@
     </ul>
   </li>
   <li>
-    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
-    <ul>
-      <li>
-        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
     <a href="./opensearch-restore-indices.html"><span>OpenSearch Log Restore Runbook</span></a>
     <ul>
       <li>
@@ -1039,14 +1031,6 @@
       </li>
       <li>
         <a href="./opensearch-restore-indices.html#usage-guide"><span>Usage Guide</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
-    <ul>
-      <li>
-        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
       </li>
     </ul>
   </li>
@@ -1152,6 +1136,14 @@
     </ul>
   </li>
   <li>
+    <a href="./resolve-opensearch-no-logs.html"><span>Modsec logging architecture</span></a>
+    <ul>
+      <li>
+        <a href="./resolve-opensearch-no-logs.html#debugging"><span>Debugging</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./remove-data-from-opensearch.html"><span>Remove data from OpenSearch</span></a>
     <ul>
       <li>
@@ -1179,6 +1171,14 @@
             <a href="./remove-data-from-opensearch.html#deleting-documents-stored-in-warm-storage"><span>Deleting documents stored in warm storage</span></a>
           </li>
         </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./manage-grafana-snapshots.html"><span>Manage Published Grafana Dashboard Snapshots</span></a>
+    <ul>
+      <li>
+        <a href="./manage-grafana-snapshots.html#steps-to-remove-snapshot"><span>Steps to remove Snapshot</span></a>
       </li>
     </ul>
   </li>
@@ -1437,6 +1437,35 @@
     </ul>
   </li>
   <li>
+    <a href="./edit-k8s-pv.html"><span>Expanding a PersistentVolumeClaim (PVC) for a StatefulSet</span></a>
+    <ul>
+      <li>
+        <a href="./edit-k8s-pv.html#expanding-a-persistentvolumeclaim-pvc-for-a-statefulset-overview"><span>Overview</span></a>
+      </li>
+      <li>
+        <a href="./edit-k8s-pv.html#preconditions"><span>Preconditions</span></a>
+      </li>
+      <li>
+        <a href="./edit-k8s-pv.html#step-1-identify-the-pvc"><span>Step 1: Identify the PVC</span></a>
+      </li>
+      <li>
+        <a href="./edit-k8s-pv.html#step-2-edit-the-pvc-to-increase-size"><span>Step 2: Edit the PVC to increase size</span></a>
+      </li>
+      <li>
+        <a href="./edit-k8s-pv.html#step-3-restart-pods-to-pick-up-resized-filesystem"><span>Step 3: Restart pods to pick up resized filesystem</span></a>
+      </li>
+      <li>
+        <a href="./edit-k8s-pv.html#step-4-verify-statefulset-pvc-retention-policy"><span>Step 4: Verify StatefulSet PVC retention policy</span></a>
+      </li>
+      <li>
+        <a href="./edit-k8s-pv.html#step-5-delete-statefulset-pvc-retained"><span>Step 5: Delete StatefulSet (PVC retained)</span></a>
+      </li>
+      <li>
+        <a href="./edit-k8s-pv.html#step-6-update-resource-module-and-re-apply-infra-pipeline"><span>Step 6: Update resource module and re-apply infra pipeline</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./get-audit-log-from-modsec.html"><span>OpenSearch modsec setup</span></a>
     <ul>
       <li>
@@ -1453,20 +1482,6 @@
     </ul>
   </li>
   <li>
-    <a href="./create-development-cluster.html"><span>Creating a development cluster</span></a>
-    <ul>
-      <li>
-        <a href="./create-development-cluster.html#deploying-a-new-cluster"><span>Deploying a new cluster</span></a>
-      </li>
-      <li>
-        <a href="./create-development-cluster.html#destroying-your-cluster"><span>Destroying your cluster</span></a>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./create-development-cluster.html"><span> Amending the cluster with Terraform</span></a>
-  </li>
-  <li>
     <a href="./create-custom-cluster.html"><span>Create custom cluster</span></a>
     <ul>
       <li>
@@ -1479,6 +1494,20 @@
         <a href="./create-custom-cluster.html#run-integration-tests-against-custom-cluster"><span>Run integration tests against custom cluster</span></a>
       </li>
     </ul>
+  </li>
+  <li>
+    <a href="./create-development-cluster.html"><span>Creating a development cluster</span></a>
+    <ul>
+      <li>
+        <a href="./create-development-cluster.html#deploying-a-new-cluster"><span>Deploying a new cluster</span></a>
+      </li>
+      <li>
+        <a href="./create-development-cluster.html#destroying-your-cluster"><span>Destroying your cluster</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="./create-development-cluster.html"><span> Amending the cluster with Terraform locally</span></a>
   </li>
   <li>
     <a href="./debugging-aws-console-access.html"><span>Debugging AWS Console read-only access issues</span></a>
@@ -1588,6 +1617,17 @@
     </ul>
   </li>
   <li>
+    <a href="./block-public-ip-address.html"><span>Blocking Public IP Address from EKS Cluster</span></a>
+    <ul>
+      <li>
+        <a href="./block-public-ip-address.html#blocking-public-ip-address-from-eks-cluster-introduction"><span>Introduction</span></a>
+      </li>
+      <li>
+        <a href="./block-public-ip-address.html#adding-deny-rules-to-the-public-network-acl"><span>Adding deny rules to the public network ACL</span></a>
+      </li>
+    </ul>
+  </li>
+  <li>
     <a href="./logs-to-soc-cortex-xsiam.html"><span>Pushing logs to the SOC team</span></a>
     <ul>
       <li>
@@ -1632,17 +1672,6 @@
             <a href="./logs-to-soc-cortex-xsiam.html#iam-user-access-keys-rotation"><span>IAM User access keys rotation</span></a>
           </li>
         </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a href="./block-public-ip-address.html"><span>Blocking Public IP Address from EKS Cluster</span></a>
-    <ul>
-      <li>
-        <a href="./block-public-ip-address.html#blocking-public-ip-address-from-eks-cluster-introduction"><span>Introduction</span></a>
-      </li>
-      <li>
-        <a href="./block-public-ip-address.html#adding-deny-rules-to-the-public-network-acl"><span>Adding deny rules to the public network ACL</span></a>
       </li>
     </ul>
   </li>
